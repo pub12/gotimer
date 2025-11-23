@@ -23,12 +23,20 @@ export default function HomePage() {
     router.push("/chess-clock-setup");
   };
 
+  // Handle navigation to round timer setup
+  const handle_round_timer = () => {
+    router.push("/round-timer-setup");
+  };
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4 pt-20">
       {/* Header */}
       <Header />
       {/* Navbar */}
       <Navbar />
+      <h1 className="text-3xl md:text-6xl font-bold mb-8 text-center text-gray-900">
+        Choose Your Timer
+      </h1>
       {/* Large Countdown Button */}
       <div className="flex flex-col flex-1 items-center justify-center w-full h-full gap-8">
         <Button
@@ -43,6 +51,12 @@ export default function HomePage() {
         >
           Chess Clock
         </Button>
+        <Button
+          className="text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900"
+          onClick={handle_round_timer}
+        >
+          Round Timer
+        </Button>
       </div>
       {/* Description Section */}
       <section className="w-full max-w-2xl mx-auto mt-12 mb-8 p-6 bg-white rounded-xl shadow text-gray-800">
@@ -53,6 +67,9 @@ export default function HomePage() {
           </li>
           <li>
             <span className="font-semibold">Chess Clock:</span> Two-player timer where each player has their own clock. Tap your side after your move. Perfect for chess, Scrabble, or any turn-based game.
+          </li>
+          <li>
+            <span className="font-semibold">Round Timer:</span> Count-up timer that tracks total elapsed time and individual round durations. Reset rounds while keeping total time running. Perfect for tournament play and timeboxing strategy games like Twilight Imperium or Terraforming Mars.
           </li>
         </ul>
         <div className="mt-2 text-base">

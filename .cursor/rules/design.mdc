@@ -1,0 +1,305 @@
+---
+description: Design rules for Game Timer app - consistent styling and layout patterns
+alwaysApply: true
+---
+
+# Game Timer Design Rules
+
+## Overview
+This document defines the design system and styling patterns for the Game Timer app. Follow these rules when adding new timers or pages to ensure consistency across the application.
+
+## Layout Structure
+
+### Page Layout Template
+Every page MUST include the following structure in order:
+1. **Header** - `<Header />` component (currently empty, reserved for future use)
+2. **Navbar** - `<Navbar />` component (fixed at top, clickable "Game Timer" title)
+3. **Main Content** - Page-specific content
+4. **Footer** - `<Footer />` component (copyright notice)
+
+### Main Container
+- Use: `min-h-screen flex flex-col items-center justify-center bg-gray-50`
+- Padding: `p-2 pt-20` (timer pages) or `p-4 pt-20` (setup pages)
+- Overflow: `w-full overflow-x-hidden` on timer pages
+- Always import: `Header`, `Navbar`, `Footer` from `../../components/` or `../components/`
+
+## Color Scheme
+
+### Primary Colors
+- **Black buttons**: `bg-black text-white hover:bg-gray-800 focus:bg-gray-900` (homepage timer buttons, Start buttons)
+- **Orange buttons**: `bg-orange-500 hover:bg-orange-600 focus:bg-orange-700` (Pause/Resume buttons)
+- **Red buttons**: `bg-red-600 hover:bg-red-700 focus:bg-red-800` (Reset buttons)
+- **Green buttons**: `bg-green-600 text-white` (active player/state indicators)
+- **Gray buttons**: `bg-gray-600 hover:bg-gray-700` (Settings/Configure buttons)
+- **Gray preset buttons**: `bg-gray-200 hover:bg-gray-300 text-gray-900` (preset time buttons)
+
+### Background Colors
+- **Page background**: `bg-gray-50`
+- **Card background**: `bg-white` (setup pages)
+- **Navbar**: `bg-white shadow-sm`
+
+### Sound Toggle Colors
+- **Enabled**: `bg-blue-100 hover:bg-blue-200` with `text-blue-600` icon
+- **Disabled**: `bg-gray-200 hover:bg-gray-300` with `text-gray-500` icon
+
+## Typography
+
+### Timer Display
+- **Font**: `font-mono font-bold`
+- **Size**: Use `clamp(3rem, 25vw, 10rem)` or `clamp(3rem, 30vw, 12rem)` for responsive sizing
+- **Style**: `tracking-widest select-none leading-none`
+- **Display**: `block` with `text-center`
+- **Word break**: `wordBreak: "break-all"` for very long numbers
+
+### Page Titles
+- **Setup pages**: `text-4xl md:text-6xl font-bold`
+- **Timer pages**: `text-2xl md:text-5xl font-bold mb-6 text-center text-gray-900`
+- **Section titles**: `text-2xl md:text-3xl font-bold`
+
+### Button Text
+- **Large primary buttons**: `text-3xl md:text-5xl` (homepage)
+- **Start buttons**: `text-3xl md:text-4xl`
+- **Timer control buttons**: `text-2xl md:text-4xl` or `text-2xl md:text-3xl`
+- **Preset buttons**: `text-xl md:text-2xl`
+- Always use `font-bold` on buttons
+
+## Button Styles
+
+### Homepage Timer Buttons
+```tsx
+className="text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900"
+```
+
+### Start Buttons (Setup Pages)
+```tsx
+className="w-full text-3xl md:text-4xl py-8 mt-8 rounded-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900"
+```
+
+### Reset Buttons
+```tsx
+className="text-white bg-red-600 hover:bg-red-700 focus:bg-red-800 text-2xl md:text-4xl px-0 py-8 rounded-2xl shadow-2xl w-full max-w-full disabled:opacity-60 font-bold"
+style={{ minHeight: "6rem" }}
+```
+
+### Pause/Resume Buttons
+- **Countdown page**: `text-2xl md:text-4xl px-0 py-8 rounded-2xl` with `minHeight: "6rem"`
+- **Chess clock page**: `text-2xl md:text-3xl py-6 rounded-xl` with `minHeight: "3.5rem"`
+- Color: `bg-orange-500 hover:bg-orange-600 focus:bg-orange-700`
+
+### Settings/Configure Buttons
+- **Countdown**: `p-6 rounded-2xl` with `minHeight: "6rem", minWidth: "6rem"`
+- **Chess clock**: `p-6 rounded-xl` with `minHeight: "3.5rem", minWidth: "3.5rem"`
+- Color: `bg-gray-600 hover:bg-gray-700 text-white`
+- Always include `focus:outline-none focus:ring-2 focus:ring-gray-400`
+- Use `Settings` icon from `lucide-react` with appropriate size (32-40px)
+
+### Preset Time Buttons
+```tsx
+className="px-6 py-3 text-xl md:text-2xl rounded-xl bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold"
+variant="ghost"
+```
+
+## Card Styles (Setup Pages)
+
+### Card Container
+```tsx
+<Card className="shadow-2xl w-full p-0 rounded-3xl">
+  <CardContent className="flex flex-col items-center justify-center p-12 md:p-20">
+    {/* Content */}
+  </CardContent>
+</Card>
+```
+
+### Card Wrapper
+- Max width: `max-w-2xl`
+- Centered with flexbox
+- Margin bottom: `mb-8`
+
+## Sound Toggle Icon
+
+### Implementation
+- Use `Volume2` (enabled) and `VolumeX` (disabled) from `lucide-react`
+- Size: `40px`
+- Button: `rounded-full p-4` with `shadow-lg`
+- Position: Above timer display
+- Include `focus:ring-2 focus:ring-blue-400` for accessibility
+
+## Responsive Design
+
+### Breakpoints
+- Mobile-first approach
+- Use `md:` prefix for tablet/desktop styles
+- Common breakpoints: `md:text-*`, `md:flex-row`, `md:p-*`
+
+### Spacing
+- Gap between elements: `gap-4`, `gap-6`, `gap-8`, `gap-10`
+- Padding: `p-2` (mobile timer pages), `p-4` (setup pages), `p-6`, `p-8`
+- Top padding for navbar: Always `pt-20` or `pt-20`
+
+### Button Heights
+- Large buttons: `minHeight: "6rem"` (countdown page)
+- Medium buttons: `minHeight: "3.5rem"` (chess clock page)
+- Use `py-6`, `py-8`, or `py-10` for vertical padding
+
+## Timer-Specific Patterns
+
+### Setup Page Pattern
+1. Large card with `rounded-3xl` and `shadow-2xl`
+2. Title at top: `text-4xl md:text-6xl font-bold mb-6`
+3. Preset buttons in flex-wrap layout
+4. Range slider with `accent-blue-500`
+5. Time display: `text-3xl font-mono`
+6. Start button at bottom: full width, black background
+
+### Active Timer Page Pattern
+1. Sound toggle icon at top
+2. Large timer display with responsive font sizing
+3. Control buttons (Reset, Pause/Resume, Settings)
+4. Reset button above Pause/Resume
+5. Settings button next to Pause/Resume (same height)
+6. Use `Suspense` wrapper for pages using `useSearchParams()`
+
+### Multi-Player Timer Pattern (Chess Clock)
+1. Two columns on desktop: `flex-col md:flex-row gap-8`
+2. Active player: `bg-green-600 text-white shadow-2xl scale-105`
+3. Inactive player: `bg-gray-200 text-gray-500 scale-95`
+4. Editable player names with border-bottom
+5. Player buttons: `minHeight: "5rem"`
+
+## Icons
+
+### Icon Library
+- Use `lucide-react` for all icons
+- Common icons: `Volume2`, `VolumeX`, `Settings`
+- Sizes: `32px` (small), `40px` (medium/large)
+
+### Icon Button Styling
+- Always include `aria-label` for accessibility
+- Use `flex items-center justify-center`
+- Include focus states: `focus:outline-none focus:ring-2`
+
+## Navigation
+
+### Route Pattern
+- Homepage: `/`
+- Setup page: `/{timer-name}-setup` (e.g., `/countdown-setup`)
+- Timer page: `/{timer-name}` (e.g., `/countdown`)
+- Pass time via query: `?time={seconds}`
+
+### Navigation Handler
+```tsx
+const router = useRouter();
+const handle_navigation = () => {
+  router.push(`/${route}?time=${value}`);
+};
+```
+
+## Accessibility
+
+### Required Attributes
+- All buttons: `aria-label` for icon-only buttons
+- Input fields: `aria-label` for screen readers
+- Disabled states: `disabled` prop with `opacity-60` or `opacity-50`
+- Focus states: Always include `focus:` variants
+
+### Keyboard Navigation
+- All interactive elements must be keyboard accessible
+- Use `focus:outline-none` with `focus:ring-2` for visible focus indicators
+
+## Code Organization
+
+### Component Structure
+1. Imports (React, Next.js, components, icons)
+2. Component function with PascalCase name
+3. State declarations
+4. Handler functions
+5. Helper functions (format_time, etc.)
+6. useEffect hooks
+7. Return JSX with comments for major sections
+
+### Comments
+- File purpose at top
+- Function descriptions above each function
+- Section comments in JSX: `{/* Section Name */}`
+
+## Adding a New Timer
+
+### Required Files
+1. `src/app/{timer-name}/page.tsx` - Active timer page
+2. `src/app/{timer-name}-setup/page.tsx` - Setup/configuration page
+3. Update `src/app/page.tsx` - Add button to homepage
+4. Update homepage description section
+
+### Setup Page Checklist
+- [ ] Import Header, Navbar, Footer
+- [ ] Use Card with `rounded-3xl shadow-2xl`
+- [ ] Include preset time buttons
+- [ ] Add range slider with `accent-blue-500`
+- [ ] Display formatted time
+- [ ] Black Start button
+- [ ] Pass time via query params
+- [ ] Wrap in Suspense if using useSearchParams
+
+### Timer Page Checklist
+- [ ] Import Header, Navbar, Footer
+- [ ] Add "use client" directive
+- [ ] Wrap in Suspense if using useSearchParams
+- [ ] Sound toggle icon at top
+- [ ] Responsive timer display with clamp()
+- [ ] Reset button (red, above other controls)
+- [ ] Pause/Resume button (orange)
+- [ ] Settings button (gray, same height as Pause/Resume)
+- [ ] Read time from query params
+- [ ] Implement beep sounds if applicable
+
+### Homepage Integration
+- [ ] Add button with black styling
+- [ ] Add handler to navigate to setup page
+- [ ] Update description section with timer explanation
+- [ ] Maintain consistent button sizing and spacing
+
+## Sound Implementation
+
+### Audio Context
+- Initialize on user interaction (iOS requirement)
+- Use `useRef` to store AudioContext
+- Check `ctx.state === 'suspended'` and call `resume()`
+- Use `useCallback` for play_beep function
+
+### Beep Patterns
+- Standard beep: `duration: 0.15s, frequency: 880Hz`
+- Warning beep: `duration: 0.2s, frequency: 1000Hz`
+- Final beep: `duration: 1.2-2s, frequency: 1200-1400Hz`
+- Gain: `0.2` for volume control
+
+## Common Patterns
+
+### Time Formatting
+```tsx
+const format_time = (secs: number) => {
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+};
+```
+
+### Query Param Reading
+```tsx
+const search_params = useSearchParams();
+const initial_time = Number(search_params.get("time")) || default_value;
+```
+
+### Suspense Wrapper
+```tsx
+function TimerPageContent() {
+  // Component logic
+}
+
+export default function TimerPage() {
+  return (
+    <Suspense>
+      <TimerPageContent />
+    </Suspense>
+  );
+}
+```

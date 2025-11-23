@@ -42,4 +42,20 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  
+  <!-- Round Timer Setup Page -->
+  <url>
+    <loc>https://gotimer.org/round-timer-setup</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Round Timer Page -->
+  <url>
+    <loc>https://gotimer.org/round-timer</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset> 

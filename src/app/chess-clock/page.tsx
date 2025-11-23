@@ -7,7 +7,8 @@ import Navbar from "../../components/navbar";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import { Button } from "../../components/ui/button";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Settings } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 /**
  * chess_clock_page component displays two player clocks, active/inactive states, and a pause button.
@@ -15,6 +16,7 @@ import { Volume2, VolumeX } from "lucide-react";
 function ChessClockPageContent() {
   // Get initial time from query params (in seconds)
   const search_params = useSearchParams();
+  const router = useRouter();
   const initial_time = Number(search_params.get("time")) || 300;
   const [player_times, set_player_times] = useState([initial_time, initial_time]);
   const [active_player, set_active_player] = useState(0); // 0 or 1
@@ -102,10 +104,18 @@ function ChessClockPageContent() {
   // Handle pause
   const handle_pause = () => set_paused((p) => !p);
 
+  // Handle navigation to chess clock setup
+  const handle_settings = () => {
+    router.push("/chess-clock-setup");
+  };
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-2 pt-20 w-full overflow-x-hidden">
       <Header />
       <Navbar />
+      <h1 className="text-2xl md:text-5xl font-bold mb-6 text-center text-gray-900">
+        Two-Player Chess Clock
+      </h1>
       <div className="flex flex-col items-center gap-8 w-full max-w-2xl mx-auto mt-8">
         {/* Sound Toggle Icon Button */}
         <button
@@ -152,12 +162,23 @@ function ChessClockPageContent() {
             </div>
           ))}
         </div>
-        <Button
-          onClick={handle_pause}
-          className="w-full max-w-xs text-2xl md:text-3xl py-6 rounded-xl font-bold bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-700 mt-8"
-        >
-          {paused ? "Resume" : "Pause"}
-        </Button>
+        <div className="flex gap-4 items-center w-full max-w-xs mt-8">
+          <Button
+            onClick={handle_pause}
+            className="flex-1 text-2xl md:text-3xl py-6 rounded-xl font-bold bg-orange-500 text-white hover:bg-orange-600 focus:bg-orange-700"
+            style={{ minHeight: "3.5rem" }}
+          >
+            {paused ? "Resume" : "Pause"}
+          </Button>
+          <button
+            onClick={handle_settings}
+            aria-label="Configure Settings"
+            className="bg-gray-600 hover:bg-gray-700 text-white p-6 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400 flex items-center justify-center"
+            style={{ minHeight: "3.5rem", minWidth: "3.5rem" }}
+          >
+            <Settings size={32} />
+          </button>
+        </div>
       </div>
       <Footer />
     </main>

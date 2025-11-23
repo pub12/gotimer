@@ -44,7 +44,7 @@ export default function CountdownSetupPage() {
       <div className="w-full max-w-2xl mb-8 flex items-center justify-center">
         <Card className="shadow-2xl w-full p-0 rounded-3xl">
           <CardContent className="flex flex-col items-center justify-center p-12 md:p-20">
-            <span className="text-4xl md:text-6xl font-bold mb-6">Countdown</span>
+            <span className="text-4xl md:text-6xl font-bold mb-6">Configure Countdown Timer</span>
             {/* Preset Buttons */}
             <div className="flex flex-wrap gap-4 mb-4 w-full justify-center">
               {presets.map((val) => (

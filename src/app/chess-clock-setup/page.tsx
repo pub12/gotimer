@@ -43,8 +43,8 @@ export default function ChessClockSetupPage() {
       <div className="w-full max-w-2xl mb-8 flex items-center justify-center">
         <Card className="shadow-2xl w-full p-0 rounded-3xl">
           <CardContent className="flex flex-col items-center justify-center p-12 md:p-20">
-            <span className="text-4xl md:text-6xl font-bold mb-6">Chess Clock</span>
-            <span className="mb-4 text-lg md:text-2xl">Select total timer duration</span>
+            <span className="text-4xl md:text-6xl font-bold mb-6">Configure Chess Clock</span>
+            <span className="mb-4 text-lg md:text-2xl">Select total timer duration per player</span>
             {/* Preset Buttons */}
             <div className="flex flex-wrap gap-4 mb-4 w-full justify-center">
               {presets.map((val) => (

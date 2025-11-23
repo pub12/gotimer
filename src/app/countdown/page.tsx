@@ -4,7 +4,8 @@
 import React, { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "../../components/ui/button";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Settings } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
@@ -16,6 +17,7 @@ import Footer from "../../components/footer";
 function CountdownPageContent() {
   // Get time from query params (in seconds)
   const search_params = useSearchParams();
+  const router = useRouter();
   const initial_time = Number(search_params.get("time")) || 0;
   const [remaining, set_remaining] = useState(initial_time);
   const [running, set_running] = useState(true);
@@ -93,6 +95,11 @@ function CountdownPageContent() {
     return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
+  // Handle navigation to countdown setup
+  const handle_settings = () => {
+    router.push("/countdown-setup");
+  };
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-2 pt-20 w-full overflow-x-hidden">
       {/* Header */}
@@ -100,7 +107,7 @@ function CountdownPageContent() {
       {/* Navbar */}
       <Navbar />
       <h1 className="text-2xl md:text-5xl font-bold mb-6 text-center text-gray-900">
-        Countdown
+        Countdown Timer Active
       </h1>
       <div className="flex flex-col items-center gap-10 w-full max-w-md mx-auto">
         {/* Sound Toggle Icon Button */}
@@ -138,13 +145,23 @@ function CountdownPageContent() {
           >
             Reset
           </Button>
-          <Button
-            onClick={() => set_running(!running)}
-            className="text-white bg-orange-500 hover:bg-orange-600 focus:bg-orange-700 text-2xl md:text-4xl px-0 py-8 rounded-2xl shadow-2xl w-full max-w-full font-bold"
-            style={{ minHeight: "6rem" }}
-          >
-            {running ? "Pause" : "Resume"}
-          </Button>
+          <div className="flex gap-4 items-center w-full max-w-full">
+            <Button
+              onClick={() => set_running(!running)}
+              className="text-white bg-orange-500 hover:bg-orange-600 focus:bg-orange-700 text-2xl md:text-4xl px-0 py-8 rounded-2xl shadow-2xl flex-1 font-bold"
+              style={{ minHeight: "6rem" }}
+            >
+              {running ? "Pause" : "Resume"}
+            </Button>
+            <button
+              onClick={handle_settings}
+              aria-label="Change Settings"
+              className="bg-gray-600 hover:bg-gray-700 text-white p-6 rounded-2xl shadow-2xl focus:outline-none focus:ring-2 focus:ring-gray-400 flex items-center justify-center"
+              style={{ minHeight: "6rem", minWidth: "6rem" }}
+            >
+              <Settings size={40} />
+            </button>
+          </div>
         </div>
       </div>
       {/* Footer */}
