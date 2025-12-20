@@ -1,0 +1,28 @@
+# Game Timer - Robots.txt
+# Purpose: Search engine crawling instructions for the Game Timer website
+
+# Allow all search engines to crawl the entire site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://gotimer.org/sitemap.xml
+
+# Specific rules for different pages
+# Allow crawling of all timer pages
+Allow: /countdown
+Allow: /countdown-setup
+Allow: /chess-clock
+Allow: /chess-clock-setup
+
+# Allow crawling of static assets
+Allow: /favicon.ico
+Allow: /*.svg
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.webp
+
+# Crawl delay (optional - tells search engines to wait between requests)
+Crawl-delay: 1 
