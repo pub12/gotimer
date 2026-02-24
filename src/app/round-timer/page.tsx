@@ -30,8 +30,8 @@ export default function RoundTimerPage() {
           audio_context_ref.current = new (window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext)();
         }
         set_audio_enabled(true);
-      } catch (e) {
-        console.log("Audio not supported:", e);
+      } catch {
+        // Audio not supported in this browser
       }
     } else {
       set_audio_enabled(false);

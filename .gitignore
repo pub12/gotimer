@@ -30,8 +30,19 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+
+# SQLite database
+/data/*.db
+/data/*.sqlite
+/data/
+
+# Profile picture uploads
+/public/profile_pictures/uploads/
+
+# Logs
+/logs/
 
 # vercel
 .vercel

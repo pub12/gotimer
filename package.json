@@ -1,5 +1,5 @@
 {
-  "name": "26.gametimer",
+  "name": "gotimer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,17 +10,26 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
+    "better-sqlite3": "^12.6.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "hazo_auth": "^5.1.30",
+    "hazo_config": "^2.0.0",
+    "hazo_connect": "^2.4.4",
+    "hazo_logs": "^1.0.10",
+    "hazo_notify": "^1.1.2",
     "lucide-react": "^0.525.0",
-    "next": "15.4.1",
+    "next": "^16.1.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "recharts": "^2.15.4",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
