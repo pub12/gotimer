@@ -3,6 +3,27 @@
 
 @source "../node_modules/hazo_auth/dist";
 
+/*
+ * Safelist classes that Tailwind v4 JIT scanner misses from hazo_auth .js files.
+ * The scanner cannot extract classes with special syntax (opacity modifiers,
+ * arbitrary values, data-* variants, responsive/state prefixes) from compiled JS.
+ */
+
+/* Dialog: overlay, positioning, close button, header, footer */
+@source inline("bg-black/80 left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] max-w-4xl max-h-[90vh] sm:rounded-lg sm:text-left sm:flex-row sm:justify-end sm:space-x-2 ring-offset-background hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground");
+
+/* Dialog: open/close animations */
+@source inline("data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]");
+
+/* Tabs: active state, focus rings */
+@source inline("data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 data-[state=active]:!text-blue-600 !text-blue-600");
+
+/* Switch: checked/unchecked states, focus, disabled */
+@source inline("data-[state=checked]:bg-primary data-[state=unchecked]:bg-input data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0 focus-visible:ring-offset-background disabled:cursor-not-allowed peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
+
+/* Upload tab: borders, backgrounds, hover states, grid */
+@source inline("md:grid-cols-2 border-[var(--hazo-border-emphasis)] bg-[var(--hazo-bg-subtle)] bg-[var(--hazo-bg-emphasis)] text-[var(--hazo-text-secondary)] text-[var(--hazo-text-muted)] text-[var(--hazo-text-subtle)] text-[var(--hazo-text-primary)] border-[var(--hazo-border)] hover:bg-[var(--hazo-bg-subtle)] hover:border-[var(--hazo-border-emphasis)]");
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -49,6 +70,16 @@
   --radius: 0.625rem;
   --background: oklch(0.985 0.002 90);
   --foreground: oklch(0.17 0.02 75);
+
+  /* hazo_auth component CSS variables - map to app theme */
+  --hazo-text-primary: oklch(0.17 0.02 75);
+  --hazo-text-secondary: oklch(0.35 0.02 75);
+  --hazo-text-muted: oklch(0.55 0.02 75);
+  --hazo-text-subtle: oklch(0.65 0.02 75);
+  --hazo-border: oklch(0.91 0.02 85);
+  --hazo-border-emphasis: oklch(0.80 0.02 85);
+  --hazo-bg-subtle: oklch(0.97 0.002 90);
+  --hazo-bg-emphasis: oklch(0.93 0.01 85);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.17 0.02 75);
   --popover: oklch(1 0 0);
@@ -122,3 +153,66 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Fix transparent background on Radix dropdown/popover menus (hazo_auth ProfilePicMenu) */
+[data-radix-popper-content-wrapper] > * {
+  background-color: var(--popover, #ffffff) !important;
+}
+
+/*
+ * Fix hazo_auth Radix Dialog layout issues.
+ * The dialog content needs relative positioning for the absolute close button,
+ * and the close button needs proper positioning and the sr-only "Close" text hidden.
+ */
+
+/* Dialog content: centered, styled panel with close button support */
+[role="dialog"][data-state="open"] {
+  position: fixed !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 50;
+  display: grid;
+  gap: 1rem;
+  background-color: var(--background, #ffffff);
+  border: 1px solid var(--border, #e5e7eb);
+  padding: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border-radius: 0.5rem;
+  max-width: 56rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  width: calc(100% - 2rem);
+}
+
+/* Close button: top-right corner */
+[role="dialog"] > button:has(.sr-only),
+[role="dialog"] > button:last-of-type:not([aria-label="Save"]):not([aria-label="Cancel"]) {
+  position: absolute !important;
+  right: 1rem !important;
+  top: 1rem !important;
+  z-index: 10;
+  opacity: 0.7;
+  border-radius: 0.125rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: opacity 150ms;
+}
+
+[role="dialog"] > button:has(.sr-only):hover {
+  opacity: 1;
+}
+
+/* Hide the visible "Close" text (sr-only class not compiled from hazo_auth) */
+[role="dialog"] > button > .sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border-width: 0 !important;
+}
+

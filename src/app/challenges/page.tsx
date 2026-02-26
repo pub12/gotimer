@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import { ChallengeCard } from "@/components/challenges/challenge-card";
 import { OverallHistogram } from "@/components/challenges/overall-histogram";
 import { ScoreDisplay } from "@/components/challenges/score-display";
@@ -235,8 +234,6 @@ export default function ChallengesPage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </main>
   );
 }

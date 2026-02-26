@@ -36,11 +36,11 @@ export async function POST(request: NextRequest) {
   try {
     const result = await send_email({
       to: FEEDBACK_RECIPIENT,
-      subject: `[Game Timer Feedback] ${subject.trim()}`,
+      subject: `[GoTimer Feedback] ${subject.trim()}`,
       content: {
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">New Feedback from Game Timer</h2>
+            <h2 style="color: #333;">New Feedback from GoTimer</h2>
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
               <tr>
                 <td style="padding: 8px; border-bottom: 1px solid #eee; font-weight: bold; width: 100px;">From:</td>
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
             </div>
           </div>
         `,
-        text: `New Feedback from Game Timer\n\nFrom: ${user_name} (${user_email})\nUser ID: ${user_id}\nSubject: ${subject.trim()}\n\n${message.trim()}`,
+        text: `New Feedback from GoTimer\n\nFrom: ${user_name} (${user_email})\nUser ID: ${user_id}\nSubject: ${subject.trim()}\n\n${message.trim()}`,
       },
     });
 

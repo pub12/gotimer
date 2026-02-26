@@ -7,7 +7,6 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
-import Footer from "../../components/footer";
 
 /**
  * chess_clock_setup_page component displays the card for chess clock timer configuration.
@@ -80,8 +79,6 @@ export default function ChessClockSetupPage() {
           </CardContent>
         </Card>
       </div>
-      {/* Footer */}
-      <Footer />
     </main>
   );
 } 

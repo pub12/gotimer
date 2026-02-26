@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Game Timer - Countdown, Chess Clock & Game Challenges",
+  title: "GoTimer.org - Your Boardgame Tracker",
   description:
     "A modern, mobile-friendly timer for games, chess, and more. Track game challenges with friends, countdown timers, chess clocks, and round timers.",
   keywords:
-    "game timer, chess clock, countdown timer, game challenges, board games, mobile timer, online timer",
+    "game timer, chess clock, countdown timer, game challenges, board games, mobile timer, online timer, boardgame tracker",
 };
 
 export default function RootLayout({
@@ -33,7 +33,7 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <meta property="og:title" content="Game Timer" />
+        <meta property="og:title" content="GoTimer.org - Your Boardgame Tracker" />
         <meta
           property="og:description"
           content="A modern, mobile-friendly timer for games, chess, and more."
@@ -41,7 +41,7 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/favicon.ico" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Game Timer" />
+        <meta name="twitter:title" content="GoTimer.org - Your Boardgame Tracker" />
         <meta
           name="twitter:description"
           content="A modern, mobile-friendly timer for games, chess, and more."

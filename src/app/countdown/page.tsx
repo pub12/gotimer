@@ -8,7 +8,6 @@ import { Volume2, VolumeX, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
-import Footer from "../../components/footer";
 
 /**
  * countdown_page component displays a live countdown timer based on the time query parameter.
@@ -164,8 +163,6 @@ function CountdownPageContent() {
           </div>
         </div>
       </div>
-      {/* Footer */}
-      <Footer />
     </main>
   );
 }

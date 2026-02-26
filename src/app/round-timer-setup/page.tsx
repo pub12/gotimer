@@ -7,7 +7,6 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
-import Footer from "../../components/footer";
 
 /**
  * round_timer_setup_page component displays the setup card for round timer.
@@ -44,8 +43,6 @@ export default function RoundTimerSetupPage() {
           </CardContent>
         </Card>
       </div>
-      {/* Footer */}
-      <Footer />
     </main>
   );
 }

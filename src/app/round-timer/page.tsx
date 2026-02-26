@@ -7,7 +7,6 @@ import { Volume2, VolumeX, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
-import Footer from "../../components/footer";
 
 /**
  * round_timer_page_content component displays dual timers: total elapsed time and current round time.
@@ -192,8 +191,6 @@ export default function RoundTimerPage() {
           </div>
         </div>
       </div>
-      {/* Footer */}
-      <Footer />
     </main>
   );
 }

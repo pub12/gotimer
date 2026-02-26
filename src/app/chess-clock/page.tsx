@@ -5,7 +5,6 @@ import React, { useState, useEffect, useRef, ChangeEvent, Suspense } from "react
 import { useSearchParams } from "next/navigation";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
-import Footer from "../../components/footer";
 import { Button } from "../../components/ui/button";
 import { Volume2, VolumeX, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -180,7 +179,6 @@ function ChessClockPageContent() {
           </button>
         </div>
       </div>
-      <Footer />
     </main>
   );
 }

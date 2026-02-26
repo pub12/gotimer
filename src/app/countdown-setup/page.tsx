@@ -7,7 +7,6 @@ import { Card, CardContent } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
-import Footer from "../../components/footer";
 
 /**
  * countdown_setup_page component displays the large card for timer configuration.
@@ -80,8 +79,6 @@ export default function CountdownSetupPage() {
           </CardContent>
         </Card>
       </div>
-      {/* Footer */}
-      <Footer />
     </main>
   );
 } 
