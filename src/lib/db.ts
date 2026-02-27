@@ -5,7 +5,7 @@ let db: Database.Database | null = null;
 
 export function get_db(): Database.Database {
   if (!db) {
-    const db_path = path.resolve(process.cwd(), "data", "gotimer.db");
+    const db_path = path.resolve(process.cwd(), "data", "hazo_auth.sqlite");
     db = new Database(db_path);
     db.pragma("journal_mode = WAL");
     db.pragma("foreign_keys = ON");
