@@ -5,13 +5,16 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
 import { use_auth_status } from "hazo_auth/client";
-import { ArrowLeft } from "lucide-react";
+import { GifPicker } from "@/components/challenges/gif-picker";
+import { ArrowLeft, Image, X } from "lucide-react";
 
 export default function CreateChallengePage() {
   const router = useRouter();
   const { authenticated, loading: is_loading } = use_auth_status();
   const [name, set_name] = useState("");
   const [description, set_description] = useState("");
+  const [gif_url, set_gif_url] = useState("");
+  const [show_gif_picker, set_show_gif_picker] = useState(false);
   const [saving, set_saving] = useState(false);
   const [created_id, set_created_id] = useState<string | null>(null);
   const [invite_url, set_invite_url] = useState<string | null>(null);
@@ -32,7 +35,7 @@ export default function CreateChallengePage() {
       const res = await fetch("/api/challenges", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), description: description.trim() }),
+        body: JSON.stringify({ name: name.trim(), description: description.trim(), gif_url: gif_url || undefined }),
       });
 
       if (res.ok) {
@@ -114,6 +117,45 @@ export default function CreateChallengePage() {
                   className="w-full p-3 border rounded-lg text-sm bg-background resize-none focus:outline-none focus:ring-2 focus:ring-ring"
                   rows={3}
                 />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Theme GIF (optional)
+                </label>
+                {gif_url ? (
+                  <div className="relative">
+                    <img
+                      src={gif_url}
+                      alt="Selected GIF"
+                      className="w-full rounded-lg max-h-48 object-cover"
+                    />
+                    <button
+                      onClick={() => set_gif_url("")}
+                      className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80 cursor-pointer border-none"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : show_gif_picker ? (
+                  <GifPicker
+                    on_select={(url) => {
+                      set_gif_url(url);
+                      set_show_gif_picker(false);
+                    }}
+                    on_close={() => set_show_gif_picker(false)}
+                  />
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => set_show_gif_picker(true)}
+                  >
+                    <Image className="w-4 h-4 mr-2" />
+                    Add Theme GIF
+                  </Button>
+                )}
               </div>
 
               <Button

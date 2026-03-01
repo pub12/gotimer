@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { name, description } = body;
+  const { name, description, gif_url } = body;
 
   if (!name || typeof name !== "string" || name.trim().length === 0) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -58,13 +58,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Description must be 500 characters or less" }, { status: 400 });
   }
 
+  if (gif_url) {
+    try {
+      const url = new URL(gif_url);
+      if (!url.hostname.endsWith("giphy.com")) {
+        return NextResponse.json({ error: "Only GIPHY URLs are allowed" }, { status: 400 });
+      }
+    } catch {
+      return NextResponse.json({ error: "Invalid gif_url" }, { status: 400 });
+    }
+  }
+
   const db = get_db();
   const id = crypto.randomUUID();
   const participant_id = crypto.randomUUID();
 
   db.prepare(
-    `INSERT INTO game_challenges (id, name, description, created_by) VALUES (?, ?, ?, ?)`
-  ).run(id, name.trim(), (description || "").trim(), auth.user.id);
+    `INSERT INTO game_challenges (id, name, description, created_by, gif_url) VALUES (?, ?, ?, ?, ?)`
+  ).run(id, name.trim(), (description || "").trim(), auth.user.id, gif_url || null);
 
   db.prepare(
     `INSERT INTO challenge_participants (id, challenge_id, user_id, role) VALUES (?, ?, ?, 'creator')`

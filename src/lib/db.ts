@@ -58,4 +58,11 @@ function init_challenge_tables(db: Database.Database) {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+
+  // Add gif_url column to game_challenges if it doesn't exist yet
+  try {
+    db.exec(`ALTER TABLE game_challenges ADD COLUMN gif_url TEXT`);
+  } catch {
+    // Column already exists
+  }
 }

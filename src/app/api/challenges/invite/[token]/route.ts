@@ -12,7 +12,7 @@ export async function GET(
 
   const invitation = db
     .prepare(
-      `SELECT ci.*, gc.name as challenge_name, gc.description as challenge_description, gc.status as challenge_status
+      `SELECT ci.*, gc.name as challenge_name, gc.description as challenge_description, gc.status as challenge_status, gc.gif_url as challenge_gif_url
        FROM challenge_invitations ci
        INNER JOIN game_challenges gc ON gc.id = ci.challenge_id
        WHERE ci.token = ?`
@@ -36,6 +36,7 @@ export async function GET(
     challenge_name: invitation.challenge_name,
     challenge_description: invitation.challenge_description,
     challenge_status: invitation.challenge_status,
+    challenge_gif_url: invitation.challenge_gif_url || null,
     status: invitation.status,
     participant_count: participant_count.count,
   });

@@ -9,6 +9,7 @@ import { GameHistory } from "@/components/challenges/game-history";
 import { AddGameDialog } from "@/components/challenges/add-game-dialog";
 import { ChallengeHistogram } from "@/components/challenges/challenge-histogram";
 import { TrashTalkBanner } from "@/components/challenges/trash-talk-banner";
+import { PlayOnceGif } from "@/components/challenges/play-once-gif";
 import { use_auth_status } from "hazo_auth/client";
 import { toast } from "sonner";
 import {
@@ -26,6 +27,7 @@ type ChallengeData = {
   description: string;
   created_by: string;
   status: string;
+  gif_url: string | null;
   participants: { user_id: string; role: string }[];
   games: {
     id: string;
@@ -77,6 +79,12 @@ export default function ChallengeDetailPage() {
       .then((data) => {
         if (data.user) {
           set_current_user_id(data.user.id);
+          // Pre-populate current user's name and picture from auth session
+          const uid = data.user.id;
+          const name = data.name || data.user.name || data.email?.split("@")[0] || "You";
+          const pic = data.profile_picture_url || data.user.profile_picture_url || null;
+          set_user_names((prev) => ({ ...prev, [uid]: name }));
+          set_user_pictures((prev) => ({ ...prev, [uid]: pic }));
         }
       })
       .catch(() => {});
@@ -106,32 +114,41 @@ export default function ChallengeDetailPage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.profiles) {
-          const names: Record<string, string> = {};
-          const pictures: Record<string, string | null> = {};
-
-          for (const profile of data.profiles) {
-            names[profile.user_id] =
-              profile.name || profile.email?.split("@")[0] || "Player";
-            pictures[profile.user_id] = profile.profile_picture_url || null;
-          }
-
-          // Mark any not-found participants with fallback names
-          for (const id of data.not_found_ids || []) {
-            names[id] = "Player";
-            pictures[id] = null;
-          }
-
-          set_user_names(names);
-          set_user_pictures(pictures);
+          // Merge with existing data (don't overwrite /me data)
+          set_user_names((prev) => {
+            const merged = { ...prev };
+            for (const profile of data.profiles) {
+              merged[profile.user_id] =
+                profile.name || profile.email?.split("@")[0] || prev[profile.user_id] || "Player";
+            }
+            for (const id of data.not_found_ids || []) {
+              if (!merged[id]) merged[id] = "Player";
+            }
+            return merged;
+          });
+          set_user_pictures((prev) => {
+            const merged = { ...prev };
+            for (const profile of data.profiles) {
+              merged[profile.user_id] = profile.profile_picture_url || prev[profile.user_id] || null;
+            }
+            for (const id of data.not_found_ids || []) {
+              if (!merged[id]) merged[id] = null;
+            }
+            return merged;
+          });
         }
       })
       .catch(() => {
-        // Fallback: use generic names
-        const names: Record<string, string> = {};
-        challenge.participants.forEach((p) => {
-          names[p.user_id] = p.user_id === current_user_id ? "You" : "Opponent";
+        // Fallback: fill in missing names only
+        set_user_names((prev) => {
+          const merged = { ...prev };
+          challenge.participants.forEach((p) => {
+            if (!merged[p.user_id]) {
+              merged[p.user_id] = p.user_id === current_user_id ? "You" : "Opponent";
+            }
+          });
+          return merged;
         });
-        set_user_names(names);
       });
   }, [challenge, current_user_id]);
 
@@ -233,6 +250,17 @@ export default function ChallengeDetailPage() {
             </div>
           </div>
 
+          {/* Theme GIF */}
+          {challenge.gif_url && (
+            <div className="mb-4">
+              <PlayOnceGif
+                src={challenge.gif_url}
+                alt="Challenge theme"
+                className="w-full rounded-lg max-h-48 object-cover"
+              />
+            </div>
+          )}
+
           {/* Score display */}
           <ScoreDisplay
             player1_name={user_names[current_user_id] || "You"}
@@ -257,7 +285,7 @@ export default function ChallengeDetailPage() {
         </div>
 
         {/* Invite section */}
-        {challenge.participants.length < 2 && (
+        {(invite_url || challenge.participants.length < 2) && (
           <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
             <h3 className="font-semibold mb-3">Invite a Friend</h3>
             {invite_url ? (
@@ -293,7 +321,7 @@ export default function ChallengeDetailPage() {
             onClick={() => set_show_add_game(true)}
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Game
+            Add Game Result
           </Button>
           {!invite_url && challenge.participants.length >= 2 && (
             <Button variant="outline" onClick={handle_invite}>

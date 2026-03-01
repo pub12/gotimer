@@ -98,7 +98,7 @@ export async function PATCH(
   }
 
   const body = await request.json();
-  const { name, description, status } = body;
+  const { name, description, status, gif_url } = body;
 
   const updates: string[] = [];
   const values: unknown[] = [];
@@ -123,6 +123,23 @@ export async function PATCH(
     }
     updates.push("status = ?");
     values.push(status);
+  }
+  if (gif_url !== undefined) {
+    if (gif_url) {
+      try {
+        const url = new URL(gif_url);
+        if (!url.hostname.endsWith("giphy.com")) {
+          return NextResponse.json({ error: "Only GIPHY URLs are allowed" }, { status: 400 });
+        }
+      } catch {
+        return NextResponse.json({ error: "Invalid gif_url" }, { status: 400 });
+      }
+      updates.push("gif_url = ?");
+      values.push(gif_url);
+    } else {
+      updates.push("gif_url = ?");
+      values.push(null);
+    }
   }
 
   if (updates.length === 0) {

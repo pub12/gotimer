@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 
 type ScoreDisplayProps = {
   player1_name: string;
@@ -29,11 +28,9 @@ export function ScoreDisplay({
     <div className="flex items-center justify-center gap-4 md:gap-8 py-6">
       <div className="text-center flex-1">
         {player1_picture ? (
-          <Image
+          <img
             src={player1_picture}
             alt={player1_name}
-            width={48}
-            height={48}
             className="w-12 h-12 rounded-full mx-auto mb-1 object-cover"
           />
         ) : (
@@ -66,11 +63,9 @@ export function ScoreDisplay({
 
       <div className="text-center flex-1">
         {player2_picture ? (
-          <Image
+          <img
             src={player2_picture}
             alt={player2_name}
-            width={48}
-            height={48}
             className="w-12 h-12 rounded-full mx-auto mb-1 object-cover"
           />
         ) : (
