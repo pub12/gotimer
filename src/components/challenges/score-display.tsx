@@ -32,12 +32,15 @@ export function ScoreDisplay({
             src={player1_picture}
             alt={player1_name}
             className="w-12 h-12 rounded-full mx-auto mb-1 object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+              e.currentTarget.nextElementSibling?.classList.remove("hidden");
+            }}
           />
-        ) : (
-          <div className="w-12 h-12 rounded-full mx-auto mb-1 bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
-            {player1_name.charAt(0).toUpperCase()}
-          </div>
-        )}
+        ) : null}
+        <div className={`w-12 h-12 rounded-full mx-auto mb-1 bg-primary/20 flex items-center justify-center text-primary font-bold text-lg ${player1_picture ? "hidden" : ""}`}>
+          {player1_name.charAt(0).toUpperCase()}
+        </div>
         <div className="text-sm md:text-base font-medium text-muted-foreground truncate">
           {player1_name}
         </div>
@@ -67,12 +70,15 @@ export function ScoreDisplay({
             src={player2_picture}
             alt={player2_name}
             className="w-12 h-12 rounded-full mx-auto mb-1 object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+              e.currentTarget.nextElementSibling?.classList.remove("hidden");
+            }}
           />
-        ) : (
-          <div className="w-12 h-12 rounded-full mx-auto mb-1 bg-muted flex items-center justify-center text-muted-foreground font-bold text-lg">
-            {player2_name.charAt(0).toUpperCase()}
-          </div>
-        )}
+        ) : null}
+        <div className={`w-12 h-12 rounded-full mx-auto mb-1 bg-muted flex items-center justify-center text-muted-foreground font-bold text-lg ${player2_picture ? "hidden" : ""}`}>
+          {player2_name.charAt(0).toUpperCase()}
+        </div>
         <div className="text-sm md:text-base font-medium text-muted-foreground truncate">
           {player2_name}
         </div>

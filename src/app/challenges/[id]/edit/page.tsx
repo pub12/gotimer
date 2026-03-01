@@ -16,6 +16,7 @@ export default function EditChallengePage() {
   const [description, set_description] = useState("");
   const [gif_url, set_gif_url] = useState("");
   const [show_gif_picker, set_show_gif_picker] = useState(false);
+  const [is_public, set_is_public] = useState(true);
   const [status, set_status] = useState("active");
   const [loading, set_loading] = useState(true);
   const [saving, set_saving] = useState(false);
@@ -34,6 +35,7 @@ export default function EditChallengePage() {
         set_name(data.name);
         set_description(data.description || "");
         set_gif_url(data.gif_url || "");
+        set_is_public(data.is_public === 1 || data.is_public === true);
         set_status(data.status);
 
         // Check if current user is creator
@@ -55,7 +57,7 @@ export default function EditChallengePage() {
       const res = await fetch(`/api/challenges/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, description, gif_url: gif_url || "", status }),
+        body: JSON.stringify({ name, description, gif_url: gif_url || "", status, is_public }),
       });
       if (res.ok) {
         router.push(`/challenges/${id}`);
@@ -174,6 +176,16 @@ export default function EditChallengePage() {
                 <option value="paused">Paused</option>
               </select>
             </div>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={is_public}
+                onChange={(e) => set_is_public(e.target.checked)}
+                className="w-4 h-4 rounded border-gray-300"
+              />
+              <span className="text-sm font-medium">Make this challenge public</span>
+            </label>
 
             <Button
               className="w-full"

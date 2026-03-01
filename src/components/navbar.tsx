@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, MessageSquare } from "lucide-react";
+import { Trophy, MessageSquare, Globe } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
@@ -14,7 +14,7 @@ const REDIRECT_KEY = "redirect_after_login";
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const { authenticated, loading: is_loading } = use_auth_status();
+  const { authenticated, loading: is_loading, permissions } = use_auth_status();
   const has_redirected = useRef(false);
   const [show_feedback, set_show_feedback] = useState(false);
 
@@ -61,12 +61,23 @@ export default function Navbar() {
             Home
           </Link>
           <Link
-            href="/challenges"
+            href="/public-challenges"
             className="text-base md:text-lg font-medium text-gray-700 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors no-underline flex items-center gap-1.5"
           >
-            <Trophy className="w-4 h-4" />
-            Challenges
+            <Globe className="w-4 h-4" />
+            <span className="hidden md:inline">Public Challenges</span>
+            <span className="md:hidden">Public</span>
           </Link>
+          {!is_loading && authenticated && (
+            <Link
+              href="/challenges"
+              className="text-base md:text-lg font-medium text-gray-700 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors no-underline flex items-center gap-1.5"
+            >
+              <Trophy className="w-4 h-4" />
+              <span className="hidden md:inline">My Challenges</span>
+              <span className="md:hidden">Mine</span>
+            </Link>
+          )}
 
           {!is_loading && authenticated && (
             <button
@@ -89,6 +100,19 @@ export default function Navbar() {
                   logout_path="/api/hazo_auth/logout"
                   show_single_button={true}
                   sign_in_label="Login"
+                  custom_menu_items={[
+                    ...(permissions?.includes("admin_user_management")
+                      ? [
+                          { type: "separator" as const, order: 10, id: "admin-sep" },
+                          { type: "link" as const, label: "User Management", href: "/admin/user-management", order: 11, id: "admin-users" },
+                        ]
+                      : []),
+                    ...(permissions?.includes("admin_view_all_games")
+                      ? [
+                          { type: "link" as const, label: "All Games", href: "/admin/all-games", order: 12, id: "admin-games" },
+                        ]
+                      : []),
+                  ]}
                 />
               ) : (
                 <Link

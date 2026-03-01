@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "https://gotimer.org"),
   title: "GoTimer.org - Your Boardgame Tracker",
   description:
     "A modern, mobile-friendly timer for games, chess, and more. Track game challenges with friends, countdown timers, chess clocks, and round timers.",
@@ -39,14 +40,14 @@ export default function RootLayout({
           content="A modern, mobile-friendly timer for games, chess, and more."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/favicon.ico" />
+        <meta property="og:image" content="/fight.jpg" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="GoTimer.org - Your Boardgame Tracker" />
         <meta
           name="twitter:description"
           content="A modern, mobile-friendly timer for games, chess, and more."
         />
-        <meta name="twitter:image" content="/favicon.ico" />
+        <meta name="twitter:image" content="/fight.jpg" />
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
             <Script

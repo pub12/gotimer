@@ -27,6 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `${invitation.name} - ${invitation.description}`
     : invitation.name;
 
+  const ogImage = invitation.gif_url || "/fight.jpg";
+
   return {
     title: "Game on - you've been challenged!",
     description,
@@ -34,17 +36,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: "Game on - you've been challenged!",
       description,
       type: "website",
-      ...(invitation.gif_url
-        ? { images: [{ url: invitation.gif_url }] }
-        : {}),
+      images: [{ url: ogImage }],
     },
     twitter: {
-      card: invitation.gif_url ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title: "Game on - you've been challenged!",
       description,
-      ...(invitation.gif_url
-        ? { images: [invitation.gif_url] }
-        : {}),
+      images: [ogImage],
     },
   };
 }

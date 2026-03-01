@@ -65,4 +65,36 @@ function init_challenge_tables(db: Database.Database) {
   } catch {
     // Column already exists
   }
+
+  // Add is_public column to game_challenges if it doesn't exist yet
+  try {
+    db.exec(`ALTER TABLE game_challenges ADD COLUMN is_public INTEGER NOT NULL DEFAULT 1`);
+  } catch {
+    // Column already exists
+  }
+
+  // User preferences for privacy settings
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS user_preferences (
+      user_id TEXT PRIMARY KEY,
+      show_public_profile_pic INTEGER NOT NULL DEFAULT 0
+    )
+  `);
+
+  // Games catalog - users can add new games
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS games (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      created_by TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )
+  `);
+
+  // Add game_id column to game_challenges if it doesn't exist yet
+  try {
+    db.exec(`ALTER TABLE game_challenges ADD COLUMN game_id TEXT`);
+  } catch {
+    // Column already exists
+  }
 }

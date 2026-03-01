@@ -98,7 +98,7 @@ export async function PATCH(
   }
 
   const body = await request.json();
-  const { name, description, status, gif_url } = body;
+  const { name, description, status, gif_url, is_public } = body;
 
   const updates: string[] = [];
   const values: unknown[] = [];
@@ -140,6 +140,11 @@ export async function PATCH(
       updates.push("gif_url = ?");
       values.push(null);
     }
+  }
+
+  if (is_public !== undefined) {
+    updates.push("is_public = ?");
+    values.push(is_public ? 1 : 0);
   }
 
   if (updates.length === 0) {

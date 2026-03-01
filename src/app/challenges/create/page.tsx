@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
 import { use_auth_status } from "hazo_auth/client";
 import { GifPicker } from "@/components/challenges/gif-picker";
-import { ArrowLeft, Image, X } from "lucide-react";
+import { ArrowLeft, Image, X, ChevronDown, Plus } from "lucide-react";
 
 export default function CreateChallengePage() {
   const router = useRouter();
@@ -18,7 +18,24 @@ export default function CreateChallengePage() {
   const [saving, set_saving] = useState(false);
   const [created_id, set_created_id] = useState<string | null>(null);
   const [invite_url, set_invite_url] = useState<string | null>(null);
+  const [is_public, set_is_public] = useState(true);
   const [copied, set_copied] = useState(false);
+  const [games, set_games] = useState<{ id: string; name: string }[]>([]);
+  const [selected_game_id, set_selected_game_id] = useState<string | null>(null);
+  const [game_search, set_game_search] = useState("");
+  const [show_game_dropdown, set_show_game_dropdown] = useState(false);
+  const [adding_game, set_adding_game] = useState(false);
+  const game_dropdown_ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handle_click_outside = (e: MouseEvent) => {
+      if (game_dropdown_ref.current && !game_dropdown_ref.current.contains(e.target as Node)) {
+        set_show_game_dropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handle_click_outside);
+    return () => document.removeEventListener("mousedown", handle_click_outside);
+  }, []);
 
   useEffect(() => {
     if (!is_loading && !authenticated) {
@@ -26,6 +43,14 @@ export default function CreateChallengePage() {
       router.push("/hazo_auth/login");
     }
   }, [authenticated, is_loading, router]);
+
+  useEffect(() => {
+    if (authenticated) {
+      fetch("/api/games")
+        .then((res) => (res.ok ? res.json() : []))
+        .then(set_games);
+    }
+  }, [authenticated]);
 
   const handle_create = async () => {
     if (!name.trim()) return;
@@ -35,7 +60,7 @@ export default function CreateChallengePage() {
       const res = await fetch("/api/challenges", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), description: description.trim(), gif_url: gif_url || undefined }),
+        body: JSON.stringify({ name: name.trim(), description: description.trim(), gif_url: gif_url || undefined, is_public, game_id: selected_game_id || undefined }),
       });
 
       if (res.ok) {
@@ -106,6 +131,92 @@ export default function CreateChallengePage() {
                 />
               </div>
 
+              <div className="relative" ref={game_dropdown_ref}>
+                <label className="text-sm font-medium mb-2 block">
+                  Game
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={game_search}
+                    onChange={(e) => {
+                      set_game_search(e.target.value);
+                      set_show_game_dropdown(true);
+                      if (!e.target.value.trim()) set_selected_game_id(null);
+                    }}
+                    onFocus={() => set_show_game_dropdown(true)}
+                    placeholder="Search or add a game..."
+                    className="w-full p-3 pr-10 border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                </div>
+                {show_game_dropdown && (
+                  <div className="absolute z-50 w-full mt-1 bg-card border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {games
+                      .filter((g) =>
+                        g.name.toLowerCase().includes(game_search.toLowerCase())
+                      )
+                      .map((g) => (
+                        <button
+                          key={g.id}
+                          type="button"
+                          className={`w-full text-left px-3 py-2 text-sm hover:bg-muted cursor-pointer border-none bg-transparent ${
+                            selected_game_id === g.id ? "bg-muted font-medium" : ""
+                          }`}
+                          onClick={() => {
+                            set_selected_game_id(g.id);
+                            set_game_search(g.name);
+                            set_show_game_dropdown(false);
+                          }}
+                        >
+                          {g.name}
+                        </button>
+                      ))}
+                    {game_search.trim() &&
+                      !games.some(
+                        (g) => g.name.toLowerCase() === game_search.trim().toLowerCase()
+                      ) && (
+                        <button
+                          type="button"
+                          className="w-full text-left px-3 py-2 text-sm hover:bg-muted cursor-pointer border-none bg-transparent flex items-center gap-2 text-primary"
+                          disabled={adding_game}
+                          onClick={async () => {
+                            set_adding_game(true);
+                            try {
+                              const res = await fetch("/api/games", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ name: game_search.trim() }),
+                              });
+                              if (res.ok) {
+                                const game = await res.json();
+                                set_games((prev) =>
+                                  [...prev, game].sort((a, b) =>
+                                    a.name.localeCompare(b.name)
+                                  )
+                                );
+                                set_selected_game_id(game.id);
+                                set_game_search(game.name);
+                                set_show_game_dropdown(false);
+                              }
+                            } finally {
+                              set_adding_game(false);
+                            }
+                          }}
+                        >
+                          <Plus className="w-4 h-4" />
+                          {adding_game ? "Adding..." : `Add "${game_search.trim()}"`}
+                        </button>
+                      )}
+                    {!game_search.trim() && games.length === 0 && (
+                      <div className="px-3 py-2 text-sm text-muted-foreground">
+                        Type a game name to add it
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <div>
                 <label className="text-sm font-medium mb-2 block">
                   Description (optional)
@@ -157,6 +268,16 @@ export default function CreateChallengePage() {
                   </Button>
                 )}
               </div>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={is_public}
+                  onChange={(e) => set_is_public(e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300"
+                />
+                <span className="text-sm font-medium">Make this challenge public</span>
+              </label>
 
               <Button
                 className="w-full"

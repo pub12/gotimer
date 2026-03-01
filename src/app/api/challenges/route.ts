@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { name, description, gif_url } = body;
+  const { name, description, gif_url, is_public, game_id } = body;
 
   if (!name || typeof name !== "string" || name.trim().length === 0) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -73,9 +73,11 @@ export async function POST(request: NextRequest) {
   const id = crypto.randomUUID();
   const participant_id = crypto.randomUUID();
 
+  const is_public_value = is_public === false ? 0 : 1;
+
   db.prepare(
-    `INSERT INTO game_challenges (id, name, description, created_by, gif_url) VALUES (?, ?, ?, ?, ?)`
-  ).run(id, name.trim(), (description || "").trim(), auth.user.id, gif_url || null);
+    `INSERT INTO game_challenges (id, name, description, created_by, gif_url, is_public, game_id) VALUES (?, ?, ?, ?, ?, ?, ?)`
+  ).run(id, name.trim(), (description || "").trim(), auth.user.id, gif_url || null, is_public_value, game_id || null);
 
   db.prepare(
     `INSERT INTO challenge_participants (id, challenge_id, user_id, role) VALUES (?, ?, ?, 'creator')`
