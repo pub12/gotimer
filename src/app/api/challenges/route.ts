@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hazo_get_auth } from "hazo_auth/server-lib";
-import { get_db } from "@/lib/db";
+import { get_db, get_challenge_scores } from "@/lib/db";
 import crypto from "crypto";
 
 export async function GET(request: NextRequest) {
@@ -24,14 +24,22 @@ export async function GET(request: NextRequest) {
     )
     .all(auth.user.id, auth.user.id, auth.user.id);
 
-  // Get participants for each challenge
+  // Get participants and apply score overrides for each challenge
   const enriched = (challenges as Record<string, unknown>[]).map((c) => {
     const participants = db
       .prepare(
-        `SELECT cp.user_id, cp.role FROM challenge_participants cp WHERE cp.challenge_id = ?`
+        `SELECT cp.user_id, cp.role, cp.score_override FROM challenge_participants cp WHERE cp.challenge_id = ?`
       )
-      .all(c.id as string);
-    return { ...c, participants };
+      .all(c.id as string) as { user_id: string; role: string; score_override: number | null }[];
+
+    const scores = get_challenge_scores(db, c.id as string, participants);
+
+    const my_score = scores[auth.user.id] ?? (c.my_wins as number);
+    const opponent_score = Object.entries(scores)
+      .filter(([uid]) => uid !== auth.user.id)
+      .reduce((sum, [, v]) => sum + v, 0);
+
+    return { ...c, participants, my_wins: my_score, opponent_wins: opponent_score };
   });
 
   return NextResponse.json(enriched);

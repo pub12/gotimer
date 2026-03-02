@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hazo_get_auth } from "hazo_auth/server-lib";
-import { get_db } from "@/lib/db";
+import { get_db, get_challenge_scores } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
   const auth = await hazo_get_auth(request, {
@@ -25,19 +25,11 @@ export async function GET(request: NextRequest) {
   const enriched = (challenges as Record<string, unknown>[]).map((c) => {
     const participants = db
       .prepare(
-        `SELECT cp.user_id, cp.role FROM challenge_participants cp WHERE cp.challenge_id = ?`
+        `SELECT cp.user_id, cp.role, cp.score_override FROM challenge_participants cp WHERE cp.challenge_id = ?`
       )
-      .all(c.id as string);
+      .all(c.id as string) as { user_id: string; role: string; score_override: number | null }[];
 
-    const scores: Record<string, number> = {};
-    for (const p of participants as { user_id: string }[]) {
-      const wins = db
-        .prepare(
-          `SELECT COUNT(*) as count FROM challenge_games WHERE challenge_id = ? AND winner_id = ? AND is_draw = 0`
-        )
-        .get(c.id as string, p.user_id) as { count: number };
-      scores[p.user_id] = wins.count;
-    }
+    const scores = get_challenge_scores(db, c.id as string, participants);
 
     return { ...c, participants, scores };
   });

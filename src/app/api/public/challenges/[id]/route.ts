@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { get_db } from "@/lib/db";
+import { get_db, get_challenge_scores } from "@/lib/db";
 
 export async function GET(
   _request: NextRequest,
@@ -18,7 +18,7 @@ export async function GET(
 
   const participants = db
     .prepare(`SELECT * FROM challenge_participants WHERE challenge_id = ?`)
-    .all(id);
+    .all(id) as { user_id: string; score_override?: number | null }[];
 
   const games = db
     .prepare(
@@ -26,15 +26,7 @@ export async function GET(
     )
     .all(id);
 
-  const scores: Record<string, number> = {};
-  for (const p of participants as { user_id: string }[]) {
-    const wins = db
-      .prepare(
-        `SELECT COUNT(*) as count FROM challenge_games WHERE challenge_id = ? AND winner_id = ? AND is_draw = 0`
-      )
-      .get(id, p.user_id) as { count: number };
-    scores[p.user_id] = wins.count;
-  }
+  const scores = get_challenge_scores(db, id, participants);
 
   const draws = db
     .prepare(

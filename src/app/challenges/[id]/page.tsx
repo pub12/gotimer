@@ -291,7 +291,7 @@ export default function ChallengeDetailPage() {
             {invite_url ? (
               <div>
                 <div className="bg-muted rounded-lg p-3 text-sm font-mono break-all mb-3">
-                  {invite_url}
+                  GoTimer.org: {challenge.name}
                 </div>
                 <Button onClick={copy_invite} variant="outline" className="w-full">
                   {copied ? (

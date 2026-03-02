@@ -83,9 +83,27 @@ export async function POST(
 
   const participant_id = crypto.randomUUID();
 
-  db.prepare(
-    `INSERT INTO challenge_participants (id, challenge_id, user_id, role) VALUES (?, ?, ?, 'participant')`
-  ).run(participant_id, invitation.challenge_id, auth.user.id);
+  // Check if there's a pending opponent score to apply
+  const challenge = db
+    .prepare(`SELECT pending_opponent_score FROM game_challenges WHERE id = ?`)
+    .get(invitation.challenge_id as string) as { pending_opponent_score: number | null } | undefined;
+
+  const pending_score = challenge?.pending_opponent_score;
+
+  if (pending_score != null) {
+    db.prepare(
+      `INSERT INTO challenge_participants (id, challenge_id, user_id, role, score_override, score_changed_by, score_changed_at, score_changed_from) VALUES (?, ?, ?, 'participant', ?, ?, datetime('now'), 0)`
+    ).run(participant_id, invitation.challenge_id, auth.user.id, pending_score, invitation.invited_by);
+
+    // Clear the pending score
+    db.prepare(
+      `UPDATE game_challenges SET pending_opponent_score = NULL WHERE id = ?`
+    ).run(invitation.challenge_id);
+  } else {
+    db.prepare(
+      `INSERT INTO challenge_participants (id, challenge_id, user_id, role) VALUES (?, ?, ?, 'participant')`
+    ).run(participant_id, invitation.challenge_id, auth.user.id);
+  }
 
   // Mark invitation as accepted
   db.prepare(

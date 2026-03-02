@@ -22,6 +22,12 @@ export default function EditChallengePage() {
   const [saving, set_saving] = useState(false);
   const [is_creator, set_is_creator] = useState(false);
   const [confirm_delete, set_confirm_delete] = useState(false);
+  const [participants, set_participants] = useState<
+    { user_id: string; score_changed_by?: string; score_changed_at?: string; score_changed_from?: number }[]
+  >([]);
+  const [scores, set_scores] = useState<Record<string, number>>({});
+  const [user_names, set_user_names] = useState<Record<string, string>>({});
+  const [pending_opponent_score, set_pending_opponent_score] = useState<number>(0);
 
   useEffect(() => {
     if (auth_loading || !authenticated) return;
@@ -37,13 +43,46 @@ export default function EditChallengePage() {
         set_gif_url(data.gif_url || "");
         set_is_public(data.is_public === 1 || data.is_public === true);
         set_status(data.status);
+        set_participants(data.participants || []);
+        set_scores(data.scores || {});
+        set_pending_opponent_score(data.pending_opponent_score ?? 0);
 
-        // Check if current user is creator
+        // Load user names for participants and score changers
+        const participant_ids = (data.participants || []).map((p: { user_id: string }) => p.user_id);
+        const changer_ids = (data.participants || [])
+          .map((p: { score_changed_by?: string }) => p.score_changed_by)
+          .filter(Boolean) as string[];
+        const all_ids = [...new Set([...participant_ids, ...changer_ids])];
+        if (all_ids.length > 0) {
+          fetch("/api/user-profiles", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_ids: all_ids }),
+          })
+            .then((res) => res.json())
+            .then((profile_data) => {
+              if (profile_data.profiles) {
+                const names: Record<string, string> = {};
+                for (const profile of profile_data.profiles) {
+                  names[profile.user_id] =
+                    profile.name || profile.email?.split("@")[0] || "Player";
+                }
+                for (const uid of profile_data.not_found_ids || []) {
+                  if (!names[uid]) names[uid] = "Player";
+                }
+                set_user_names(names);
+              }
+            });
+        }
+
+        // Check if current user is creator and get their name
         fetch("/api/hazo_auth/me")
           .then((res) => res.json())
           .then((me) => {
             if (me.user) {
               set_is_creator(data.created_by === me.user.id);
+              const me_name = me.name || me.user.name || me.email?.split("@")[0] || "You";
+              set_user_names((prev) => ({ ...prev, [me.user.id]: me_name }));
             }
           });
       })
@@ -57,7 +96,10 @@ export default function EditChallengePage() {
       const res = await fetch(`/api/challenges/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, description, gif_url: gif_url || "", status, is_public }),
+        body: JSON.stringify({
+          name, description, gif_url: gif_url || "", status, is_public, scores,
+          ...(participants.length < 2 ? { pending_opponent_score } : {}),
+        }),
       });
       if (res.ok) {
         router.push(`/challenges/${id}`);
@@ -186,6 +228,62 @@ export default function EditChallengePage() {
               />
               <span className="text-sm font-medium">Make this challenge public</span>
             </label>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Reset Scores:</label>
+              <div className="space-y-3">
+                {participants.map((p) => (
+                  <div key={p.user_id} className="border rounded-lg p-3 space-y-1">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium flex-1 truncate">
+                        {user_names[p.user_id] || "Loading..."}
+                      </span>
+                      <input
+                        type="number"
+                        min={0}
+                        value={scores[p.user_id] ?? 0}
+                        onChange={(e) =>
+                          set_scores((prev) => ({
+                            ...prev,
+                            [p.user_id]: Math.max(0, parseInt(e.target.value) || 0),
+                          }))
+                        }
+                        className="w-20 p-2 border rounded-lg text-sm bg-background text-center focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                    </div>
+                    {p.score_changed_at && (
+                      <p className="text-xs text-muted-foreground">
+                        Changed from {p.score_changed_from ?? "?"} by{" "}
+                        {user_names[p.score_changed_by || ""] || "unknown"}{" "}
+                        on {new Date(p.score_changed_at + "Z").toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                ))}
+
+                {participants.length < 2 && (
+                  <div className="border rounded-lg p-3 border-dashed">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium flex-1 text-muted-foreground">
+                        Player 2 (not joined)
+                      </span>
+                      <input
+                        type="number"
+                        min={0}
+                        value={pending_opponent_score}
+                        onChange={(e) =>
+                          set_pending_opponent_score(Math.max(0, parseInt(e.target.value) || 0))
+                        }
+                        className="w-20 p-2 border rounded-lg text-sm bg-background text-center focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Score will be applied when opponent joins.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
 
             <Button
               className="w-full"
