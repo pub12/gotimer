@@ -39,10 +39,10 @@ export async function POST(request: NextRequest) {
       const placeholders = ids_to_lookup.map(() => "?").join(", ");
       const rows = db
         .prepare(
-          `SELECT id as user_id, name, email, profile_picture_url
+          `SELECT id as user_id, name, email_address, profile_picture_url
            FROM hazo_users WHERE id IN (${placeholders})`
         )
-        .all(...ids_to_lookup) as { user_id: string; name: string | null; email: string | null; profile_picture_url: string | null }[];
+        .all(...ids_to_lookup) as { user_id: string; name: string | null; email_address: string | null; profile_picture_url: string | null }[];
 
       const db_map = new Map(rows.map((r) => [r.user_id, r]));
 
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       for (const profile of profiles) {
         if (!profile.name && db_map.has(profile.user_id)) {
           const row = db_map.get(profile.user_id)!;
-          profile.name = row.name || row.email?.split("@")[0] || null;
+          profile.name = row.name || row.email_address?.split("@")[0] || null;
           if (!profile.profile_picture_url && row.profile_picture_url) {
             profile.profile_picture_url = row.profile_picture_url;
           }
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
           const row = db_map.get(nf_id)!;
           profiles.push({
             user_id: row.user_id,
-            name: row.name || row.email?.split("@")[0] || null,
+            name: row.name || row.email_address?.split("@")[0] || null,
             profile_picture_url: row.profile_picture_url,
           });
           found_from_db.push(nf_id);

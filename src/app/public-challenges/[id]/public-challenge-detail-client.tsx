@@ -53,7 +53,7 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
           fetch("/api/public/user-profiles", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_ids: all_ids }),
+            body: JSON.stringify({ user_ids: all_ids, challenge_context: id }),
           })
             .then((res) => res.json())
             .then((profiles_data) => {
