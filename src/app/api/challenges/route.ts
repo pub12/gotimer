@@ -36,9 +36,20 @@ export async function GET(request: NextRequest) {
     const scores = get_challenge_scores(db, c.id as string, participants);
 
     const my_score = scores[auth.user.id] ?? (c.my_wins as number);
-    const opponent_score = Object.entries(scores)
+    let opponent_score = Object.entries(scores)
       .filter(([uid]) => uid !== auth.user.id)
       .reduce((sum, [, v]) => sum + v, 0);
+
+    // Count "opponent" placeholder wins when no real opponent has joined
+    const has_real_opponent = participants.some((p) => p.user_id !== auth.user.id);
+    if (!has_real_opponent) {
+      const placeholder_wins = db
+        .prepare(
+          `SELECT COUNT(*) as count FROM challenge_games WHERE challenge_id = ? AND winner_id = 'opponent' AND is_draw = 0`
+        )
+        .get(c.id as string) as { count: number };
+      opponent_score = placeholder_wins.count;
+    }
 
     return { ...c, participants, my_wins: my_score, opponent_wins: opponent_score };
   });

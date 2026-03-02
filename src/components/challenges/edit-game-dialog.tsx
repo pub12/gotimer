@@ -130,6 +130,24 @@ export function EditGameDialog({
                     </button>
                   );
                 })}
+                {participants.length < 2 && (
+                  <button
+                    className={`p-3 rounded-lg border text-left transition-colors cursor-pointer flex items-center gap-3 ${
+                      !is_draw && winner_id === "opponent"
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border hover:border-primary/50"
+                    }`}
+                    onClick={() => {
+                      set_winner_id("opponent");
+                      set_is_draw(false);
+                    }}
+                  >
+                    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm font-bold">
+                      O
+                    </div>
+                    <span className="font-medium">Opponent</span>
+                  </button>
+                )}
                 <button
                   className={`p-3 rounded-lg border text-left transition-colors cursor-pointer ${
                     is_draw

@@ -98,8 +98,8 @@ export async function POST(
     validated_played_at = parsed.toISOString();
   }
 
-  // If winner specified, verify they are a participant
-  if (winner_id) {
+  // If winner specified and not the "opponent" placeholder, verify they are a participant
+  if (winner_id && winner_id !== "opponent") {
     const winner_participant = db
       .prepare(
         `SELECT * FROM challenge_participants WHERE challenge_id = ? AND user_id = ?`

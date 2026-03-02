@@ -106,6 +106,9 @@ export default function ChallengeDetailPage() {
   useEffect(() => {
     if (!challenge || !current_user_id) return;
 
+    // Ensure "opponent" placeholder always has a display name
+    set_user_names((prev) => ({ ...prev, opponent: prev.opponent || "Opponent" }));
+
     const all_ids = challenge.participants.map((p) => p.user_id);
 
     fetch("/api/user-profiles", {
@@ -118,7 +121,7 @@ export default function ChallengeDetailPage() {
         if (data.profiles) {
           // Merge with existing data (don't overwrite /me data)
           set_user_names((prev) => {
-            const merged = { ...prev };
+            const merged: Record<string, string> = { ...prev, opponent: "Opponent" };
             for (const profile of data.profiles) {
               merged[profile.user_id] =
                 profile.name || profile.email?.split("@")[0] || prev[profile.user_id] || "Player";
@@ -209,7 +212,13 @@ export default function ChallengeDetailPage() {
   const opponent_id = challenge.participants.find(
     (p) => p.user_id !== current_user_id
   )?.user_id;
-  const opponent_score = opponent_id ? challenge.scores[opponent_id] || 0 : 0;
+  // Count "opponent" placeholder wins when no real opponent has joined yet
+  const placeholder_opponent_wins = !opponent_id
+    ? challenge.games.filter((g) => !g.is_draw && g.winner_id === "opponent").length
+    : 0;
+  const opponent_score = opponent_id
+    ? challenge.scores[opponent_id] || 0
+    : placeholder_opponent_wins;
   const am_winning = my_score > opponent_score;
   const has_games = challenge.games.length > 0;
 
