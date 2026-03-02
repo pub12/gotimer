@@ -58,7 +58,7 @@ export function ChallengeHistogram({
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-          <XAxis dataKey="name" fontSize={12} />
+          <XAxis dataKey="name" fontSize={12} interval="preserveStartEnd" />
           <YAxis hide />
           <Tooltip
             content={({ active, payload }) => {

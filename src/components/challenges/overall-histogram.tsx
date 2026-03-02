@@ -28,7 +28,7 @@ export function OverallHistogram({ challenges }: OverallHistogramProps) {
   const data = challenges
     .filter((c) => c.my_wins + c.opponent_wins + c.draws > 0)
     .map((c) => ({
-      name: c.name.length > 12 ? c.name.slice(0, 12) + "..." : c.name,
+      name: c.name.length > 8 ? c.name.slice(0, 8) + "..." : c.name,
       "My Wins": c.my_wins,
       "Opponent Wins": c.opponent_wins,
       Draws: c.draws,
@@ -41,7 +41,7 @@ export function OverallHistogram({ challenges }: OverallHistogramProps) {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-          <XAxis dataKey="name" fontSize={12} />
+          <XAxis dataKey="name" fontSize={12} interval="preserveStartEnd" />
           <YAxis allowDecimals={false} fontSize={12} />
           <Tooltip
             contentStyle={{

@@ -26,7 +26,7 @@ export function ScoreDisplay({
 
   return (
     <div className="flex items-center justify-center gap-4 md:gap-8 py-6">
-      <div className="text-center flex-1">
+      <div className="text-center flex-1 min-w-0">
         {player1_picture ? (
           <img
             src={player1_picture}
@@ -45,7 +45,7 @@ export function ScoreDisplay({
           {player1_name}
         </div>
         <div
-          className={`text-4xl md:text-6xl font-bold mt-1 ${
+          className={`text-3xl md:text-6xl font-bold mt-1 ${
             p1_winning ? "text-primary" : "text-foreground"
           }`}
         >
@@ -64,7 +64,7 @@ export function ScoreDisplay({
         )}
       </div>
 
-      <div className="text-center flex-1">
+      <div className="text-center flex-1 min-w-0">
         {player2_picture ? (
           <img
             src={player2_picture}
@@ -83,7 +83,7 @@ export function ScoreDisplay({
           {player2_name}
         </div>
         <div
-          className={`text-4xl md:text-6xl font-bold mt-1 ${
+          className={`text-3xl md:text-6xl font-bold mt-1 ${
             p2_winning ? "text-primary" : "text-foreground"
           }`}
         >

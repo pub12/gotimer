@@ -113,7 +113,7 @@ export function GameHistory({
               <img
                 src={game.gif_url}
                 alt="Game reaction"
-                className="mt-2 rounded-lg max-h-40 object-cover"
+                className="mt-2 rounded-lg max-h-40 max-w-full object-cover"
               />
             )}
           </div>

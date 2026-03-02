@@ -227,8 +227,8 @@ export default function ChallengeDetailPage() {
         {/* Challenge header */}
         <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
           <div className="flex items-start justify-between mb-2">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-2xl md:text-3xl font-bold truncate">
                 {challenge.name}
               </h1>
               {challenge.description && (
@@ -237,7 +237,7 @@ export default function ChallengeDetailPage() {
                 </p>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-shrink-0">
               {challenge.created_by === current_user_id && (
                 <Button
                   variant="ghost"
@@ -315,7 +315,7 @@ export default function ChallengeDetailPage() {
         )}
 
         {/* Actions */}
-        <div className="flex gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <Button
             className="flex-1"
             onClick={() => set_show_add_game(true)}

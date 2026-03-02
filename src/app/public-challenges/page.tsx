@@ -94,9 +94,9 @@ export default function PublicChallengesPage() {
                   className="block bg-card rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow no-underline text-foreground"
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-lg">{c.name}</h3>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1 min-w-0">
+                        <h3 className="font-semibold text-lg truncate">{c.name}</h3>
                         <span
                           className={`text-xs px-2 py-0.5 rounded-full ${
                             c.status === "active"
@@ -114,10 +114,10 @@ export default function PublicChallengesPage() {
                           {c.description}
                         </p>
                       )}
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Users className="w-3.5 h-3.5" />
-                          {player_names.join(" vs ")}
+                          <span className="truncate max-w-[150px]">{player_names.join(" vs ")}</span>
                         </span>
                         <span className="flex items-center gap-1">
                           <Gamepad2 className="w-3.5 h-3.5" />
