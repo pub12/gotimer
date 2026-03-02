@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar";
 import { ScoreDisplay } from "@/components/challenges/score-display";
 import { GameHistory } from "@/components/challenges/game-history";
 import { AddGameDialog } from "@/components/challenges/add-game-dialog";
+import { EditGameDialog } from "@/components/challenges/edit-game-dialog";
 import { ChallengeHistogram } from "@/components/challenges/challenge-histogram";
 import { TrashTalkBanner } from "@/components/challenges/trash-talk-banner";
 import { PlayOnceGif } from "@/components/challenges/play-once-gif";
@@ -49,6 +50,7 @@ export default function ChallengeDetailPage() {
   const [challenge, set_challenge] = useState<ChallengeData | null>(null);
   const [loading, set_loading] = useState(true);
   const [show_add_game, set_show_add_game] = useState(false);
+  const [editing_game, set_editing_game] = useState<ChallengeData["games"][0] | null>(null);
   const [invite_url, set_invite_url] = useState<string | null>(null);
   const [copied, set_copied] = useState(false);
   const [current_user_id, set_current_user_id] = useState<string>("");
@@ -353,6 +355,7 @@ export default function ChallengeDetailPage() {
             user_names={user_names}
             user_pictures={user_pictures}
             on_delete={handle_delete_game}
+            on_edit={(game) => set_editing_game(game)}
           />
         </div>
       </div>
@@ -368,6 +371,21 @@ export default function ChallengeDetailPage() {
             load_challenge();
           }}
           on_close={() => set_show_add_game(false)}
+        />
+      )}
+
+      {editing_game && (
+        <EditGameDialog
+          challenge_id={id}
+          game={editing_game}
+          participants={challenge.participants}
+          user_names={user_names}
+          user_pictures={user_pictures}
+          on_game_updated={() => {
+            set_editing_game(null);
+            load_challenge();
+          }}
+          on_close={() => set_editing_game(null)}
         />
       )}
     </main>

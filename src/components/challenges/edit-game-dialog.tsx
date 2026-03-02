@@ -12,28 +12,41 @@ type Participant = {
   role: string;
 };
 
-type AddGameDialogProps = {
+type GameData = {
+  id: string;
+  winner_id: string | null;
+  is_draw: number;
+  notes: string;
+  gif_url: string | null;
+  played_at: string;
+};
+
+type EditGameDialogProps = {
   challenge_id: string;
+  game: GameData;
   participants: Participant[];
   user_names: Record<string, string>;
   user_pictures?: Record<string, string | null>;
-  on_game_added: () => void;
+  on_game_updated: () => void;
   on_close: () => void;
 };
 
-export function AddGameDialog({
+export function EditGameDialog({
   challenge_id,
+  game,
   participants,
   user_names,
   user_pictures,
-  on_game_added,
+  on_game_updated,
   on_close,
-}: AddGameDialogProps) {
-  const [winner_id, set_winner_id] = useState<string | null>(null);
-  const [is_draw, set_is_draw] = useState(false);
-  const [played_at, set_played_at] = useState(new Date().toISOString().split("T")[0]);
-  const [notes, set_notes] = useState("");
-  const [gif_url, set_gif_url] = useState<string | null>(null);
+}: EditGameDialogProps) {
+  const [winner_id, set_winner_id] = useState<string | null>(game.winner_id);
+  const [is_draw, set_is_draw] = useState(!!game.is_draw);
+  const [played_at, set_played_at] = useState(
+    game.played_at ? new Date(game.played_at).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
+  );
+  const [notes, set_notes] = useState(game.notes || "");
+  const [gif_url, set_gif_url] = useState<string | null>(game.gif_url);
   const [show_gif_picker, set_show_gif_picker] = useState(false);
   const [saving, set_saving] = useState(false);
 
@@ -42,8 +55,8 @@ export function AddGameDialog({
     set_saving(true);
 
     try {
-      const res = await fetch(`/api/challenges/${challenge_id}/games`, {
-        method: "POST",
+      const res = await fetch(`/api/challenges/${challenge_id}/games/${game.id}`, {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           winner_id: is_draw ? null : winner_id,
@@ -55,13 +68,13 @@ export function AddGameDialog({
       });
 
       if (res.ok) {
-        on_game_added();
+        on_game_updated();
       } else {
         const data = await res.json();
-        toast.error(data.error || "Failed to add game");
+        toast.error(data.error || "Failed to update game");
       }
     } catch {
-      toast.error("Failed to add game");
+      toast.error("Failed to update game");
     } finally {
       set_saving(false);
     }
@@ -72,7 +85,7 @@ export function AddGameDialog({
       <div className="bg-card rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold">Add Game Result</h3>
+            <h3 className="text-lg font-semibold">Edit Game Result</h3>
             <Button variant="ghost" size="icon" onClick={on_close}>
               <X className="w-4 h-4" />
             </Button>
@@ -203,7 +216,7 @@ export function AddGameDialog({
               disabled={!is_draw && !winner_id}
               onClick={handle_submit}
             >
-              {saving ? "Saving..." : "Add Game"}
+              {saving ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </div>

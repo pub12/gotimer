@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Trophy, Handshake, Trash2 } from "lucide-react";
+import { Trophy, Handshake, Trash2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Game = {
@@ -27,6 +27,7 @@ type GameHistoryProps = {
   user_names: Record<string, string>;
   user_pictures?: Record<string, string | null>;
   on_delete?: (game_id: string) => void;
+  on_edit?: (game: Game) => void;
 };
 
 export function GameHistory({
@@ -35,6 +36,7 @@ export function GameHistory({
   user_names,
   user_pictures,
   on_delete,
+  on_edit,
 }: GameHistoryProps) {
   if (games.length === 0) {
     return (
@@ -92,6 +94,16 @@ export function GameHistory({
                 <span className="text-sm text-muted-foreground">
                   {new Date(game.played_at).toLocaleDateString()}
                 </span>
+                {on_edit && game.created_by === current_user_id && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7"
+                    onClick={() => on_edit(game)}
+                  >
+                    <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
+                  </Button>
+                )}
                 {on_delete && (
                   <Button
                     variant="ghost"

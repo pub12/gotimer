@@ -21,6 +21,7 @@ type Challenge = {
   draws: number;
   total_games: number;
   created_at: string;
+  game_name: string | null;
   participants: { user_id: string; role: string }[];
 };
 
@@ -28,6 +29,7 @@ export default function ChallengesPage() {
   const router = useRouter();
   const { authenticated, loading: auth_loading } = use_auth_status();
   const [challenges, set_challenges] = useState<Challenge[]>([]);
+  const [user_names, set_user_names] = useState<Record<string, string>>({});
   const [loading, set_loading] = useState(true);
 
   useEffect(() => {
@@ -39,8 +41,37 @@ export default function ChallengesPage() {
 
     fetch("/api/challenges")
       .then((res) => res.json())
-      .then((data) => {
-        set_challenges(Array.isArray(data) ? data : []);
+      .then(async (data) => {
+        const list: Challenge[] = Array.isArray(data) ? data : [];
+        set_challenges(list);
+
+        // Batch-fetch user profiles for all participant IDs
+        const all_ids = new Set<string>();
+        for (const c of list) {
+          for (const p of c.participants) {
+            all_ids.add(p.user_id);
+          }
+        }
+
+        if (all_ids.size > 0) {
+          try {
+            const profiles_res = await fetch("/api/user-profiles", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ user_ids: Array.from(all_ids) }),
+            });
+            const profiles_data = await profiles_res.json();
+            if (profiles_data.profiles) {
+              const names: Record<string, string> = {};
+              for (const p of profiles_data.profiles) {
+                names[p.user_id] = p.name || "Player";
+              }
+              set_user_names(names);
+            }
+          } catch {
+            // profiles are optional - cards still render without names
+          }
+        }
       })
       .catch(() => set_challenges([]))
       .finally(() => set_loading(false));
@@ -180,6 +211,10 @@ export default function ChallengesPage() {
                       draws={c.draws}
                       total_games={c.total_games}
                       status={c.status}
+                      game_name={c.game_name}
+                      player_names={c.participants.map(
+                        (p) => user_names[p.user_id] || "Player"
+                      )}
                     />
                   ))}
                 </div>

@@ -5,9 +5,10 @@ export async function GET() {
   const db = get_db();
   const challenges = db
     .prepare(
-      `SELECT gc.*,
+      `SELECT gc.*, g.name as game_name,
         (SELECT COUNT(*) FROM challenge_games cg WHERE cg.challenge_id = gc.id) as total_games
        FROM game_challenges gc
+       LEFT JOIN games g ON gc.game_id = g.id
        WHERE gc.is_public = 1
        ORDER BY gc.updated_at DESC`
     )

@@ -11,6 +11,7 @@ type Challenge = {
   description: string;
   status: string;
   total_games: number;
+  game_name: string | null;
   participants: { user_id: string; role: string }[];
   scores: Record<string, number>;
 };
@@ -97,6 +98,11 @@ export default function PublicChallengesPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 min-w-0">
                         <h3 className="font-semibold text-lg truncate">{c.name}</h3>
+                        {c.game_name && (
+                          <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground flex-shrink-0">
+                            {c.game_name}
+                          </span>
+                        )}
                         <span
                           className={`text-xs px-2 py-0.5 rounded-full ${
                             c.status === "active"

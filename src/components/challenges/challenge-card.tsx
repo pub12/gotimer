@@ -13,6 +13,8 @@ type ChallengeCardProps = {
   draws: number;
   total_games: number;
   status: string;
+  game_name?: string | null;
+  player_names?: string[];
 };
 
 export function ChallengeCard({
@@ -23,6 +25,8 @@ export function ChallengeCard({
   draws,
   total_games,
   status,
+  game_name,
+  player_names,
 }: ChallengeCardProps) {
   const is_winning = my_wins > opponent_wins;
   const is_tied = my_wins === opponent_wins;
@@ -32,7 +36,21 @@ export function ChallengeCard({
       <Card className="hover:shadow-lg transition-shadow cursor-pointer">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">{name}</CardTitle>
+            <div className="min-w-0">
+              <CardTitle className="text-lg">{name}</CardTitle>
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
+                {game_name && (
+                  <span className="text-xs bg-muted px-2 py-0.5 rounded-full text-muted-foreground">
+                    {game_name}
+                  </span>
+                )}
+                {player_names && player_names.length > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    {player_names.join(" vs ")}
+                  </span>
+                )}
+              </div>
+            </div>
             {status !== "active" && (
               <span className="text-xs bg-muted px-2 py-1 rounded-full text-muted-foreground">
                 {status}

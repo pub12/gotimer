@@ -12,13 +12,14 @@ export async function GET(request: NextRequest) {
   const db = get_db();
   const challenges = db
     .prepare(
-      `SELECT gc.*,
+      `SELECT gc.*, g.name as game_name,
         (SELECT COUNT(*) FROM challenge_games cg WHERE cg.challenge_id = gc.id AND cg.winner_id = ?) as my_wins,
         (SELECT COUNT(*) FROM challenge_games cg WHERE cg.challenge_id = gc.id AND cg.winner_id != ? AND cg.winner_id IS NOT NULL AND cg.is_draw = 0) as opponent_wins,
         (SELECT COUNT(*) FROM challenge_games cg WHERE cg.challenge_id = gc.id AND cg.is_draw = 1) as draws,
         (SELECT COUNT(*) FROM challenge_games cg WHERE cg.challenge_id = gc.id) as total_games
        FROM game_challenges gc
        INNER JOIN challenge_participants cp ON cp.challenge_id = gc.id
+       LEFT JOIN games g ON gc.game_id = g.id
        WHERE cp.user_id = ?
        ORDER BY gc.updated_at DESC`
     )
