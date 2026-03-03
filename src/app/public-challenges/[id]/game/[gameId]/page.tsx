@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { get_db, get_challenge_scores } from "@/lib/db";
-import { redirect } from "next/navigation";
+import GameShareRedirect from "./game-share-redirect";
 
 type Props = {
   params: Promise<{ id: string; gameId: string }>;
@@ -86,7 +86,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function GameSharePage({ params }: Props) {
-  const { id } = await params;
-  redirect(`/public-challenges/${id}`);
+export default function GameSharePage() {
+  return <GameShareRedirect />;
 }
