@@ -21,6 +21,18 @@ export const metadata: Metadata = {
     "A modern, mobile-friendly timer for games, chess, and more. Track game challenges with friends, countdown timers, chess clocks, and round timers.",
   keywords:
     "game timer, chess clock, countdown timer, game challenges, board games, mobile timer, online timer, boardgame tracker",
+  openGraph: {
+    title: "GoTimer.org - Your Boardgame Tracker",
+    description: "A modern, mobile-friendly timer for games, chess, and more.",
+    type: "website",
+    images: [{ url: "/fight.jpg" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "GoTimer.org - Your Boardgame Tracker",
+    description: "A modern, mobile-friendly timer for games, chess, and more.",
+    images: ["/fight.jpg"],
+  },
 };
 
 export default function RootLayout({
@@ -31,23 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <meta property="og:title" content="GoTimer.org - Your Boardgame Tracker" />
-        <meta
-          property="og:description"
-          content="A modern, mobile-friendly timer for games, chess, and more."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="/fight.jpg" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="GoTimer.org - Your Boardgame Tracker" />
-        <meta
-          name="twitter:description"
-          content="A modern, mobile-friendly timer for games, chess, and more."
-        />
-        <meta name="twitter:image" content="/fight.jpg" />
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
             <Script
