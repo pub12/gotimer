@@ -64,7 +64,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     );
     const description = `Score: ${score_parts.join(" - ")}`;
 
-    const ogImage = game.gif_url || "/fight.jpg";
+    // Use generated OG image endpoint for proper static PNG that WhatsApp shows as large preview
+    const ogImage = `/api/og/game?challenge_id=${id}&game_id=${gameId}`;
 
     return {
       title: `${title} - GoTimer`,
