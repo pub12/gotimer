@@ -178,6 +178,9 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
             current_user_id={display_user_id}
             user_names={user_names}
             user_pictures={user_pictures}
+            challenge_id={challenge.id}
+            challenge_name={challenge.name}
+            scores={challenge.scores}
           />
         </div>
 

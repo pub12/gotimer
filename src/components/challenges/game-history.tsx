@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Trophy, Handshake, Trash2, Pencil } from "lucide-react";
+import { Trophy, Handshake, Trash2, Pencil, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Game = {
@@ -28,15 +28,57 @@ type GameHistoryProps = {
   user_pictures?: Record<string, string | null>;
   on_delete?: (game_id: string) => void;
   on_edit?: (game: Game) => void;
+  challenge_id?: string;
+  challenge_name?: string;
+  scores?: Record<string, number>;
 };
+
+async function handle_share(
+  challenge_id: string,
+  challenge_name: string,
+  game: Game,
+  user_names: Record<string, string>,
+  scores: Record<string, number>,
+  participants: Participant[]
+) {
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://gotimer.org";
+  const game_url = `${origin}/public-challenges/${challenge_id}/game/${game.id}`;
+
+  let title: string;
+  if (game.is_draw) {
+    title = `Draw in the ${challenge_name} game!`;
+  } else {
+    const winner_name = game.winner_id ? user_names[game.winner_id] || "Someone" : "Someone";
+    title = `${winner_name} won the ${challenge_name} game!`;
+  }
+
+  const score_parts = participants.map(
+    (p) => `${user_names[p.user_id] || "Player"} ${scores[p.user_id] || 0}`
+  );
+  const score_text = `Score: ${score_parts.join(" - ")}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ text: `${title}\n${score_text}\n${game_url}` });
+    } catch {
+      // User cancelled or share failed — ignore
+    }
+  } else {
+    await navigator.clipboard.writeText(`${title}\n${score_text}\n${game_url}`);
+  }
+}
 
 export function GameHistory({
   games,
+  participants,
   current_user_id,
   user_names,
   user_pictures,
   on_delete,
   on_edit,
+  challenge_id,
+  challenge_name,
+  scores,
 }: GameHistoryProps) {
   if (games.length === 0) {
     return (
@@ -45,6 +87,8 @@ export function GameHistory({
       </div>
     );
   }
+
+  const can_share = challenge_id && challenge_name && scores;
 
   return (
     <div className="space-y-3">
@@ -94,6 +138,26 @@ export function GameHistory({
                 <span className="text-sm text-muted-foreground">
                   {new Date(game.played_at).toLocaleDateString()}
                 </span>
+                {can_share && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7"
+                    onClick={() =>
+                      handle_share(
+                        challenge_id,
+                        challenge_name,
+                        game,
+                        user_names,
+                        scores,
+                        participants
+                      )
+                    }
+                    title="Share"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-muted-foreground" />
+                  </Button>
+                )}
                 {on_edit && game.created_by === current_user_id && (
                   <Button
                     variant="ghost"

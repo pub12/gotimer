@@ -365,6 +365,9 @@ export default function ChallengeDetailPage() {
             user_pictures={user_pictures}
             on_delete={handle_delete_game}
             on_edit={(game) => set_editing_game(game)}
+            challenge_id={id}
+            challenge_name={challenge.name}
+            scores={challenge.scores}
           />
         </div>
       </div>
