@@ -1,8 +1,7 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { get_db, get_challenge_scores } from "@/lib/db";
 import Navbar from "@/components/navbar";
+import Breadcrumb from "@/components/breadcrumb";
 import { Trophy, Users, Gamepad2 } from "lucide-react";
 
 type Challenge = {
@@ -16,56 +15,76 @@ type Challenge = {
   scores: Record<string, number>;
 };
 
+function get_public_challenges(): { challenges: Challenge[]; user_names: Record<string, string> } {
+  try {
+    const db = get_db();
+    const rows = db
+      .prepare(
+        `SELECT gc.*, g.name as game_name,
+          (SELECT COUNT(*) FROM challenge_games cg WHERE cg.challenge_id = gc.id) as total_games
+         FROM game_challenges gc
+         LEFT JOIN games g ON gc.game_id = g.id
+         WHERE gc.is_public = 1
+         ORDER BY gc.updated_at DESC`
+      )
+      .all() as (Record<string, unknown> & { id: string; total_games: number; game_name: string | null })[];
+
+    const all_user_ids = new Set<string>();
+    const challenges: Challenge[] = rows.map((c) => {
+      const participants = db
+        .prepare(
+          `SELECT cp.user_id, cp.role, cp.score_override FROM challenge_participants cp WHERE cp.challenge_id = ?`
+        )
+        .all(c.id) as { user_id: string; role: string; score_override: number | null }[];
+
+      const scores = get_challenge_scores(db, c.id, participants);
+      for (const p of participants) all_user_ids.add(p.user_id);
+
+      return {
+        id: c.id,
+        name: c.name as string,
+        description: c.description as string,
+        status: c.status as string,
+        total_games: c.total_games,
+        game_name: c.game_name,
+        participants,
+        scores,
+      };
+    });
+
+    // Fetch user names
+    const user_names: Record<string, string> = {};
+    if (all_user_ids.size > 0) {
+      const ids = Array.from(all_user_ids);
+      const placeholders = ids.map(() => "?").join(", ");
+      const users = db
+        .prepare(`SELECT id, name FROM hazo_users WHERE id IN (${placeholders})`)
+        .all(...ids) as { id: string; name: string | null }[];
+      for (const u of users) {
+        user_names[u.id] = (u.name || "Player").split(" ")[0];
+      }
+    }
+
+    return { challenges, user_names };
+  } catch {
+    return { challenges: [], user_names: {} };
+  }
+}
+
 export default function PublicChallengesPage() {
-  const [challenges, set_challenges] = useState<Challenge[]>([]);
-  const [user_names, set_user_names] = useState<Record<string, string>>({});
-  const [loading, set_loading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/public/challenges")
-      .then((res) => res.json())
-      .then(async (data) => {
-        set_challenges(data);
-
-        // Collect all unique user IDs
-        const user_ids = new Set<string>();
-        for (const c of data) {
-          for (const p of c.participants) {
-            user_ids.add(p.user_id);
-          }
-        }
-
-        if (user_ids.size > 0) {
-          const profiles_res = await fetch("/api/public/user-profiles", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_ids: Array.from(user_ids) }),
-          });
-          const profiles_data = await profiles_res.json();
-          if (profiles_data.profiles) {
-            const names: Record<string, string> = {};
-            for (const p of profiles_data.profiles) {
-              names[p.user_id] = p.name || "Player";
-            }
-            set_user_names(names);
-          }
-        }
-      })
-      .catch(() => {})
-      .finally(() => set_loading(false));
-  }, []);
+  const { challenges, user_names } = get_public_challenges();
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
       <Navbar />
       <div className="w-full max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Public Challenges</h1>
+        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Public Challenges" }]} />
+        <h1 className="text-2xl font-bold mb-2">Public Challenges</h1>
+        <p className="text-muted-foreground mb-6">
+          Browse competitive board game matchups. See scores, game history, and rivalries between players.
+        </p>
 
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <p className="text-muted-foreground">Loading challenges...</p>
-          </div>
-        ) : challenges.length === 0 ? (
+        {challenges.length === 0 ? (
           <div className="bg-card rounded-xl p-8 shadow-sm border text-center">
             <p className="text-muted-foreground mb-4">No public challenges yet.</p>
             <Link
@@ -141,6 +160,17 @@ export default function PublicChallengesPage() {
             })}
           </div>
         )}
+
+        {/* SEO content for crawlers */}
+        <section className="mt-12 text-sm text-muted-foreground">
+          <h2 className="text-lg font-semibold text-foreground mb-2">About Public Challenges</h2>
+          <p>
+            Public challenges on GoTimer let players share their competitive board game matchups
+            with the community. Each challenge tracks wins, losses, and draws between two players
+            across multiple games. Create your own challenge, invite a friend, and make it public
+            to show off your rivalry.
+          </p>
+        </section>
       </div>
     </main>
   );

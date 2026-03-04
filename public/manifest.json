@@ -1,0 +1,27 @@
+{
+  "name": "GoTimer - Board Game Timers & Challenge Tracker",
+  "short_name": "GoTimer",
+  "description": "Free online board game timers and competitive challenge tracking. Countdown timers, chess clocks, and round timers for tabletop gaming.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["games", "utilities"]
+}

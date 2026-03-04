@@ -1,5 +1,11 @@
+# GoTimer.org - Board Game Timers & Challenge Tracking
+
 User-agent: *
 Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
 
 # Timer pages
 Allow: /countdown
@@ -9,8 +15,10 @@ Allow: /chess-clock-setup
 Allow: /round-timer
 Allow: /round-timer-setup
 
-# Other pages
-Allow: /challenges
+# Public challenges
+Allow: /public-challenges
+
+# Other public pages
 Allow: /privacy-policy
 Allow: /terms-of-service
 
@@ -22,6 +30,53 @@ Allow: /*.jpg
 Allow: /*.jpeg
 Allow: /*.gif
 Allow: /*.webp
+
+# AI-readable documentation
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# AI Search Crawlers - explicitly allowed
+User-agent: GPTBot
+Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /hazo_auth/
+Disallow: /challenges/
+Disallow: /admin/
+Disallow: /api/
 
 Sitemap: https://gotimer.org/sitemap.xml
 

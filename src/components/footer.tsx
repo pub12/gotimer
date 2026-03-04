@@ -17,6 +17,10 @@ export default function Footer() {
               Home
             </Link>
             <span className="text-gray-500">|</span>
+            <Link href="/public-challenges" className="text-white hover:text-gray-300 transition-colors no-underline px-2">
+              Public Challenges
+            </Link>
+            <span className="text-gray-500">|</span>
             <Link href="/privacy-policy" className="text-white hover:text-gray-300 transition-colors no-underline px-2">
               Privacy Policy
             </Link>
@@ -31,6 +35,10 @@ export default function Footer() {
             >
               Contact Us
             </button>
+            <span className="text-gray-500">|</span>
+            <Link href="/partners" className="text-white hover:text-gray-300 transition-colors no-underline px-2">
+              Partners
+            </Link>
             <span className="text-gray-500">|</span>
             <Link href="/sitemap.xml" className="text-white hover:text-gray-300 transition-colors no-underline px-2">
               Sitemap

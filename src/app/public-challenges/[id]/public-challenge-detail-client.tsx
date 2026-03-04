@@ -4,11 +4,12 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
+import Breadcrumb from "@/components/breadcrumb";
 import { ScoreDisplay } from "@/components/challenges/score-display";
 import { GameHistory } from "@/components/challenges/game-history";
 import { ChallengeHistogram } from "@/components/challenges/challenge-histogram";
 import { PlayOnceGif } from "@/components/challenges/play-once-gif";
-import { ArrowLeft } from "lucide-react";
+
 
 type ChallengeData = {
   id: string;
@@ -113,13 +114,13 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
       <Navbar />
 
       <div className="w-full max-w-3xl mx-auto">
-        <button
-          onClick={() => router.push("/public-challenges")}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 bg-transparent border-none cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Public Challenges
-        </button>
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Public Challenges", href: "/public-challenges" },
+            { label: challenge.name },
+          ]}
+        />
 
         {/* Challenge header */}
         <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">

@@ -1,0 +1,235 @@
+# GoTimer.org — Full Documentation
+
+> Free online board game timers and competitive challenge tracking for tabletop gaming.
+
+Website: https://gotimer.org
+Category: Web Application / Game Tool
+Price: Free (no ads)
+Platform: Any modern web browser (mobile, tablet, desktop)
+Account Required: No (timers work without login; challenges require a free account)
+
+---
+
+## Overview
+
+GoTimer is a free, mobile-friendly web application designed for board game players. It provides three configurable game timers and a competitive challenge tracking system. GoTimer works entirely in the browser with no app download required.
+
+GoTimer is ideal for:
+- Board game nights where turns need time limits
+- Chess, Scrabble, and Go players who need a digital clock
+- Tournament organizers tracking round times
+- Friends who want to track competitive game records over time
+- People with ADHD who benefit from timed focus sessions and Pomodoro technique
+- Students using timed study blocks to stay on task
+- Anyone needing a simple, distraction-free countdown timer
+
+---
+
+## Timers
+
+### 1. Countdown Timer
+
+**URL:** https://gotimer.org/countdown-setup
+**Purpose:** A simple countdown timer with configurable duration.
+
+**Features:**
+- Duration range: 1 second to 60 minutes
+- Preset quick-select buttons: 10s, 15s, 30s, 60s
+- Slider for precise duration selection
+- Full-screen display during countdown
+- Audio beep alerts during the last 10 seconds
+- Long tone when timer reaches zero
+- Pause and resume functionality
+- Sound toggle on/off
+
+**How to use:**
+1. Visit https://gotimer.org/countdown-setup
+2. Select a preset time or use the slider to set a custom duration
+3. Press "Start" to begin the countdown
+4. The timer displays full-screen with large, readable numbers
+5. Audio alerts play in the final 10 seconds
+6. Press pause to temporarily stop, or reset to start over
+
+**Best for:** Board game turn limits, trivia rounds, ADHD focus sessions, Pomodoro technique, speed puzzles, cooking timers, workout intervals, presentations, classroom activities, study sessions.
+
+---
+
+### 2. Chess Clock
+
+**URL:** https://gotimer.org/chess-clock-setup
+**Purpose:** A two-player timer where each player has their own countdown.
+
+**Features:**
+- Independent countdown for each player
+- Duration range: 10 seconds to 60 minutes per player
+- Preset quick-select buttons: 2m, 5m, 10m, 20m, 30m, 60m
+- Tap-to-switch turn mechanic
+- Visual indication of active player
+- Audio alerts: beep every 30 seconds, every second in last 10 seconds
+- Long tone when a player's time expires
+- Pause both clocks simultaneously
+
+**How to use:**
+1. Visit https://gotimer.org/chess-clock-setup
+2. Select time per player using presets or the slider
+3. Press "Start" — Player 1's clock begins counting down
+4. After making a move, the active player taps their side to switch to the opponent's clock
+5. Play continues until one player's time runs out or the game ends
+6. Use the pause button to stop both clocks (for breaks, disputes, etc.)
+
+**Best for:** Chess, Scrabble, Go, Blokus, Patchwork, any two-player turn-based game requiring time limits.
+
+---
+
+### 3. Round Timer
+
+**URL:** https://gotimer.org/round-timer-setup
+**Purpose:** A count-up timer that tracks total elapsed time and individual round durations.
+
+**Features:**
+- Count-up (stopwatch) mode
+- Total elapsed time display
+- Current round time display
+- Round reset: logs current round and starts a new one
+- Round history list showing all previous round durations
+- Total timer continues running across rounds
+- Useful for analyzing game pacing
+
+**How to use:**
+1. Visit https://gotimer.org/round-timer-setup
+2. Press "Start" to begin tracking time
+3. Both total time and current round time start counting up
+4. When a round ends, press "Round Reset" to log the round duration
+5. A new round begins immediately; total time keeps running
+6. View all previous round times in the history list
+7. Use the data to analyze game pacing and set expectations for future games
+
+**Best for:** Twilight Imperium, Terraforming Mars, Gloomhaven, tournament play, strategy game sessions, Pomodoro focus tracking, any activity where tracking round/session duration helps with pacing.
+
+---
+
+## Challenge Tracking System
+
+**URL:** https://gotimer.org/challenges/ (requires login)
+**Public Challenges:** https://gotimer.org/public-challenges
+
+### What are Challenges?
+
+Challenges are ongoing competitive matchups between two players for a specific board game. They track game results over time, creating a rivalry record.
+
+### Features:
+- Create a challenge for any board game
+- Invite an opponent via shareable link
+- Log game results: win, loss, or draw
+- Running score tally (wins per player)
+- Game history with dates and results
+- Visual charts showing win/loss trends over time
+- GIF reactions: add GIF images to game results to celebrate or commiserate
+- Public/private toggle: make challenges visible to the community or keep them private
+- Challenge status: active, completed, or pending
+
+### How Challenges Work:
+1. Sign in to GoTimer (free account)
+2. Create a new challenge: pick a game, name the challenge, invite your opponent
+3. Your opponent accepts the challenge via a shared link
+4. After each real-world game, log the result in GoTimer
+5. View your running score, history, and charts
+6. Optionally make the challenge public for others to follow
+
+### Public Challenges:
+Public challenges are visible at https://gotimer.org/public-challenges. Anyone can browse active matchups, see scores, game counts, and player names. Each challenge has its own shareable page with full game history.
+
+---
+
+## Supported Games
+
+GoTimer works with any board game, card game, or tabletop game. Games commonly used with GoTimer include:
+
+- **Strategy:** Chess, Go, Scrabble, Blokus, Azul, Patchwork
+- **Heavy Strategy:** Twilight Imperium, Terraforming Mars, Gloomhaven, Pandemic, Spirit Island
+- **Euro Games:** Catan, Ticket to Ride, 7 Wonders, Wingspan, Dominion, Agricola
+- **Party Games:** Codenames, trivia games, word games
+- **Card Games:** Any competitive card game with timed turns
+- **Tournament Play:** Any game format requiring round timing
+
+---
+
+## Technical Details
+
+- **Framework:** Next.js (React)
+- **Hosting:** https://gotimer.org
+- **PWA:** Progressive Web App support (installable on mobile)
+- **Audio:** Web Audio API for timer alerts
+- **Sharing:** OG images and Twitter cards for social media previews
+- **Accessibility:** Semantic HTML, large touch targets for mobile, keyboard navigable
+
+---
+
+## Comparison with Alternatives
+
+| Feature | GoTimer | Physical Chess Clock | Phone Timer App |
+|---------|---------|---------------------|-----------------|
+| Price | Free | $15-50 | Free-$5 |
+| Chess Clock | Yes | Yes | Some |
+| Round Timer | Yes | No | Rare |
+| Countdown | Yes | No | Yes |
+| Challenge Tracking | Yes | No | No |
+| Score History | Yes | No | No |
+| Works on Any Device | Yes (browser) | No (physical) | Single device |
+| No Download | Yes | N/A | No |
+| Multiplayer Tracking | Yes | No | No |
+
+---
+
+## Pages
+
+| Page | URL | Description |
+|------|-----|-------------|
+| Home | https://gotimer.org | Landing page with timer selection, features, FAQ |
+| Countdown Setup | https://gotimer.org/countdown-setup | Configure countdown timer duration |
+| Countdown Timer | https://gotimer.org/countdown | Active countdown display |
+| Chess Clock Setup | https://gotimer.org/chess-clock-setup | Configure chess clock time per player |
+| Chess Clock | https://gotimer.org/chess-clock | Active chess clock display |
+| Round Timer Setup | https://gotimer.org/round-timer-setup | Round timer launch page |
+| Round Timer | https://gotimer.org/round-timer | Active round timer with history |
+| Public Challenges | https://gotimer.org/public-challenges | Browse all public challenges |
+| Challenge Detail | https://gotimer.org/public-challenges/[id] | Individual challenge page |
+| Privacy Policy | https://gotimer.org/privacy-policy | Privacy policy |
+| Terms of Service | https://gotimer.org/terms-of-service | Terms of service |
+
+---
+
+## Frequently Asked Questions
+
+**Q: What is a chess clock for board games?**
+A: A chess clock is a two-player timer where each player has their own countdown. After making a move, you tap the clock to switch to your opponent's timer. This ensures both players have equal time and keeps the game moving. While traditionally used for chess, chess clocks work great for Scrabble, Go, and any turn-based game.
+
+**Q: How do I time board game turns?**
+A: For two-player games, use GoTimer's Chess Clock — set a time limit per player and tap to switch turns. For group games, use the Countdown Timer to give each player a fixed amount of time per turn. For tracking total game rounds, use the Round Timer.
+
+**Q: Can I track game scores with friends?**
+A: Yes! GoTimer's challenge system lets you create ongoing rivalries with friends. Create a challenge for any game, invite your opponent, and log results after each game. You'll see a running score, game history, and visual charts tracking your rivalry over time.
+
+**Q: What board games need a timer?**
+A: Any game benefits from a timer when turns take too long! Chess and Scrabble traditionally use time limits. Heavy strategy games like Twilight Imperium and Terraforming Mars benefit from round timers to keep the game on schedule. Party games like Codenames and trivia games often need countdown timers for timed rounds.
+
+**Q: Is GoTimer free to use?**
+A: Yes, GoTimer is completely free with no ads. All three timers (Countdown, Chess Clock, and Round Timer) work without an account. Creating challenges and tracking scores requires a free account.
+
+**Q: Does GoTimer work on mobile phones?**
+A: Yes, GoTimer is designed to be mobile-friendly. It works in any modern web browser on phones, tablets, and desktop computers. No app download is needed — just visit gotimer.org in your browser. GoTimer can also be installed as a Progressive Web App.
+
+**Q: Can I use GoTimer for ADHD focus sessions?**
+A: Yes! GoTimer's countdown timer is great for ADHD focus and Pomodoro-style work sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the round timer to track multiple focus blocks and see how long you stayed on task.
+
+**Q: Can I use GoTimer for tournaments?**
+A: Yes. The Round Timer is specifically designed for tournament play, tracking total elapsed time and individual round durations. Combined with the challenge system, you can track match results across a tournament.
+
+**Q: How do public challenges work?**
+A: When creating a challenge, you can toggle it to "public." Public challenges appear on the Public Challenges page where anyone can see the matchup, scores, and game history. This is great for showcasing rivalries or running community tournaments.
+
+---
+
+## Contact
+
+For support or feature requests: pubs@hazoservices.com

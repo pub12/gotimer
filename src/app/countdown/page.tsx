@@ -100,33 +100,30 @@ function CountdownPageContent() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-2 pt-20 w-full overflow-x-hidden">
-      {/* Header */}
+    <main className="h-dvh flex flex-col bg-gray-50 pt-12 pb-2 px-3 w-full overflow-hidden md:min-h-screen md:h-auto md:overflow-auto md:pt-20 md:pb-0 md:px-2 md:justify-center md:items-center">
       <Header />
-      {/* Navbar */}
       <Navbar />
-      <h1 className="text-2xl md:text-5xl font-bold mb-6 text-center text-gray-900">
+      <h1 className="sr-only md:not-sr-only md:text-5xl font-bold md:mb-6 text-center text-gray-900">
         Countdown Timer Active
       </h1>
-      <div className="flex flex-col items-center gap-10 w-full max-w-md mx-auto">
-        {/* Sound Toggle Icon Button */}
+      <div className="flex flex-col items-center flex-1 justify-between w-full max-w-md mx-auto md:flex-none md:gap-10 md:justify-center">
+        {/* Sound Toggle */}
         <button
           aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
           onClick={toggle_audio}
-          className={`mb-2 rounded-full ${audio_enabled ? "bg-blue-100 hover:bg-blue-200" : "bg-gray-200 hover:bg-gray-300"} p-4 flex items-center justify-center shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400`}
-          style={{ fontSize: 40 }}
+          className={`rounded-full ${audio_enabled ? "bg-blue-100" : "bg-gray-200"} p-1.5 md:p-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0 mt-2 md:mt-0`}
         >
           {audio_enabled ? (
-            <Volume2 className="text-blue-600" size={40} />
+            <Volume2 className="text-blue-600 w-5 h-5 md:w-10 md:h-10" />
           ) : (
-            <VolumeX className="text-gray-500" size={40} />
+            <VolumeX className="text-gray-500 w-5 h-5 md:w-10 md:h-10" />
           )}
         </button>
-        {/* Responsive timer display */}
+        {/* Timer display - takes up available space */}
         <span
           className="font-mono font-bold tracking-widest select-none leading-none w-full text-center"
           style={{
-            fontSize: "clamp(3rem, 25vw, 10rem)",
+            fontSize: "clamp(4rem, 25vw, 10rem)",
             wordBreak: "break-all",
             lineHeight: 1.1,
             display: "block",
@@ -134,31 +131,28 @@ function CountdownPageContent() {
         >
           {format_time(remaining)}
         </span>
-        {/* Responsive Buttons: Reset above Pause/Resume */}
-        <div className="flex flex-col gap-6 items-center w-full">
+        {/* Buttons - big and at the bottom */}
+        <div className="flex flex-col gap-3 md:gap-6 items-center w-full shrink-0">
           <Button
             onClick={() => set_remaining(initial_time)}
             disabled={remaining === initial_time}
-            className="text-white bg-red-600 hover:bg-red-700 focus:bg-red-800 text-2xl md:text-4xl px-0 py-8 rounded-2xl shadow-2xl w-full max-w-full disabled:opacity-60 font-bold"
-            style={{ minHeight: "6rem" }}
+            className="text-white bg-red-600 hover:bg-red-700 focus:bg-red-800 text-2xl md:text-4xl px-0 py-5 md:py-8 rounded-2xl shadow-2xl w-full max-w-full disabled:opacity-60 font-bold"
           >
             Reset
           </Button>
-          <div className="flex gap-4 items-center w-full max-w-full">
+          <div className="flex gap-3 md:gap-4 items-center w-full max-w-full">
             <Button
               onClick={() => set_running(!running)}
-              className="text-white bg-orange-500 hover:bg-orange-600 focus:bg-orange-700 text-2xl md:text-4xl px-0 py-8 rounded-2xl shadow-2xl flex-1 font-bold"
-              style={{ minHeight: "6rem" }}
+              className="text-white bg-orange-500 hover:bg-orange-600 focus:bg-orange-700 text-2xl md:text-4xl px-0 py-5 md:py-8 rounded-2xl shadow-2xl flex-1 font-bold"
             >
               {running ? "Pause" : "Resume"}
             </Button>
             <button
               onClick={handle_settings}
               aria-label="Change Settings"
-              className="bg-gray-600 hover:bg-gray-700 text-white p-6 rounded-2xl shadow-2xl focus:outline-none focus:ring-2 focus:ring-gray-400 flex items-center justify-center"
-              style={{ minHeight: "6rem", minWidth: "6rem" }}
+              className="bg-gray-600 hover:bg-gray-700 text-white p-5 md:p-6 rounded-2xl shadow-2xl focus:outline-none focus:ring-2 focus:ring-gray-400 flex items-center justify-center"
             >
-              <Settings size={40} />
+              <Settings className="w-8 h-8 md:w-10 md:h-10" />
             </button>
           </div>
         </div>

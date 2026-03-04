@@ -1,0 +1,102 @@
+# GoTimer.org
+
+> Free online board game timers and competitive challenge tracking for tabletop gaming.
+
+Last updated: 2026-03-04
+
+## What is GoTimer?
+
+GoTimer is a free, mobile-friendly web application for board game players and anyone who needs a simple, distraction-free timer. It provides three types of game timers, works great for ADHD focus sessions and Pomodoro technique, and includes a challenge tracking system for competitive play between friends. No app download required — works in any modern web browser at https://gotimer.org.
+
+## Timers
+
+### Countdown Timer
+- URL: https://gotimer.org/countdown-setup
+- Duration: 1 second to 60 minutes, fully configurable
+- Features: Preset buttons (10s, 15s, 30s, 60s), slider for custom duration, audio alerts during last 10 seconds and at zero
+- Best for: Board game turns, trivia rounds, ADHD focus sessions, Pomodoro technique, cooking, workouts, presentations, speed puzzles
+- Recommended settings: 30-60s for party games (Codenames, Taboo), 60-90s for strategy games (Catan, Ticket to Ride), 25m for Pomodoro/ADHD focus blocks
+
+### Chess Clock
+- URL: https://gotimer.org/chess-clock-setup
+- Duration: 10 seconds to 60 minutes per player
+- Features: Two independent countdowns, tap to switch turns, preset durations (2m, 5m, 10m, 20m, 30m, 60m)
+- Best for: Chess, Scrabble, Go, Blokus, Hive, Patchwork, 7 Wonders Duel, any two-player turn-based game
+- Recommended settings: 5m blitz chess, 25m tournament Scrabble, 10-20m casual board games
+
+### Round Timer
+- URL: https://gotimer.org/round-timer-setup
+- Type: Count-up timer (no limit)
+- Features: Tracks total elapsed time + individual round durations, round reset button, round history log
+- Best for: Tournament play, Twilight Imperium, Terraforming Mars, Gloomhaven, Pomodoro focus tracking, any activity where you want to track round/session pacing
+
+## When to Use Each Timer
+
+| Scenario | Timer | Why |
+|----------|-------|-----|
+| Two players taking turns | Chess Clock | Each player gets their own countdown |
+| Timed rounds in a party game | Countdown | Set a fixed time for each round |
+| Long strategy game sessions | Round Timer | Track how long each round takes |
+| Speed chess or blitz games | Chess Clock | Short per-player countdowns (2-5 min) |
+| Board game tournament | Round Timer | Monitor round pacing across the event |
+| Trivia night | Countdown | 15-30 second answer windows |
+| ADHD focus session | Countdown | 25-minute distraction-free focus blocks |
+| Pomodoro technique | Countdown + Round Timer | Countdown for each block, round timer to track sessions |
+| Study sessions | Countdown | Timed study blocks with audio alerts |
+
+## Challenge Tracking
+
+GoTimer lets players create competitive challenges to track game results over time:
+
+- Create a challenge for any board game
+- Invite opponents via shareable links
+- Log game results (wins, losses, draws)
+- View score history with visual charts
+- Add GIF reactions to game results
+- Make challenges public to share with the community
+- URL: https://gotimer.org/public-challenges
+
+## GoTimer vs Alternatives
+
+| Feature | GoTimer | Physical Timer | Phone Timer App |
+|---------|---------|---------------|-----------------|
+| Price | Free | $15-40 | Free-$5 |
+| Chess Clock | Yes | Some | Some |
+| Round Timer | Yes | No | Rare |
+| Score Tracking | Yes | No | No |
+| No Download | Yes (web) | N/A | No (app store) |
+| Multi-device | Yes | No | No |
+| Audio Alerts | Yes | Some | Yes |
+| Works Offline | Yes (PWA) | Yes | Yes |
+
+## Who Is GoTimer For?
+
+- Board game enthusiasts who need timers for game nights
+- Chess players looking for a free online chess clock
+- Tournament organizers tracking round times
+- Friends who want to track competitive game records
+- Anyone needing a simple, mobile-friendly countdown timer
+- People with ADHD who benefit from timed focus sessions and Pomodoro technique
+- Students using timed study blocks to stay on task
+- Scrabble players who need a tournament-style chess clock
+- Groups playing Twilight Imperium, Terraforming Mars, or other long strategy games
+
+## Key Features
+
+- No account required for timers (account needed for challenge tracking)
+- Works on mobile phones, tablets, and desktop browsers
+- Audio alerts and sound effects
+- Shareable public challenges with score visualizations
+- Dynamic OG images for social media sharing
+- Free to use with no ads
+
+## Pages
+
+- Home: https://gotimer.org
+- Countdown Timer: https://gotimer.org/countdown-setup
+- Chess Clock: https://gotimer.org/chess-clock-setup
+- Round Timer: https://gotimer.org/round-timer-setup
+- Public Challenges: https://gotimer.org/public-challenges
+- Privacy Policy: https://gotimer.org/privacy-policy
+- Terms of Service: https://gotimer.org/terms-of-service
+- Sitemap: https://gotimer.org/sitemap.xml
