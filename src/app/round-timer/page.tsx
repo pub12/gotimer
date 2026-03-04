@@ -99,13 +99,13 @@ export default function RoundTimerPage() {
         </div>
 
         {/* Dual Timer Display */}
-        <div className="flex flex-row gap-4 md:gap-8 w-full flex-1 md:flex-none">
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <span className="text-sm md:text-2xl font-semibold text-gray-700">Total</span>
+        <div className="flex flex-row gap-2 md:gap-6 w-full flex-1 md:flex-none items-center">
+          <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-2xl shadow-md py-4 md:py-8 px-2">
+            <span className="text-sm md:text-2xl font-semibold text-gray-500 uppercase tracking-wider">Total</span>
             <span
-              className="font-mono font-bold tracking-widest select-none leading-none w-full text-center"
+              className="font-mono font-bold tracking-wide select-none leading-none w-full text-center text-gray-900"
               style={{
-                fontSize: "clamp(2.5rem, 12vw, 8rem)",
+                fontSize: "clamp(2rem, 10vw, 7rem)",
                 lineHeight: 1.1,
                 display: "block",
               }}
@@ -113,12 +113,12 @@ export default function RoundTimerPage() {
               {format_time(total_time)}
             </span>
           </div>
-          <div className="flex-1 flex flex-col items-center justify-center">
-            <span className="text-sm md:text-2xl font-semibold text-gray-700">Round</span>
+          <div className="flex-1 flex flex-col items-center justify-center bg-white rounded-2xl shadow-md py-4 md:py-8 px-2">
+            <span className="text-sm md:text-2xl font-semibold text-blue-600 uppercase tracking-wider">Round</span>
             <span
-              className="font-mono font-bold tracking-widest select-none leading-none w-full text-center"
+              className="font-mono font-bold tracking-wide select-none leading-none w-full text-center text-blue-700"
               style={{
-                fontSize: "clamp(2.5rem, 12vw, 8rem)",
+                fontSize: "clamp(2rem, 10vw, 7rem)",
                 lineHeight: 1.1,
                 display: "block",
               }}
