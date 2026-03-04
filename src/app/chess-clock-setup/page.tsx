@@ -110,12 +110,31 @@ export default function ChessClockSetupPage() {
           </CardContent>
         </Card>
       </div>
+      <section className="w-full max-w-2xl mt-4 md:mt-6 px-1">
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Configure a two-player chess clock with custom time limits. Ideal for chess, Scrabble, Go, and any turn-based board game.
+        </p>
+        <div className="space-y-2">
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">How long should a chess clock round be?</summary>
+            <p className="mt-2 text-sm text-gray-600">Standard chess uses 5-10 minutes per player for blitz, 15-30 minutes for rapid, and 60+ minutes for classical. For board games like Scrabble or Go, 10-20 minutes per player is common.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">Can I use a chess clock for Scrabble?</summary>
+            <p className="mt-2 text-sm text-gray-600">Yes! Chess clocks are widely used in competitive Scrabble. Tournament Scrabble typically uses 25 minutes per player. Set the time, tap to switch after each word placement.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">What board games use a chess clock?</summary>
+            <p className="mt-2 text-sm text-gray-600">Beyond chess, many two-player games benefit from a chess clock: Scrabble, Go, Blokus, Hive, Patchwork, 7 Wonders Duel, and Star Realms. Any turn-based game where you want to limit thinking time.</p>
+          </details>
+        </div>
+      </section>
       <nav className="w-full max-w-2xl py-1 md:mt-4 md:mb-8 flex flex-wrap justify-center gap-4 text-sm shrink-0">
+        <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+        <span className="text-gray-400">|</span>
         <Link href="/countdown-setup" className="text-blue-600 hover:text-blue-800">Countdown Timer</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/round-timer-setup" className="text-blue-600 hover:text-blue-800">Round Timer</Link>
-        <span className="text-gray-400">|</span>
-        <Link href="/public-challenges" className="text-blue-600 hover:text-blue-800">Public Challenges</Link>
+        <Link href="/round-timer-setup" className="text-blue-600 hover:text-blue-800">Turn & Round Timer</Link>
       </nav>
     </main>
   );

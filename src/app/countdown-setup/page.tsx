@@ -109,12 +109,35 @@ export default function CountdownSetupPage() {
           </CardContent>
         </Card>
       </div>
+      <section className="w-full max-w-2xl mt-4 md:mt-6 px-1">
+        <p className="text-sm text-gray-600 text-center mb-4">
+          Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, ADHD focus sessions, and Pomodoro technique.
+        </p>
+        <div className="space-y-2">
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">How long should a countdown timer be for board games?</summary>
+            <p className="mt-2 text-sm text-gray-600">It depends on the game complexity. For party games like Codenames, 30-60 seconds per turn works well. For strategy games like Catan, 1-2 minutes gives players time to think. For trivia or speed rounds, 10-15 seconds adds excitement.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">What is the best timer for Catan?</summary>
+            <p className="mt-2 text-sm text-gray-600">For Catan, a countdown timer set to 60-90 seconds per turn keeps the game moving without rushing decisions. Use audio alerts so players know when their time is running out.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">Can I use a countdown timer on my phone?</summary>
+            <p className="mt-2 text-sm text-gray-600">Yes! GoTimer works in any mobile browser — no app download needed. Just visit gotimer.org on your phone, set your timer duration, and tap Start.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">Is GoTimer good for ADHD focus and Pomodoro sessions?</summary>
+            <p className="mt-2 text-sm text-gray-600">Yes! Set 25-minute focus blocks with audio alerts that notify you when time is up. The full-screen, distraction-free display helps you stay on task.</p>
+          </details>
+        </div>
+      </section>
       <nav className="w-full max-w-2xl py-1 md:mt-4 md:mb-8 flex flex-wrap justify-center gap-4 text-sm shrink-0">
-        <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Chess Clock</Link>
+        <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/round-timer-setup" className="text-blue-600 hover:text-blue-800">Round Timer</Link>
+        <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Two-Player Chess Clock</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/public-challenges" className="text-blue-600 hover:text-blue-800">Public Challenges</Link>
+        <Link href="/round-timer-setup" className="text-blue-600 hover:text-blue-800">Turn & Round Timer</Link>
       </nav>
     </main>
   );

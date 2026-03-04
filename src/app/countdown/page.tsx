@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Button } from "../../components/ui/button";
 import { Volume2, VolumeX, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -157,6 +158,16 @@ function CountdownPageContent() {
           </div>
         </div>
       </div>
+      <section className="w-full max-w-md mx-auto mt-4 px-1 shrink-0">
+        <p className="text-xs text-gray-500 text-center mb-2">Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions.</p>
+        <nav className="flex flex-wrap justify-center gap-3 text-xs">
+          <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+          <span className="text-gray-400">|</span>
+          <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Chess Clock</Link>
+          <span className="text-gray-400">|</span>
+          <Link href="/round-timer-setup" className="text-blue-600 hover:text-blue-800">Turn Timer</Link>
+        </nav>
+      </section>
     </main>
   );
 }

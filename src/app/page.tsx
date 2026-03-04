@@ -91,24 +91,33 @@ export default function HomePage() {
 
       {/* Timer Buttons */}
       <div className="flex flex-col flex-1 items-center justify-center w-full h-full gap-8">
-        <Link
-          href="/countdown-setup"
-          className="inline-flex items-center justify-center text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900 no-underline transition-colors"
-        >
-          Countdown
-        </Link>
-        <Link
-          href="/chess-clock-setup"
-          className="inline-flex items-center justify-center text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900 no-underline transition-colors"
-        >
-          Chess Clock
-        </Link>
-        <Link
-          href="/round-timer-setup"
-          className="inline-flex items-center justify-center text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900 no-underline transition-colors"
-        >
-          Round Timer
-        </Link>
+        <div className="flex flex-col items-center gap-2">
+          <Link
+            href="/countdown-setup"
+            className="inline-flex items-center justify-center text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900 no-underline transition-colors"
+          >
+            Countdown
+          </Link>
+          <span className="text-sm text-gray-500">Board game countdown timer with audio alerts</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <Link
+            href="/chess-clock-setup"
+            className="inline-flex items-center justify-center text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900 no-underline transition-colors"
+          >
+            Chess Clock
+          </Link>
+          <span className="text-sm text-gray-500">Two-player chess clock for turn-based games</span>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <Link
+            href="/round-timer-setup"
+            className="inline-flex items-center justify-center text-3xl md:text-5xl px-16 py-10 rounded-2xl shadow-2xl font-bold bg-black text-white hover:bg-gray-800 focus:bg-gray-900 no-underline transition-colors"
+          >
+            Round Timer
+          </Link>
+          <span className="text-sm text-gray-500">Turn timer &amp; round tracker for tournaments</span>
+        </div>
       </div>
 
       {/* What is GoTimer Section */}

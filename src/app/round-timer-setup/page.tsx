@@ -53,12 +53,28 @@ export default function RoundTimerSetupPage() {
           </CardContent>
         </Card>
       </div>
+      <section className="w-full max-w-2xl mt-4 md:mt-6 px-1">
+        <div className="space-y-2">
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">What is a round timer for board games?</summary>
+            <p className="mt-2 text-sm text-gray-600">A round timer tracks both total elapsed time and individual round durations. Unlike a countdown, it counts up — you press a button to mark the end of each round. Ideal for games like Twilight Imperium, Terraforming Mars, and Gloomhaven.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">How do I time a board game tournament?</summary>
+            <p className="mt-2 text-sm text-gray-600">Start the timer when the round begins, and press Round Reset when it ends. The total timer keeps running across all rounds while you see individual round durations. This helps organizers stay on schedule.</p>
+          </details>
+          <details className="bg-white rounded-xl shadow p-4 group">
+            <summary className="font-semibold text-gray-900 cursor-pointer text-sm">What timer should I use for Twilight Imperium?</summary>
+            <p className="mt-2 text-sm text-gray-600">Twilight Imperium games can run 4-12+ hours, so a round timer is perfect. It tracks total game time and individual round durations without limits. Many TI groups use it to set soft time targets per round.</p>
+          </details>
+        </div>
+      </section>
       <nav className="w-full max-w-2xl py-1 md:mt-4 md:mb-8 flex flex-wrap justify-center gap-4 text-sm shrink-0">
+        <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+        <span className="text-gray-400">|</span>
         <Link href="/countdown-setup" className="text-blue-600 hover:text-blue-800">Countdown Timer</Link>
         <span className="text-gray-400">|</span>
-        <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Chess Clock</Link>
-        <span className="text-gray-400">|</span>
-        <Link href="/public-challenges" className="text-blue-600 hover:text-blue-800">Public Challenges</Link>
+        <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Two-Player Chess Clock</Link>
       </nav>
     </main>
   );

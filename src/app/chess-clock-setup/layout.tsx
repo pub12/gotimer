@@ -2,23 +2,23 @@ import { Metadata } from "next";
 import Breadcrumb from "@/components/breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Chess Clock Setup - GoTimer",
+  title: "Free Online Chess Clock - Timer for Two Players | GoTimer",
   description:
-    "Configure a two-player chess clock. Set time per player for chess, Scrabble, or any turn-based game. Free online chess clock timer.",
+    "Play chess with a free online chess clock. Set custom time limits per player for chess, Scrabble, Go, or any two-player board game. No download, works on mobile.",
   alternates: {
     canonical: "/chess-clock-setup",
   },
   openGraph: {
-    title: "Chess Clock Setup - GoTimer",
+    title: "Free Online Chess Clock - Timer for Two Players | GoTimer",
     description:
-      "Configure a two-player chess clock. Set time per player for chess, Scrabble, or any turn-based game.",
+      "Play chess with a free online chess clock. Set custom time limits per player for chess, Scrabble, Go, or any two-player board game.",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chess Clock Setup - GoTimer",
+    title: "Free Online Chess Clock - Timer for Two Players | GoTimer",
     description:
-      "Configure a two-player chess clock. Set time per player for chess, Scrabble, or any turn-based game.",
+      "Play chess with a free online chess clock. Set custom time limits per player for chess, Scrabble, Go, or any two-player board game.",
     images: ["/fight.jpg"],
   },
 };

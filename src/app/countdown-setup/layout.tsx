@@ -2,23 +2,23 @@ import { Metadata } from "next";
 import Breadcrumb from "@/components/breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Countdown Timer Setup - GoTimer",
+  title: "Free Countdown Timer for Board Games - GoTimer",
   description:
-    "Set up a countdown timer for board games, ADHD focus sessions, and Pomodoro technique. Choose duration, enable sound alerts, and start timing. Free online timer.",
+    "Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, ADHD focus sessions, and Pomodoro technique. Free, no download, works on mobile.",
   alternates: {
     canonical: "/countdown-setup",
   },
   openGraph: {
-    title: "Countdown Timer Setup - GoTimer",
+    title: "Free Countdown Timer for Board Games - GoTimer",
     description:
-      "Set up a countdown timer for your board game. Choose duration, enable sound alerts, and start timing.",
+      "Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, and focus sessions. Free, no download.",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Countdown Timer Setup - GoTimer",
+    title: "Free Countdown Timer for Board Games - GoTimer",
     description:
-      "Set up a countdown timer for your board game. Choose duration, enable sound alerts, and start timing.",
+      "Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, and focus sessions. Free, no download.",
     images: ["/fight.jpg"],
   },
 };
@@ -114,6 +114,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: breadcrumbJsonLdString }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: faqJsonLdString }}
       />
       <div className="w-full max-w-2xl mx-auto pt-12 md:pt-20 px-4">
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Countdown Timer Setup" }]} />

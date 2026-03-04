@@ -2,6 +2,7 @@
 // Purpose: Round Timer page for the Game Timer app. Displays total elapsed time and current round time with count-up functionality.
 
 import React, { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { Button } from "../../components/ui/button";
 import { Volume2, VolumeX, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -176,8 +177,16 @@ export default function RoundTimerPage() {
           </div>
         </div>
       </div>
+      <section className="w-full max-w-2xl mx-auto mt-2 px-1 shrink-0">
+        <p className="text-xs text-gray-500 text-center mb-2">Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.</p>
+        <nav className="flex flex-wrap justify-center gap-3 text-xs">
+          <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
+          <span className="text-gray-400">|</span>
+          <Link href="/countdown-setup" className="text-blue-600 hover:text-blue-800">Countdown Timer</Link>
+          <span className="text-gray-400">|</span>
+          <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Chess Clock</Link>
+        </nav>
+      </section>
     </main>
   );
 }
-
-
