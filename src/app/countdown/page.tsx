@@ -5,7 +5,7 @@ import React, { useEffect, useState, useRef, useCallback, Suspense } from "react
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../../components/ui/button";
-import { Volume2, VolumeX, Settings } from "lucide-react";
+import { Volume2, VolumeX, Settings, RotateCcw, Pause, Play } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/navbar";
 import Header from "../../components/header";
@@ -88,77 +88,135 @@ function CountdownPageContent() {
     prev_remaining.current = remaining;
   }, [remaining, running, play_beep]);
 
-  // Format time as mm:ss
-  const format_time = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  };
-
   // Handle navigation to countdown setup
   const handle_settings = () => {
     router.push("/countdown-setup");
   };
 
+  // SVG ring constants
+  const ring_size = 280;
+  const stroke_width = 12;
+  const radius = 134;
+  const circumference = 2 * Math.PI * radius;
+  const progress = initial_time > 0 ? remaining / initial_time : 0;
+  const dash_offset = circumference * (1 - progress);
+
+  const minutes = Math.floor(remaining / 60).toString().padStart(2, "0");
+  const seconds = (remaining % 60).toString().padStart(2, "0");
+
   return (
-    <main className="h-dvh flex flex-col bg-gray-50 pt-12 pb-2 px-3 w-full overflow-hidden md:min-h-screen md:h-auto md:overflow-auto md:pt-20 md:pb-0 md:px-2 md:justify-center md:items-center">
+    <main className="min-h-screen flex flex-col bg-gray-100 pt-12 pb-4 px-3 w-full md:bg-gray-200 md:pt-20 md:px-4 md:items-center">
       <Header />
       <Navbar />
-      <h1 className="sr-only md:not-sr-only md:text-5xl font-bold md:mb-6 text-center text-gray-900">
-        Countdown Timer Active
-      </h1>
-      <div className="flex flex-col items-center flex-1 justify-between w-full max-w-md mx-auto md:flex-none md:gap-10 md:justify-center">
-        {/* Sound Toggle */}
+      <h1 className="sr-only">Countdown Timer Active</h1>
+
+      <div className="relative bg-white rounded-2xl shadow-lg p-6 md:p-12 flex flex-col items-center gap-5 md:gap-6 w-full max-w-md md:max-w-lg mx-auto mt-4">
+        {/* Sound toggle - absolute top-right */}
         <button
           aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
           onClick={toggle_audio}
-          className={`rounded-full ${audio_enabled ? "bg-blue-100" : "bg-gray-200"} p-1.5 md:p-4 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0 mt-2 md:mt-0`}
+          className={`absolute top-4 right-4 rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${audio_enabled ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
         >
           {audio_enabled ? (
-            <Volume2 className="text-blue-600 w-5 h-5 md:w-10 md:h-10" />
+            <Volume2 className="text-blue-600 w-5 h-5" />
           ) : (
-            <VolumeX className="text-gray-500 w-5 h-5 md:w-10 md:h-10" />
+            <VolumeX className="text-gray-500 w-5 h-5" />
           )}
         </button>
-        {/* Timer display - takes up available space */}
-        <span
-          className="font-mono font-bold tracking-widest select-none leading-none w-full text-center"
-          style={{
-            fontSize: "clamp(4rem, 25vw, 10rem)",
-            wordBreak: "break-all",
-            lineHeight: 1.1,
-            display: "block",
-          }}
-        >
-          {format_time(remaining)}
-        </span>
-        {/* Buttons - big and at the bottom */}
-        <div className="flex flex-col gap-3 md:gap-6 items-center w-full shrink-0">
-          <Button
-            onClick={() => set_remaining(initial_time)}
-            disabled={remaining === initial_time}
-            className="text-white bg-red-600 hover:bg-red-700 focus:bg-red-800 text-2xl md:text-4xl px-0 py-5 md:py-8 rounded-2xl shadow-2xl w-full max-w-full disabled:opacity-60 font-bold"
+
+        {/* Status badge */}
+        <div className="flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
+          <span className="w-2 h-2 rounded-full bg-blue-500" />
+          Countdown Timer Active
+        </div>
+
+        {/* Subtitle */}
+        <p className="text-gray-500 text-sm">Session in progress</p>
+
+        {/* Circular progress ring with timer */}
+        <div className="relative w-60 h-60 md:w-80 md:h-80 flex items-center justify-center">
+          <svg
+            viewBox={`0 0 ${ring_size} ${ring_size}`}
+            className="w-full h-full -rotate-90"
           >
-            Reset
-          </Button>
-          <div className="flex gap-3 md:gap-4 items-center w-full max-w-full">
-            <Button
-              onClick={() => set_running(!running)}
-              className="text-white bg-orange-500 hover:bg-orange-600 focus:bg-orange-700 text-2xl md:text-4xl px-0 py-5 md:py-8 rounded-2xl shadow-2xl flex-1 font-bold"
-            >
-              {running ? "Pause" : "Resume"}
-            </Button>
-            <button
-              onClick={handle_settings}
-              aria-label="Change Settings"
-              className="bg-gray-600 hover:bg-gray-700 text-white p-5 md:p-6 rounded-2xl shadow-2xl focus:outline-none focus:ring-2 focus:ring-gray-400 flex items-center justify-center"
-            >
-              <Settings className="w-8 h-8 md:w-10 md:h-10" />
-            </button>
+            {/* Gray track */}
+            <circle
+              cx={ring_size / 2}
+              cy={ring_size / 2}
+              r={radius}
+              fill="none"
+              stroke="#E5E7EB"
+              strokeWidth={stroke_width}
+            />
+            {/* Blue progress arc */}
+            <circle
+              cx={ring_size / 2}
+              cy={ring_size / 2}
+              r={radius}
+              fill="none"
+              stroke="#3B82F6"
+              strokeWidth={stroke_width}
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={dash_offset}
+              className="ring-progress-transition"
+            />
+          </svg>
+          {/* Timer digits overlaid */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="flex items-baseline gap-2">
+              <div className="flex flex-col items-center">
+                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{minutes}</span>
+                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Minutes</span>
+              </div>
+              <span className="text-5xl md:text-7xl font-bold text-gray-800 mb-5">:</span>
+              <div className="flex flex-col items-center">
+                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{seconds}</span>
+                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Seconds</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Reset Timer button */}
+        <Button
+          onClick={() => set_remaining(initial_time)}
+          disabled={remaining === initial_time}
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-4 md:py-5 w-full shadow-md text-base md:text-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          <RotateCcw className="w-5 h-5" />
+          Reset Timer
+        </Button>
+
+        {/* Pause + Settings buttons */}
+        <div className="flex gap-3 w-full">
+          <Button
+            onClick={() => set_running(!running)}
+            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
+          >
+            {running ? (
+              <>
+                <Pause className="w-5 h-5" />
+                Pause
+              </>
+            ) : (
+              <>
+                <Play className="w-5 h-5" />
+                Resume
+              </>
+            )}
+          </Button>
+          <Button
+            onClick={handle_settings}
+            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
+          >
+            <Settings className="w-5 h-5" />
+            Settings
+          </Button>
+        </div>
       </div>
-      <section className="w-full max-w-md mx-auto mt-4 px-1 shrink-0">
+
+      <section className="w-full max-w-md mx-auto mt-6 px-1">
         <p className="text-xs text-gray-500 text-center mb-2">Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions.</p>
         <nav className="flex flex-wrap justify-center gap-3 text-xs">
           <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
@@ -178,4 +236,4 @@ export default function CountdownPageWrapper() {
       <CountdownPageContent />
     </Suspense>
   );
-} 
+}

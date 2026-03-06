@@ -154,6 +154,16 @@
   }
 }
 
+/* Smooth transition for countdown ring progress arc */
+.ring-progress-transition {
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* Smooth transition for horizontal progress bar fill */
+.bar-progress-transition {
+  transition: width 1s linear;
+}
+
 /* Fix transparent background on Radix dropdown/popover menus (hazo_auth ProfilePicMenu) */
 [data-radix-popper-content-wrapper] > * {
   background-color: var(--popover, #ffffff) !important;
