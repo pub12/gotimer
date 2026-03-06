@@ -1,5 +1,5 @@
 "use client";
-// Purpose: Chess Clock page for the Game Timer app. Displays two player clocks with circular progress rings, active/inactive states, and a pause button.
+// Purpose: Chess Clock page for the Game Timer app. Displays two player clocks with horizontal progress bars, active/inactive states, and a pause button.
 
 import React, { useState, useEffect, useRef, ChangeEvent, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -93,151 +93,127 @@ function ChessClockPageContent() {
     router.push("/chess-clock-setup");
   };
 
-  // SVG ring constants (same as countdown)
-  const ring_size = 280;
-  const stroke_width = 12;
-  const radius = 134;
-  const circumference = 2 * Math.PI * radius;
-
   return (
-    <main className="h-dvh flex flex-col bg-gray-100 pt-12 pb-2 px-2 w-full overflow-hidden md:min-h-screen md:h-auto md:overflow-auto md:bg-gray-200 md:pt-20 md:pb-4 md:px-4 md:items-center">
+    <main className="min-h-screen flex flex-col bg-gray-100 pt-12 pb-4 px-3 w-full md:bg-gray-200 md:pt-20 md:px-4 md:items-center">
       <Header />
       <Navbar />
       <h1 className="sr-only">Two-Player Chess Clock</h1>
 
-      <div className="relative bg-white rounded-2xl shadow-lg p-4 md:p-12 flex flex-col items-center gap-2 md:gap-6 w-full max-w-2xl md:max-w-3xl mx-auto mt-2 md:mt-4 flex-1 md:flex-none">
+      <div className="relative bg-white rounded-2xl shadow-lg p-6 md:p-12 flex flex-col items-center gap-5 md:gap-6 w-full max-w-md md:max-w-lg mx-auto mt-4">
         {/* Sound toggle */}
         <button
           aria-label={sound_on ? "Disable Sound" : "Enable Sound"}
           onClick={() => set_sound_on((v) => !v)}
-          className={`absolute top-3 right-3 md:top-4 md:right-4 rounded-full p-1.5 md:p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${sound_on ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
+          className={`absolute top-4 right-4 rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${sound_on ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
         >
           {sound_on ? (
-            <Volume2 className="text-blue-600 w-4 h-4 md:w-5 md:h-5" />
+            <Volume2 className="text-blue-600 w-5 h-5" />
           ) : (
-            <VolumeX className="text-gray-500 w-4 h-4 md:w-5 md:h-5" />
+            <VolumeX className="text-gray-500 w-5 h-5" />
           )}
         </button>
 
         {/* Status badge */}
-        <div className="flex items-center gap-1.5 bg-green-50 text-green-600 rounded-full px-3 py-1 text-xs md:text-sm font-semibold uppercase tracking-wide">
-          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-500" />
+        <div className="flex items-center gap-2 bg-green-50 text-green-600 rounded-full px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
+          <span className="w-2 h-2 rounded-full bg-green-500" />
           Chess Clock Active
         </div>
 
         {/* Subtitle */}
-        <p className="text-gray-500 text-xs md:text-sm">Tap a player card to switch turns</p>
+        <p className="text-gray-500 text-sm">Tap a player card to switch turns</p>
 
-        {/* Two player cards - side by side on mobile too */}
-        <div className="flex flex-row gap-2 md:gap-6 w-full flex-1 md:flex-none items-stretch">
+        {/* Stacked player cards */}
+        <div className="flex flex-col gap-4 md:gap-5 w-full">
           {[0, 1].map((player) => {
             const is_active = active_player === player;
             const progress = initial_time > 0 ? player_times[player] / initial_time : 0;
-            const dash_offset = circumference * (1 - progress);
 
             return (
               <button
                 key={player}
                 onClick={() => handle_player_press(player === 0 ? 1 : 0)}
                 disabled={player_times[player] === 0 || paused}
-                className={`flex-1 flex flex-col items-center justify-center gap-1.5 md:gap-4 rounded-xl md:rounded-2xl p-2 md:p-6 transition-all duration-300 cursor-pointer disabled:cursor-not-allowed ${
+                className={`w-full flex flex-col gap-3 rounded-2xl p-4 md:p-5 transition-all duration-300 cursor-pointer disabled:cursor-not-allowed ${
                   is_active
-                    ? "ring-2 ring-green-400 bg-green-50/30"
+                    ? "ring-2 ring-green-400 bg-green-50/40"
                     : "bg-gray-50"
                 } ${player_times[player] === 0 ? "opacity-50" : ""}`}
               >
-                {/* Player name input */}
-                <input
-                  type="text"
-                  value={player_names[player]}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    e.stopPropagation();
-                    const new_names = [...player_names];
-                    new_names[player] = e.target.value;
-                    set_player_names(new_names);
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                  className={`text-xs md:text-base font-semibold text-center border-b border-gray-300 focus:border-blue-500 bg-transparent outline-none w-full max-w-[8rem] transition-colors duration-200 ${
-                    is_active ? "text-green-700" : "text-gray-600"
-                  }`}
-                  aria-label={`Edit name for Player ${player + 1}`}
-                />
-
-                {/* SVG circular progress ring */}
-                <div className="relative w-28 h-28 md:w-52 md:h-52 flex items-center justify-center">
-                  <svg
-                    viewBox={`0 0 ${ring_size} ${ring_size}`}
-                    className="w-full h-full -rotate-90"
-                  >
-                    <circle
-                      cx={ring_size / 2}
-                      cy={ring_size / 2}
-                      r={radius}
-                      fill="none"
-                      stroke="#E5E7EB"
-                      strokeWidth={stroke_width}
-                    />
-                    <circle
-                      cx={ring_size / 2}
-                      cy={ring_size / 2}
-                      r={radius}
-                      fill="none"
-                      stroke={is_active ? "#22C55E" : "#D1D5DB"}
-                      strokeWidth={stroke_width}
-                      strokeLinecap="round"
-                      strokeDasharray={circumference}
-                      strokeDashoffset={dash_offset}
-                      className="ring-progress-transition"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xl md:text-4xl font-bold font-mono text-gray-800">
-                      {format_time(player_times[player])}
-                    </span>
-                  </div>
+                {/* Name + status row */}
+                <div className="flex items-center justify-between w-full">
+                  <input
+                    type="text"
+                    value={player_names[player]}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      e.stopPropagation();
+                      const new_names = [...player_names];
+                      new_names[player] = e.target.value;
+                      set_player_names(new_names);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`text-sm md:text-base font-semibold border-b border-gray-300 focus:border-blue-500 bg-transparent outline-none max-w-[8rem] transition-colors duration-200 ${
+                      is_active ? "text-green-700" : "text-gray-600"
+                    }`}
+                    aria-label={`Edit name for Player ${player + 1}`}
+                  />
+                  <span className={`text-xs font-semibold uppercase tracking-wide transition-colors duration-300 ${
+                    is_active ? "text-green-600" : "text-gray-400"
+                  }`}>
+                    {is_active ? "Your Move" : "Waiting"}
+                  </span>
                 </div>
 
-                {/* Status label */}
-                <span className={`text-xs md:text-sm font-semibold uppercase tracking-wide transition-colors duration-300 ${
-                  is_active ? "text-green-600" : "text-gray-400"
-                }`}>
-                  {is_active ? "Your Move" : "Waiting"}
-                </span>
+                {/* Time display */}
+                <div className="text-4xl md:text-5xl font-bold font-mono text-gray-800 text-center">
+                  {format_time(player_times[player])}
+                </div>
+
+                {/* Horizontal gradient progress bar */}
+                <div className="w-full h-3 md:h-4 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full bar-progress-transition ${
+                      is_active
+                        ? "bg-gradient-to-r from-green-400 to-green-600"
+                        : "bg-gradient-to-r from-gray-300 to-gray-400"
+                    }`}
+                    style={{ width: `${progress * 100}%` }}
+                  />
+                </div>
               </button>
             );
           })}
         </div>
 
         {/* Pause + Settings buttons */}
-        <div className="flex gap-2 md:gap-3 w-full shrink-0">
+        <div className="flex gap-3 w-full">
           <Button
             onClick={handle_pause}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl md:rounded-2xl py-3 md:py-5 flex-1 shadow-sm text-sm md:text-lg font-semibold flex items-center justify-center gap-1.5 md:gap-2"
+            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
           >
             {paused ? (
               <>
-                <Play className="w-4 h-4 md:w-5 md:h-5" />
+                <Play className="w-5 h-5" />
                 Resume
               </>
             ) : (
               <>
-                <Pause className="w-4 h-4 md:w-5 md:h-5" />
+                <Pause className="w-5 h-5" />
                 Pause
               </>
             )}
           </Button>
           <Button
             onClick={handle_settings}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl md:rounded-2xl py-3 md:py-5 flex-1 shadow-sm text-sm md:text-lg font-semibold flex items-center justify-center gap-1.5 md:gap-2"
+            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
           >
-            <Settings className="w-4 h-4 md:w-5 md:h-5" />
+            <Settings className="w-5 h-5" />
             Settings
           </Button>
         </div>
       </div>
 
-      <section className="w-full max-w-2xl mx-auto mt-1 md:mt-6 px-1 shrink-0">
-        <p className="text-xs text-gray-500 text-center mb-1">Free online chess clock for two players. Perfect for chess, Scrabble, Go, and turn-based board games.</p>
+      <section className="w-full max-w-md mx-auto mt-6 px-1">
+        <p className="text-xs text-gray-500 text-center mb-2">Free online chess clock for two players. Perfect for chess, Scrabble, Go, and turn-based board games.</p>
         <nav className="flex flex-wrap justify-center gap-3 text-xs">
           <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
           <span className="text-gray-400">|</span>

@@ -78,33 +78,33 @@ export default function RoundTimerPage() {
   const seconds = (round_time % 60).toString().padStart(2, "0");
 
   return (
-    <main className="h-dvh flex flex-col bg-gray-100 pt-12 pb-2 px-2 w-full overflow-hidden md:min-h-screen md:h-auto md:overflow-auto md:bg-gray-200 md:pt-20 md:pb-4 md:px-4 md:items-center">
+    <main className="min-h-screen flex flex-col bg-gray-100 pt-12 pb-4 px-3 w-full md:bg-gray-200 md:pt-20 md:px-4 md:items-center">
       <Header />
       <Navbar />
       <h1 className="sr-only">Total & Round Time Tracker</h1>
 
-      <div className="relative bg-white rounded-2xl shadow-lg p-4 md:p-12 flex flex-col items-center gap-2 md:gap-6 w-full max-w-md md:max-w-lg mx-auto mt-2 md:mt-4">
+      <div className="relative bg-white rounded-2xl shadow-lg p-6 md:p-12 flex flex-col items-center gap-5 md:gap-6 w-full max-w-md md:max-w-lg mx-auto mt-4">
         {/* Sound toggle */}
         <button
           aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
           onClick={toggle_audio}
-          className={`absolute top-3 right-3 md:top-4 md:right-4 rounded-full p-1.5 md:p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${audio_enabled ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
+          className={`absolute top-4 right-4 rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${audio_enabled ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
         >
           {audio_enabled ? (
-            <Volume2 className="text-blue-600 w-4 h-4 md:w-5 md:h-5" />
+            <Volume2 className="text-blue-600 w-5 h-5" />
           ) : (
-            <VolumeX className="text-gray-500 w-4 h-4 md:w-5 md:h-5" />
+            <VolumeX className="text-gray-500 w-5 h-5" />
           )}
         </button>
 
         {/* Status badge */}
-        <div className="flex items-center gap-1.5 bg-blue-50 text-blue-600 rounded-full px-3 py-1 text-xs md:text-sm font-semibold uppercase tracking-wide">
-          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-500" />
+        <div className="flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
+          <span className="w-2 h-2 rounded-full bg-blue-500" />
           Round Timer Active
         </div>
 
         {/* Subtitle */}
-        <p className="text-gray-500 text-xs md:text-sm">
+        <p className="text-gray-500 text-sm">
           Round {previous_round_times.length + 1} in progress
         </p>
 
@@ -115,7 +115,7 @@ export default function RoundTimerPage() {
         </div>
 
         {/* Circular progress ring with round time */}
-        <div className="relative w-48 h-48 md:w-80 md:h-80 flex items-center justify-center flex-shrink-0">
+        <div className="relative w-60 h-60 md:w-80 md:h-80 flex items-center justify-center">
           <svg
             viewBox={`0 0 ${ring_size} ${ring_size}`}
             className="w-full h-full -rotate-90"
@@ -145,15 +145,15 @@ export default function RoundTimerPage() {
           </svg>
           {/* Timer digits overlaid */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="flex items-baseline gap-1 md:gap-2">
+            <div className="flex items-baseline gap-2">
               <div className="flex flex-col items-center">
-                <span className="text-4xl md:text-7xl font-bold text-gray-800 font-mono">{minutes}</span>
-                <span className="text-[10px] md:text-xs uppercase tracking-wider text-gray-400 mt-0.5">Minutes</span>
+                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{minutes}</span>
+                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Minutes</span>
               </div>
-              <span className="text-4xl md:text-7xl font-bold text-gray-800 mb-4 md:mb-5">:</span>
+              <span className="text-5xl md:text-7xl font-bold text-gray-800 mb-5">:</span>
               <div className="flex flex-col items-center">
-                <span className="text-4xl md:text-7xl font-bold text-gray-800 font-mono">{seconds}</span>
-                <span className="text-[10px] md:text-xs uppercase tracking-wider text-gray-400 mt-0.5">Seconds</span>
+                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{seconds}</span>
+                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Seconds</span>
               </div>
             </div>
           </div>
@@ -162,20 +162,20 @@ export default function RoundTimerPage() {
         {/* Round Reset button */}
         <Button
           onClick={handle_round_reset}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl md:rounded-2xl py-3 md:py-5 w-full shadow-md text-sm md:text-lg font-semibold flex items-center justify-center gap-2 shrink-0"
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-4 md:py-5 w-full shadow-md text-base md:text-lg font-semibold flex items-center justify-center gap-2"
         >
-          <RotateCcw className="w-4 h-4 md:w-5 md:h-5" />
+          <RotateCcw className="w-5 h-5" />
           Round Reset
         </Button>
 
         {/* Round history */}
         {previous_round_times.length > 0 && (
-          <div className="w-full max-h-16 md:max-h-48 overflow-y-auto shrink-0">
-            <div className="flex flex-col gap-1 md:gap-2">
+          <div className="w-full max-h-24 md:max-h-48 overflow-y-auto">
+            <div className="flex flex-col gap-1.5 md:gap-2">
               {previous_round_times.map((time, index) => (
                 <div
                   key={index}
-                  className="flex justify-between items-center py-1 md:py-2 px-3 bg-gray-50 rounded-lg"
+                  className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg"
                 >
                   <span className="text-xs md:text-base font-medium text-gray-700">
                     Round {index + 1}
@@ -190,35 +190,35 @@ export default function RoundTimerPage() {
         )}
 
         {/* Pause + Settings buttons */}
-        <div className="flex gap-2 md:gap-3 w-full shrink-0">
+        <div className="flex gap-3 w-full">
           <Button
             onClick={handle_pause}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl md:rounded-2xl py-3 md:py-5 flex-1 shadow-sm text-sm md:text-lg font-semibold flex items-center justify-center gap-1.5 md:gap-2"
+            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
           >
             {running ? (
               <>
-                <Pause className="w-4 h-4 md:w-5 md:h-5" />
+                <Pause className="w-5 h-5" />
                 Pause
               </>
             ) : (
               <>
-                <Play className="w-4 h-4 md:w-5 md:h-5" />
+                <Play className="w-5 h-5" />
                 Resume
               </>
             )}
           </Button>
           <Button
             onClick={handle_settings}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl md:rounded-2xl py-3 md:py-5 flex-1 shadow-sm text-sm md:text-lg font-semibold flex items-center justify-center gap-1.5 md:gap-2"
+            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
           >
-            <Settings className="w-4 h-4 md:w-5 md:h-5" />
+            <Settings className="w-5 h-5" />
             Settings
           </Button>
         </div>
       </div>
 
-      <section className="w-full max-w-md mx-auto mt-1 md:mt-6 px-1 shrink-0">
-        <p className="text-xs text-gray-500 text-center mb-1">Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.</p>
+      <section className="w-full max-w-md mx-auto mt-6 px-1">
+        <p className="text-xs text-gray-500 text-center mb-2">Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.</p>
         <nav className="flex flex-wrap justify-center gap-3 text-xs">
           <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
           <span className="text-gray-400">|</span>
