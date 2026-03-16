@@ -59,7 +59,7 @@ export async function POST(
   }
 
   const body = await request.json();
-  const { winner_id, is_draw, notes, gif_url, played_at } = body;
+  const { winner_id, is_draw, notes, gif_url, played_at, points } = body;
 
   if (!is_draw && !winner_id) {
     return NextResponse.json(
@@ -88,12 +88,17 @@ export async function POST(
     }
   }
 
-  // Validate played_at date
+  // Validate played_at date — store full timestamp so same-day games sort by creation order
   let validated_played_at = new Date().toISOString();
   if (played_at) {
     const parsed = new Date(played_at);
     if (isNaN(parsed.getTime())) {
       return NextResponse.json({ error: "Invalid played_at date" }, { status: 400 });
+    }
+    // If date-only (e.g. "2026-03-07"), combine with current time for correct sort order
+    if (/^\d{4}-\d{2}-\d{2}$/.test(played_at)) {
+      const now = new Date();
+      parsed.setUTCHours(now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
     }
     validated_played_at = parsed.toISOString();
   }
@@ -116,9 +121,11 @@ export async function POST(
 
   const game_id = crypto.randomUUID();
 
+  const validated_points = points === 2 ? 2 : 1;
+
   db.prepare(
-    `INSERT INTO challenge_games (id, challenge_id, winner_id, is_draw, notes, gif_url, played_at, created_by)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO challenge_games (id, challenge_id, winner_id, is_draw, notes, gif_url, played_at, created_by, points)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     game_id,
     id,
@@ -127,7 +134,8 @@ export async function POST(
     (notes || "").trim(),
     gif_url || null,
     validated_played_at,
-    auth.user.id
+    auth.user.id,
+    is_draw ? 0 : validated_points
   );
 
   // Update challenge updated_at

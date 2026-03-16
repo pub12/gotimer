@@ -13,6 +13,7 @@ type Game = {
   gif_url: string | null;
   played_at: string;
   created_by: string;
+  points?: number;
 };
 
 type Participant = {
@@ -133,6 +134,11 @@ export function GameHistory({
                 <span className="font-medium">
                   {game.is_draw ? "Draw" : `${winner_name} won`}
                 </span>
+                {!game.is_draw && game.points && game.points > 1 && (
+                  <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-medium">
+                    +{game.points}pts
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">

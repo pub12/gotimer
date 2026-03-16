@@ -38,6 +38,7 @@ type ChallengeData = {
     gif_url: string | null;
     played_at: string;
     created_by: string;
+    points?: number;
   }[];
   scores: Record<string, number>;
   draws: number;

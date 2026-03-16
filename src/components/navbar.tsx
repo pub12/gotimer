@@ -8,6 +8,7 @@ import { Trophy, MessageSquare, Globe, Home } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
+import { check_new_user_sign_up } from "@/lib/ga-events";
 
 const REDIRECT_KEY = "redirect_after_login";
 
@@ -17,6 +18,20 @@ export default function Navbar() {
   const { authenticated, loading: is_loading, permissions } = use_auth_status();
   const has_redirected = useRef(false);
   const [show_feedback, set_show_feedback] = useState(false);
+
+  // Fire GA sign_up event for new users (works for both email and Google auth)
+  useEffect(() => {
+    if (is_loading || !authenticated) return;
+    fetch("/api/hazo_auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user?.id) {
+          const method = data.user.google_id ? "google" : "email";
+          check_new_user_sign_up(data.user.id, method);
+        }
+      })
+      .catch(() => {});
+  }, [authenticated, is_loading]);
 
   // After OAuth, hazo_auth always redirects to "/".
   // Check localStorage for a pending redirect and navigate there immediately.

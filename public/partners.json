@@ -4,5 +4,11 @@
     "url": "https://yo.directory/",
     "description": "Featured on Yo Directory.",
     "snippet": "<a href=\"https://yo.directory/\" target=\"_blank\"><img src=\"https://cdn.prod.website-files.com/65c1546fa73ea974db789e3d/65e1e171f89ebfa7bd0129ac_yodirectory-featured.png\" alt=\"yo.directory\" style=\"width: 150px; height: 54px;\" width=\"150\" height=\"54\"/></a>"
+  },
+  {
+    "name": "Fazier",
+    "url": "https://fazier.com/launches/gotimer.org",
+    "description": "Featured on Fazier.",
+    "snippet": "<a href=\"https://fazier.com/launches/gotimer.org\" target=\"_blank\"><img src=\"https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=featured&theme=neutral\" width=\"250\" alt=\"Fazier badge\" /></a>"
   }
 ]

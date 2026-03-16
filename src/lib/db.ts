@@ -89,6 +89,7 @@ const migrations: Migration[] = [
   { version: 6, sql: `ALTER TABLE challenge_participants ADD COLUMN score_changed_at TEXT` },
   { version: 7, sql: `ALTER TABLE challenge_participants ADD COLUMN score_changed_from INTEGER` },
   { version: 8, sql: `ALTER TABLE game_challenges ADD COLUMN pending_opponent_score INTEGER` },
+  { version: 9, sql: `ALTER TABLE challenge_games ADD COLUMN points INTEGER NOT NULL DEFAULT 1` },
 ];
 
 function run_migrations(db: Database.Database) {
@@ -125,12 +126,12 @@ export function get_challenge_scores(
     if (p.score_override != null) {
       scores[p.user_id] = p.score_override;
     } else {
-      const wins = db
+      const result = db
         .prepare(
-          `SELECT COUNT(*) as count FROM challenge_games WHERE challenge_id = ? AND winner_id = ? AND is_draw = 0`
+          `SELECT COALESCE(SUM(points), 0) as total FROM challenge_games WHERE challenge_id = ? AND winner_id = ? AND is_draw = 0`
         )
-        .get(challenge_id, p.user_id) as { count: number };
-      scores[p.user_id] = wins.count;
+        .get(challenge_id, p.user_id) as { total: number };
+      scores[p.user_id] = result.total;
     }
   }
   return scores;

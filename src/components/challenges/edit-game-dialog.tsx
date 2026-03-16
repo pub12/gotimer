@@ -19,6 +19,7 @@ type GameData = {
   notes: string;
   gif_url: string | null;
   played_at: string;
+  points?: number;
 };
 
 type EditGameDialogProps = {
@@ -46,6 +47,7 @@ export function EditGameDialog({
     game.played_at ? new Date(game.played_at).toISOString().split("T")[0] : new Date().toISOString().split("T")[0]
   );
   const [notes, set_notes] = useState(game.notes || "");
+  const [points, set_points] = useState<number>(game.points || 1);
   const [gif_url, set_gif_url] = useState<string | null>(game.gif_url);
   const [show_gif_picker, set_show_gif_picker] = useState(false);
   const [saving, set_saving] = useState(false);
@@ -64,6 +66,7 @@ export function EditGameDialog({
           played_at,
           notes,
           gif_url,
+          points: is_draw ? 0 : points,
         }),
       });
 
@@ -163,6 +166,29 @@ export function EditGameDialog({
                 </button>
               </div>
             </div>
+
+            {!is_draw && winner_id && (
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Points for this win
+                </label>
+                <div className="flex gap-2">
+                  {[1, 2].map((v) => (
+                    <button
+                      key={v}
+                      className={`flex-1 p-3 rounded-lg border text-center transition-colors cursor-pointer font-medium ${
+                        points === v
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-primary/50"
+                      }`}
+                      onClick={() => set_points(v)}
+                    >
+                      {v} {v === 1 ? "point" : "points"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div>
               <label className="text-sm font-medium mb-2 block">
