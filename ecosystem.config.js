@@ -24,7 +24,7 @@ module.exports = {
     cwd: "/home/pubs/gotimer", // Path to your app on the VM
     instances: "max",          // Use all CPU cores for better performance
     exec_mode: "cluster",      // Enables zero-downtime reloads
-    env: {
+    env_production: {
       NODE_ENV: "production",
       ...dotenv,
       PORT: dotenv.PORT || 3000,
