@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, context: any) {
   console.log(`[DEBUG] NEXTAUTH_URL: ${process.env.NEXTAUTH_URL}`);
   console.log(`[DEBUG] ============================================\n`);
 
-  const response = await oauthGoogleCallbackGET(req, context);
+  const response = await oauthGoogleCallbackGET(req);
 
   console.log(`\n[DEBUG OAuth Callback Response] ==================`);
   console.log(`[DEBUG] Status: ${response.status}`);
