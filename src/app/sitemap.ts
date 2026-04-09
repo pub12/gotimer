@@ -4,19 +4,20 @@ import { get_db } from "@/lib/db";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://gotimer.org";
 
-  const static_routes: MetadataRoute.Sitemap = [
-    { url: `${base}/`, changeFrequency: "weekly", priority: 1.0 },
-    { url: `${base}/countdown-setup`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/countdown`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/chess-clock-setup`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/chess-clock`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/round-timer-setup`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/round-timer`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/public-challenges`, changeFrequency: "daily", priority: 0.8 },
+  const now = new Date();
 
-    { url: `${base}/partners`, changeFrequency: "weekly", priority: 0.4 },
-    { url: `${base}/privacy-policy`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${base}/terms-of-service`, changeFrequency: "yearly", priority: 0.3 },
+  const static_routes: MetadataRoute.Sitemap = [
+    { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${base}/countdown-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/countdown`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/chess-clock-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/chess-clock`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/round-timer-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/round-timer`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/public-challenges`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${base}/partners`, lastModified: now, changeFrequency: "weekly", priority: 0.4 },
+    { url: `${base}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/terms-of-service`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // Add public challenge URLs from database
