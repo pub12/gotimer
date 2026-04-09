@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { use_auth_status } from "hazo_auth/client";
 import {
   LayoutDashboard,
   Users,
@@ -18,6 +20,8 @@ import {
   ClipboardList,
   Menu,
   X,
+  LogOut,
+  User,
 } from "lucide-react";
 
 type NavItem = {
@@ -53,11 +57,63 @@ const NAV_GROUPS: { items: NavItem[] }[] = [
   },
 ];
 
+function UserProfile() {
+  const { authenticated, name, email, profile_picture_url, loading } = use_auth_status();
+
+  if (loading || !authenticated) return null;
+
+  const display_name = name || email || "Admin";
+  const pic_url = profile_picture_url || null;
+
+  return (
+    <div className="px-4 py-3 border-t border-white/10">
+      <div className="flex items-center gap-3">
+        {pic_url ? (
+          <Image
+            src={pic_url}
+            alt={display_name}
+            width={36}
+            height={36}
+            className="rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+            <User className="w-4 h-4 text-white/70" />
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm font-medium truncate m-0">{display_name}</p>
+          {email && name && (
+            <p className="text-white/50 text-xs truncate m-0">{email}</p>
+          )}
+        </div>
+      </div>
+      <a
+        href="/api/hazo_auth/logout"
+        className="flex items-center gap-2 mt-3 px-2 py-1.5 text-white/60 hover:text-white text-xs rounded hover:bg-white/10 transition-colors no-underline"
+      >
+        <LogOut className="w-3.5 h-3.5" />
+        Sign out
+      </a>
+    </div>
+  );
+}
+
 function SidebarContent({ pathname, on_close }: { pathname: string; on_close?: () => void }) {
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-        <span className="text-white font-bold text-lg tracking-wide">Admin</span>
+      {/* GoTimer logo + home link */}
+      <Link
+        href="/"
+        className="flex items-center gap-2 px-5 py-3 border-b border-white/10 no-underline hover:bg-white/5 transition-colors"
+      >
+        <Image src="/favicon-96x96.png" alt="GoTimer" width={28} height={28} />
+        <span className="text-white font-bold text-base tracking-wide">GoTimer</span>
+      </Link>
+
+      {/* Admin heading */}
+      <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
+        <span className="text-white/60 font-semibold text-xs uppercase tracking-widest">Admin Panel</span>
         {on_close && (
           <button
             onClick={on_close}
@@ -102,6 +158,8 @@ function SidebarContent({ pathname, on_close }: { pathname: string; on_close?: (
           </div>
         ))}
       </nav>
+
+      <UserProfile />
     </div>
   );
 }

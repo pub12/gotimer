@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, MessageSquare, Globe, Home } from "lucide-react";
+import { Trophy, MessageSquare, Globe, Home, Shield } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
@@ -93,6 +93,16 @@ export default function Navbar() {
               <Trophy className="w-4 h-4" />
               <span className="hidden md:inline">My Challenges</span>
               <span className="md:hidden">Mine</span>
+            </Link>
+          )}
+
+          {!is_loading && authenticated && permissions?.includes("admin_view_all_games") && (
+            <Link
+              href="/admin"
+              className="text-base md:text-lg font-medium text-gray-700 hover:text-gray-900 px-2 md:px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors no-underline flex items-center gap-1.5"
+            >
+              <Shield className="w-4 h-4" />
+              <span className="hidden md:inline">Admin</span>
             </Link>
           )}
 
