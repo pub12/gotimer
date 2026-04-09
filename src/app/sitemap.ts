@@ -38,5 +38,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If DB is unavailable, just return static routes
   }
 
-  return [...static_routes, ...challenge_routes];
+  // Add published timer page URLs from database
+  let timer_page_routes: MetadataRoute.Sitemap = [];
+  try {
+    const db = get_db();
+    const timer_pages = db
+      .prepare(`SELECT slug, updated_at FROM timer_pages WHERE status = 'published'`)
+      .all() as { slug: string; updated_at: string }[];
+
+    timer_page_routes = timer_pages.map((p) => ({
+      url: `${base}/${p.slug}`,
+      lastModified: p.updated_at ? new Date(p.updated_at) : new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }));
+  } catch {
+    // DB unavailable
+  }
+
+  // Add published blog post URLs from database
+  let blog_routes: MetadataRoute.Sitemap = [];
+  try {
+    const db = get_db();
+    const blog_posts = db
+      .prepare(`SELECT slug, updated_at FROM blog_posts WHERE status = 'published'`)
+      .all() as { slug: string; updated_at: string }[];
+
+    blog_routes = blog_posts.map((p) => ({
+      url: `${base}/blog/${p.slug}`,
+      lastModified: p.updated_at ? new Date(p.updated_at) : new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // If DB is unavailable, skip blog routes
+  }
+
+  return [...static_routes, ...challenge_routes, ...timer_page_routes, ...blog_routes];
 }
