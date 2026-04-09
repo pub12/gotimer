@@ -16,9 +16,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || "https://gotimer.org"),
-  title: "GoTimer - Free Online Board Game Timers & Challenge Tracker",
+  title: {
+    default: "GoTimer — Free Online Timers with Leaderboard & Competition",
+    template: "%s | GoTimer",
+  },
   description:
-    "Free online board game timers, ADHD focus timers, and competitive challenge tracking. Countdown timers, chess clocks, round timers, and score tracking for tabletop gaming and productivity.",
+    "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed. Start in seconds.",
   keywords:
     "game timer, chess clock, countdown timer, round timer, board game timer, game challenges, board games, mobile timer, online timer, boardgame tracker, score tracking, adhd timer, pomodoro timer, focus timer",
   alternates: {
@@ -31,18 +34,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "GoTimer - Free Online Board Game Timers & Challenge Tracker",
+    title: "GoTimer — Free Online Timers with Leaderboard & Competition",
     description:
-      "Free online board game timers and challenge tracking. Countdown, chess clock, round timer, and score tracking for tabletop gaming.",
+      "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed. Start in seconds.",
     type: "website",
     locale: "en_US",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoTimer - Free Online Board Game Timers & Challenge Tracker",
+    title: "GoTimer — Free Online Timers with Leaderboard & Competition",
     description:
-      "Free online board game timers and challenge tracking. Countdown, chess clock, round timer, and score tracking.",
+      "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed.",
     images: ["/fight.jpg"],
   },
 };
@@ -71,7 +74,7 @@ const jsonLd = {
         priceCurrency: "USD",
       },
       description:
-        "A free, mobile-friendly web application providing countdown timers, chess clocks, round timers, and competitive challenge tracking for board games.",
+        "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed. Start in seconds.",
       featureList: [
         "Countdown Timer with audio alerts",
         "Two-player Chess Clock",
@@ -82,6 +85,16 @@ const jsonLd = {
         "GIF reactions for game results",
         "Works on mobile, tablet, and desktop",
       ],
+    },
+    {
+      "@type": "WebSite",
+      name: "GoTimer",
+      url: "https://gotimer.org",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://gotimer.org/?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
     },
   ],
 };

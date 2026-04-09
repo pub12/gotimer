@@ -1,27 +1,63 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Countdown Timer Online - Free Board Game Timer | GoTimer",
+  title: "Free Online Countdown Timer — Audio Alerts & Custom Duration",
   description:
-    "Use a free online countdown timer with sound alerts for board games, trivia, and focus sessions. Full-screen display, audio cues, works on any device. No download needed.",
+    "Set a countdown timer from 1 second to 60 minutes. Audio beeps during the last 10 seconds. Perfect for board games, Pomodoro sessions, cooking, and ADHD focus.",
   alternates: {
     canonical: "/countdown",
   },
   openGraph: {
-    title: "Countdown Timer Online - Free Board Game Timer | GoTimer",
+    title: "Free Online Countdown Timer — Audio Alerts & Custom Duration",
     description:
-      "Use a free online countdown timer with sound alerts for board games, trivia, and focus sessions. Works on any device.",
+      "Set a countdown timer from 1 second to 60 minutes. Audio beeps during the last 10 seconds. Perfect for board games, Pomodoro sessions, cooking, and ADHD focus.",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Countdown Timer Online - Free Board Game Timer | GoTimer",
+    title: "Free Online Countdown Timer — Audio Alerts & Custom Duration",
     description:
-      "Use a free online countdown timer with sound alerts for board games, trivia, and focus sessions. Works on any device.",
+      "Set a countdown timer from 1 second to 60 minutes. Audio beeps during the last 10 seconds. Perfect for board games, Pomodoro sessions, cooking, and ADHD focus.",
     images: ["/fight.jpg"],
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "GoTimer Countdown Timer",
+  url: "https://gotimer.org/countdown",
+  applicationCategory: "UtilityApplication",
+  operatingSystem: "Any",
+  browserRequirements: "Requires a modern web browser",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  description:
+    "Set a countdown timer from 1 second to 60 minutes. Audio beeps during the last 10 seconds. Perfect for board games, Pomodoro sessions, cooking, and ADHD focus.",
+  featureList: [
+    "Custom duration from 1 second to 60 minutes",
+    "Audio alert during final 10 seconds",
+    "Full-screen display",
+    "Works on mobile, tablet, and desktop",
+    "No login or download required",
+  ],
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return children;
+  // JSON-LD is a static object we control - safe to serialize
+  const jsonLdString = JSON.stringify(jsonLd);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        // skipcq: JS-0440
+        dangerouslySetInnerHTML={{ __html: jsonLdString }}
+      />
+      {children}
+    </>
+  );
 }
