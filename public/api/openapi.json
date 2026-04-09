@@ -1,0 +1,311 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "GoTimer API",
+    "description": "Public REST API for GoTimer — manage timer challenges, leaderboards, and more.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "GoTimer",
+      "url": "https://gotimer.org/developers"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://gotimer.org/api/v1",
+      "description": "Production"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API key as Bearer token. Obtain keys from your GoTimer admin panel."
+      },
+      "ApiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "API key in X-API-Key header."
+      }
+    },
+    "schemas": {
+      "TimerType": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "countdown" },
+          "name": { "type": "string", "example": "Countdown Timer" },
+          "description": { "type": "string" },
+          "default_config": { "type": "object" }
+        }
+      },
+      "Challenge": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "format": { "type": "string", "enum": ["head-to-head", "group", "solo"] },
+          "timer_type": { "type": "string", "nullable": true },
+          "status": { "type": "string", "enum": ["active", "completed", "archived"] },
+          "is_public": { "type": "integer", "enum": [0, 1] },
+          "join_code": { "type": "string", "nullable": true },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "LeaderboardEntry": {
+        "type": "object",
+        "properties": {
+          "user_id": { "type": "string" },
+          "role": { "type": "string" },
+          "score": { "type": "integer" }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["ok", "error"] },
+          "data": { "type": "object" },
+          "error": { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/timers": {
+      "get": {
+        "summary": "List timer types",
+        "description": "Returns all available timer types with names, descriptions, and default configurations. No authentication required.",
+        "operationId": "listTimerTypes",
+        "tags": ["Timers"],
+        "responses": {
+          "200": {
+            "description": "List of timer types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "timer_types": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/TimerType" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/challenges": {
+      "get": {
+        "summary": "List public challenges",
+        "description": "Returns all public challenges with scores. No authentication required.",
+        "operationId": "listChallenges",
+        "tags": ["Challenges"],
+        "responses": {
+          "200": {
+            "description": "List of public challenges",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "challenges": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/Challenge" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a challenge",
+        "description": "Creates a new challenge. Requires API key authentication.",
+        "operationId": "createChallenge",
+        "tags": ["Challenges"],
+        "security": [
+          { "BearerAuth": [] },
+          { "ApiKeyHeader": [] }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "Challenge name"
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": ["head-to-head", "group", "solo"],
+                    "default": "head-to-head"
+                  },
+                  "timer_type": {
+                    "type": "string",
+                    "enum": ["countdown", "chess-clock", "round-timer"],
+                    "nullable": true
+                  },
+                  "is_public": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Challenge created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "challenge": { "$ref": "#/components/schemas/Challenge" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid request body" },
+          "401": { "description": "Missing or invalid API key" }
+        }
+      }
+    },
+    "/challenges/{id}": {
+      "get": {
+        "summary": "Get challenge details",
+        "description": "Returns challenge details including leaderboard and game history. Only works for public challenges.",
+        "operationId": "getChallenge",
+        "tags": ["Challenges"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "description": "Challenge ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Challenge details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "challenge": { "$ref": "#/components/schemas/Challenge" },
+                        "leaderboard": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/LeaderboardEntry" }
+                        },
+                        "games": { "type": "array", "items": { "type": "object" } },
+                        "draws": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "Challenge is private" },
+          "404": { "description": "Challenge not found" }
+        }
+      }
+    },
+    "/challenges/{id}/join": {
+      "post": {
+        "summary": "Join a challenge",
+        "description": "Join a group challenge using its join code. Requires API key authentication.",
+        "operationId": "joinChallenge",
+        "tags": ["Challenges"],
+        "security": [
+          { "BearerAuth": [] },
+          { "ApiKeyHeader": [] }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "description": "Challenge ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["join_code"],
+                "properties": {
+                  "join_code": {
+                    "type": "string",
+                    "example": "TIMER-1234",
+                    "description": "The join code provided by the challenge creator"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Joined challenge successfully" },
+          "200": { "description": "Already a participant" },
+          "400": { "description": "Challenge does not support join codes or invalid request" },
+          "401": { "description": "Missing or invalid API key" },
+          "403": { "description": "Invalid join code" },
+          "404": { "description": "Challenge not found" }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Timers",
+      "description": "Timer type information"
+    },
+    {
+      "name": "Challenges",
+      "description": "Challenge management and leaderboards"
+    }
+  ]
+}

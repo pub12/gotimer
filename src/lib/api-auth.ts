@@ -1,0 +1,50 @@
+import { NextRequest } from "next/server";
+import { get_db } from "@/lib/db";
+
+type ApiKeyRecord = {
+  key: string;
+  name: string;
+  created_at: string;
+};
+
+export async function validateApiKey(
+  request: NextRequest
+): Promise<{ valid: boolean; key_name?: string }> {
+  // Check Authorization header (Bearer token) or X-API-Key header
+  const auth_header = request.headers.get("Authorization");
+  const x_api_key = request.headers.get("X-API-Key");
+
+  let provided_key: string | null = null;
+
+  if (auth_header && auth_header.startsWith("Bearer ")) {
+    provided_key = auth_header.slice(7).trim();
+  } else if (x_api_key) {
+    provided_key = x_api_key.trim();
+  }
+
+  if (!provided_key) {
+    return { valid: false };
+  }
+
+  try {
+    const db = get_db();
+    const row = db
+      .prepare(`SELECT value FROM settings WHERE key = 'api_keys'`)
+      .get() as { value: string } | undefined;
+
+    if (!row) {
+      return { valid: false };
+    }
+
+    const api_keys: ApiKeyRecord[] = JSON.parse(row.value);
+
+    const matched = api_keys.find((k) => k.key === provided_key);
+    if (matched) {
+      return { valid: true, key_name: matched.name };
+    }
+
+    return { valid: false };
+  } catch {
+    return { valid: false };
+  }
+}
