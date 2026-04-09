@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { name, description, gif_url, is_public, game_id } = body;
+  const { name, description, gif_url, is_public, game_id, format, timer_type } = body;
 
   if (!name || typeof name !== "string" || name.trim().length === 0) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -89,6 +89,16 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  const valid_formats = ["head-to-head", "group", "solo"];
+  const challenge_format = format && valid_formats.includes(format) ? format : "head-to-head";
+
+  // Generate join code for group challenges
+  let join_code: string | null = null;
+  if (challenge_format === "group") {
+    const digits = Math.floor(1000 + Math.random() * 9000).toString();
+    join_code = `TIMER-${digits}`;
+  }
+
   const db = get_db();
   const id = crypto.randomUUID();
   const participant_id = crypto.randomUUID();
@@ -96,8 +106,8 @@ export async function POST(request: NextRequest) {
   const is_public_value = is_public === false ? 0 : 1;
 
   db.prepare(
-    `INSERT INTO game_challenges (id, name, description, created_by, gif_url, is_public, game_id) VALUES (?, ?, ?, ?, ?, ?, ?)`
-  ).run(id, name.trim(), (description || "").trim(), auth.user.id, gif_url || null, is_public_value, game_id || null);
+    `INSERT INTO game_challenges (id, name, description, created_by, gif_url, is_public, game_id, format, timer_type, join_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(id, name.trim(), (description || "").trim(), auth.user.id, gif_url || null, is_public_value, game_id || null, challenge_format, timer_type || null, join_code);
 
   db.prepare(
     `INSERT INTO challenge_participants (id, challenge_id, user_id, role) VALUES (?, ?, ?, 'creator')`

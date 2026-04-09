@@ -1,15 +1,19 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { Suspense, useState, useEffect, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
 import { use_auth_status } from "hazo_auth/client";
 import { GifPicker } from "@/components/challenges/gif-picker";
 import { ArrowLeft, Image, X, ChevronDown, Plus } from "lucide-react";
 
-export default function CreateChallengePage() {
+const VALID_FORMATS = ["head-to-head", "group", "solo"] as const;
+type ChallengeFormat = (typeof VALID_FORMATS)[number];
+
+function CreateChallengeForm() {
   const router = useRouter();
+  const search_params = useSearchParams();
   const { authenticated, loading: is_loading } = use_auth_status();
   const [name, set_name] = useState("");
   const [description, set_description] = useState("");
@@ -26,6 +30,18 @@ export default function CreateChallengePage() {
   const [show_game_dropdown, set_show_game_dropdown] = useState(false);
   const [adding_game, set_adding_game] = useState(false);
   const game_dropdown_ref = useRef<HTMLDivElement>(null);
+
+  // Pre-fill from query params
+  const [format, set_format] = useState<ChallengeFormat>("head-to-head");
+  const [timer_type, set_timer_type] = useState<string>("");
+  const [join_code, set_join_code] = useState<string | null>(null);
+
+  useEffect(() => {
+    const qp_timer_type = search_params.get("timer_type");
+    const qp_format = search_params.get("format") as ChallengeFormat | null;
+    if (qp_timer_type) set_timer_type(qp_timer_type);
+    if (qp_format && VALID_FORMATS.includes(qp_format)) set_format(qp_format);
+  }, [search_params]);
 
   useEffect(() => {
     const handle_click_outside = (e: MouseEvent) => {
@@ -60,21 +76,34 @@ export default function CreateChallengePage() {
       const res = await fetch("/api/challenges", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), description: description.trim(), gif_url: gif_url || undefined, is_public, game_id: selected_game_id || undefined }),
+        body: JSON.stringify({
+          name: name.trim(),
+          description: description.trim(),
+          gif_url: gif_url || undefined,
+          is_public,
+          game_id: selected_game_id || undefined,
+          format,
+          timer_type: timer_type || undefined,
+        }),
       });
 
       if (res.ok) {
         const challenge = await res.json();
         set_created_id(challenge.id);
+        if (challenge.join_code) {
+          set_join_code(challenge.join_code);
+        }
 
-        // Generate invite link
-        const invite_res = await fetch(
-          `/api/challenges/${challenge.id}/invite`,
-          { method: "POST" }
-        );
-        if (invite_res.ok) {
-          const invite = await invite_res.json();
-          set_invite_url(invite.invite_url);
+        // Generate invite link (for head-to-head / non-group)
+        if (format !== "group") {
+          const invite_res = await fetch(
+            `/api/challenges/${challenge.id}/invite`,
+            { method: "POST" }
+          );
+          if (invite_res.ok) {
+            const invite = await invite_res.json();
+            set_invite_url(invite.invite_url);
+          }
         }
       }
     } finally {
@@ -269,6 +298,37 @@ export default function CreateChallengePage() {
                 )}
               </div>
 
+              <div>
+                <label className="text-sm font-medium mb-2 block">Format</label>
+                <div className="flex gap-2">
+                  {VALID_FORMATS.map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => set_format(f)}
+                      className={`flex-1 py-2 px-3 rounded-lg text-sm border cursor-pointer capitalize transition-colors ${
+                        format === f
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-background hover:bg-muted border-input"
+                      }`}
+                    >
+                      {f === "head-to-head" ? "1v1" : f.charAt(0).toUpperCase() + f.slice(1)}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {format === "head-to-head" && "Challenge a specific opponent"}
+                  {format === "group" && "Multiple players join with a code"}
+                  {format === "solo" && "Track your personal progress"}
+                </p>
+              </div>
+
+              {timer_type && (
+                <div className="text-sm text-muted-foreground bg-muted px-3 py-2 rounded-lg">
+                  Timer type: <span className="font-medium capitalize">{timer_type.replace(/-/g, " ")}</span>
+                </div>
+              )}
+
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
@@ -292,19 +352,45 @@ export default function CreateChallengePage() {
           <div className="bg-card rounded-xl p-6 shadow-sm border text-center">
             <div className="text-4xl mb-4">🎉</div>
             <h2 className="text-2xl font-bold mb-2">Challenge Created!</h2>
-            <p className="text-muted-foreground mb-6">
-              Share this link with your friend so they can join:
-            </p>
 
-            {invite_url && (
-              <div className="mb-6">
-                <div className="bg-muted rounded-lg p-3 text-sm font-mono break-all mb-3">
-                  {invite_url}
+            {join_code ? (
+              <>
+                <p className="text-muted-foreground mb-4">
+                  Share this join code so others can join your group challenge:
+                </p>
+                <div className="bg-muted rounded-lg p-4 mb-4">
+                  <div className="text-3xl font-mono font-bold tracking-widest text-foreground">
+                    {join_code}
+                  </div>
                 </div>
-                <Button onClick={copy_link} variant="outline" className="w-full">
-                  {copied ? "Copied!" : "Copy Invite Link"}
+                <Button
+                  onClick={() => {
+                    navigator.clipboard.writeText(join_code);
+                    set_copied(true);
+                    setTimeout(() => set_copied(false), 2000);
+                  }}
+                  variant="outline"
+                  className="w-full mb-4"
+                >
+                  {copied ? "Copied!" : "Copy Join Code"}
                 </Button>
-              </div>
+              </>
+            ) : (
+              <>
+                <p className="text-muted-foreground mb-6">
+                  Share this link with your friend so they can join:
+                </p>
+                {invite_url && (
+                  <div className="mb-6">
+                    <div className="bg-muted rounded-lg p-3 text-sm font-mono break-all mb-3">
+                      {invite_url}
+                    </div>
+                    <Button onClick={copy_link} variant="outline" className="w-full">
+                      {copied ? "Copied!" : "Copy Invite Link"}
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
 
             <Button
@@ -317,5 +403,18 @@ export default function CreateChallengePage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function CreateChallengePage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen flex items-center justify-center">
+        <Navbar />
+        <p className="text-muted-foreground">Loading...</p>
+      </main>
+    }>
+      <CreateChallengeForm />
+    </Suspense>
   );
 }

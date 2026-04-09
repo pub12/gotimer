@@ -11,6 +11,8 @@ import { EditGameDialog } from "@/components/challenges/edit-game-dialog";
 import { ChallengeHistogram } from "@/components/challenges/challenge-histogram";
 import { TrashTalkBanner } from "@/components/challenges/trash-talk-banner";
 import { PlayOnceGif } from "@/components/challenges/play-once-gif";
+import { GroupLeaderboard } from "@/components/challenges/group-leaderboard";
+import { JoinDialog } from "@/components/challenges/join-dialog";
 import { use_auth_status } from "hazo_auth/client";
 import { toast } from "sonner";
 import {
@@ -29,7 +31,10 @@ type ChallengeData = {
   created_by: string;
   status: string;
   gif_url: string | null;
-  participants: { user_id: string; role: string }[];
+  format: string;
+  timer_type: string | null;
+  join_code: string | null;
+  participants: { user_id: string; role: string; score?: number; games_played?: number }[];
   games: {
     id: string;
     winner_id: string | null;
@@ -54,6 +59,8 @@ export default function ChallengeDetailPage() {
   const [editing_game, set_editing_game] = useState<ChallengeData["games"][0] | null>(null);
   const [invite_url, set_invite_url] = useState<string | null>(null);
   const [copied, set_copied] = useState(false);
+  const [show_join_dialog, set_show_join_dialog] = useState(false);
+  const [group_participants, set_group_participants] = useState<ChallengeData["participants"]>([]);
   const [current_user_id, set_current_user_id] = useState<string>("");
   const [user_names, set_user_names] = useState<Record<string, string>>({});
   const [user_pictures, set_user_pictures] = useState<Record<string, string | null>>({});
@@ -102,6 +109,15 @@ export default function ChallengeDetailPage() {
     }
     load_challenge();
   }, [authenticated, auth_loading, load_challenge, router, id]);
+
+  // Load group participants with scores for group challenges
+  useEffect(() => {
+    if (!challenge || challenge.format !== "group") return;
+    fetch(`/api/challenges/${id}/participants`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => set_group_participants(data))
+      .catch(() => {});
+  }, [challenge, id]);
 
   // Load user profiles for participants
   useEffect(() => {
@@ -273,25 +289,56 @@ export default function ChallengeDetailPage() {
             </div>
           )}
 
-          {/* Score display */}
-          <ScoreDisplay
-            player1_name={user_names[current_user_id] || "You"}
-            player2_name={
-              opponent_id
-                ? user_names[opponent_id] || "Opponent"
-                : "Opponent"
-            }
-            player1_score={my_score}
-            player2_score={opponent_score}
-            player1_picture={user_pictures[current_user_id]}
-            player2_picture={opponent_id ? user_pictures[opponent_id] : null}
-            draws={challenge.draws}
-          />
+          {/* Score display — head-to-head only */}
+          {challenge.format !== "group" && (
+            <>
+              <ScoreDisplay
+                player1_name={user_names[current_user_id] || "You"}
+                player2_name={
+                  opponent_id
+                    ? user_names[opponent_id] || "Opponent"
+                    : "Opponent"
+                }
+                player1_score={my_score}
+                player2_score={opponent_score}
+                player1_picture={user_pictures[current_user_id]}
+                player2_picture={opponent_id ? user_pictures[opponent_id] : null}
+                draws={challenge.draws}
+              />
+              {/* Trash talk banner */}
+              {has_games && (
+                <div className="mt-4">
+                  <TrashTalkBanner type={am_winning ? "win" : "lose"} />
+                </div>
+              )}
+            </>
+          )}
 
-          {/* Trash talk banner */}
-          {has_games && (
+          {/* Group leaderboard */}
+          {challenge.format === "group" && (
             <div className="mt-4">
-              <TrashTalkBanner type={am_winning ? "win" : "lose"} />
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold">Leaderboard</h3>
+                {challenge.join_code && (
+                  <div className="text-xs text-muted-foreground font-mono bg-muted px-2 py-1 rounded">
+                    Code: {challenge.join_code}
+                  </div>
+                )}
+              </div>
+              <GroupLeaderboard
+                participants={group_participants.length > 0 ? group_participants.map((p) => ({ ...p, score: p.score ?? 0, games_played: p.games_played ?? 0 })) : challenge.participants.map((p) => ({ ...p, score: challenge.scores[p.user_id] ?? 0, games_played: 0 }))}
+                user_names={user_names}
+                user_pictures={user_pictures}
+                current_user_id={current_user_id}
+              />
+              {/* Join button for non-participants */}
+              {challenge.join_code && !challenge.participants.some((p) => p.user_id === current_user_id) && (
+                <div className="mt-4">
+                  <Button onClick={() => set_show_join_dialog(true)} className="w-full">
+                    Join This Challenge
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -399,6 +446,17 @@ export default function ChallengeDetailPage() {
             load_challenge();
           }}
           on_close={() => set_editing_game(null)}
+        />
+      )}
+
+      {show_join_dialog && (
+        <JoinDialog
+          challenge_id={id}
+          on_joined={() => {
+            set_show_join_dialog(false);
+            load_challenge();
+          }}
+          on_close={() => set_show_join_dialog(false)}
         />
       )}
     </main>
