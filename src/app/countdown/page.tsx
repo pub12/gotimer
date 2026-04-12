@@ -1,232 +1,175 @@
 "use client";
-// Purpose: Countdown page for the Game Timer app. Reads time from query and displays a live countdown timer.
 
 import React, { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { Button } from "../../components/ui/button";
-import { Volume2, VolumeX, Settings, RotateCcw, Pause, Play } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Navbar from "../../components/navbar";
-import Header from "../../components/header";
+import { RotateCcw, Pause, Play } from "lucide-react";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import TimerShell from "@/components/shared/timer-shell";
 
-/**
- * countdown_page component displays a live countdown timer based on the time query parameter.
- * Plays a beep sound for each of the last 10 seconds and a longer beep at 0.
- */
+// SVG ring constants
+const RING_SIZE = 280;
+const STROKE_WIDTH = 12;
+const RADIUS = 134;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+function ProgressRing({ progress, color }: { progress: number; color: string }) {
+  const dash_offset = CIRCUMFERENCE * (1 - progress);
+  return (
+    <svg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="w-full h-full -rotate-90">
+      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
+        stroke="var(--surface-container-high)" strokeWidth={STROKE_WIDTH} />
+      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
+        stroke={color} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
+        strokeDasharray={CIRCUMFERENCE} strokeDashoffset={dash_offset}
+        className="ring-progress-transition" />
+    </svg>
+  );
+}
+
+function TimeDisplay({ seconds, large }: { seconds: number; large?: boolean }) {
+  const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+  const s = (seconds % 60).toString().padStart(2, "0");
+  const digit = large
+    ? "text-7xl sm:text-8xl md:text-9xl font-headline font-black text-foreground"
+    : "text-4xl sm:text-5xl md:text-7xl font-headline font-black text-foreground";
+  const colon = large
+    ? "text-7xl sm:text-8xl md:text-9xl font-headline font-black text-foreground mb-6 sm:mb-8"
+    : "text-4xl sm:text-5xl md:text-7xl font-headline font-black text-foreground mb-4 sm:mb-5";
+  const label = large
+    ? "text-xs sm:text-sm uppercase tracking-wider text-muted-foreground mt-2"
+    : "text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground mt-1";
+
+  return (
+    <div className={`flex items-baseline ${large ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
+      <div className="flex flex-col items-center">
+        <span className={digit}>{m}</span>
+        <span className={label}>Minutes</span>
+      </div>
+      <span className={colon}>:</span>
+      <div className="flex flex-col items-center">
+        <span className={digit}>{s}</span>
+        <span className={label}>Seconds</span>
+      </div>
+    </div>
+  );
+}
+
+const RING_NORMAL = "relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center";
+const RING_FULLSCREEN = "relative w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem] md:w-[34rem] md:h-[34rem] flex items-center justify-center";
+
 function CountdownPageContent() {
-  // Get time from query params (in seconds)
   const search_params = useSearchParams();
-  const router = useRouter();
-  const initial_time = Number(search_params.get("time")) || 0;
-  const [remaining, set_remaining] = useState(initial_time);
-  const [running, set_running] = useState(true);
-  const [audio_enabled, set_audio_enabled] = useState(false);
-  const prev_remaining = useRef(remaining);
-  const audio_context_ref = useRef<AudioContext | null>(null);
+  const initial_time = Number(search_params.get("time")) || Number(search_params.get("duration")) || 60;
 
-  // Toggle audio context and enabled state
+  const [user_duration, set_user_duration] = useState(initial_time);
+  const [remaining, set_remaining] = useState(initial_time);
+  const [running, set_running] = useState(false);
+  const [audio_enabled, set_audio_enabled] = useState(false);
+  const audio_context_ref = useRef<AudioContext | null>(null);
+  const prev_remaining = useRef(remaining);
+
+  // Reset when duration changes
+  useEffect(() => {
+    set_remaining(user_duration);
+    set_running(false);
+  }, [user_duration]);
+
   const toggle_audio = () => {
     if (!audio_enabled) {
       try {
         if (!audio_context_ref.current) {
-          audio_context_ref.current = new (window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext)();
+          audio_context_ref.current = new (
+            window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
+          )();
         }
         set_audio_enabled(true);
-      } catch {
-        // Audio not supported in this browser
-      }
+      } catch { /* Audio not supported */ }
     } else {
       set_audio_enabled(false);
     }
   };
 
-  // Move play_beep outside useEffect and wrap in useCallback
   const play_beep = useCallback((duration = 0.15, frequency = 880) => {
     if (!audio_enabled || !audio_context_ref.current) return;
     try {
-      const ctx = audio_context_ref.current as AudioContext;
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
-      const oscillator = ctx.createOscillator();
+      const ctx = audio_context_ref.current;
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      oscillator.type = "sine";
-      oscillator.frequency.value = frequency;
-      gain.gain.value = 0.2;
-      oscillator.connect(gain);
-      gain.connect(ctx.destination);
-      oscillator.start();
-      oscillator.stop(ctx.currentTime + duration);
-    } catch {
-      // Ignore errors
-    }
-  }, [audio_enabled, audio_context_ref]);
+      osc.type = "sine"; osc.frequency.value = frequency; gain.gain.value = 0.2;
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + duration);
+    } catch { /* Ignore */ }
+  }, [audio_enabled]);
 
   // Countdown effect
   useEffect(() => {
     if (!running || remaining <= 0) return;
-    const interval = setInterval(() => {
-      set_remaining((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    const interval = setInterval(() => set_remaining((p) => (p > 0 ? p - 1 : 0)), 1000);
     return () => clearInterval(interval);
   }, [running, remaining]);
 
-  // Fix exhaustive-deps warning by moving play_beep inside useEffect
+  // Audio alerts
   useEffect(() => {
-    if (
-      running &&
-      remaining > 0 &&
-      remaining <= 10 &&
-      prev_remaining.current !== remaining
-    ) {
-      play_beep(); // short beep
-    }
-    if (running && remaining === 0 && prev_remaining.current !== 0) {
-      play_beep(1.2, 1200); // longer, higher beep at 0
-    }
+    if (running && remaining > 0 && remaining <= 10 && prev_remaining.current !== remaining) play_beep();
+    if (running && remaining === 0 && prev_remaining.current !== 0) play_beep(1.2, 1200);
     prev_remaining.current = remaining;
   }, [remaining, running, play_beep]);
 
-  // Handle navigation to countdown setup
-  const handle_settings = () => {
-    router.push("/countdown-setup");
-  };
+  const progress = user_duration > 0 ? remaining / user_duration : 0;
+  const status_text = remaining === 0 ? "Time's up!" : running ? "Counting down..." : "Ready";
 
-  // SVG ring constants
-  const ring_size = 280;
-  const stroke_width = 12;
-  const radius = 134;
-  const circumference = 2 * Math.PI * radius;
-  const progress = initial_time > 0 ? remaining / initial_time : 0;
-  const dash_offset = circumference * (1 - progress);
-
-  const minutes = Math.floor(remaining / 60).toString().padStart(2, "0");
-  const seconds = (remaining % 60).toString().padStart(2, "0");
+  const btn_cls = (fs: boolean) =>
+    `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
+  const reset_cls = (fs: boolean) =>
+    `flex items-center justify-center gap-2 bg-surface-container-low text-foreground hover:bg-surface-container-high rounded-2xl ${fs ? "py-4 sm:py-5 px-6 text-lg" : "py-3 sm:py-4 px-5 text-base"} font-semibold transition-colors disabled:opacity-40`;
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-100 pt-12 pb-4 px-3 w-full md:bg-gray-200 md:pt-20 md:px-4 md:items-center">
-      <Header />
+    <>
       <Navbar />
-      <h1 className="sr-only">Countdown Timer Active</h1>
-
-      <div className="relative bg-white rounded-2xl shadow-lg p-6 md:p-12 flex flex-col items-center gap-5 md:gap-6 w-full max-w-md md:max-w-lg mx-auto mt-4">
-        {/* Sound toggle - absolute top-right */}
-        <button
-          aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
-          onClick={toggle_audio}
-          className={`absolute top-4 right-4 rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${audio_enabled ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
-        >
-          {audio_enabled ? (
-            <Volume2 className="text-blue-600 w-5 h-5" />
-          ) : (
-            <VolumeX className="text-gray-500 w-5 h-5" />
-          )}
-        </button>
-
-        {/* Status badge */}
-        <div className="flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
-          <span className="w-2 h-2 rounded-full bg-blue-500" />
-          Countdown Timer Active
-        </div>
-
-        {/* Subtitle */}
-        <p className="text-gray-500 text-sm">Session in progress</p>
-
-        {/* Circular progress ring with timer */}
-        <div className="relative w-60 h-60 md:w-80 md:h-80 flex items-center justify-center">
-          <svg
-            viewBox={`0 0 ${ring_size} ${ring_size}`}
-            className="w-full h-full -rotate-90"
-          >
-            {/* Gray track */}
-            <circle
-              cx={ring_size / 2}
-              cy={ring_size / 2}
-              r={radius}
-              fill="none"
-              stroke="#E5E7EB"
-              strokeWidth={stroke_width}
-            />
-            {/* Blue progress arc */}
-            <circle
-              cx={ring_size / 2}
-              cy={ring_size / 2}
-              r={radius}
-              fill="none"
-              stroke="#3B82F6"
-              strokeWidth={stroke_width}
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={dash_offset}
-              className="ring-progress-transition"
-            />
-          </svg>
-          {/* Timer digits overlaid */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="flex items-baseline gap-2">
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{minutes}</span>
-                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Minutes</span>
+      <main className="min-h-screen flex flex-col bg-surface pt-14 pb-4 px-3 w-full md:pt-20 md:px-4 md:items-center">
+        <h1 className="sr-only">Countdown Timer</h1>
+        <div className="mt-4 mb-8">
+          <TimerShell
+            timer_label="Countdown Timer"
+            status_text={status_text}
+            audio_enabled={audio_enabled}
+            on_toggle_audio={toggle_audio}
+            duration={{ value: user_duration, onChange: set_user_duration }}
+            defaults={{ duration: 60 }}
+            remaining={remaining}
+            running={running}
+            controls={({ is_fullscreen: fs }) => (
+              <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
+                <button onClick={() => set_running(!running)} className={btn_cls(fs)}>
+                  {running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {remaining < user_duration ? "Resume" : "Start"}</>}
+                </button>
+                <button onClick={() => { set_remaining(user_duration); set_running(false); }} disabled={remaining === user_duration && !running} className={reset_cls(fs)}>
+                  <RotateCcw className="w-5 h-5" /> Reset
+                </button>
               </div>
-              <span className="text-5xl md:text-7xl font-bold text-gray-800 mb-5">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{seconds}</span>
-                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Seconds</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Reset Timer button */}
-        <Button
-          onClick={() => set_remaining(initial_time)}
-          disabled={remaining === initial_time}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-4 md:py-5 w-full shadow-md text-base md:text-lg font-semibold disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-          <RotateCcw className="w-5 h-5" />
-          Reset Timer
-        </Button>
-
-        {/* Pause + Settings buttons */}
-        <div className="flex gap-3 w-full">
-          <Button
-            onClick={() => set_running(!running)}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
-          >
-            {running ? (
-              <>
-                <Pause className="w-5 h-5" />
-                Pause
-              </>
-            ) : (
-              <>
-                <Play className="w-5 h-5" />
-                Resume
-              </>
             )}
-          </Button>
-          <Button
-            onClick={handle_settings}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
           >
-            <Settings className="w-5 h-5" />
-            Settings
-          </Button>
+            {({ is_fullscreen: fs }) => (
+              <div className={RING_NORMAL}>
+                <ProgressRing progress={progress} color="var(--secondary)" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <TimeDisplay seconds={remaining} large={false} />
+                </div>
+              </div>
+            )}
+          </TimerShell>
         </div>
-      </div>
 
-      <section className="w-full max-w-md mx-auto mt-6 px-1">
-        <p className="text-xs text-gray-500 text-center mb-2">Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions.</p>
-        <nav className="flex flex-wrap justify-center gap-3 text-xs">
-          <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
-          <span className="text-gray-400">|</span>
-          <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Chess Clock</Link>
-          <span className="text-gray-400">|</span>
-          <Link href="/round-timer-setup" className="text-blue-600 hover:text-blue-800">Turn Timer</Link>
-        </nav>
-      </section>
-    </main>
+        <section className="w-full max-w-md mx-auto px-1 text-center">
+          <p className="text-xs text-muted-foreground mb-2">
+            Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions.
+          </p>
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }
 

@@ -27,7 +27,7 @@ interface ApiPost {
 
 const STATUS_STYLES: Record<string, string> = {
   published: "bg-green-100 text-green-700",
-  draft: "bg-gray-100 text-gray-600",
+  draft: "bg-surface-container text-muted-foreground",
   scheduled: "bg-blue-100 text-blue-700",
 };
 
@@ -88,7 +88,7 @@ export default function AdminBlogPage() {
   if (auth_loading || loading) {
     return (
       <main className="p-8">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </main>
     );
   }
@@ -98,46 +98,46 @@ export default function AdminBlogPage() {
   return (
     <main className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Blog Posts</h1>
+        <h1 className="text-2xl font-headline font-black text-foreground">Blog Posts</h1>
         <Link
           href="/admin/blog/new"
-          className="px-4 py-2 bg-gray-900 text-white text-sm rounded-md hover:bg-gray-700 transition-colors"
+          className="px-4 py-2 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 transition-colors"
         >
           New Post
         </Link>
       </div>
 
       {posts.length === 0 ? (
-        <p className="text-gray-500">No blog posts yet.</p>
+        <p className="text-muted-foreground">No blog posts yet.</p>
       ) : (
         <div className="border rounded-lg overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-surface-container-low border-b border-surface-container">
               <tr>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Title</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Slug</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Status</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Publish Date</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Actions</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Title</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Slug</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Publish Date</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {posts.map((post) => (
-                <tr key={post.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900 max-w-xs truncate">
+                <tr key={post.id} className="hover:bg-surface-container-low">
+                  <td className="px-4 py-3 font-medium text-foreground max-w-xs truncate">
                     {post.title}
                   </td>
-                  <td className="px-4 py-3 text-gray-500 font-mono text-xs">{post.slug}</td>
+                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{post.slug}</td>
                   <td className="px-4 py-3">
                     <span
                       className={`inline-block text-xs font-medium px-2 py-0.5 rounded-full capitalize ${
-                        STATUS_STYLES[post.status] ?? "bg-gray-100 text-gray-600"
+                        STATUS_STYLES[post.status] ?? "bg-surface-container text-muted-foreground"
                       }`}
                     >
                       {post.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {post.publish_date
                       ? new Date(post.publish_date).toLocaleDateString("en-US", {
                           year: "numeric",

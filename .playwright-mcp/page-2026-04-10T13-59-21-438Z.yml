@@ -1,0 +1,126 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - button "Go to Home" [ref=e3] [cursor=pointer]:
+      - img "GoTimer logo" [ref=e4]
+      - generic [ref=e5]: GoTimer.org
+    - generic [ref=e6]:
+      - link "Home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e11]: Home
+      - link "Public Challenges" [ref=e12] [cursor=pointer]:
+        - /url: /public-challenges
+        - img [ref=e13]
+        - generic [ref=e16]: Public Challenges
+      - link "Blog" [ref=e17] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e18]
+        - generic [ref=e20]: Blog
+      - link "Login" [ref=e21] [cursor=pointer]:
+        - /url: /hazo_auth/login
+  - main [ref=e22]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - heading "Leaderboard" [level=1] [ref=e26]
+        - paragraph [ref=e27]: Public timer challenges ranked by activity
+      - generic [ref=e28]:
+        - img [ref=e29]
+        - textbox "Find champions..." [ref=e32]
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - link "All Types" [ref=e36] [cursor=pointer]:
+          - /url: /leaderboard
+        - link "Countdown" [ref=e37] [cursor=pointer]:
+          - /url: /leaderboard?timer_type=countdown
+        - link "Chess Clock" [ref=e38] [cursor=pointer]:
+          - /url: /leaderboard?timer_type=chess-clock
+        - link "Round Timer" [ref=e39] [cursor=pointer]:
+          - /url: /leaderboard?timer_type=round-timer
+      - generic [ref=e40]:
+        - generic [ref=e42]:
+          - heading "Global Arena" [level=2] [ref=e43]
+          - paragraph [ref=e44]: Top challenges this week
+        - table [ref=e46]:
+          - rowgroup [ref=e47]:
+            - row "Rank Challenge Format Players Activity" [ref=e48]:
+              - columnheader "Rank" [ref=e49]
+              - columnheader "Challenge" [ref=e50]
+              - columnheader "Format" [ref=e51]
+              - columnheader "Players" [ref=e52]
+              - columnheader "Activity" [ref=e53]
+          - rowgroup [ref=e54]:
+            - row "1 Lets go head-to-head 1 Mar 2" [ref=e55] [cursor=pointer]:
+              - cell "1" [ref=e56]
+              - cell "Lets go" [ref=e57]:
+                - link "Lets go" [ref=e58]:
+                  - /url: /public-challenges/afadd7da-66fc-4a34-ac85-4c582f7461ea
+              - cell "head-to-head" [ref=e59]
+              - cell "1" [ref=e60]:
+                - generic [ref=e61]:
+                  - img [ref=e62]
+                  - text: "1"
+              - cell "Mar 2" [ref=e67]:
+                - generic [ref=e68]:
+                  - img [ref=e69]
+                  - text: Mar 2
+            - row "2 2026-02 February Fire Champ head-to-head 2 Mar 1" [ref=e72] [cursor=pointer]:
+              - cell "2" [ref=e73]
+              - cell "2026-02 February Fire Champ" [ref=e74]:
+                - link "2026-02 February Fire Champ" [ref=e75]:
+                  - /url: /public-challenges/742a862e-5e2e-404a-8d32-dab2a824ba8b
+              - cell "head-to-head" [ref=e76]
+              - cell "2" [ref=e77]:
+                - generic [ref=e78]:
+                  - img [ref=e79]
+                  - text: "2"
+              - cell "Mar 1" [ref=e84]:
+                - generic [ref=e85]:
+                  - img [ref=e86]
+                  - text: Mar 1
+      - generic [ref=e89]:
+        - heading "About the GoTimer Leaderboard" [level=2] [ref=e90]
+        - paragraph [ref=e91]: The GoTimer leaderboard showcases public challenges created by players around the world. Whether you prefer head-to-head 1v1 matches, group competitions with a join code, or solo session tracking — every format is represented here.
+        - paragraph [ref=e92]: Filter by timer type to find challenges for countdown timers, chess clocks, or round timers. Click any challenge to view its full standings and game history.
+  - contentinfo [ref=e93]:
+    - generic [ref=e94]:
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - heading "Timers" [level=3] [ref=e97]
+          - list [ref=e98]:
+            - listitem [ref=e99]:
+              - link "Countdown Timer" [ref=e100] [cursor=pointer]:
+                - /url: /countdown-setup
+            - listitem [ref=e101]:
+              - link "Chess Clock" [ref=e102] [cursor=pointer]:
+                - /url: /chess-clock-setup
+            - listitem [ref=e103]:
+              - link "Round Timer" [ref=e104] [cursor=pointer]:
+                - /url: /round-timer-setup
+        - generic [ref=e105]:
+          - heading "Features" [level=3] [ref=e106]
+          - list [ref=e107]:
+            - listitem [ref=e108]:
+              - link "Public Challenges" [ref=e109] [cursor=pointer]:
+                - /url: /public-challenges
+            - listitem [ref=e110]:
+              - link "Partners" [ref=e111] [cursor=pointer]:
+                - /url: /partners
+        - generic [ref=e112]:
+          - heading "Legal & Info" [level=3] [ref=e113]
+          - list [ref=e114]:
+            - listitem [ref=e115]:
+              - link "Privacy Policy" [ref=e116] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e117]:
+              - link "Terms of Service" [ref=e118] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e119]:
+              - button "Contact Us" [ref=e120] [cursor=pointer]
+            - listitem [ref=e121]:
+              - link "Sitemap" [ref=e122] [cursor=pointer]:
+                - /url: /sitemap.xml
+      - generic [ref=e123]: © 2026 GoTimer.org
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e129] [cursor=pointer]:
+    - img [ref=e130]
+  - alert [ref=e133]

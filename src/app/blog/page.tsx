@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { get_db } from "@/lib/db";
 import { PostCard } from "@/components/blog/post-card";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import Image from "next/image";
+import { ChevronRight, Mail, Clock, Tag } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Blog | GoTimer",
+  title: "Blog",
   description: "Tips, guides, and strategies for using timers in board games, escape rooms, trivia nights, and more.",
 };
 
@@ -40,12 +44,10 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
   const db = get_db();
 
-  // Fetch categories for filter nav
   const categories = db
     .prepare(`SELECT id, slug, name, colour FROM blog_categories ORDER BY name ASC`)
     .all() as BlogCategory[];
 
-  // Fetch posts (with optional category filter)
   let posts: BlogPost[];
   let total_count: number;
 
@@ -90,87 +92,254 @@ export default async function BlogPage({ searchParams }: PageProps) {
   }
 
   const total_pages = Math.ceil(total_count / POSTS_PER_PAGE);
+  const featured_post = !category && current_page === 1 && posts.length > 0 ? posts[0] : null;
+  const grid_posts = featured_post ? posts.slice(1) : posts;
+
+  const featured_read_time = featured_post ? Math.max(3, Math.ceil((featured_post.content?.length ?? 0) / 1000)) : 0;
+  const featured_excerpt = featured_post?.content
+    ?.replace(/\{\/\*.*?\*\/\}/g, "")
+    .replace(/<[^>]+>/g, "")
+    .replace(/[#*_\[\]()>`]/g, "")
+    .trim()
+    .slice(0, 220) ?? "";
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-12">
-      <header className="mb-10">
-        <h1 className="text-4xl font-bold text-gray-900 mb-3">Blog</h1>
-        <p className="text-lg text-gray-600">
-          Tips, guides, and strategies for timers in games and events.
-        </p>
-      </header>
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-surface pt-20">
+        {/* Header with decorative background */}
+        <div className="relative overflow-hidden bg-primary">
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: "48px 48px",
+            }}
+          />
+          <div className="absolute -right-32 -top-32 w-[500px] h-[500px] bg-secondary/8 rotate-12 rounded-3xl" />
+          <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-accent/6 -rotate-6 rounded-3xl" />
 
-      {/* Category filter */}
-      {categories.length > 0 && (
-        <nav className="flex flex-wrap gap-2 mb-8">
-          <Link
-            href="/blog"
-            className={`text-sm px-3 py-1.5 rounded-full border transition-colors ${
-              !category
-                ? "bg-gray-900 text-white border-gray-900"
-                : "border-gray-300 text-gray-600 hover:border-gray-500"
-            }`}
-          >
-            All
-          </Link>
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/blog?category=${cat.slug}`}
-              className={`text-sm px-3 py-1.5 rounded-full border transition-colors ${
-                category === cat.slug
-                  ? "bg-gray-900 text-white border-gray-900"
-                  : "border-gray-300 text-gray-600 hover:border-gray-500"
-              }`}
-            >
-              {cat.name}
-            </Link>
-          ))}
-        </nav>
-      )}
-
-      {/* Post list */}
-      {posts.length === 0 ? (
-        <p className="text-gray-500 text-center py-16">No posts yet. Check back soon!</p>
-      ) : (
-        <div className="grid gap-4">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              title={post.title}
-              slug={post.slug}
-              excerpt={post.content?.slice(0, 200) ?? ""}
-              date={post.publish_date}
-              category_name={post.category_name}
-              category_colour={post.category_colour}
+          <div className="relative max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-20 flex items-center justify-between">
+            <div>
+              <p className="text-secondary font-headline font-bold text-sm uppercase tracking-[0.2em] mb-3">
+                GoTimer Blog
+              </p>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight text-primary-foreground font-headline leading-[1.05]">
+                The Time<br />Dimension
+              </h1>
+              <p className="text-primary-foreground/50 text-lg mt-4 max-w-lg">
+                Guides, strategies, and insights on productivity, timing, and getting more done.
+              </p>
+            </div>
+            <Image
+              src="/mascots/drake-timer.png"
+              alt="Drake the Explorer with a stopwatch"
+              width={180}
+              height={180}
+              className="hidden md:block w-36 lg:w-44 h-36 lg:h-44 object-contain drop-shadow-lg shrink-0"
             />
-          ))}
+          </div>
         </div>
-      )}
 
-      {/* Pagination */}
-      {total_pages > 1 && (
-        <nav className="flex justify-center gap-2 mt-10" aria-label="Pagination">
-          {Array.from({ length: total_pages }, (_, i) => i + 1).map((p) => {
-            const href = category
-              ? `/blog?category=${category}&page=${p}`
-              : `/blog?page=${p}`;
-            return (
+        <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-16">
+          {/* Featured Post */}
+          {featured_post && (
+            <section className="mb-16">
               <Link
-                key={p}
-                href={href}
-                className={`w-9 h-9 flex items-center justify-center rounded border text-sm transition-colors ${
-                  p === current_page
-                    ? "bg-gray-900 text-white border-gray-900"
-                    : "border-gray-300 text-gray-600 hover:border-gray-500"
-                }`}
+                href={`/blog/${featured_post.slug}`}
+                className="group block no-underline"
               >
-                {p}
+                <div className="relative overflow-hidden rounded-2xl bg-surface-container-low border border-surface-container-high">
+                  <div className="flex flex-col lg:flex-row">
+                    {/* Image area */}
+                    <div className="lg:w-3/5 h-64 lg:h-[420px] bg-gradient-to-br from-primary via-primary to-[#0d2654] relative overflow-hidden">
+                      <div
+                        className="absolute inset-0 opacity-[0.06]"
+                        style={{
+                          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+                          backgroundSize: "24px 24px",
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Image
+                          src="/mascots/prof-studying.png"
+                          alt="Prof the Scholar reading"
+                          width={280}
+                          height={280}
+                          className="w-48 h-48 lg:w-64 lg:h-64 object-contain drop-shadow-lg"
+                        />
+                      </div>
+                      {/* Featured label */}
+                      <div className="absolute top-6 left-6">
+                        <span className="bg-secondary text-secondary-foreground px-3 py-1.5 rounded-full text-xs font-bold font-headline uppercase tracking-wider">
+                          Featured
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="lg:w-2/5 p-8 lg:p-10 flex flex-col justify-center">
+                      <div className="flex items-center gap-3 mb-5">
+                        {featured_post.category_name && (
+                          <span className="text-xs font-bold font-headline uppercase tracking-wider text-secondary">
+                            {featured_post.category_name}
+                          </span>
+                        )}
+                        <span className="text-muted-foreground text-xs">
+                          {featured_read_time} min read
+                        </span>
+                      </div>
+
+                      <h2 className="text-2xl lg:text-3xl font-black text-foreground leading-tight font-headline mb-4 group-hover:text-secondary transition-colors duration-300">
+                        {featured_post.title}
+                      </h2>
+
+                      <p className="text-muted-foreground leading-relaxed line-clamp-3 mb-8">
+                        {featured_excerpt}
+                      </p>
+
+                      <div className="mt-auto">
+                        <span className="inline-flex items-center gap-2 text-secondary font-bold text-sm group-hover:gap-3 transition-all duration-300">
+                          Read the full guide
+                          <ChevronRight className="size-4" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </Link>
-            );
-          })}
-        </nav>
-      )}
-    </main>
+            </section>
+          )}
+
+          {/* Category filters + content */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            {/* Main column */}
+            <section className="lg:col-span-8">
+              {/* Section header */}
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-1 h-6 bg-secondary rounded-full" />
+                <h3 className="text-xl font-black text-foreground font-headline">
+                  {category ? `Filtered: ${category}` : "Latest Articles"}
+                </h3>
+              </div>
+
+              {grid_posts.length === 0 && !featured_post ? (
+                <div className="text-center py-24">
+                  <Image
+                    src="/mascots/drake-searching.png"
+                    alt="Drake searching for articles"
+                    width={160}
+                    height={160}
+                    className="w-32 h-32 object-contain mx-auto mb-4"
+                  />
+                  <p className="text-muted-foreground text-lg">No articles yet. Check back soon.</p>
+                </div>
+              ) : grid_posts.length === 0 ? null : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {grid_posts.map((post) => (
+                    <PostCard
+                      key={post.id}
+                      title={post.title}
+                      slug={post.slug}
+                      excerpt={post.content?.slice(0, 200) ?? ""}
+                      date={post.publish_date}
+                      category_name={post.category_name}
+                      category_colour={post.category_colour}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Pagination */}
+              {total_pages > 1 && (
+                <nav className="flex justify-center gap-2 mt-12" aria-label="Pagination">
+                  {Array.from({ length: total_pages }, (_, i) => i + 1).map((p) => {
+                    const href = category
+                      ? `/blog?category=${category}&page=${p}`
+                      : `/blog?page=${p}`;
+                    return (
+                      <Link
+                        key={p}
+                        href={href}
+                        className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all duration-200 ease-out no-underline ${
+                          p === current_page
+                            ? "bg-secondary text-secondary-foreground shadow-lg shadow-secondary/20"
+                            : "bg-surface-container-low text-muted-foreground hover:bg-surface-container"
+                        }`}
+                      >
+                        {p}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              )}
+            </section>
+
+            {/* Sidebar */}
+            <aside className="lg:col-span-4 space-y-6">
+              {/* Newsletter CTA */}
+              <div className="relative overflow-hidden bg-primary text-primary-foreground rounded-2xl p-7">
+                <div className="absolute -right-8 -top-8 w-32 h-32 bg-secondary/10 rotate-12 rounded-2xl" />
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Mail className="size-4 text-secondary" />
+                    <h4 className="font-headline font-bold text-sm uppercase tracking-wider">Never Miss a Tick</h4>
+                  </div>
+                  <p className="text-primary-foreground/60 text-sm mb-5 leading-relaxed">
+                    Weekly insights on productivity, timing strategies, and getting more done.
+                  </p>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      placeholder="your@email.com"
+                      className="flex-1 bg-primary-foreground/10 rounded-lg px-3 py-2.5 text-sm text-primary-foreground placeholder:text-primary-foreground/30 border border-primary-foreground/10 focus:border-secondary/50 focus:outline-none transition-colors"
+                    />
+                    <button className="bg-secondary text-secondary-foreground px-4 py-2.5 rounded-lg font-bold text-sm hover:brightness-110 transition-all shrink-0 cursor-pointer">
+                      Join
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Categories */}
+              {categories.length > 0 && (
+                <div className="bg-surface-container-low rounded-2xl p-6 border border-surface-container-high">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Tag className="size-4 text-muted-foreground" />
+                    <h4 className="font-headline font-bold text-sm text-foreground uppercase tracking-wider">Topics</h4>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Link
+                      href="/blog"
+                      className={`text-sm px-3.5 py-1.5 rounded-full font-medium transition-all duration-200 ease-out no-underline border ${
+                        !category
+                          ? "bg-secondary text-secondary-foreground border-secondary"
+                          : "bg-transparent text-muted-foreground border-surface-container-high hover:border-secondary/30 hover:text-foreground"
+                      }`}
+                    >
+                      All
+                    </Link>
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/blog?category=${cat.slug}`}
+                        className={`text-sm px-3.5 py-1.5 rounded-full font-medium transition-all duration-200 ease-out no-underline border ${
+                          category === cat.slug
+                            ? "bg-secondary text-secondary-foreground border-secondary"
+                            : "bg-transparent text-muted-foreground border-surface-container-high hover:border-secondary/30 hover:text-foreground"
+                        }`}
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </aside>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }

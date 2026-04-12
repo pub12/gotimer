@@ -4,11 +4,14 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
-import Breadcrumb from "@/components/breadcrumb";
+import Footer from "@/components/footer";
 import { ScoreDisplay } from "@/components/challenges/score-display";
 import { GameHistory } from "@/components/challenges/game-history";
 import { ChallengeHistogram } from "@/components/challenges/challenge-histogram";
 import { PlayOnceGif } from "@/components/challenges/play-once-gif";
+import { ArrowLeft } from "lucide-react";
+import { ChallengeSidebar } from "@/components/challenges/challenge-sidebar";
+import { use_auth_status } from "hazo_auth/client";
 
 
 type ChallengeData = {
@@ -34,6 +37,7 @@ type ChallengeData = {
 
 export default function PublicChallengeDetailClient({ id }: { id: string }) {
   const router = useRouter();
+  const { authenticated } = use_auth_status();
   const [challenge, set_challenge] = useState<ChallengeData | null>(null);
   const [loading, set_loading] = useState(true);
   const [user_names, set_user_names] = useState<Record<string, string>>({});
@@ -91,10 +95,15 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
+      <>
         <Navbar />
-        <p className="text-muted-foreground">Loading...</p>
-      </main>
+        <main className="min-h-screen bg-surface pt-14 md:pt-20">
+        <div className="flex-grow flex items-center justify-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        </main>
+        <Footer />
+      </>
     );
   }
 
@@ -109,95 +118,150 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
   const display_user_id = player1?.user_id || "";
   const has_games = challenge.games.length > 0;
 
+  const p1_name = player1 ? user_names[player1.user_id] || "Player 1" : "Player 1";
+  const p2_name = player2 ? user_names[player2.user_id] || "Player 2" : "Player 2";
+  const p1_winning = player1_score > player2_score;
+
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
+    <>
       <Navbar />
+      <main className="min-h-screen bg-surface pt-14 md:pt-20">
+      <div className="w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent" />
+      <div className="w-full max-w-7xl mx-auto flex gap-6 px-4 md:px-6">
+        <ChallengeSidebar mode="public" />
+        <div className="flex-1 min-w-0">
+        {/* Top bar */}
+        <div className="flex items-center px-4 md:px-6 py-4">
+          <Link
+            href="/public-challenges"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors no-underline"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="font-headline font-bold italic text-secondary">{challenge.name}</span>
+          </Link>
+        </div>
 
-      <div className="w-full max-w-3xl mx-auto">
-        <Breadcrumb
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Public Challenges", href: "/public-challenges" },
-            { label: challenge.name },
-          ]}
-        />
-
-        {/* Challenge header */}
-        <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
-          <div className="mb-2">
-            <h1 className="text-2xl md:text-3xl font-bold">
+        {/* Dark Hero Section */}
+        <div className="mx-4 md:mx-6 rounded-[1rem] bg-gradient-to-br from-primary to-primary-container overflow-hidden relative shadow-[var(--shadow-soft-lg)]">
+          {challenge.gif_url && (
+            <div className="absolute inset-0 opacity-15">
+              <PlayOnceGif src={challenge.gif_url} alt="" className="w-full h-full object-cover" />
+            </div>
+          )}
+          <div className="relative z-10 px-6 md:px-12 py-10 md:py-14">
+            <h1 className="text-center text-secondary font-headline font-bold text-sm uppercase tracking-widest mb-6">
               {challenge.name}
             </h1>
-            {challenge.description && (
-              <p className="text-muted-foreground mt-1">
-                {challenge.description}
+
+            <div className="flex items-center justify-center gap-4 md:gap-8">
+              {/* Player 1 */}
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-primary-foreground/10 overflow-hidden flex items-center justify-center">
+                  {player1 && user_pictures[player1.user_id] ? (
+                    <img src={user_pictures[player1.user_id]!} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl md:text-4xl font-headline font-black text-primary-foreground/60">
+                      {p1_name[0].toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <p className="text-primary-foreground font-headline font-bold text-sm md:text-base truncate max-w-[100px] md:max-w-[140px]">
+                  {p1_name}
+                </p>
+              </div>
+
+              {/* Scores */}
+              <div className="flex items-baseline gap-3 md:gap-6">
+                <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${p1_winning ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                  {player1_score}
+                </span>
+                <span className="text-secondary text-lg font-headline font-bold">vs</span>
+                <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${!p1_winning && player2_score > player1_score ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                  {player2_score}
+                </span>
+              </div>
+
+              {/* Player 2 */}
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-primary-foreground/10 overflow-hidden flex items-center justify-center">
+                  {player2 && user_pictures[player2.user_id] ? (
+                    <img src={user_pictures[player2.user_id]!} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl md:text-4xl font-headline font-black text-primary-foreground/60">
+                      {p2_name[0].toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <p className="text-primary-foreground font-headline font-bold text-sm md:text-base truncate max-w-[100px] md:max-w-[140px]">
+                  {p2_name}
+                </p>
+              </div>
+            </div>
+
+            {challenge.gif_url && (
+              <div className="flex justify-center mt-6">
+                <div className="w-40 md:w-56 h-28 md:h-36 rounded-xl overflow-hidden shadow-xl">
+                  <PlayOnceGif src={challenge.gif_url} alt="Challenge theme" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+
+            {challenge.draws > 0 && (
+              <p className="text-center text-primary-foreground/50 text-sm mt-4">
+                {challenge.draws} draw{challenge.draws !== 1 ? "s" : ""}
               </p>
             )}
           </div>
+        </div>
 
-          {/* Theme GIF */}
-          {challenge.gif_url && (
-            <div className="mb-4">
-              <PlayOnceGif
-                src={challenge.gif_url}
-                alt="Challenge theme"
-                className="w-full rounded-lg max-h-48 object-cover"
-              />
+        {/* Content */}
+        <div className="px-4 md:px-6 space-y-6 pb-8">
+          {/* Histogram */}
+          {has_games && (
+            <div className="bg-primary/[0.03] py-4 -mx-4 md:-mx-6 px-4 md:px-6 rounded-[1rem]">
+              <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)]">
+                <h3 className="font-headline font-bold mb-4">Score Progression</h3>
+                <ChallengeHistogram
+                  games={challenge.games}
+                  current_user_id={display_user_id}
+                  user_names={user_names}
+                />
+              </div>
             </div>
           )}
 
-          {/* Score display */}
-          <ScoreDisplay
-            player1_name={player1 ? user_names[player1.user_id] || "Player 1" : "Player 1"}
-            player2_name={player2 ? user_names[player2.user_id] || "Player 2" : "Player 2"}
-            player1_score={player1_score}
-            player2_score={player2_score}
-            player1_picture={player1 ? user_pictures[player1.user_id] : null}
-            player2_picture={player2 ? user_pictures[player2.user_id] : null}
-            draws={challenge.draws}
-          />
-        </div>
-
-        {/* Histogram */}
-        {has_games && (
-          <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
-            <h3 className="font-semibold mb-4">Game History Chart</h3>
-            <ChallengeHistogram
+          {/* Game history — read-only */}
+          <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)]">
+            <h3 className="font-headline font-bold text-xl mb-4 uppercase tracking-wider">Game History</h3>
+            <GameHistory
               games={challenge.games}
+              participants={challenge.participants}
               current_user_id={display_user_id}
               user_names={user_names}
+              user_pictures={user_pictures}
+              challenge_id={challenge.id}
+              challenge_name={challenge.name}
+              scores={challenge.scores}
             />
           </div>
-        )}
 
-        {/* Game history — read-only (no delete handler) */}
-        <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
-          <h3 className="font-semibold mb-4">Game History</h3>
-          <GameHistory
-            games={challenge.games}
-            participants={challenge.participants}
-            current_user_id={display_user_id}
-            user_names={user_names}
-            user_pictures={user_pictures}
-            challenge_id={challenge.id}
-            challenge_name={challenge.name}
-            scores={challenge.scores}
-          />
-        </div>
-
-        {/* CTA */}
-        <div className="bg-card rounded-xl p-6 shadow-sm border mb-8 text-center">
-          <p className="text-muted-foreground mb-3">
-            Want to track your own game challenges?
-          </p>
-          <Link
-            href="/hazo_auth/login"
-            className="inline-block bg-primary text-primary-foreground px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity no-underline font-medium"
-          >
-            Login to create your own challenge
-          </Link>
+          {/* CTA */}
+          <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] text-center border-l-4 border-l-secondary">
+            <p className="text-muted-foreground mb-3">
+              Want to track your own game challenges?
+            </p>
+            <Link
+              href={authenticated ? "/challenges/create" : "/hazo_auth/login"}
+              className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-6 py-3 rounded-full font-bold font-headline hover:scale-105 transition-all duration-200 shadow-lg shadow-secondary/20 no-underline"
+            >
+              {authenticated ? "Create your own challenge" : "Login to create your own challenge"}
+            </Link>
+          </div>
         </div>
       </div>
-    </main>
+      </div>
+      </main>
+      <Footer />
+    </>
   );
 }

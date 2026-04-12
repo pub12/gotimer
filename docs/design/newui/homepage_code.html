@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GoTimer.org - Precision Productivity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#1b2a4a",
+                        "surface-container": "#e6eeff",
+                        "primary": "#041534",
+                        "on-surface-variant": "#45464e",
+                        "on-surface": "#0d1c2e",
+                        "on-secondary-container": "#651400",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "outline": "#75777f",
+                        "surface-tint": "#4f5e81",
+                        "secondary": "#ab3514",
+                        "tertiary-fixed": "#ffdf91",
+                        "inverse-surface": "#233144",
+                        "outline-variant": "#c5c6cf",
+                        "on-tertiary-container": "#503d00",
+                        "tertiary-container": "#d3a500",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed": "#ffdbd2",
+                        "tertiary-fixed-dim": "#f3c00a",
+                        "primary-fixed": "#d9e2ff",
+                        "on-secondary-fixed-variant": "#891e00",
+                        "on-error": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "surface-variant": "#d5e3fc",
+                        "primary-fixed-dim": "#b7c6ee",
+                        "on-background": "#0d1c2e",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary": "#755b00",
+                        "surface-dim": "#ccdbf3",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-container": "#fd6f4a",
+                        "on-secondary-fixed": "#3c0800",
+                        "inverse-primary": "#b7c6ee",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#0a1a3a",
+                        "on-primary-fixed-variant": "#384668",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#8392b7",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#ffb4a1",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-high": "#dce9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Lexend"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .ease-out-quint { transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- Top Navigation Shell -->
+<header class="sticky top-0 w-full z-50 bg-surface/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm">
+<nav class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-black text-primary dark:text-white tracking-tighter font-headline">
+                GoTimer.org
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on_surface dark:text-slate-300 hover:text-secondary hover:scale-105 transition-transform duration-200 ease-out font-medium text-sm" href="#">Timers</a>
+<a class="text-on_surface dark:text-slate-300 hover:text-secondary hover:scale-105 transition-transform duration-200 ease-out font-medium text-sm" href="#">Leaderboard</a>
+<a class="text-on_surface dark:text-slate-300 hover:text-secondary hover:scale-105 transition-transform duration-200 ease-out font-medium text-sm" href="#">Blog</a>
+<a class="text-on_surface dark:text-slate-300 hover:text-secondary hover:scale-105 transition-transform duration-200 ease-out font-medium text-sm" href="#">Challenges</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-full font-headline font-bold text-sm bg-primary text-on-primary hover:scale-105 transition-transform ease-out-quint duration-200">
+                    Login
+                </button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-primary to-primary-container text-on-primary py-20 lg:py-32">
+<div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+<div class="space-y-8">
+<h1 class="text-5xl lg:text-7xl font-black font-headline tracking-tighter leading-tight">
+                        Turn Any Timer Into a <span class="text-secondary-container">Competition</span>
+</h1>
+<p class="text-lg lg:text-xl text-on-primary-container max-w-xl font-medium leading-relaxed">
+                        Precision productivity for champions. Challenge friends to cooking heats, focus sprints, or fasting streaks. The clock is ticking—will you climb the leaderboard?
+                    </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="px-8 py-4 rounded-full bg-secondary text-on-secondary font-headline font-bold text-lg shadow-xl shadow-secondary/20 hover:scale-105 transition-transform ease-out duration-200">
+                            Start a Timer
+                        </button>
+<button class="px-8 py-4 rounded-full bg-white/10 backdrop-blur-md text-on-primary font-headline font-bold text-lg border border-white/10 hover:bg-white/20 transition-all duration-200">
+                            Browse Timers
+                        </button>
+</div>
+</div>
+<!-- Animated Timer Graphic / Visual -->
+<div class="relative flex justify-center lg:justify-end">
+<div class="w-72 h-72 lg:w-96 lg:h-96 rounded-full border-[16px] border-white/5 flex items-center justify-center relative">
+<div class="absolute inset-0 rounded-full border-[16px] border-secondary border-t-transparent -rotate-45"></div>
+<div class="text-center">
+<div class="text-6xl lg:text-8xl font-black font-headline tracking-tighter">14:59</div>
+<div class="text-secondary font-bold font-headline tracking-widest uppercase text-sm mt-2">Current Sprint</div>
+</div>
+<!-- Floating Badges -->
+<div class="absolute -top-4 -right-4 bg-tertiary-container text-on-tertiary-container p-4 rounded-xl shadow-lg font-headline font-bold text-sm">
+                            #1 Active
+                        </div>
+</div>
+<!-- Mascot Illustration (Hero) -->
+<div class="absolute -bottom-10 -left-10 lg:left-0">
+<img alt="Victory Mascot" class="w-40 h-40" data-alt="A friendly, flat-style blue mascot character cheering with arms raised, wearing a small orange cape and a winner headband." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiMRiCqCKV01JaoUn3vFPKpu1eeY6RCpjBFPN2Myp_6vLsAgGFiC74TsnujlQ6OxyDoSVGA-0LVaQ72-vrsfDgj7DcPW-7poCa9MA-l6WKUbF6i3TVoBPZM-dTxaoamxJB3-TE-_lYrt0NNUYy25qCsQdMYeiEvYdBoLkpiRKaO6id93DiKtdgD1vO77jOlhD4Y7vpXtyNaUO9IFfi7VeTSldKUhQK7Uf_pkX7KEt7LdxiaMfFxjlbsSh8NTgyVlYt_Qyaf8LT9Ps"/>
+</div>
+</div>
+</div>
+<!-- Background Decorative Texture -->
+<div class="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-12 translate-x-1/2"></div>
+</section>
+<!-- Category Strip -->
+<section class="py-12 bg-surface">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-black font-headline tracking-tight">Browse Categories</h2>
+<div class="flex gap-2">
+<button class="p-2 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-6 overflow-x-auto no-scrollbar pb-6">
+<!-- Category Cards -->
+<div class="flex-shrink-0 w-48 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-weight="fill">casino</span>
+</div>
+<div class="font-headline font-bold text-lg leading-tight mb-1">Board Games</div>
+<div class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 124 Timers
+                        </div>
+</div>
+<div class="flex-shrink-0 w-48 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-weight="fill">cooking</span>
+</div>
+<div class="font-headline font-bold text-lg leading-tight mb-1">Cooking</div>
+<div class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 89 Timers
+                        </div>
+</div>
+<div class="flex-shrink-0 w-48 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-weight="fill">psychology</span>
+</div>
+<div class="font-headline font-bold text-lg leading-tight mb-1">Focus</div>
+<div class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 2.4k Timers
+                        </div>
+</div>
+<div class="flex-shrink-0 w-48 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-weight="fill">nutrition</span>
+</div>
+<div class="font-headline font-bold text-lg leading-tight mb-1">Fasting</div>
+<div class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 456 Timers
+                        </div>
+</div>
+<div class="flex-shrink-0 w-48 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-weight="fill">air</span>
+</div>
+<div class="font-headline font-bold text-lg leading-tight mb-1">Breathing</div>
+<div class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 312 Timers
+                        </div>
+</div>
+<div class="flex-shrink-0 w-48 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-weight="fill">school</span>
+</div>
+<div class="font-headline font-bold text-lg leading-tight mb-1">Classroom</div>
+<div class="text-xs font-bold text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> 1.1k Timers
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-24 bg-surface-container-low overflow-hidden">
+<div class="max-w-7xl mx-auto px-8">
+<div class="text-center mb-20">
+<h2 class="text-4xl lg:text-5xl font-black font-headline tracking-tight mb-4">How It Works</h2>
+<p class="text-on-surface-variant font-medium text-lg">Join the kinetic clubhouse in three simple steps.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 relative">
+<!-- Connection Line (Desktop) -->
+<div class="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-1 border-t-4 border-dashed border-outline-variant/30 -translate-y-12"></div>
+<div class="relative bg-white p-10 rounded-2xl shadow-xl shadow-primary/5 flex flex-col items-center text-center z-10">
+<div class="w-20 h-20 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline text-3xl font-black mb-8">1</div>
+<img alt="Pick" class="w-24 h-24 mb-6" data-alt="Small blue mascot character using a giant magnifying glass to look at a colorful timer icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIkBoaeBlSc-cZLMfXyATUzB_FkAomVDcp16vJSoou28wHHGJWE1eOvNUBQEoOCJ1RFFR7oO-lgpGJtwDu0N2gMP4JJRSdPsrPwOAmMMsDzqjWhWujw58OtsBM-LiLVD68rxLJ2Ambv3_GRYf_bBRRF9H-AM0ssWdc1DKjKGZld50GkJ0-96mO4byVEZxVAj9vXjoX53M1LsO0vFfUOLtAMXLm62gJG114UAZ_b7QyvVbGod8esShJ5ZiVimrg4J5Pf49TC13gQ5k"/>
+<h3 class="text-2xl font-black font-headline mb-4">Pick a Timer</h3>
+<p class="text-on-surface-variant leading-relaxed">Choose from thousands of community-verified presets or create your own custom countdown.</p>
+</div>
+<div class="relative bg-white p-10 rounded-2xl shadow-xl shadow-primary/5 flex flex-col items-center text-center z-10">
+<div class="w-20 h-20 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline text-3xl font-black mb-8">2</div>
+<img alt="Challenge" class="w-24 h-24 mb-6" data-alt="Mascot character wearing boxing gloves, ready for a friendly competition next to a smartphone screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkc1eRF9uUECr5cabWHasA9iYfHvlRZueHo_tp84pkIeEgaPmcRhDEXZ5wgBlTlVzG7BbpvYTui5rG9oGDRc4yh8hRQx9ogItMH9U9i0aH3yu2TVanGHa6H7nr2fSYeD4W5rVap03-PI_upiw027ydjtqELN7W-ovoiSoQYlFrOc-auPc7VHhGAAxYt8K5HjTBSmwXGhEFnJIOpMWVkSxEmnXnFCh8UzW8wWR1kKst4ZN0Vu1LWCM8JVTZdfKPTlf3rJ25gaV4u0w"/>
+<h3 class="text-2xl font-black font-headline mb-4">Challenge Friends</h3>
+<p class="text-on-surface-variant leading-relaxed">Send a dynamic link to friends or go head-to-head with the global community in real-time.</p>
+</div>
+<div class="relative bg-white p-10 rounded-2xl shadow-xl shadow-primary/5 flex flex-col items-center text-center z-10">
+<div class="w-20 h-20 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center font-headline text-3xl font-black mb-8">3</div>
+<img alt="Climb" class="w-24 h-24 mb-6" data-alt="Mascot character climbing a podium of giant colorful steps, holding a golden timer trophy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtBljYwAT1X11w4yPybDmdLQIsTL15RZgHD2VWPynhgHpZb_fd5r7u0ptpJwdHFJ14tETXYj_bG7cuE0j8f-mWrG71WhXT8R3ssdVAq2062v_6OXtf1pKAyfVRSwLabOUWJoWPmAwNFRB-Pz4T20L632Qbaf8FPOjew3tAk7m-w2j5cV1GIDIEVEttumYE5nQgisJW1WKOS6RxK85UV5bPbH3GuoXvIRcPQ_sgNDYmncazscI6G2_eFyq8GshB-208-zGH-vdMvN4"/>
+<h3 class="text-2xl font-black font-headline mb-4">Climb the Ranks</h3>
+<p class="text-on-surface-variant leading-relaxed">Beat the clock, earn XP, and secure your spot on the hall of fame leaderboard.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Challenges & Popular Timers Bento Grid -->
+<section class="py-24 bg-surface">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid lg:grid-cols-3 gap-8">
+<!-- Live Feed (Left Column) -->
+<div class="lg:col-span-1 space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-2xl font-black font-headline tracking-tight">Live Challenges</h2>
+<span class="flex items-center gap-2 text-secondary font-bold text-xs animate-pulse">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> LIVE
+                            </span>
+</div>
+<div class="space-y-4">
+<!-- Challenge Item -->
+<div class="p-4 rounded-xl bg-surface-container-high border border-outline-variant/10 flex items-center gap-4">
+<div class="flex -space-x-2">
+<img alt="User 1" class="w-10 h-10 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5629rNWSLZ3nClbLCkUjDkv2ntlcg2HWkr08BOwBnfC18GpfHrxEiFr413c5WexpNX_GcCaReEn8gz74TwsENRgD8Bvs1gDMerV_T8OAJwp1aSISJAnG-XKiujQbJHx4qnHOJRzfn0PyTaW00WbLTkS9Qf-vxqXIi19-l9U9uu5z6KYg-vOpyNfvDoAeBUdYUP6KnTzf29dMr2lyDlVTNlslMacu1KeonoDwfyh5IXL-l5buLZnB4j9XZlXwQ6hWZRATS6cErYTo"/>
+<img alt="User 2" class="w-10 h-10 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg9-UiCOTSiclaJGoEzqtLO_U4nXyj0fs_mibKlwVt0R0XJ2KbAQFkmtYV3AaOx0QPyFUQ3spJIX85iFjiraasxyWaSzYR28M18MENoi3PvY55I_OpRcYrtjYxCNUXEfwDoXA1Zu0H6T9K5cpJhGtCRAUB2zH8frW0CbAkSKlea-qfmSJITSfV7aVgCT65cjp19iZ2STE1ZDwGJ_EbSGIfImfEX--alMwb2UIoMltd_IeUzeCCetoHkw7HthN7bk0LcH4KcZKwuD4"/>
+</div>
+<div class="flex-1">
+<div class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Fast Cooking</div>
+<div class="font-headline font-bold text-sm">Felix vs. Aria</div>
+</div>
+<div class="text-right">
+<div class="text-sm font-black font-headline text-secondary">04:22</div>
+<div class="text-[10px] font-bold text-on-surface-variant">Round 2/3</div>
+</div>
+</div>
+<!-- Challenge Item -->
+<div class="p-4 rounded-xl bg-surface-container-high border border-outline-variant/10 flex items-center gap-4">
+<div class="flex -space-x-2">
+<img alt="User 1" class="w-10 h-10 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMW1_mgJiG715m-c38DnRIvm3xgN5iYU0tiVaPuZhQIdxpKwXAo-K0s9jJumle1-Yh_WJiLcPxoA5kImAC6faNpYAQYTt1IKt0vz5i0cCW7upilYkYvS6rNy-MTSvGf33-_meNhfYhf3Hc_Fcax1hlDC7g2TQqlifoCTKgzrGQ3mj9X-46ExmukIdIbTgfs0Sh9eTEiUWkScV-0UMz6TTGB2tgtXzLhhKVrYa05e8-1E6VCOIH13UTVDu-T8IJrDTnK-AXumXI0l0"/>
+<img alt="User 2" class="w-10 h-10 rounded-full border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQcw_6WJRCg7BrAqjBArkixf8tRlzAHV22angGHvkqGMyR5ZPEiScGjQ3OggONtVNSBgQr9b0cq85K2oTBKXpvAV9nFID4U8IRWLAiOj-XpGWPVfPf6O1Z_5vWVr9qLWn2NZDyrN77hc4sR4y8KwfruUzhDEp0Vkvu_1OC1ho7ivxMQa7idwrlLSNagtQ0cVoqc3zulPQienDmR0cJ5WFJmgF7EUpyBVB5SRo8pVXpERaUoNxOzbPBlb08Hp9cxoaK0iBdAjC71QQ"/>
+</div>
+<div class="flex-1">
+<div class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Deep Focus</div>
+<div class="font-headline font-bold text-sm">Mark vs. Luna</div>
+</div>
+<div class="text-right">
+<div class="text-sm font-black font-headline text-secondary">21:05</div>
+<div class="text-[10px] font-bold text-on-surface-variant">Pomo Sprint</div>
+</div>
+</div>
+<!-- Winner Reveal -->
+<div class="p-4 rounded-xl bg-primary text-on-primary flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container" data-weight="fill">trophy</span>
+</div>
+<div class="flex-1">
+<div class="text-[10px] font-bold text-on-primary-container uppercase tracking-wider">Just Finished</div>
+<div class="font-headline font-bold text-sm">Sarah won the 16:8 Fast</div>
+</div>
+<div class="text-right">
+<div class="text-xs font-bold bg-white/10 px-2 py-1 rounded">+250 XP</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Popular Timers Grid (Right Columns) -->
+<div class="lg:col-span-2 space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-2xl font-black font-headline tracking-tight">Popular Timers</h2>
+<a class="text-secondary font-bold text-sm hover:underline" href="#">View all</a>
+</div>
+<div class="grid md:grid-cols-2 gap-6">
+<!-- Timer Card -->
+<div class="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-outline-variant/5 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<div class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold font-headline">TRENDING</div>
+</div>
+<h3 class="text-xl font-bold font-headline mb-2">The Ultimate Pomodoro</h3>
+<p class="text-on-surface-variant text-sm mb-6">25m focus / 5m break. Community favorite for coding and writing.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">group</span>
+<span class="text-xs font-bold text-on-surface-variant">12.4k active</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Timer Card -->
+<div class="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-outline-variant/5 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div class="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold font-headline">CHALLENGE</div>
+</div>
+<h3 class="text-xl font-bold font-headline mb-2">Perfect Soft Boiled</h3>
+<p class="text-on-surface-variant text-sm mb-6">6m 30s. Compete for the most consistent texture. High precision.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">group</span>
+<span class="text-xs font-bold text-on-surface-variant">3.1k active</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Timer Card -->
+<div class="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-outline-variant/5 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">self_improvement</span>
+</div>
+<div class="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-xs font-bold font-headline">SOLO</div>
+</div>
+<h3 class="text-xl font-bold font-headline mb-2">Box Breathing 4-4-4</h3>
+<p class="text-on-surface-variant text-sm mb-6">Regulate your nervous system. Track your daily streak vs the world.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">group</span>
+<span class="text-xs font-bold text-on-surface-variant">8.9k active</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+<!-- Timer Card -->
+<div class="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-outline-variant/5 hover:shadow-xl transition-all duration-300">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">fitness_center</span>
+</div>
+<div class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-xs font-bold font-headline">INTENSE</div>
+</div>
+<h3 class="text-xl font-bold font-headline mb-2">HIIT Tabata Alpha</h3>
+<p class="text-on-surface-variant text-sm mb-6">20s work / 10s rest. 8 cycles of pure kinetic energy.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">group</span>
+<span class="text-xs font-bold text-on-surface-variant">1.5k active</span>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-20 px-8">
+<div class="max-w-7xl mx-auto rounded-3xl bg-primary-container p-12 lg:p-20 relative overflow-hidden">
+<div class="relative z-10 text-center lg:text-left max-w-2xl">
+<h2 class="text-4xl lg:text-5xl font-black font-headline text-on-primary tracking-tight mb-6">Ready to Race the Clock?</h2>
+<p class="text-on-primary-container text-lg mb-8 leading-relaxed">Join 500,000+ competitors who have turned their daily tasks into legendary victories. No ads. Just precision.</p>
+<div class="flex flex-wrap justify-center lg:justify-start gap-4">
+<button class="px-8 py-4 rounded-full bg-secondary text-on-secondary font-headline font-bold text-lg hover:scale-105 transition-transform">Create Account</button>
+<button class="px-8 py-4 rounded-full bg-transparent border-2 border-on-primary-container text-on-primary font-headline font-bold text-lg hover:bg-white/5 transition-colors">Learn More</button>
+</div>
+</div>
+<!-- Mascot (Footer CTA) -->
+<div class="hidden lg:block absolute bottom-0 right-12">
+<img alt="Work Mascot" class="w-72 h-72 translate-y-8" data-alt="Friendly blue mascot character sitting at a futuristic holographic desk, focused on a glowing timer interface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-MKreKP-02dlph1zJzZbGevFOImYMInjC49CdL0CtsgWFVOumDrQMtX7De3FFgtlsZecX-u3lT3jZPY96DWBKlEQIlyiJztsGn7EDbVD8t61PKxYiHusjGpyS2VKIuYQBmuOkHbgISEW6jR5fYp81WUwQ--EpcAefZWfHlsxJzFRhlw2X47PWouzPMIiJSt4NhlQ3vSJyM3p2WqaiU7yG3cSV20Sa6q8UwoSdHNBCcHlyokDxb_fCKo1GaUN1M97gwU9Tvt91xtg"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-t-3xl mt-12 bg-primary dark:bg-black">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-12 py-16 max-w-7xl mx-auto">
+<div class="space-y-6">
+<div class="text-xl font-bold text-white font-headline">GoTimer.org</div>
+<p class="text-slate-300 text-sm opacity-80 leading-relaxed">The world's first competitive timing platform. Where every second counts toward greatness.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-secondary dark:text-orange-500 mb-6">Product</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Timers</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Challenges</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Leaderboard</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Integrations</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-secondary dark:text-orange-500 mb-6">Resources</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Blog</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Help Center</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">API Docs</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Community</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-secondary dark:text-orange-500 mb-6">Company</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">About</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Careers</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Contact</a></li>
+<li><a class="text-slate-300 hover:text-secondary_fixed transition-colors text-sm" href="#">Privacy</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-white/5 py-8 text-center">
+<p class="text-slate-500 text-xs font-medium uppercase tracking-widest">© 2024 GoTimer.org - Precision Productivity</p>
+</div>
+</footer>
+</body></html>

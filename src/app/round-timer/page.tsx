@@ -1,19 +1,46 @@
 "use client";
-// Purpose: Round Timer page for the Game Timer app. Displays total elapsed time and current round time with animated circular progress ring.
 
-import React, { useEffect, useState, useRef } from "react";
-import Link from "next/link";
-import { Button } from "../../components/ui/button";
-import { Volume2, VolumeX, Settings, RotateCcw, Pause, Play } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Navbar from "../../components/navbar";
-import Header from "../../components/header";
+import React, { useEffect, useState, useRef, useCallback, Suspense } from "react";
+import { RotateCcw, Pause, Play } from "lucide-react";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import TimerShell from "@/components/shared/timer-shell";
 
-export default function RoundTimerPage() {
-  const router = useRouter();
+// SVG ring constants
+const RING_SIZE = 280;
+const STROKE_WIDTH = 12;
+const RADIUS = 134;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+function ProgressRing({ progress, color }: { progress: number; color: string }) {
+  const dash_offset = CIRCUMFERENCE * (1 - progress);
+  return (
+    <svg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="w-full h-full -rotate-90">
+      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
+        stroke="var(--surface-container-high)" strokeWidth={STROKE_WIDTH} />
+      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
+        stroke={color} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
+        strokeDasharray={CIRCUMFERENCE} strokeDashoffset={dash_offset}
+        className="ring-progress-transition" />
+    </svg>
+  );
+}
+
+const RING_NORMAL = "relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center";
+const RING_FULLSCREEN = "relative w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem] md:w-[34rem] md:h-[34rem] flex items-center justify-center";
+
+function format_time(secs: number) {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  if (h > 0) return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+}
+
+function RoundTimerContent() {
   const [total_time, set_total_time] = useState(0);
   const [round_time, set_round_time] = useState(0);
-  const [running, set_running] = useState(true);
+  const [running, set_running] = useState(false);
   const [audio_enabled, set_audio_enabled] = useState(false);
   const [previous_round_times, set_previous_round_times] = useState<number[]>([]);
   const audio_context_ref = useRef<AudioContext | null>(null);
@@ -22,211 +49,140 @@ export default function RoundTimerPage() {
     if (!audio_enabled) {
       try {
         if (!audio_context_ref.current) {
-          audio_context_ref.current = new (window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext)();
+          audio_context_ref.current = new (
+            window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
+          )();
         }
         set_audio_enabled(true);
-      } catch {
-        // Audio not supported
-      }
+      } catch { /* Audio not supported */ }
     } else {
       set_audio_enabled(false);
     }
   };
 
+  const play_beep = useCallback((duration = 0.15, frequency = 880) => {
+    if (!audio_enabled || !audio_context_ref.current) return;
+    try {
+      const ctx = audio_context_ref.current;
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine"; osc.frequency.value = frequency; gain.gain.value = 0.2;
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + duration);
+    } catch { /* Ignore */ }
+  }, [audio_enabled]);
+
   useEffect(() => {
     if (!running) return;
     const interval = setInterval(() => {
-      set_total_time((prev) => prev + 1);
-      set_round_time((prev) => prev + 1);
+      set_total_time((p) => p + 1);
+      set_round_time((p) => p + 1);
     }, 1000);
     return () => clearInterval(interval);
   }, [running]);
 
-  const format_time = (secs: number) => {
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor((secs % 3600) / 60);
-    const s = secs % 60;
-    if (h > 0) {
-      return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-    }
-    return `${m}:${s.toString().padStart(2, "0")}`;
-  };
+  // Beep every minute
+  useEffect(() => {
+    if (running && round_time > 0 && round_time % 60 === 0) play_beep(0.3, 660);
+  }, [round_time, running, play_beep]);
 
   const handle_round_reset = () => {
-    if (round_time > 0) {
-      set_previous_round_times((prev) => [...prev, round_time]);
-    }
+    if (round_time > 0) set_previous_round_times((prev) => [...prev, round_time]);
     set_round_time(0);
   };
 
-  const handle_pause = () => set_running((p) => !p);
-
-  const handle_settings = () => {
-    router.push("/round-timer-setup");
-  };
-
-  // SVG ring constants (same as countdown)
-  const ring_size = 280;
-  const stroke_width = 12;
-  const radius = 134;
-  const circumference = 2 * Math.PI * radius;
-  // Ring fills over each minute, resets each minute
   const ring_progress = (round_time % 60) / 60;
-  const dash_offset = circumference * (1 - ring_progress);
-
   const minutes = Math.floor(round_time / 60).toString().padStart(2, "0");
   const seconds = (round_time % 60).toString().padStart(2, "0");
+  const round_number = previous_round_times.length + 1;
+  const status_text = running ? `Round ${round_number} in progress` : total_time > 0 ? "Paused" : "Ready";
+
+  const btn_cls = (fs: boolean) =>
+    `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
+  const outline_cls = (fs: boolean) =>
+    `flex-1 flex items-center justify-center gap-2 bg-surface-container-low text-foreground hover:bg-surface-container-high rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
 
   return (
-    <main className="min-h-screen flex flex-col bg-gray-100 pt-12 pb-4 px-3 w-full md:bg-gray-200 md:pt-20 md:px-4 md:items-center">
-      <Header />
+    <>
       <Navbar />
-      <h1 className="sr-only">Total & Round Time Tracker</h1>
-
-      <div className="relative bg-white rounded-2xl shadow-lg p-6 md:p-12 flex flex-col items-center gap-5 md:gap-6 w-full max-w-md md:max-w-lg mx-auto mt-4">
-        {/* Sound toggle */}
-        <button
-          aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
-          onClick={toggle_audio}
-          className={`absolute top-4 right-4 rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${audio_enabled ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"}`}
-        >
-          {audio_enabled ? (
-            <Volume2 className="text-blue-600 w-5 h-5" />
-          ) : (
-            <VolumeX className="text-gray-500 w-5 h-5" />
-          )}
-        </button>
-
-        {/* Status badge */}
-        <div className="flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
-          <span className="w-2 h-2 rounded-full bg-blue-500" />
-          Round Timer Active
-        </div>
-
-        {/* Subtitle */}
-        <p className="text-gray-500 text-sm">
-          Round {previous_round_times.length + 1} in progress
-        </p>
-
-        {/* Total time */}
-        <div className="flex items-center gap-2 text-sm md:text-base font-mono text-gray-600">
-          <span className="text-gray-400 text-xs md:text-sm uppercase tracking-wide font-sans">Total</span>
-          <span className="font-semibold">{format_time(total_time)}</span>
-        </div>
-
-        {/* Circular progress ring with round time */}
-        <div className="relative w-60 h-60 md:w-80 md:h-80 flex items-center justify-center">
-          <svg
-            viewBox={`0 0 ${ring_size} ${ring_size}`}
-            className="w-full h-full -rotate-90"
+      <main className="min-h-screen flex flex-col bg-surface pt-14 pb-4 px-3 w-full md:pt-20 md:px-4 md:items-center">
+        <h1 className="sr-only">Round Timer</h1>
+        <div className="mt-4 mb-8">
+          <TimerShell
+            timer_label="Round Timer"
+            status_text={status_text}
+            audio_enabled={audio_enabled}
+            on_toggle_audio={toggle_audio}
+            controls={({ is_fullscreen: fs }) => (
+              <div className="flex flex-col gap-3 w-full max-w-sm">
+                <button onClick={handle_round_reset} className={btn_cls(fs)}>
+                  <RotateCcw className="w-5 h-5" /> Next Round
+                </button>
+                <button onClick={() => set_running(!running)} className={outline_cls(fs)}>
+                  {running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {total_time > 0 ? "Resume" : "Start"}</>}
+                </button>
+              </div>
+            )}
           >
-            {/* Gray track */}
-            <circle
-              cx={ring_size / 2}
-              cy={ring_size / 2}
-              r={radius}
-              fill="none"
-              stroke="#E5E7EB"
-              strokeWidth={stroke_width}
-            />
-            {/* Blue progress arc */}
-            <circle
-              cx={ring_size / 2}
-              cy={ring_size / 2}
-              r={radius}
-              fill="none"
-              stroke="#3B82F6"
-              strokeWidth={stroke_width}
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={dash_offset}
-              className="ring-progress-transition"
-            />
-          </svg>
-          {/* Timer digits overlaid */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="flex items-baseline gap-2">
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{minutes}</span>
-                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Minutes</span>
-              </div>
-              <span className="text-5xl md:text-7xl font-bold text-gray-800 mb-5">:</span>
-              <div className="flex flex-col items-center">
-                <span className="text-5xl md:text-7xl font-bold text-gray-800 font-mono">{seconds}</span>
-                <span className="text-xs uppercase tracking-wider text-gray-400 mt-1">Seconds</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Round Reset button */}
-        <Button
-          onClick={handle_round_reset}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-4 md:py-5 w-full shadow-md text-base md:text-lg font-semibold flex items-center justify-center gap-2"
-        >
-          <RotateCcw className="w-5 h-5" />
-          Round Reset
-        </Button>
-
-        {/* Round history */}
-        {previous_round_times.length > 0 && (
-          <div className="w-full max-h-24 md:max-h-48 overflow-y-auto">
-            <div className="flex flex-col gap-1.5 md:gap-2">
-              {previous_round_times.map((time, index) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg"
-                >
-                  <span className="text-xs md:text-base font-medium text-gray-700">
-                    Round {index + 1}
-                  </span>
-                  <span className="text-xs md:text-base font-mono font-semibold text-gray-900">
-                    {format_time(time)}
-                  </span>
+            {({ is_fullscreen: fs }) => (
+              <>
+                {/* Total time */}
+                <div className="flex items-center gap-2 text-sm font-mono text-muted-foreground">
+                  <span className="text-xs uppercase tracking-wide font-headline font-bold">Total</span>
+                  <span className="font-semibold">{format_time(total_time)}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* Pause + Settings buttons */}
-        <div className="flex gap-3 w-full">
-          <Button
-            onClick={handle_pause}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
-          >
-            {running ? (
-              <>
-                <Pause className="w-5 h-5" />
-                Pause
-              </>
-            ) : (
-              <>
-                <Play className="w-5 h-5" />
-                Resume
+                <div className={RING_NORMAL}>
+                  <ProgressRing progress={ring_progress} color="var(--secondary)" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className={`flex items-baseline ${fs ? "gap-3" : "gap-1.5"}`}>
+                      <div className="flex flex-col items-center">
+                        <span className={`${fs ? "text-7xl sm:text-8xl" : "text-4xl sm:text-5xl md:text-7xl"} font-headline font-black text-foreground`}>{minutes}</span>
+                        <span className={`${fs ? "text-sm" : "text-[10px] sm:text-xs"} uppercase tracking-wider text-muted-foreground mt-1`}>Minutes</span>
+                      </div>
+                      <span className={`${fs ? "text-7xl sm:text-8xl mb-8" : "text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-5"} font-headline font-black text-foreground`}>:</span>
+                      <div className="flex flex-col items-center">
+                        <span className={`${fs ? "text-7xl sm:text-8xl" : "text-4xl sm:text-5xl md:text-7xl"} font-headline font-black text-foreground`}>{seconds}</span>
+                        <span className={`${fs ? "text-sm" : "text-[10px] sm:text-xs"} uppercase tracking-wider text-muted-foreground mt-1`}>Seconds</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Round history */}
+                {!fs && previous_round_times.length > 0 && (
+                  <div className="w-full max-h-24 md:max-h-48 overflow-y-auto">
+                    <div className="flex flex-col gap-1.5">
+                      {previous_round_times.map((time, i) => (
+                        <div key={i} className="flex justify-between items-center py-2 px-3 bg-surface-container-low rounded-xl">
+                          <span className="text-xs md:text-sm font-headline font-bold text-foreground">Round {i + 1}</span>
+                          <span className="text-xs md:text-sm font-mono font-semibold text-foreground">{format_time(time)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             )}
-          </Button>
-          <Button
-            onClick={handle_settings}
-            className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-4 md:py-5 flex-1 shadow-sm text-base md:text-lg font-semibold flex items-center justify-center gap-2"
-          >
-            <Settings className="w-5 h-5" />
-            Settings
-          </Button>
+          </TimerShell>
         </div>
-      </div>
 
-      <section className="w-full max-w-md mx-auto mt-6 px-1">
-        <p className="text-xs text-gray-500 text-center mb-2">Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.</p>
-        <nav className="flex flex-wrap justify-center gap-3 text-xs">
-          <Link href="/" className="text-blue-600 hover:text-blue-800">Home</Link>
-          <span className="text-gray-400">|</span>
-          <Link href="/countdown-setup" className="text-blue-600 hover:text-blue-800">Countdown Timer</Link>
-          <span className="text-gray-400">|</span>
-          <Link href="/chess-clock-setup" className="text-blue-600 hover:text-blue-800">Chess Clock</Link>
-        </nav>
-      </section>
-    </main>
+        <section className="w-full max-w-md mx-auto px-1 text-center">
+          <p className="text-xs text-muted-foreground mb-2">
+            Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.
+          </p>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+export default function RoundTimerPage() {
+  return (
+    <Suspense>
+      <RoundTimerContent />
+    </Suspense>
   );
 }

@@ -1,0 +1,59 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "GoTimer logo GoTimer.org" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "GoTimer logo" [ref=e6]
+        - generic [ref=e7]: GoTimer.org
+      - navigation [ref=e8]:
+        - link "Challenges" [ref=e9] [cursor=pointer]:
+          - /url: /challenges
+          - img [ref=e10]
+          - generic [ref=e15]: Challenges
+        - link "Leaderboard" [ref=e16] [cursor=pointer]:
+          - /url: /leaderboard
+          - img [ref=e17]
+          - generic [ref=e23]: Leaderboard
+        - link "Vibe Check" [ref=e24] [cursor=pointer]:
+          - /url: /public-challenges
+          - img [ref=e25]
+          - generic [ref=e28]: Vibe Check
+        - link "Giphy Arena" [ref=e29] [cursor=pointer]:
+          - /url: /board-games
+          - img [ref=e30]
+          - generic [ref=e36]: Giphy Arena
+      - generic [ref=e37]:
+        - link "Settings" [ref=e38] [cursor=pointer]:
+          - /url: /hazo_auth/my_settings
+          - img [ref=e39]
+          - generic [ref=e42]: Settings
+        - link "Support" [ref=e43] [cursor=pointer]:
+          - /url: mailto:pubs@hazoservices.com
+          - img [ref=e44]
+          - generic [ref=e47]: Support
+    - main [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - heading "Game Challenges" [level=1] [ref=e51]:
+            - img [ref=e52]
+            - text: Game Challenges
+          - paragraph [ref=e58]: Create challenges with friends, track wins, and settle who's really the best once and for all.
+        - generic [ref=e59]:
+          - heading "How It Works" [level=3] [ref=e60]
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - generic [ref=e64]: "1"
+              - heading "Create a Challenge" [level=4] [ref=e65]
+              - paragraph [ref=e66]: Name your challenge and describe what game you're playing.
+            - generic [ref=e67]:
+              - generic [ref=e69]: "2"
+              - heading "Invite a Friend" [level=4] [ref=e70]
+              - paragraph [ref=e71]: Share an invite link - they just need to log in and accept.
+            - generic [ref=e72]:
+              - generic [ref=e74]: "3"
+              - heading "Track Games" [level=4] [ref=e75]
+              - paragraph [ref=e76]: Record results, add GIFs, and see who dominates!
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e82] [cursor=pointer]:
+    - img [ref=e83]
+  - alert [ref=e86]

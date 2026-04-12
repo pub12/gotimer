@@ -81,8 +81,8 @@ const pages: TimerPage[] = [
       "Start a free 5 minute countdown timer instantly. Perfect for Pomodoro breaks, quick exercises, egg boiling, and short presentations. No signup needed.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 300 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What can I do in 5 minutes?",
@@ -151,8 +151,8 @@ const pages: TimerPage[] = [
       "Start a free 10 minute countdown timer. Ideal for Pomodoro long breaks, quick workouts, pasta cooking, and cleaning bursts. Works on any device.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 600 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What is a 10 minute timer good for?",
@@ -220,8 +220,8 @@ const pages: TimerPage[] = [
       "Start a free 15 minute countdown timer. Great for power naps, study breaks, HIIT sessions, and rice cooking. No app download required.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 900 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "Is a 15 minute power nap effective?",
@@ -287,8 +287,8 @@ const pages: TimerPage[] = [
       "Start a free 20 minute countdown timer. Perfect for Pomodoro variants, short naps, moderate exercise, and focused work blocks. No signup required.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 1200 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "Why use a 20 minute timer instead of 25?",
@@ -354,8 +354,8 @@ const pages: TimerPage[] = [
       "Start a free 25 minute Pomodoro timer instantly. The most popular focus block duration for deep work, studying, and productivity. No download needed.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 1500 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "Why is 25 minutes the ideal focus session?",
@@ -425,8 +425,8 @@ const pages: TimerPage[] = [
       "Start a free 30 minute timer instantly. Perfect for half-hour meetings, extended workouts, deep work blocks, and cooking. No download required.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 1800 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What can I accomplish in 30 minutes?",
@@ -492,8 +492,8 @@ const pages: TimerPage[] = [
       "Start a free 45 minute countdown timer. Ideal for class periods, longer workouts, extended focus sessions, and therapy appointments. Works on any device.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 2700 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "Why are school class periods 45 minutes?",
@@ -558,8 +558,8 @@ const pages: TimerPage[] = [
       "Start a free 60 minute (1 hour) countdown timer. Ideal for meetings, long runs, study sessions, baking, and board game time limits. No signup required.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 3600 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What can I do in 1 hour?",
@@ -632,8 +632,8 @@ const pages: TimerPage[] = [
       rest_seconds: 300,
       rounds: 4,
     }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What is the Pomodoro Technique and how does it work?",
@@ -705,8 +705,8 @@ const pages: TimerPage[] = [
       rest_seconds: 30,
       rounds: 10,
     }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What is HIIT and how does it work?",
@@ -784,8 +784,8 @@ const pages: TimerPage[] = [
       "Start a free meditation timer with a calm, minimal interface. Perfect for mindfulness, guided sessions, and silent meditation. No distractions, no signup.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 600 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "How long should I meditate as a beginner?",
@@ -851,8 +851,8 @@ const pages: TimerPage[] = [
       "Start a free breathing exercise timer for box breathing, 4-7-8, and other techniques. Reduce stress and improve focus in minutes. No app download needed.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 240 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What is box breathing and how do I do it?",
@@ -922,8 +922,8 @@ const pages: TimerPage[] = [
       "Start a free cooking timer for any recipe. Track cooking times for multiple dishes. Loud audio alerts so you never overcook. Works on any device.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 600 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "Why do I need a cooking timer?",
@@ -995,8 +995,8 @@ const pages: TimerPage[] = [
       "Start a free egg timer for perfect soft, medium, or hard-boiled eggs. Preset times: soft 6min, medium 9min, hard 12min. Audio alert included.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 360 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "How long do I boil eggs for soft, medium, and hard?",
@@ -1068,8 +1068,8 @@ const pages: TimerPage[] = [
       "Start a free intermittent fasting timer for 16:8, 18:6, and other protocols. Track your fasting window with a visual countdown. No app subscription needed.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 57600 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What is intermittent fasting 16:8?",
@@ -1143,8 +1143,8 @@ const pages: TimerPage[] = [
       rest_seconds: 300,
       rounds: 4,
     }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "How long should I study without a break?",
@@ -1221,8 +1221,8 @@ const pages: TimerPage[] = [
       "Start a free fullscreen classroom timer. Large display visible from the back of the room. Perfect for activities, transitions, and tests. No app needed.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 300 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "How do teachers use classroom timers?",
@@ -1292,8 +1292,8 @@ const pages: TimerPage[] = [
       "Start a free presentation timer for meetings, talks, and speeches. Keep presentations on time with a visible countdown. Works on any device.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 1800 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "How do I time a presentation effectively?",
@@ -1366,8 +1366,8 @@ const pages: TimerPage[] = [
       "Start a free ADHD-friendly focus timer with minimal distractions. Simple interface, audio alerts, and structured work blocks. No signup required.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 900 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "Why is a timer helpful for ADHD?",
@@ -1435,8 +1435,8 @@ const pages: TimerPage[] = [
       "Start a free sleep timer for bedtime routines. Gentle countdown for winding down, audiobooks, and sleep meditation. Calm interface for nighttime use.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 1800 }),
-    status: "draft",
-    published_at: null,
+    status: "published",
+    published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
         question: "What is a sleep timer used for?",

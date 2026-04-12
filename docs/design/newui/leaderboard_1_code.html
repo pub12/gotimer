@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c5c6cf",
+                    "on-tertiary-container": "#503d00",
+                    "surface-container-highest": "#d5e3fc",
+                    "surface-container": "#e6eeff",
+                    "on-primary-fixed": "#0a1a3a",
+                    "secondary-fixed": "#ffdbd2",
+                    "primary-fixed": "#d9e2ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#241a00",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "outline": "#75777f",
+                    "on-secondary-fixed": "#3c0800",
+                    "on-surface-variant": "#45464e",
+                    "on-background": "#0d1c2e",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#594400",
+                    "on-secondary-container": "#651400",
+                    "primary-fixed-dim": "#b7c6ee",
+                    "on-primary-container": "#8392b7",
+                    "on-secondary-fixed-variant": "#891e00",
+                    "tertiary-container": "#d3a500",
+                    "surface-dim": "#ccdbf3",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#233144",
+                    "surface-variant": "#d5e3fc",
+                    "secondary-fixed-dim": "#ffb4a1",
+                    "inverse-primary": "#b7c6ee",
+                    "tertiary-fixed": "#ffdf91",
+                    "surface-tint": "#4f5e81",
+                    "primary": "#041534",
+                    "tertiary-fixed-dim": "#f3c00a",
+                    "primary-container": "#1b2a4a",
+                    "on-primary-fixed-variant": "#384668",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0d1c2e",
+                    "surface-container-high": "#dce9ff",
+                    "secondary": "#ab3514",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#755b00",
+                    "secondary-container": "#fd6f4a",
+                    "inverse-on-surface": "#eaf1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .font-lexend { font-family: 'Lexend', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row">
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen w-64 rounded-r-3xl overflow-hidden bg-[#eff4ff] dark:bg-[#041534] shadow-2xl shadow-[#0d1c2e]/5 p-4 gap-2 sticky top-0">
+<div class="flex items-center gap-3 px-2 mb-8">
+<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">rocket_launch</span>
+</div>
+<span class="text-xl font-black text-[#041534] dark:text-white font-lexend">GoTimer.org</span>
+</div>
+<nav class="flex-grow flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 transition-all duration-200 hover:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-medium font-lexend">Challenges</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-gradient-to-br from-[#041534] to-[#1b2a4a] text-white rounded-xl shadow-lg transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-medium font-lexend">Leaderboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 transition-all duration-200 hover:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">mood</span>
+<span class="font-medium font-lexend">Vibe Check</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 transition-all duration-200 hover:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">celebration</span>
+<span class="font-medium font-lexend">Giphy Arena</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/10 flex flex-col gap-2">
+<div class="flex items-center gap-3 px-4 py-3 mb-4 bg-surface-container-highest/30 rounded-2xl">
+<img alt="Meme Master" class="w-10 h-10 rounded-full" data-alt="vibrant 3D avatar of a playful character wearing futuristic headphones with a confident expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWYqg7Xe70n5OfESEVb_uWXlIaCLsH0wx2Eejl5aiZN72O15XDqAasyU8nnr3XBppAlo4takdwsJ-wFt_axw2Mo91TQ0keN0-weTdTy_x7tT3sjDrbsaV1cSIung9lxuoUIZmcj2KMCbojfPqhLc0BvemU7klvf6O2sYKiNa0b5FkDJnj7my_uLHjEOO3EbkIz1Dp2MLrsfpGAZj88zIAJz9B20LP6GBZYghoELBXesY_kywmzt13mX5J2PNoC6oW_mIVI2_P4NBw"/>
+<div class="flex flex-col">
+<span class="text-sm font-bold font-lexend">Meme Master</span>
+<span class="text-[10px] opacity-60 uppercase tracking-widest">Kinetic Legend</span>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-2 text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 transition-all duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium font-lexend">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 transition-all duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-medium font-lexend">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col min-h-screen overflow-x-hidden pb-24 md:pb-0">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-[#f8f9ff]/80 dark:bg-[#041534]/80 backdrop-blur-xl shadow-[0_16px_48px_-12px_rgba(13,28,46,0.06)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<h1 class="text-2xl font-black italic tracking-tighter text-[#041534] dark:text-[#f8f9ff] font-lexend md:hidden">GoTimer</h1>
+<h1 class="hidden md:block text-2xl font-black tracking-tight text-[#041534] font-lexend">Meme-First Leaderboard</h1>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex bg-surface-container rounded-full px-4 py-2 items-center gap-2">
+<span class="material-symbols-outlined text-primary/50">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-medium w-48" placeholder="Find champions..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:scale-105 transition-transform text-on-surface-variant">
+<span class="material-symbols-outlined">leaderboard</span>
+</button>
+<button class="p-2 hover:scale-105 transition-transform text-on-surface-variant relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 hover:scale-105 transition-transform text-on-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex flex-col lg:flex-row flex-grow p-6 lg:p-8 gap-8 max-w-screen-2xl mx-auto w-full">
+<!-- Podium and Table Column -->
+<div class="flex-grow space-y-12">
+<!-- Champion Podium -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+<!-- 2nd Place -->
+<div class="order-2 md:order-1 flex flex-col items-center">
+<div class="relative w-full aspect-[4/5] bg-surface-container rounded-3xl overflow-hidden group hover:shadow-xl transition-shadow border-b-8 border-surface-dim">
+<div class="absolute top-4 left-4 z-10 bg-white/90 px-3 py-1 rounded-full text-sm font-bold shadow-sm">#2 Silver</div>
+<img alt="2nd Place GIF" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="dynamic black and white gif of a crowd cheering in slow motion with energetic urban vibes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDBzI002AZ6BJiMkS6YQfXDdHszrGH-2-sotTHGUl9o-lTOp4GNEREeiFc1fEopqHO8V0x5Tt9QWA4CGp3LO-J1Fa7YHA1Zi92cTvbhpfb5Ji4I8A2iDXg6QZx41gM70P7-hJU2j-wAz45xgu2tRu4n1OIYf7aT1lsCuBKl2LlenB_zOLVJ9nbkx8Bykx0C-oTzH1I2j0rDTSkOQNHuxrNT11FYWGYs_Pme00rqvpSP3A9yk29QuQ4Df5b98dtq6vGwjE5W_EN49A"/>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+<p class="text-white font-lexend font-bold">@Speedy_Gonzales</p>
+<p class="text-white/70 text-xs">Best: 42.1s</p>
+</div>
+</div>
+</div>
+<!-- 1st Place -->
+<div class="order-1 md:order-2 flex flex-col items-center -translate-y-4">
+<div class="relative w-full aspect-[4/5] bg-gradient-to-br from-tertiary-container to-tertiary rounded-3xl overflow-hidden shadow-2xl shadow-tertiary/20 group scale-105 z-10 border-b-[12px] border-tertiary-fixed-dim">
+<div class="absolute top-4 left-4 z-10 bg-white px-4 py-1.5 rounded-full text-sm font-black text-tertiary shadow-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                                #1 LEGEND
+                            </div>
+<img alt="Champion GIF" class="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700" data-alt="high energy victory dance gif with colorful explosive background effects and joyful motion" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKvFV6h7_HDInIVfbwt6Xswu6geOzGWMk6xrm6XewDgoebHKkDPYSde-k0-TJm0rPDN0usP01yyqgysnZZln1pS1xncoCtYrmw3pO_myR28PCQZv04-LfICc3_AmnRm1lHL9rTReSEnqwGoOQewSG9-ZeB4TEIDIW1vjGFqP4vcptq5lhjeWWBKljGl__R5YRNzU_VoAXcXER-c3mOCtGjTy5u3mA2xOZqLZiSxbKJQJ0nzwJ0AlOUf_hldvJX9xZ5Fo4hQO7BQzQ"/>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-primary/90 to-transparent p-6 pt-12">
+<p class="text-white text-xl font-lexend font-black tracking-tight">@TurboTonic</p>
+<div class="flex justify-between items-center mt-1">
+<p class="text-tertiary-fixed text-sm font-bold">Best: 38.4s</p>
+<span class="bg-white/20 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-md">ULTRA INSTINCT</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3rd Place -->
+<div class="order-3 flex flex-col items-center">
+<div class="relative w-full aspect-[4/5] bg-surface-container rounded-3xl overflow-hidden group hover:shadow-xl transition-shadow border-b-8 border-secondary-fixed">
+<div class="absolute top-4 left-4 z-10 bg-white/90 px-3 py-1 rounded-full text-sm font-bold shadow-sm">#3 Bronze</div>
+<img alt="3rd Place GIF" class="w-full h-full object-cover sepia-[0.5] group-hover:sepia-0 transition-all duration-500" data-alt="cinematic gif of a person raising their hands in victory under a spotlight with dust particles in the air" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAet_JKpVUmuKaHJ4aG3d6Zk3Kg3v4ChFe-cxGwOxEY0xuKxXAH2aHvSTfHmxZltoUpgJa2KU2F0dY0xwTp-fjrWkqb-A9cybPOYDIifI4BqMEyc1WiYTYn_QDU6V4krn8dYE-BSdw_npqoHgfAzKBTtTldpXqrhJj_nC1rb65C--0y8ziPGcR9Wd5EonNZrCc7hdZOSyIC-Iofrgy2VCXgGzdFjWgMaOfyquwQzixgp3qJQ8xArjEo_aevlkhTrRlqeloZsa0FdHs"/>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+<p class="text-white font-lexend font-bold">@ChillVibesOnly</p>
+<p class="text-white/70 text-xs">Best: 45.8s</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Leaderboard Table -->
+<section class="bg-surface-container-low rounded-[2.5rem] p-8">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-3xl font-black font-lexend tracking-tighter">Global Arena</h2>
+<p class="text-on-surface-variant font-medium">Top grinders this week</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-surface-container-highest px-4 py-2 rounded-full text-sm font-bold font-lexend hover:bg-primary hover:text-white transition-colors">Daily</button>
+<button class="bg-primary text-white px-4 py-2 rounded-full text-sm font-bold font-lexend shadow-lg shadow-primary/20">Weekly</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-separate border-spacing-y-3">
+<thead>
+<tr class="text-left text-on-surface-variant/60 font-lexend text-xs uppercase tracking-widest">
+<th class="px-4 pb-2">Rank</th>
+<th class="px-4 pb-2">User</th>
+<th class="px-4 pb-2">Timer Type</th>
+<th class="px-4 pb-2">Best Time</th>
+<th class="px-4 pb-2">Last Victory Vibe</th>
+</tr>
+</thead>
+<tbody>
+<!-- Table Row 1 -->
+<tr class="bg-surface-container-lowest group hover:bg-surface-container-highest transition-colors cursor-pointer rounded-2xl shadow-sm">
+<td class="px-4 py-4 rounded-l-2xl">
+<span class="text-lg font-black font-lexend">4</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<img alt="Felix" class="w-10 h-10 rounded-full bg-surface-container" data-alt="minimalist 2D avatar of a smiling young man with brown hair and a green hoodie" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmaR8kgwb8c8cDam1oUos_QIi2D_NtsT06MNJgHJqMHwWBds_blTgavbmRPR55U4n32omDVwbJb1lFDRJbCbGyI8Fo6UOvLvT57f8C20iv9Ploah9kbClKPyUeaYHhmkw-7PGtCsQAh8BFzZQZu48fw9SPv0q-NUT3ctC950ZIN-v1DcPCH66o05ZO6-AH7MVeYzwSnzPOPqstMRCqjYY2ija9GlfEKMBY4aqXJQUm6cYBAcbG0YB8ilPvKztESRKNRXN3qsOlK74"/>
+<span class="font-bold font-lexend">PikachuPunch</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="px-3 py-1 bg-secondary-fixed text-secondary text-[10px] font-black rounded-full uppercase tracking-tighter">Blitz Mode</span>
+</td>
+<td class="px-4 py-4 font-black font-lexend">49.2s</td>
+<td class="px-4 py-4 rounded-r-2xl">
+<div class="w-16 h-10 rounded-lg overflow-hidden relative group">
+<img alt="Vibe" class="w-full h-full object-cover" data-alt="thumbnail gif of a funny cat jumping in excitement" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9kNOAdDDyuKAzFe9QkhnLcqMr8Q7S8p0SwO1xjEuDGnlfbgKfaBgOah_5JTF_1We9QqNVV0SeuqTCee15wGUgTfvKeVKiz5Ojbg5HES-Eykp-WEiuuDA0BGUXsbLORKLG41XB8ezi10La7pCHiGODs-A5CO2cxRVXsqSy55BVt7FMdVXzm9A600y3oTOn_x4Gf4kv4amSEJv-GsbxQN8Ouc7AwCfcVObsG5A40SFjFoyjBzEsYYrFzh1wRSsrgPmUEq6_LIp9yAk"/>
+</div>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="bg-surface-container-lowest group hover:bg-surface-container-highest transition-colors cursor-pointer rounded-2xl shadow-sm">
+<td class="px-4 py-4 rounded-l-2xl">
+<span class="text-lg font-black font-lexend">5</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<img alt="Sarah" class="w-10 h-10 rounded-full bg-surface-container" data-alt="stylish 3D avatar of a woman with pink glasses and a confident smirk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2jJMXeRU-X9_ujorRt3oEtsEWGQmGV356YmW2E4yI3SKT3s5TkaoJVQIUsh-PlI88CuRaTEO-SZEprZEP6ErocpXcorLkjLWNO8JJDzohRgWeOLnHKIHmVkT_gAFvrJOx_gHbafUS3PDAMDu4955ruOhn5Rb7dPmRKzh9CDnf1Yh2YDuZMjSAVBq8IIf09w3TPDgHZxaGIfmSKuTnD0V73eTAVWXbKLbtqa9s6mNoIYvcd9AOUtJLIcw1rh6RU6IY50mW3HXEdzY"/>
+<span class="font-bold font-lexend">NeonNight</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="px-3 py-1 bg-surface-container-highest text-primary text-[10px] font-black rounded-full uppercase tracking-tighter">Deep Focus</span>
+</td>
+<td class="px-4 py-4 font-black font-lexend">52.1s</td>
+<td class="px-4 py-4 rounded-r-2xl">
+<div class="w-16 h-10 rounded-lg overflow-hidden relative group">
+<img alt="Vibe" class="w-full h-full object-cover" data-alt="thumbnail gif of vaporwave style neon lights aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLcCGjesSj06Ls-eOF9pxwcaJz5jphwdh1XrvlDofcD35zxa8q77JdboAHAuq0PiGyK8qqaLjmCQzOVzKHbv4wsl1JV3GowdEQEouDBrS13zB9nNx5zABz-REfDN6Ci7aKzRmWWRqFDz8FlJc-GqtBdEyyZgs-pwWqj9z0uwq9Tjglz73Wa8LKdoZQupo49PWaQAApgcl8oGRB8tV6Ac4Xm4wvAagAaoSS_OCMRfLh4PzROXn6WddYCjJlaCKCNjVyeeqoxE5cWDo"/>
+</div>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="bg-surface-container-lowest group hover:bg-surface-container-highest transition-colors cursor-pointer rounded-2xl shadow-sm">
+<td class="px-4 py-4 rounded-l-2xl">
+<span class="text-lg font-black font-lexend">6</span>
+</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-3">
+<img alt="Kevin" class="w-10 h-10 rounded-full bg-surface-container" data-alt="friendly 3D avatar of a man with a beard and a yellow cap" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwI9uXBMzuOLAKKzgtaqL6p--821jRQTFgnUMdvGdbRXzHUdvdIIseL4mufJPDlZ5nlSN5Z4UXQteLlE5_sXEo2W6STmHOLf-OczucZVP9ZGs9Ge8NF9wMgs6X-MfXATbSN6sOCZuw6DB7-snnEtQR2kYi4ssN1B4Rg8xKsel9ouTtmQAleEABHcM2rn8t2TcDMZV7A86LPF2dGIn4Hv6wJb9NvEpeWgbNa3dVFRst8egenDivp4_be1GAxBbkexzmUvlCxqpUrP0"/>
+<span class="font-bold font-lexend">CapnCrunch</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="px-3 py-1 bg-tertiary-fixed text-tertiary text-[10px] font-black rounded-full uppercase tracking-tighter">Pomodoro</span>
+</td>
+<td class="px-4 py-4 font-black font-lexend">55.8s</td>
+<td class="px-4 py-4 rounded-r-2xl">
+<div class="w-16 h-10 rounded-lg overflow-hidden relative group">
+<img alt="Vibe" class="w-full h-full object-cover" data-alt="thumbnail gif of a cartoon character dancing with excitement" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjd68WNpfsvgUKg_h8RLDUWZpWmU2bLJcWsICQ__J_VjNUU_qT12ut7zYQkfMA5T1clA-EOzVa4esTBvYCUtJvlP_IHDey4Riiqo9XWRHsPDuN_NH3kjCnbp8SQxHwtD-rFH2Epbrx_GXIETw2QBDttLiNMIzMDO6GvCWVFdl60FrlL1w_HxhVWYim-y9yjt8vwHM6vxwSusPVFuLTz1oWgSpASIv7u45D7Cfese5gdpfVIlZNeWc5ciE4Mlr2eatFapSQs9Te164"/>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Community Vibe Check Sidebar -->
+<aside class="w-full lg:w-80 flex flex-col gap-6">
+<div class="bg-primary-container text-white p-8 rounded-[2.5rem] shadow-2xl shadow-primary/20 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-xl font-black font-lexend mb-4">Vibe Check</h3>
+<div class="space-y-4">
+<!-- Comment 1 -->
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/5">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-lg">🔥</span>
+<span class="text-xs font-bold font-lexend opacity-70">@TurboTonic</span>
+</div>
+<p class="text-sm font-medium italic">"Blitz mode is literally unhinged today. Good luck everyone!"</p>
+</div>
+<!-- Comment 2 -->
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/5">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-lg">💀</span>
+<span class="text-xs font-bold font-lexend opacity-70">@MemeMaster</span>
+</div>
+<p class="text-sm font-medium italic">"Just lost my 40-day streak to a cat video. Life is pain."</p>
+</div>
+<!-- Comment 3 -->
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/5">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-lg">🚀</span>
+<span class="text-xs font-bold font-lexend opacity-70">@Speedy_Gonz</span>
+</div>
+<p class="text-sm font-medium italic">"Who's up for a Blitz 1v1 Arena? Level 50+ only."</p>
+</div>
+</div>
+<button class="w-full mt-6 bg-secondary text-white py-3 rounded-full font-black font-lexend uppercase tracking-widest text-xs hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-secondary/20">Drop a Vibe</button>
+</div>
+<!-- Decorative Mascot -->
+<div class="absolute -bottom-10 -right-10 opacity-20 rotate-12 scale-150">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">mood</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-6 rounded-[2rem] border border-outline-variant/10">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-black font-lexend opacity-50 uppercase tracking-widest">Live Arena</span>
+<div class="flex gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary/50"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary/20"></span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border-2 border-tertiary p-0.5">
+<img alt="John" class="rounded-full bg-surface-container" data-alt="3D avatar of a professional looking man in a business suit with a friendly expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtVkN_PKooP3bwhHJspHPtGOXMfwKCkyaJGHhXsKvBuXj_JbqAWZev4BknJ7W1mSz9swXTRIj_3OcmQk7NQnen5qlxadi2keast27Gnh1AxNVyZxu7RE9VuMPZvwXZSLnlH94fytxwm3gPhNP2COBdE1uZxpN71-HuPh_vxtRghSIiQt9dgEmYV335MP1El3F8DOwTFz4rCkpx-7KJHppA5RxmL_I5-8OwEEIuGBWfHRqmg0GzxfcPA2vs-fc19fFqnUDoOhzMI6Q"/>
+</div>
+<div>
+<p class="text-xs font-bold font-lexend"><span class="text-tertiary">@BigDev</span> just hit a 10m PR!</p>
+<p class="text-[10px] opacity-50">2 mins ago</p>
+</div>
+</div>
+<div class="flex items-center gap-3 opacity-60">
+<div class="w-10 h-10 rounded-full border-2 border-transparent p-0.5">
+<img alt="Lisa" class="rounded-full bg-surface-container" data-alt="vibrant 3D avatar of a young girl with long purple hair and a playful wink" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArF9sVSfwD3V4Wx04uEL9YuoCf49TWZwz8Dt7SIQG7btGx8K6ihaOvApz7-opqbTNtpthf-fESSWjYcid1xoPV0q07FjjevvRgsmSepF1y5kaHUOP0Xry-egDtOk7QS5YvMY5VBvqLdIxoyf7832yjE_DWld13q0y3ilBNGOIxm3OA8cGcWFRXrrEeAdwZABCzbVJ0GFDM8vSenn5q6QamWb348r5rCt-k8iUK0HWPiEOb5ynJCPleRDfwhjm7xbQsoQgP6lrUvVk"/>
+</div>
+<div>
+<p class="text-xs font-bold font-lexend">@Lisa_X started Blitz Arena</p>
+<p class="text-[10px] opacity-50">5 mins ago</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-6 pb-8 pt-4 bg-[#f8f9ff]/80 dark:bg-[#041534]/90 backdrop-blur-2xl z-50 border-t border-[#0d1c2e]/5">
+<a class="flex flex-col items-center justify-center text-[#041534] dark:text-[#d5e3fc] opacity-60" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Play</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ef6c00] text-white rounded-full h-14 w-14 -mt-10 shadow-[0_0_20px_rgba(239,108,0,0.4)]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<span class="font-lexend text-[8px] uppercase font-bold tracking-widest leading-none">Rank</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#041534] dark:text-[#d5e3fc] opacity-60" href="#">
+<span class="material-symbols-outlined">gif_box</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Memes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#041534] dark:text-[#d5e3fc] opacity-60" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Social</span>
+</a>
+</nav>
+<!-- Floating Action Button (Only on Home/Dashboard context) -->
+<button class="fixed bottom-28 right-6 md:bottom-8 md:right-8 w-16 h-16 bg-secondary text-white rounded-full shadow-2xl shadow-secondary/40 flex items-center justify-center group hover:scale-110 active:scale-90 transition-all duration-300 z-40">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">rocket_launch</span>
+</button>
+</body></html>

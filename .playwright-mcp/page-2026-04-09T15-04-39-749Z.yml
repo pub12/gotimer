@@ -1,0 +1,96 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - button "Go to Home" [ref=e3] [cursor=pointer]:
+      - img "GoTimer logo" [ref=e4]
+      - generic [ref=e5]: GoTimer.org
+    - generic [ref=e6]:
+      - link "Home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e11]: Home
+      - link "Public Challenges" [ref=e12] [cursor=pointer]:
+        - /url: /public-challenges
+        - img [ref=e13]
+        - generic [ref=e16]: Public Challenges
+  - main [ref=e17]:
+    - heading "Countdown Timer" [level=1] [ref=e18]
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - button "Full Screen" [ref=e22]:
+          - img [ref=e23]
+        - button "Enable Sound" [ref=e28]:
+          - img [ref=e29]
+      - generic [ref=e33]: Countdown Timer
+      - button "Add a title..." [ref=e36] [cursor=pointer]:
+        - text: Add a title...
+        - img [ref=e37]
+      - paragraph [ref=e40]: Ready
+      - generic [ref=e41]:
+        - button "Decrease 1 minute" [disabled] [ref=e42]:
+          - img [ref=e43]
+        - button "1 min" [ref=e44]:
+          - text: 1 min
+          - img [ref=e45]
+        - button "Increase 1 minute" [ref=e48]:
+          - img [ref=e49]
+      - generic [ref=e50]:
+        - img [ref=e51]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: "01"
+            - generic [ref=e58]: Minutes
+          - generic [ref=e59]: ":"
+          - generic [ref=e60]:
+            - generic [ref=e61]: "00"
+            - generic [ref=e62]: Seconds
+      - generic [ref=e63]:
+        - button "Start" [ref=e64]:
+          - img [ref=e65]
+          - text: Start
+        - button "Reset" [disabled] [ref=e67]:
+          - img [ref=e68]
+          - text: Reset
+    - paragraph [ref=e72]: Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions.
+  - contentinfo [ref=e73]:
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - heading "Timers" [level=3] [ref=e77]
+          - list [ref=e78]:
+            - listitem [ref=e79]:
+              - link "Countdown Timer" [ref=e80] [cursor=pointer]:
+                - /url: /countdown-setup
+            - listitem [ref=e81]:
+              - link "Chess Clock" [ref=e82] [cursor=pointer]:
+                - /url: /chess-clock-setup
+            - listitem [ref=e83]:
+              - link "Round Timer" [ref=e84] [cursor=pointer]:
+                - /url: /round-timer-setup
+        - generic [ref=e85]:
+          - heading "Features" [level=3] [ref=e86]
+          - list [ref=e87]:
+            - listitem [ref=e88]:
+              - link "Public Challenges" [ref=e89] [cursor=pointer]:
+                - /url: /public-challenges
+            - listitem [ref=e90]:
+              - link "Partners" [ref=e91] [cursor=pointer]:
+                - /url: /partners
+        - generic [ref=e92]:
+          - heading "Legal & Info" [level=3] [ref=e93]
+          - list [ref=e94]:
+            - listitem [ref=e95]:
+              - link "Privacy Policy" [ref=e96] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e97]:
+              - link "Terms of Service" [ref=e98] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e99]:
+              - button "Contact Us" [ref=e100] [cursor=pointer]
+            - listitem [ref=e101]:
+              - link "Sitemap" [ref=e102] [cursor=pointer]:
+                - /url: /sitemap.xml
+      - generic [ref=e103]: © 2026 GoTimer.org
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e109] [cursor=pointer]:
+    - img [ref=e110]
+  - alert [ref=e113]

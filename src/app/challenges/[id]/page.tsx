@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 import { ScoreDisplay } from "@/components/challenges/score-display";
 import { GameHistory } from "@/components/challenges/game-history";
 import { AddGameDialog } from "@/components/challenges/add-game-dialog";
@@ -23,6 +24,7 @@ import {
   Copy,
   Check,
 } from "lucide-react";
+import { ChallengeSidebar } from "@/components/challenges/challenge-sidebar";
 
 type ChallengeData = {
   id: string;
@@ -216,10 +218,12 @@ export default function ChallengeDetailPage() {
 
   if (loading || auth_loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
+      <>
         <Navbar />
-        <p className="text-muted-foreground">Loading...</p>
-      </main>
+        <main className="min-h-screen flex items-center justify-center bg-surface pt-14 md:pt-20">
+          <p className="text-muted-foreground">Loading...</p>
+        </main>
+      </>
     );
   }
 
@@ -240,184 +244,250 @@ export default function ChallengeDetailPage() {
   const has_games = challenge.games.length > 0;
 
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
+    <>
       <Navbar />
+      <main className="min-h-screen bg-surface pt-14 md:pt-20">
+      <div className="w-full h-1 bg-gradient-to-r from-primary via-secondary to-accent" />
+      <div className="w-full max-w-7xl mx-auto flex gap-6 px-4 md:px-6">
+        <ChallengeSidebar mode="private" />
+        <div className="flex-1 min-w-0">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-4 md:px-6 py-4">
+          <button
+            onClick={() => router.push("/challenges")}
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground bg-transparent border-none cursor-pointer transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="font-headline font-bold italic text-secondary">{challenge.name}</span>
+          </button>
+          <div className="flex items-center gap-2">
+            {challenge.created_by === current_user_id && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => router.push(`/challenges/${id}/edit`)}
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+        </div>
 
-      <div className="w-full max-w-3xl mx-auto">
-        <button
-          onClick={() => router.push("/challenges")}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 bg-transparent border-none cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Challenges
-        </button>
+        {/* Dark Hero Section — head-to-head */}
+        {challenge.format !== "group" && (
+          <div className="mx-4 md:mx-6 rounded-[1rem] bg-gradient-to-br from-primary to-primary-container overflow-hidden relative shadow-[var(--shadow-soft-lg)]">
+            {/* Background image overlay */}
+            {challenge.gif_url && (
+              <div className="absolute inset-0 opacity-15">
+                <PlayOnceGif
+                  src={challenge.gif_url}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
 
-        {/* Challenge header */}
-        <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
-          <div className="flex items-start justify-between mb-2">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-2xl md:text-3xl font-bold truncate">
-                {challenge.name}
-              </h1>
-              {challenge.description && (
-                <p className="text-muted-foreground mt-1">
-                  {challenge.description}
+            <div className="relative z-10 px-6 md:px-12 py-10 md:py-14">
+              {/* Competitors + Scores */}
+              <div className="flex items-center justify-center gap-4 md:gap-8">
+                {/* Player 1 */}
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-primary-foreground/10 overflow-hidden flex items-center justify-center shadow-lg">
+                    {user_pictures[current_user_id] ? (
+                      <img src={user_pictures[current_user_id]!} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-2xl md:text-4xl font-headline font-black text-primary-foreground/60">
+                        {(user_names[current_user_id] || "Y")[0].toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-primary-foreground font-headline font-bold text-sm md:text-base truncate max-w-[100px] md:max-w-[140px]">
+                      {user_names[current_user_id] || "You"}
+                    </p>
+                    <span className="text-primary-foreground/40 text-xs uppercase tracking-wider">P1</span>
+                  </div>
+                </div>
+
+                {/* Scores */}
+                <div className="flex items-baseline gap-3 md:gap-6">
+                  <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${am_winning ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                    {my_score}
+                  </span>
+                  <span className="text-secondary text-lg md:text-xl font-headline font-bold">vs</span>
+                  <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${!am_winning && opponent_score > my_score ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                    {opponent_score}
+                  </span>
+                </div>
+
+                {/* Player 2 */}
+                <div className="flex flex-col items-center gap-3">
+                  <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-primary-foreground/10 overflow-hidden flex items-center justify-center shadow-lg">
+                    {opponent_id && user_pictures[opponent_id] ? (
+                      <img src={user_pictures[opponent_id]!} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-2xl md:text-4xl font-headline font-black text-primary-foreground/60">
+                        {(opponent_id ? user_names[opponent_id] || "O" : "O")[0].toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-center">
+                    <p className="text-primary-foreground font-headline font-bold text-sm md:text-base truncate max-w-[100px] md:max-w-[140px]">
+                      {opponent_id ? user_names[opponent_id] || "Opponent" : "Opponent"}
+                    </p>
+                    <span className="text-primary-foreground/40 text-xs uppercase tracking-wider">P2</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Featured GIF (between scores, if exists) */}
+              {challenge.gif_url && (
+                <div className="flex justify-center mt-6">
+                  <div className="w-48 md:w-64 h-32 md:h-44 rounded-xl overflow-hidden shadow-xl">
+                    <PlayOnceGif
+                      src={challenge.gif_url}
+                      alt="Challenge theme"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Draws count */}
+              {challenge.draws > 0 && (
+                <p className="text-center text-primary-foreground/50 text-sm mt-4">
+                  {challenge.draws} draw{challenge.draws !== 1 ? "s" : ""}
                 </p>
               )}
             </div>
-            <div className="flex gap-2 flex-shrink-0">
-              {challenge.created_by === current_user_id && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => router.push(`/challenges/${id}/edit`)}
-                >
-                  <Settings className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
           </div>
+        )}
 
-          {/* Theme GIF */}
-          {challenge.gif_url && (
-            <div className="mb-4">
-              <PlayOnceGif
-                src={challenge.gif_url}
-                alt="Challenge theme"
-                className="w-full rounded-lg max-h-48 object-cover"
-              />
-            </div>
-          )}
-
-          {/* Score display — head-to-head only */}
-          {challenge.format !== "group" && (
-            <>
-              <ScoreDisplay
-                player1_name={user_names[current_user_id] || "You"}
-                player2_name={
-                  opponent_id
-                    ? user_names[opponent_id] || "Opponent"
-                    : "Opponent"
-                }
-                player1_score={my_score}
-                player2_score={opponent_score}
-                player1_picture={user_pictures[current_user_id]}
-                player2_picture={opponent_id ? user_pictures[opponent_id] : null}
-                draws={challenge.draws}
-              />
-              {/* Trash talk banner */}
-              {has_games && (
-                <div className="mt-4">
-                  <TrashTalkBanner type={am_winning ? "win" : "lose"} />
-                </div>
-              )}
-            </>
-          )}
-
-          {/* Group leaderboard */}
-          {challenge.format === "group" && (
-            <div className="mt-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold">Leaderboard</h3>
-                {challenge.join_code && (
-                  <div className="text-xs text-muted-foreground font-mono bg-muted px-2 py-1 rounded">
-                    Code: {challenge.join_code}
-                  </div>
-                )}
-              </div>
-              <GroupLeaderboard
-                participants={group_participants.length > 0 ? group_participants.map((p) => ({ ...p, score: p.score ?? 0, games_played: p.games_played ?? 0 })) : challenge.participants.map((p) => ({ ...p, score: challenge.scores[p.user_id] ?? 0, games_played: 0 }))}
-                user_names={user_names}
-                user_pictures={user_pictures}
-                current_user_id={current_user_id}
-              />
-              {/* Join button for non-participants */}
-              {challenge.join_code && !challenge.participants.some((p) => p.user_id === current_user_id) && (
-                <div className="mt-4">
-                  <Button onClick={() => set_show_join_dialog(true)} className="w-full">
-                    Join This Challenge
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
+        {/* Floating ADD GAME RESULT button */}
+        <div className="bg-primary/[0.03] py-4 -mx-4 md:-mx-6 px-4 md:px-6 rounded-[1rem] flex justify-center -mt-6 relative z-20 mb-6">
+          <button
+            onClick={() => set_show_add_game(true)}
+            className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-8 py-3.5 rounded-full font-headline font-black text-base shadow-[var(--shadow-soft-lg)] hover:scale-105 transition-all duration-200 border-none cursor-pointer"
+          >
+            <Plus className="w-5 h-5" />
+            Add Game Result
+          </button>
         </div>
 
-        {/* Invite section */}
-        {(invite_url || challenge.participants.length < 2) && (
-          <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
-            <h3 className="font-semibold mb-3">Invite a Friend</h3>
-            {invite_url ? (
-              <div>
-                <div className="bg-muted rounded-lg p-3 text-sm font-mono break-all mb-3">
-                  GoTimer.org: {challenge.name}
+        {/* Group format header (non-hero) */}
+        {challenge.format === "group" && (
+          <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] mx-4 md:mx-6 mb-6">
+            <h1 className="text-2xl md:text-3xl font-headline font-black mb-2">
+              {challenge.name}
+            </h1>
+            {challenge.description && (
+              <p className="text-muted-foreground mb-4">{challenge.description}</p>
+            )}
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-semibold">Leaderboard</h3>
+              {challenge.join_code && (
+                <div className="text-xs text-muted-foreground font-mono bg-surface-container-high px-2 py-1 rounded-[0.5rem]">
+                  Code: {challenge.join_code}
                 </div>
-                <Button onClick={copy_invite} variant="outline" className="w-full">
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4 mr-2" /> Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4 mr-2" /> Copy Link
-                    </>
-                  )}
+              )}
+            </div>
+            <GroupLeaderboard
+              participants={group_participants.length > 0 ? group_participants.map((p) => ({ ...p, score: p.score ?? 0, games_played: p.games_played ?? 0 })) : challenge.participants.map((p) => ({ ...p, score: challenge.scores[p.user_id] ?? 0, games_played: 0 }))}
+              user_names={user_names}
+              user_pictures={user_pictures}
+              current_user_id={current_user_id}
+            />
+            {challenge.join_code && !challenge.participants.some((p) => p.user_id === current_user_id) && (
+              <div className="mt-4">
+                <Button onClick={() => set_show_join_dialog(true)} className="w-full">
+                  Join This Challenge
                 </Button>
               </div>
-            ) : (
-              <Button onClick={handle_invite} variant="outline" className="w-full">
-                <Share2 className="w-4 h-4 mr-2" />
-                Generate Invite Link
-              </Button>
             )}
           </div>
         )}
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          <Button
-            className="flex-1"
-            onClick={() => set_show_add_game(true)}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Game Result
-          </Button>
-          {!invite_url && challenge.participants.length >= 2 && (
-            <Button variant="outline" onClick={handle_invite}>
-              <Share2 className="w-4 h-4 mr-2" />
-              Invite
-            </Button>
-          )}
-        </div>
-
-        {/* Histogram */}
-        {has_games && (
-          <div className="bg-card rounded-xl p-6 shadow-sm border mb-6">
-            <h3 className="font-semibold mb-4">Game History Chart</h3>
-            <ChallengeHistogram
-              games={challenge.games}
-              current_user_id={current_user_id}
-              user_names={user_names}
-            />
+        {/* Trash talk banner */}
+        {challenge.format !== "group" && has_games && (
+          <div className={`mx-4 md:mx-6 mb-6 border-l-4 ${am_winning ? "border-l-accent" : "border-l-destructive"} rounded-[0.25rem]`}>
+            <TrashTalkBanner type={am_winning ? "win" : "lose"} />
           </div>
         )}
 
-        {/* Game history */}
-        <div className="bg-card rounded-xl p-6 shadow-sm border mb-8">
-          <h3 className="font-semibold mb-4">Game History</h3>
-          <GameHistory
-            games={challenge.games}
-            participants={challenge.participants}
-            current_user_id={current_user_id}
-            user_names={user_names}
-            user_pictures={user_pictures}
-            on_delete={handle_delete_game}
-            on_edit={(game) => set_editing_game(game)}
-            challenge_id={id}
-            challenge_name={challenge.name}
-            scores={challenge.scores}
-          />
+        {/* Content area */}
+        <div className="px-4 md:px-6">
+          {/* Invite section */}
+          {(invite_url || challenge.participants.length < 2) && (
+            <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] mb-6 border-l-4 border-l-secondary">
+              <h3 className="font-semibold mb-3">Invite a Friend</h3>
+              {invite_url ? (
+                <div>
+                  <div className="bg-surface-container-high rounded-[0.75rem] p-3 text-sm font-mono break-all mb-3">
+                    GoTimer.org: {challenge.name}
+                  </div>
+                  <Button onClick={copy_invite} variant="outline" className="w-full">
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4 mr-2" /> Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 mr-2" /> Copy Link
+                      </>
+                    )}
+                  </Button>
+                </div>
+              ) : (
+                <Button onClick={handle_invite} variant="outline" className="w-full">
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Generate Invite Link
+                </Button>
+              )}
+            </div>
+          )}
+
+          {/* Secondary actions */}
+          {!invite_url && challenge.participants.length >= 2 && (
+            <div className="flex gap-3 mb-6">
+              <Button variant="outline" onClick={handle_invite} className="flex-1">
+                <Share2 className="w-4 h-4 mr-2" />
+                Invite
+              </Button>
+            </div>
+          )}
+
+          {/* Histogram */}
+          {has_games && (
+            <div className="bg-primary/[0.03] py-4 -mx-4 md:-mx-6 px-4 md:px-6 rounded-[1rem]">
+              <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] mb-6">
+                <h3 className="font-headline font-bold mb-4">Score Progression</h3>
+                <ChallengeHistogram
+                  games={challenge.games}
+                  current_user_id={current_user_id}
+                  user_names={user_names}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Game history */}
+          <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] mb-8">
+            <h3 className="font-headline font-bold text-xl mb-4 uppercase tracking-wider">Game History</h3>
+            <GameHistory
+              games={challenge.games}
+              participants={challenge.participants}
+              current_user_id={current_user_id}
+              user_names={user_names}
+              user_pictures={user_pictures}
+              on_delete={handle_delete_game}
+              on_edit={(game) => set_editing_game(game)}
+              challenge_id={id}
+              challenge_name={challenge.name}
+              scores={challenge.scores}
+            />
+          </div>
         </div>
+      </div>
       </div>
 
       {show_add_game && (
@@ -459,6 +529,8 @@ export default function ChallengeDetailPage() {
           on_close={() => set_show_join_dialog(false)}
         />
       )}
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

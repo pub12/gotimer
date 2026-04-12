@@ -1,0 +1,20 @@
+[     110ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[     170ms] [LOG] [Fast Refresh] done in 161ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[     403ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[     423ms] [LOG] [HMR] connected @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[     819ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    1391ms] [LOG] [Fast Refresh] done in 672ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    1493ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    1814ms] [LOG] [Fast Refresh] done in 423ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    4855ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    5551ms] [LOG] [Fast Refresh] done in 797ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    6519ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    7095ms] [LOG] [Fast Refresh] done in 678ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    7230ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    7570ms] [LOG] [Fast Refresh] done in 443ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    7779ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[    7802ms] [LOG] [Fast Refresh] done in 123ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   22915ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   22917ms] [LOG] [Fast Refresh] done in 104ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   30407ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   30420ms] [LOG] [Fast Refresh] done in 114ms @ http://localhost:3002/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297

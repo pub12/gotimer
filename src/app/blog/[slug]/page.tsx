@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { get_db } from "@/lib/db";
 import { mdxComponents } from "@/components/mdx";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -41,10 +45,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .get(slug) as Pick<BlogPost, "title" | "meta_title" | "meta_description" | "publish_date" | "status"> | undefined;
 
   if (!post || post.status !== "published") {
-    return { title: "Not Found | GoTimer" };
+    return { title: "Not Found" };
   }
 
-  const title = post.meta_title || `${post.title} | GoTimer`;
+  // Strip " | GoTimer" suffix if present — layout template already appends it
+  const raw_title = post.meta_title || post.title;
+  const title = raw_title.replace(/\s*\|\s*GoTimer$/i, "");
   const description = post.meta_description || undefined;
 
   return {
@@ -76,7 +82,6 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
-  // Parse FAQ JSON
   let faq_items: FaqItem[] = [];
   if (post.faq_json) {
     try {
@@ -97,7 +102,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       })
     : null;
 
-  // JSON-LD is constructed entirely from our own structured data — not user HTML
+  const read_time = Math.max(3, Math.ceil((post.content?.length ?? 0) / 1000));
+
+  // nosec: JSON-LD built from structured DB fields, not raw user HTML
   const faq_json_ld =
     faq_items.length > 0
       ? JSON.stringify({
@@ -116,55 +123,107 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-before-interactive-script-component */}
       {faq_json_ld && (
-        // nosec: JSON-LD built from structured DB fields, not raw user HTML
-        // biome-ignore lint: intentional
         <script
           type="application/ld+json"
-          // nosec
           dangerouslySetInnerHTML={{ __html: faq_json_ld }}
         />
       )}
-      <main className="max-w-3xl mx-auto px-4 py-12">
-        <header className="mb-8">
-          {post.category_name && (
-            <span
-              className="inline-block text-xs font-medium px-2.5 py-1 rounded-full mb-4"
-              style={{
-                backgroundColor: post.category_colour ? `${post.category_colour}20` : "#f3f4f6",
-                color: post.category_colour ?? "#374151",
-              }}
+      <Navbar />
+      <main className="min-h-screen bg-surface pt-20">
+        {/* Hero header */}
+        <header className="relative overflow-hidden bg-primary">
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+              backgroundSize: "48px 48px",
+            }}
+          />
+          <div className="absolute -right-24 -top-24 w-96 h-96 bg-secondary/10 rotate-12 rounded-3xl" />
+          <div className="absolute -left-16 -bottom-16 w-64 h-64 bg-accent/8 -rotate-6 rounded-3xl" />
+
+          <div className="relative max-w-4xl mx-auto px-6 md:px-8 py-16 md:py-24">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-primary-foreground/60 hover:text-primary-foreground text-sm font-medium mb-8 no-underline transition-colors"
             >
-              {post.category_name}
-            </span>
-          )}
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">{post.title}</h1>
-          {formatted_date && (
-            <time className="text-sm text-gray-500" dateTime={post.publish_date ?? undefined}>
-              {formatted_date}
-            </time>
-          )}
+              <ArrowLeft className="size-4" />
+              Back to all articles
+            </Link>
+
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              {post.category_name && (
+                <span className="inline-flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">
+                  <Tag className="size-3" />
+                  {post.category_name}
+                </span>
+              )}
+              {formatted_date && (
+                <span className="inline-flex items-center gap-1.5 text-primary-foreground/50 text-sm">
+                  <Calendar className="size-3.5" />
+                  <time dateTime={post.publish_date ?? undefined}>{formatted_date}</time>
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1.5 text-primary-foreground/50 text-sm">
+                <Clock className="size-3.5" />
+                {read_time} min read
+              </span>
+            </div>
+
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-primary-foreground leading-[1.1] tracking-tight font-headline max-w-3xl">
+              {post.title}
+            </h1>
+          </div>
         </header>
 
-        <article className="prose prose-gray max-w-none">
-          <MDXRemote source={post.content} components={mdxComponents} />
-        </article>
+        {/* Article body */}
+        <div className="max-w-4xl mx-auto px-6 md:px-8">
+          <article className="blog-article-content py-12 md:py-16">
+            <MDXRemote source={post.content} components={mdxComponents} />
+          </article>
+        </div>
 
+        {/* FAQ section */}
         {faq_items.length > 0 && (
-          <section className="mt-12 border-t pt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-            <dl className="space-y-6">
-              {faq_items.map((item, index) => (
-                <div key={index}>
-                  <dt className="font-semibold text-gray-900 mb-2">{item.question}</dt>
-                  <dd className="text-gray-600">{item.answer}</dd>
-                </div>
-              ))}
-            </dl>
+          <section className="border-t border-surface-container-high bg-surface-container-low">
+            <div className="max-w-4xl mx-auto px-6 md:px-8 py-16 md:py-20">
+              <div className="flex items-center gap-3 mb-10">
+                <div className="w-1 h-8 bg-secondary rounded-full" />
+                <h2 className="text-2xl md:text-3xl font-black text-primary font-headline tracking-tight">
+                  Frequently Asked Questions
+                </h2>
+              </div>
+              <dl className="space-y-0 divide-y divide-surface-container-high">
+                {faq_items.map((item, index) => (
+                  <div key={index} className="py-6 first:pt-0 last:pb-0">
+                    <dt className="font-headline font-bold text-lg text-foreground mb-2">
+                      {item.question}
+                    </dt>
+                    <dd className="text-muted-foreground leading-relaxed">
+                      {item.answer}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </section>
         )}
+
+        {/* Bottom nav */}
+        <div className="border-t border-surface-container-high">
+          <div className="max-w-4xl mx-auto px-6 md:px-8 py-8 pb-24 md:pb-8">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 font-bold text-sm no-underline transition-colors"
+            >
+              <ArrowLeft className="size-4" />
+              Back to all articles
+            </Link>
+          </div>
+        </div>
       </main>
+      <Footer />
     </>
   );
 }

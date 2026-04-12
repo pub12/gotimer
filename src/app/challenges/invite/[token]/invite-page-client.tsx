@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 import { use_auth_status } from "hazo_auth/client";
 import { Trophy, LogIn } from "lucide-react";
 
@@ -55,27 +56,29 @@ export default function InvitePageClient({ token }: { token: string }) {
 
   if (loading || auth_loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
+      <>
         <Navbar />
-        <p className="text-muted-foreground">Loading...</p>
-      </main>
+        <main className="min-h-screen flex items-center justify-center bg-surface pt-14 md:pt-20">
+          <p className="text-muted-foreground">Loading...</p>
+        </main>
+      </>
     );
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-background p-4 pt-20">
+    <>
       <Navbar />
-
-      <div className="w-full max-w-md mx-auto">
+      <main className="min-h-screen bg-surface pt-14 md:pt-20">
+      <div className="w-full max-w-md mx-auto p-6 lg:p-8 flex flex-col items-center justify-center min-h-[60vh]">
         {error ? (
-          <div className="bg-card rounded-xl p-8 shadow-sm border text-center">
+          <div className="bg-card rounded-[1rem] p-8 shadow-[var(--shadow-soft)] text-center">
             <p className="text-destructive mb-4">{error}</p>
             <Button onClick={() => router.push("/challenges")}>
               Go to Challenges
             </Button>
           </div>
         ) : invitation ? (
-          <div className="bg-card rounded-xl p-8 shadow-sm border text-center">
+          <div className="bg-card rounded-[1rem] p-8 shadow-[var(--shadow-soft)] text-center">
             <Trophy className="w-12 h-12 text-primary mx-auto mb-4" />
             <h1 className="text-2xl font-bold mb-2">
               You&apos;ve Been Challenged!
@@ -117,6 +120,8 @@ export default function InvitePageClient({ token }: { token: string }) {
           </div>
         ) : null}
       </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

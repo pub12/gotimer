@@ -24,7 +24,7 @@ const CRAWLER_RULES: CrawlerRule[] = [
 const STATUS_STYLES: Record<CrawlerRule["status"], string> = {
   allowed: "bg-green-100 text-green-700",
   partially_allowed: "bg-yellow-100 text-yellow-700",
-  unknown: "bg-gray-100 text-gray-500",
+  unknown: "bg-surface-container text-muted-foreground",
 };
 
 export default function AdminAiPage() {
@@ -79,12 +79,12 @@ export default function AdminAiPage() {
 
   return (
     <main className="p-8 max-w-3xl space-y-10">
-      <h1 className="text-2xl font-bold text-gray-900">AI &amp; Discoverability</h1>
+      <h1 className="text-2xl font-headline font-black text-foreground">AI &amp; Discoverability</h1>
 
       {/* llms.txt Editor */}
-      <section className="bg-white rounded-xl border border-gray-200 p-5">
+      <section className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5">
         <div className="flex items-center justify-between mb-1">
-          <h2 className="text-base font-semibold text-gray-800">llms.txt Editor</h2>
+          <h2 className="text-base font-semibold text-foreground">llms.txt Editor</h2>
           <a
             href="/llms.txt"
             target="_blank"
@@ -94,14 +94,14 @@ export default function AdminAiPage() {
             View live <ExternalLink className="w-3 h-3" />
           </a>
         </div>
-        <p className="text-xs text-gray-400 mb-4">
-          Content is stored in the database. The <code className="bg-gray-100 px-1 rounded">/llms.txt</code> and{" "}
-          <code className="bg-gray-100 px-1 rounded">/llms-full.txt</code> files in <code className="bg-gray-100 px-1 rounded">public/</code> serve the static versions.
-          Editing here updates the database record (key: <code className="bg-gray-100 px-1 rounded">llms_txt_content</code>) which can be served via API.
+        <p className="text-xs text-muted-foreground mb-4">
+          Content is stored in the database. The <code className="bg-surface-container px-1 rounded">/llms.txt</code> and{" "}
+          <code className="bg-surface-container px-1 rounded">/llms-full.txt</code> files in <code className="bg-surface-container px-1 rounded">public/</code> serve the static versions.
+          Editing here updates the database record (key: <code className="bg-surface-container px-1 rounded">llms_txt_content</code>) which can be served via API.
         </p>
 
         {fetch_loading ? (
-          <p className="text-gray-500 text-sm">Loading...</p>
+          <p className="text-muted-foreground text-sm">Loading...</p>
         ) : (
           <>
             <textarea
@@ -109,14 +109,14 @@ export default function AdminAiPage() {
               onChange={(e) => set_llms_content(e.target.value)}
               rows={16}
               placeholder="# GoTimer&#10;&#10;> A timer and challenge management tool..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30 resize-y"
+              className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-secondary/30 resize-y"
             />
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             <div className="flex items-center gap-3 mt-3">
               <button
                 onClick={handle_save}
                 disabled={saving}
-                className="flex items-center gap-2 px-4 py-2 bg-[#FF6B35] text-white rounded-lg text-sm font-medium hover:bg-[#e55a2b] disabled:opacity-50 border-none cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-[0.75rem] text-sm font-medium hover:bg-secondary/90 disabled:opacity-50 border-none cursor-pointer"
               >
                 <Save className="w-4 h-4" />
                 {saving ? "Saving..." : "Save llms.txt"}
@@ -134,23 +134,23 @@ export default function AdminAiPage() {
 
       {/* AI Crawler Status */}
       <section>
-        <h2 className="text-base font-semibold text-gray-800 mb-1">AI Crawler Status</h2>
-        <p className="text-xs text-gray-400 mb-4">
-          Rules defined in <code className="bg-gray-100 px-1 rounded">src/app/robots.ts</code>. Edit that file to change crawler access.
+        <h2 className="text-base font-semibold text-foreground mb-1">AI Crawler Status</h2>
+        <p className="text-xs text-muted-foreground mb-4">
+          Rules defined in <code className="bg-surface-container px-1 rounded">src/app/robots.ts</code>. Edit that file to change crawler access.
         </p>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-surface-container-low border-b border-surface-container">
               <tr>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Bot / Crawler</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Note</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Bot / Crawler</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Note</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-surface-container">
               {CRAWLER_RULES.map((rule, i) => (
-                <tr key={i} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm font-medium text-gray-800">{rule.bot}</td>
+                <tr key={i} className="hover:bg-surface-container-low">
+                  <td className="px-4 py-3 text-sm font-medium text-foreground">{rule.bot}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[rule.status]}`}>
                       {rule.status === "allowed"
@@ -160,7 +160,7 @@ export default function AdminAiPage() {
                         : "Unknown"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-gray-400">{rule.note}</td>
+                  <td className="px-4 py-3 text-xs text-muted-foreground">{rule.note}</td>
                 </tr>
               ))}
             </tbody>

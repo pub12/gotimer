@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#1b2a4a",
+                    "surface-container": "#e6eeff",
+                    "primary": "#041534",
+                    "on-surface-variant": "#45464e",
+                    "on-surface": "#0d1c2e",
+                    "on-secondary-container": "#651400",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#241a00",
+                    "on-tertiary-fixed-variant": "#594400",
+                    "outline": "#75777f",
+                    "surface-tint": "#4f5e81",
+                    "secondary": "#ab3514",
+                    "tertiary-fixed": "#ffdf91",
+                    "inverse-surface": "#233144",
+                    "outline-variant": "#c5c6cf",
+                    "on-tertiary-container": "#503d00",
+                    "tertiary-container": "#d3a500",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#ffdbd2",
+                    "tertiary-fixed-dim": "#f3c00a",
+                    "primary-fixed": "#d9e2ff",
+                    "on-secondary-fixed-variant": "#891e00",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "surface-variant": "#d5e3fc",
+                    "primary-fixed-dim": "#b7c6ee",
+                    "on-background": "#0d1c2e",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#755b00",
+                    "surface-dim": "#ccdbf3",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#fd6f4a",
+                    "on-secondary-fixed": "#3c0800",
+                    "inverse-primary": "#b7c6ee",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#0a1a3a",
+                    "on-primary-fixed-variant": "#384668",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#8392b7",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#ffb4a1",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-high": "#dce9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; color: #0d1c2e; }
+        h1, h2, h3, h4, .font-headline { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-nav { background: rgba(248, 249, 255, 0.8); backdrop-filter: blur(20px); }
+        .custom-shadow { box-shadow: 0 16px 64px -8px rgba(13, 28, 46, 0.06); }
+        .blog-card-hover:hover { transform: translateY(-4px); transition: transform 0.25s ease-out; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Top Navigation -->
+<nav class="sticky top-0 w-full z-50 glass-nav shadow-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-black text-primary tracking-tighter font-headline">GoTimer.org</div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-on_surface hover:text-secondary font-medium transition-colors" href="#">Timers</a>
+<a class="text-on_surface hover:text-secondary font-medium transition-colors" href="#">Leaderboard</a>
+<a class="text-secondary font-bold border-b-2 border-secondary transition-colors" href="/blog">Blog</a>
+<a class="text-on_surface hover:text-secondary font-medium transition-colors" href="#">Challenges</a>
+</div>
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:scale-105 transition-transform duration-200 ease-out">Login</button>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-8 py-12">
+<!-- Header -->
+<header class="mb-16">
+<h1 class="text-6xl font-extrabold tracking-tight mb-4 text-primary font-headline">The Time Dimension</h1>
+<p class="text-xl text-on-surface-variant font-medium">Everything about how long things take</p>
+</header>
+<!-- Featured Post -->
+<section class="mb-20">
+<div class="relative group overflow-hidden rounded-[12px] bg-surface-container-low custom-shadow flex flex-col lg:flex-row">
+<div class="lg:w-2/3 h-[400px] lg:h-[500px] overflow-hidden">
+<img alt="Professional chef timing a perfect steak" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="Close-up of a professional chef in a sunlit modern kitchen carefully timing a steak on a pan, warm cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpxVsX7zOW-oXVJJEuIdMjenHjjGqaMOx9JifIF6QkRVKlSNiuPpiJ4scWHiNqEchZ9tj4nA2ZMBIIteb3Et-0eNw2jPQJaCQkpRI15KIWnUHOrWBEvwga3-W9HJsctCmczdMe3u0Td8d1K0Ge9ubrJMLc_QmnyQzfBojn-gNwYU4cF8ssNwsJffW_uloRzH4aXa50A25hYntyOoaIvAf_9nGcTDzjwi8fxWNxW4_ZmQq1sJalXvUZKgpy_y4JVwzqDpXr6seqF3E"/>
+</div>
+<div class="lg:w-1/3 p-10 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-6">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full text-xs font-bold font-headline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+                            Chef's Corner
+                        </span>
+<span class="text-on-surface-variant text-sm font-medium">12 Min Read</span>
+</div>
+<h2 class="text-4xl font-bold mb-6 text-primary leading-tight font-headline">The Science of Searing: Why Seconds Matter for the Perfect Crust</h2>
+<p class="text-on-surface-variant mb-8 text-lg leading-relaxed">Unlock the secrets of high-heat timing and why your kitchen timer is the most important tool in your culinary arsenal.</p>
+<div class="mt-auto">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-bold hover:bg-primary-container transition-colors flex items-center gap-2 group/btn">
+                            Read Full Article
+                            <span class="material-symbols-outlined group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Grid: Recent Posts -->
+<section class="lg:col-span-8">
+<h3 class="text-2xl font-bold mb-8 text-primary font-headline">Recent Chronicles</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Post Card 1 -->
+<article class="bg-surface-container-lowest rounded-[12px] overflow-hidden blog-card-hover custom-shadow group">
+<div class="relative h-56">
+<img alt="Planning schedule with focus" class="w-full h-full object-cover" data-alt="Top down view of a clean workspace with a notebook, pen, and an orange timer, soft afternoon light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9OleaxnQTQF4vuNViPOmyS5NVHGeG3W_8gOb3u65ZC2iIdORY7X3wJaCED34Nq-c5PFfNd3HUBnULk8vy5zF3l9G8R_x8jcN_2Y41E-4LytLF20ZQqW2mo3mWUvX-EhgkFzIce-_Yud01hDCSrEGxxOcVxljKEPvhY_LWVi2o1NCZsG_kmrhCQjkmTd7agJDCaG16WQZwOBmKh7c0qbMaevwlnxHDdCmawBR2FbnBZVxXhQb89jGX9722C0hwpMsLTwscz2OnBxA"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">Focus</span>
+</div>
+<div class="absolute -bottom-4 right-6 w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white border-4 border-surface shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+</div>
+</div>
+<div class="p-6 pt-8">
+<div class="flex justify-between text-xs font-medium text-on-surface-variant mb-3">
+<span>Oct 24, 2024</span>
+<span>5 Min Read</span>
+</div>
+<h4 class="text-xl font-bold mb-3 text-primary font-headline leading-tight">Mastering the 25-Minute Sprint</h4>
+<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">How rhythmic focus intervals can rewire your brain for peak productivity during high-stakes projects.</p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">Read Story <span class="material-symbols-outlined text-sm">chevron_right</span></a>
+</div>
+</article>
+<!-- Post Card 2 -->
+<article class="bg-surface-container-lowest rounded-[12px] overflow-hidden blog-card-hover custom-shadow group">
+<div class="relative h-56">
+<img alt="Runner timing their lap" class="w-full h-full object-cover" data-alt="A runner's hand pressing a digital stopwatch on a red athletic track during sunrise, cinematic flare" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ56W_c-ATQixo0MEsRy7vszC6xVAiXK60JkFobiNKuMMLv3DzbqT0RNmXhXbt4Y_XBq83Vlcl-_q_3155n_M-8aEMmuHs5wIARRZnExjAh_MHb6JxkgQicAGiqz86M-kQmoOUlWLHKLynRdbRvHRR-ygorAdzsGhqE2kLqy-MAPVSToON5F6vcvFF-innR4lPiw5vF7V92QLUIBsa2hN2jZTqD5rHK3fdLTHNXu7aQgKhx4H5ZkwHonR7mVkxv1TeV482Ck5473I"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">Fitness</span>
+</div>
+<div class="absolute -bottom-4 right-6 w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white border-4 border-surface shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+<div class="p-6 pt-8">
+<div class="flex justify-between text-xs font-medium text-on-surface-variant mb-3">
+<span>Oct 22, 2024</span>
+<span>8 Min Read</span>
+</div>
+<h4 class="text-xl font-bold mb-3 text-primary font-headline leading-tight">HIIT: The Anatomy of Rest Intervals</h4>
+<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Why the time you spend resting is just as important as the time you spend pushing your limits.</p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">Read Story <span class="material-symbols-outlined text-sm">chevron_right</span></a>
+</div>
+</article>
+<!-- Post Card 3 -->
+<article class="bg-surface-container-lowest rounded-[12px] overflow-hidden blog-card-hover custom-shadow group">
+<div class="relative h-56">
+<img alt="Perfect coffee pour" class="w-full h-full object-cover" data-alt="Extreme close up of coffee dripping into a glass flask, dark moody atmospheric lighting with steam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnxbdIdB0aZ8LUGtXItvr_PdgLhcscpUFDcGpF08DA08dNA8QBAI0qOrtiph6gEQuxPCHagObMsbxb8rQed9aYuAaiVYq6Gj6tMut7e4RjWVfPcSFAsZLus25B1Qaq9-4kF8FSzottTJ7-utzG-d71dMFYLsTqbK_inmw7E8hfxsqG_SV5bLv2ZzTRB3QI2Fjm-igUEEbsiOKLITvfDqEFcPJCaBJQMkZmbOKgbjw2B-p5Ls9iezS2SUy0Es33whmRfQYsh6tD38w"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">Cooking</span>
+</div>
+<div class="absolute -bottom-4 right-6 w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white border-4 border-surface shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">coffee</span>
+</div>
+</div>
+<div class="p-6 pt-8">
+<div class="flex justify-between text-xs font-medium text-on-surface-variant mb-3">
+<span>Oct 20, 2024</span>
+<span>6 Min Read</span>
+</div>
+<h4 class="text-xl font-bold mb-3 text-primary font-headline leading-tight">The 4-Minute Bloom: Perfect Pour-Over</h4>
+<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Exploring the delicate relationship between water temperature and extraction time for the ultimate cup.</p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">Read Story <span class="material-symbols-outlined text-sm">chevron_right</span></a>
+</div>
+</article>
+<!-- Post Card 4 -->
+<article class="bg-surface-container-lowest rounded-[12px] overflow-hidden blog-card-hover custom-shadow group">
+<div class="relative h-56">
+<img alt="Team collaborating" class="w-full h-full object-cover" data-alt="A group of creative professionals in a brightly lit studio brainstorming around a table, minimalist modern interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFcr17O56O-IsUZZufUE3FAcrp1v1XPrOIqOcsZoCG1ZzBl_4cp9sLpYeYIXaRbrE7EpR7qaY0CtNSwOMyuAZci_BOYCmCJB9BPZr3FmZt8f-Hn_iXU0ewiGTT2qvhYxRehmJDLx7aKghzcDaVnSlPCvqBfX2dJHh2bXdtL4dLa938y3_qTBEoI6pX6j6rQLffofXqF7gfXCwP6B-gKbdVjzXN9g5lJ30TMApD8V4A6kyiX7sbVuyWKmCOowXSDrn-2nIdS6siW_8"/>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">Business</span>
+</div>
+<div class="absolute -bottom-4 right-6 w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white border-4 border-surface shadow-lg group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+</div>
+<div class="p-6 pt-8">
+<div class="flex justify-between text-xs font-medium text-on-surface-variant mb-3">
+<span>Oct 18, 2024</span>
+<span>10 Min Read</span>
+</div>
+<h4 class="text-xl font-bold mb-3 text-primary font-headline leading-tight">Death to the 1-Hour Meeting</h4>
+<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Why 15-minute standing huddles are outperforming traditional board meetings in the modern office.</p>
+<a class="text-secondary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">Read Story <span class="material-symbols-outlined text-sm">chevron_right</span></a>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex justify-center items-center gap-2">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary font-bold">1</button>
+<button class="w-10 h-10 rounded-full text-on-surface hover:bg-surface-container-highest transition-colors font-medium">2</button>
+<button class="w-10 h-10 rounded-full text-on-surface hover:bg-surface-container-highest transition-colors font-medium">3</button>
+<span class="mx-2 text-on-surface-variant">...</span>
+<button class="w-10 h-10 rounded-full text-on-surface hover:bg-surface-container-highest transition-colors font-medium">12</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Sidebar -->
+<aside class="lg:col-span-4 space-y-12">
+<!-- Newsletter Signup -->
+<div class="bg-primary text-on-primary p-8 rounded-[12px] relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-2xl font-bold mb-4 font-headline text-white">Never Miss a Tick</h4>
+<p class="text-on-primary-container mb-6">Join 15,000+ time-hackers getting weekly insights on productivity and precision.</p>
+<form class="space-y-4">
+<input class="w-full bg-white/10 border-0 focus:ring-2 focus:ring-secondary text-white placeholder-white/50 rounded-full px-6 py-3" placeholder="Enter your email" type="email"/>
+<button class="w-full bg-secondary text-on-secondary font-bold py-3 rounded-full hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
+                                Subscribe Now
+                            </button>
+</form>
+</div>
+<!-- Decorative Mascot Background -->
+<span class="material-symbols-outlined absolute -bottom-8 -right-8 text-white/5 text-[180px] select-none" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<!-- Popular Posts -->
+<div>
+<h4 class="text-xl font-bold mb-6 text-primary font-headline">Crowd Favorites</h4>
+<div class="space-y-6">
+<a class="flex gap-4 group" href="#">
+<div class="w-20 h-20 rounded-[8px] overflow-hidden flex-shrink-0">
+<img alt="Popular 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Close up of a cute puppy next to a stopwatch, cheerful mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARE72RwLKNM1rGI6cGkya5Xaoh1HzS5TLhFVhkzH_Yz7uru5iQprsk4A7ZiBoqlmq5pCoXcfLuzyiq5oFt2eRTEuezesEmi-Y0ihoTdgC7l0vCPZvXEivQHKE957wBWkxw8Uo2ccCnpvl_Bx91e4s4HpRd8bpyFxXks6mKRf0OCkwqYoDMTDZoZbi1SzLtMXeCuUDT1tiwshAdxL7Vm-UKLuOm6wRg6fhbUID_2z9qv91E2UzeNGWMCPLa_MMHWZnbcDCIUAEzaXo"/>
+</div>
+<div>
+<h5 class="font-bold text-on-surface group-hover:text-secondary transition-colors line-clamp-2">The Golden Rule of Habit Timing</h5>
+<span class="text-xs text-on-surface-variant font-medium">45.2k Views</span>
+</div>
+</a>
+<a class="flex gap-4 group" href="#">
+<div class="w-20 h-20 rounded-[8px] overflow-hidden flex-shrink-0">
+<img alt="Popular 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Futuristic digital clock on a dark background with blue glowing lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkx0lq8wphFuBkmWFaY8x-eij0eEme9SCI2eqymmVuKE_508cWxkOgc7dPKxFgjgiYzSZiMndwNSWWNPsXFQG8ffMI81XkXmDiHyQE9oC-gtpL2KUBpT29bD5Si9sHVQDp7GjylHgU6DUbQoGCGIcR6ehVByv5FWgBiWAZPjYgp7H-RhlmaTfsC8ZnnJNA7iEoP1q3hr7IvKtHmgBv7VRC33QwgxK4uFlepQzQayjvT7xykzrs6sQdj3kUG8zvHs3IRWrnmOu11go"/>
+</div>
+<div>
+<h5 class="font-bold text-on-surface group-hover:text-secondary transition-colors line-clamp-2">Why Our Brain Perception of Time is Flawed</h5>
+<span class="text-xs text-on-surface-variant font-medium">32.8k Views</span>
+</div>
+</a>
+<a class="flex gap-4 group" href="#">
+<div class="w-20 h-20 rounded-[8px] overflow-hidden flex-shrink-0">
+<img alt="Popular 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform" data-alt="Business executive looking at a luxury watch in a sleek office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVYFNPIbG-TjLHTaQFo4-sP9cTja3LnO12CWipWTqjN8MYVeKSiIP3GYMWm-hLgh7KeKw_K9UNcUQUgSGF8zjTdatkobiBoxvQSZ0cFKJ5VGd4dRAe2XHTSnIO3HKBx3d9MR2XDOZpGVPx1ftx2rpnRWJPCNv3yyllP6tE-VMkSu3-fMTjroCoF6uKUXUIQzS2ARPcgy4YtIrIWRmLce0ljrLSFF9BFSuYx4LFlTNX62-bAMhG9o8a_2AAfhwEFmIiOcHGdeg5DwM"/>
+</div>
+<div>
+<h5 class="font-bold text-on-surface group-hover:text-secondary transition-colors line-clamp-2">Timing Your Way to a C-Suite Position</h5>
+<span class="text-xs text-on-surface-variant font-medium">28.1k Views</span>
+</div>
+</a>
+</div>
+</div>
+<!-- Categories -->
+<div>
+<h4 class="text-xl font-bold mb-6 text-primary font-headline">Dimensions</h4>
+<div class="flex flex-wrap gap-2">
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Cooking</a>
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Focus</a>
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Fitness</a>
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Productivity</a>
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Psychology</a>
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Gaming</a>
+<a class="bg-surface-container-high hover:bg-secondary hover:text-white px-4 py-2 rounded-full text-sm font-medium transition-colors" href="#">Work</a>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary text-white w-full rounded-t-3xl mt-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-12 py-16 max-w-7xl mx-auto">
+<div>
+<div class="text-xl font-bold text-white Lexend mb-6">GoTimer.org</div>
+<p class="text-slate-300 text-sm opacity-80 leading-relaxed">Precision timing for people who take their seconds seriously. Join the clubhouse today.</p>
+</div>
+<div>
+<h5 class="Lexend font-bold text-lg mb-6">Resources</h5>
+<ul class="space-y-4">
+<li><a class="text-slate-300 hover:text-secondary transition-colors text-sm" href="#">Timers</a></li>
+<li><a class="text-slate-300 hover:text-secondary transition-colors text-sm" href="#">Challenges</a></li>
+<li><a class="text-slate-300 hover:text-secondary transition-colors text-sm" href="#">Blog</a></li>
+</ul>
+</div>
+<div>
+<h5 class="Lexend font-bold text-lg mb-6">Company</h5>
+<ul class="space-y-4">
+<li><a class="text-slate-300 hover:text-secondary transition-colors text-sm" href="#">About</a></li>
+<li><a class="text-slate-300 hover:text-secondary transition-colors text-sm" href="#">Leaderboard</a></li>
+<li><a class="text-slate-300 hover:text-secondary transition-colors text-sm" href="#">Login</a></li>
+</ul>
+</div>
+<div>
+<h5 class="Lexend font-bold text-lg mb-6">Stay Timed</h5>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">share</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">public</span>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 py-8 text-center text-slate-400 text-xs">
+            © 2024 GoTimer.org - Precision Productivity
+        </div>
+</footer>
+</body></html>

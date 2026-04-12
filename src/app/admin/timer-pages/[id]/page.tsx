@@ -54,7 +54,7 @@ export default function AdminTimerPageEditPage() {
   if (auth_loading || loading) {
     return (
       <main className="p-8">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </main>
     );
   }
@@ -71,7 +71,7 @@ export default function AdminTimerPageEditPage() {
 
   return (
     <main className="p-6 md:p-8 max-w-3xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Timer Page</h1>
+      <h1 className="text-2xl font-headline font-black text-foreground mb-6">Edit Timer Page</h1>
       <TimerPageForm mode="edit" initial_data={page_data} />
     </main>
   );

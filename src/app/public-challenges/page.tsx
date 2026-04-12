@@ -1,7 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { get_db, get_challenge_scores } from "@/lib/db";
 import Navbar from "@/components/navbar";
-import Breadcrumb from "@/components/breadcrumb";
+import Footer from "@/components/footer";
 import { Trophy, Users, Gamepad2 } from "lucide-react";
 
 type Challenge = {
@@ -75,17 +76,37 @@ export default function PublicChallengesPage() {
   const { challenges, user_names } = get_public_challenges();
 
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
+    <>
       <Navbar />
-      <div className="w-full max-w-4xl mx-auto">
-        <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Public Challenges" }]} />
-        <h1 className="text-2xl font-bold mb-2">Public Challenges</h1>
-        <p className="text-muted-foreground mb-6">
-          Browse competitive board game matchups. See scores, game history, and rivalries between players.
-        </p>
+      <main className="min-h-screen bg-surface pt-14 md:pt-20">
+      <div className="w-full bg-gradient-to-br from-primary to-primary/80 py-10 md:py-16 px-6">
+        <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl md:text-5xl font-headline font-black text-primary-foreground mb-2">Public Challenges</h1>
+            <p className="text-primary-foreground/70 text-lg">
+              Browse competitive board game matchups. See scores, game history, and rivalries between players.
+            </p>
+          </div>
+          <Image
+            src="/mascots/scout-victory.png"
+            alt="Scout celebrating with a trophy"
+            width={140}
+            height={140}
+            className="hidden md:block w-28 lg:w-36 h-28 lg:h-36 object-contain drop-shadow-lg shrink-0"
+          />
+        </div>
+      </div>
+      <div className="p-6 lg:p-8 max-w-screen-2xl mx-auto w-full">
 
         {challenges.length === 0 ? (
-          <div className="bg-card rounded-xl p-8 shadow-sm border text-center">
+          <div className="bg-card rounded-[1rem] p-8 shadow-[var(--shadow-soft)] text-center">
+            <Image
+              src="/mascots/drake-searching.png"
+              alt="Drake searching for challenges"
+              width={140}
+              height={140}
+              className="w-28 h-28 object-contain mx-auto mb-4"
+            />
             <p className="text-muted-foreground mb-4">No public challenges yet.</p>
             <Link
               href="/hazo_auth/login"
@@ -111,7 +132,13 @@ export default function PublicChallengesPage() {
                 <Link
                   key={c.id}
                   href={`/public-challenges/${c.id}`}
-                  className="block bg-card rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow no-underline text-foreground"
+                  className={`block bg-card rounded-[1rem] p-5 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-soft-lg)] hover:-translate-y-0.5 transition-all duration-200 no-underline text-foreground border-l-4 ${
+                    c.status === "active"
+                      ? "border-l-status-active"
+                      : c.status === "completed"
+                      ? "border-l-accent"
+                      : "border-l-surface-container-high"
+                  }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -125,10 +152,10 @@ export default function PublicChallengesPage() {
                         <span
                           className={`text-xs px-2 py-0.5 rounded-full ${
                             c.status === "active"
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-status-active/10 text-status-active"
                               : c.status === "completed"
-                              ? "bg-blue-100 text-blue-700"
-                              : "bg-gray-100 text-gray-700"
+                              ? "bg-accent/10 text-accent"
+                              : "bg-surface-container text-muted-foreground"
                           }`}
                         >
                           {c.status}
@@ -162,9 +189,9 @@ export default function PublicChallengesPage() {
         )}
 
         {/* SEO content for crawlers */}
-        <section className="mt-12 text-sm text-muted-foreground">
+        <section className="mt-12 text-sm">
           <h2 className="text-lg font-semibold text-foreground mb-2">About Public Challenges</h2>
-          <p>
+          <p className="text-muted-foreground">
             Public challenges on GoTimer let players share their competitive board game matchups
             with the community. Each challenge tracks wins, losses, and draws between two players
             across multiple games. Create your own challenge, invite a friend, and make it public
@@ -172,6 +199,8 @@ export default function PublicChallengesPage() {
           </p>
         </section>
       </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }

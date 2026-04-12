@@ -1,0 +1,416 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Home" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img [ref=e5]
+        - generic [ref=e8]: Home
+      - link "Public" [ref=e9] [cursor=pointer]:
+        - /url: /public-challenges
+        - img [ref=e10]
+        - generic [ref=e13]: Public
+      - link "Blog" [ref=e14] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e15]
+        - generic [ref=e17]: Blog
+      - link "Challenges" [ref=e18] [cursor=pointer]:
+        - /url: /challenges
+        - img [ref=e19]
+        - generic [ref=e25]: Challenges
+      - link "Profile" [ref=e26] [cursor=pointer]:
+        - /url: /hazo_auth/my_settings
+        - img [ref=e27]
+        - generic [ref=e30]: Profile
+  - main [ref=e31]:
+    - generic [ref=e36]:
+      - link "Back to all articles" [ref=e37] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e38]
+        - text: Back to all articles
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - img [ref=e42]
+          - text: Productivity
+        - generic [ref=e45]:
+          - img [ref=e46]
+          - time [ref=e48]: April 10, 2026
+        - generic [ref=e49]:
+          - img [ref=e50]
+          - text: 13 min read
+      - heading "The Complete Guide to the Pomodoro Technique" [level=1] [ref=e53]
+    - article [ref=e55]:
+      - figure "The humble tomato timer that launched a global productivity movement." [ref=e56]:
+        - img "The Pomodoro Technique — a kitchen timer next to a focused workspace" [ref=e57]
+        - generic [ref=e58]: The humble tomato timer that launched a global productivity movement.
+      - paragraph [ref=e59]: You've probably heard of the Pomodoro Technique. Maybe you've tried it. Maybe you bounced off it after a day because "25 minutes felt too short" or "the breaks ruined your flow."
+      - paragraph [ref=e60]: "Here's the thing: most Pomodoro guides are written by SaaS companies trying to sell you a $15/month subscription. They give you the Wikipedia version, slap a signup form at the bottom, and call it a day."
+      - paragraph [ref=e61]:
+        - text: This guide is different. We built an actual
+        - link "free Pomodoro timer" [ref=e62] [cursor=pointer]:
+          - /url: /pomodoro-timer
+        - text: — no account required, no upsells — and we've watched thousands of people use it. Here's what actually works.
+      - separator [ref=e63]
+      - heading "What Is the Pomodoro Technique?" [level=2] [ref=e64]
+      - paragraph [ref=e65]: The Pomodoro Technique is a time management method created by Francesco Cirillo in the late 1980s. He used a tomato-shaped kitchen timer (pomodoro is Italian for tomato), and the name stuck.
+      - paragraph [ref=e66]: "The core idea is dead simple:"
+      - list [ref=e67]:
+        - listitem [ref=e68]:
+          - strong [ref=e69]: Pick a task
+          - text: you want to work on
+        - listitem [ref=e70]:
+          - strong [ref=e71]: Set a timer
+          - text: for 25 minutes
+        - listitem [ref=e72]:
+          - strong [ref=e73]: Work on that one task
+          - text: until the timer rings
+        - listitem [ref=e74]:
+          - strong [ref=e75]: Take a 5-minute break
+        - listitem [ref=e76]:
+          - strong [ref=e77]: Repeat.
+          - text: After 4 rounds, take a longer 15–30 minute break
+      - paragraph [ref=e78]: That's it. No app required. No certification. No course.
+      - figure "The classic Pomodoro cycle. Simple, but the magic is in the consistency." [ref=e79]:
+        - 'img "Diagram showing the Pomodoro cycle: 25 min work, 5 min break, repeat 4 times, then 15-30 min long break" [ref=e80]'
+        - generic [ref=e81]: The classic Pomodoro cycle. Simple, but the magic is in the consistency.
+      - heading "Why It Works (the Science)" [level=3] [ref=e82]
+      - paragraph [ref=e83]: "The technique works because it leverages three well-documented cognitive principles:"
+      - paragraph [ref=e84]:
+        - strong [ref=e85]: Timeboxing creates urgency.
+        - text: Parkinson's Law says work expands to fill the time available. A 25-minute box forces you to start, even when you don't feel like it. The timer isn't a suggestion — it's a deadline.
+      - paragraph [ref=e86]:
+        - strong [ref=e87]: Breaks prevent decision fatigue.
+        - text: Your prefrontal cortex — the part of your brain responsible for focus, planning, and willpower — gets depleted over time. Short breaks allow partial recovery. Without them, you hit diminishing returns around the 45-minute mark.
+      - paragraph [ref=e88]:
+        - strong [ref=e89]: Single-tasking beats multitasking.
+        - text: Research from Stanford shows that chronic multitaskers perform worse on every metric — including the tasks they think they're good at. The Pomodoro Technique forces you to commit to one thing at a time.
+      - generic [ref=e90]:
+        - img "Tip" [ref=e91]
+        - paragraph [ref=e94]: The Pomodoro Technique isn't about becoming a productivity robot. It's about creating a sustainable rhythm that protects your focus while respecting your brain's natural limits.
+      - separator [ref=e95]
+      - heading "How to Actually Do It (Step by Step)" [level=2] [ref=e96]
+      - paragraph [ref=e97]: Most guides give you the 5 steps above and stop. Here's what they leave out.
+      - 'heading "Step 1: Write Down Your Task Before Starting the Timer" [level=3] [ref=e98]'
+      - paragraph [ref=e99]:
+        - text: Don't just think about what you're going to do.
+        - strong [ref=e100]: Write it down.
+        - text: "Physically. On paper, in a notes app, wherever. Be specific:"
+      - list [ref=e101]:
+        - listitem [ref=e102]: "Bad: \"Work on report\""
+        - listitem [ref=e103]: "Good: \"Write the methodology section of Q2 report\""
+      - paragraph [ref=e104]: This tiny act of writing activates a different part of your brain and dramatically increases follow-through.
+      - 'heading "Step 2: Set Your Timer" [level=3] [ref=e105]'
+      - paragraph [ref=e106]: "Use a real timer — not your phone's clock app buried under notifications. A dedicated timer matters because:"
+      - list [ref=e107]:
+        - listitem [ref=e108]: It's always visible (ambient awareness of time)
+        - listitem [ref=e109]: It doesn't tempt you with Instagram
+        - listitem [ref=e110]: Starting it feels like a physical commitment
+      - generic [ref=e111]:
+        - img [ref=e113]
+        - generic [ref=e116]:
+          - paragraph [ref=e117]: Pomodoro Timer
+          - paragraph [ref=e118]: Free online timer — no signup required
+        - link "Try the Pomodoro timer →" [ref=e119] [cursor=pointer]:
+          - /url: /pomodoro-timer
+      - 'heading "Step 3: Work Until the Timer Rings" [level=3] [ref=e120]'
+      - paragraph [ref=e121]: "When the timer is running:"
+      - list [ref=e122]:
+        - listitem [ref=e123]:
+          - strong [ref=e124]: No email.
+          - text: No Slack. No "quick check."
+        - listitem [ref=e125]:
+          - text: If a thought pops up ("I need to reply to that email"), write it on a piece of paper and get back to work. Cirillo calls this the
+          - strong [ref=e126]: "\"Inform, Negotiate, Call Back\""
+          - text: strategy.
+        - listitem [ref=e127]: "If someone interrupts you, say: \"I'm in the middle of something. Can I get back to you in 15 minutes?\" Most things can wait 15 minutes."
+      - figure "How to handle interruptions without breaking your Pomodoro." [ref=e128]:
+        - 'img "Flowchart showing how to handle interruptions during a Pomodoro: internal (write it down) vs external (negotiate delay)" [ref=e129]'
+        - generic [ref=e130]: How to handle interruptions without breaking your Pomodoro.
+      - 'heading "Step 4: Take Your Break (Actually Take It)" [level=3] [ref=e131]'
+      - paragraph [ref=e132]: This is where most people fail. They finish a Pomodoro and think "I'm in the zone, I'll skip the break."
+      - paragraph [ref=e133]:
+        - strong [ref=e134]: Don't skip the break.
+        - text: "The break is not a reward — it's a necessary part of the system. During your 5-minute break:"
+      - list [ref=e135]:
+        - listitem [ref=e136]: Stand up and stretch
+        - listitem [ref=e137]: Get water or coffee
+        - listitem [ref=e138]: "Look out a window (the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds)"
+        - listitem [ref=e139]:
+          - strong [ref=e140]: Don't
+          - text: check social media — it's not restful, it's stimulating
+      - 'heading "Step 5: Track Your Pomodoros" [level=3] [ref=e141]'
+      - paragraph [ref=e142]: "At the end of each day, count how many Pomodoros you completed. This gives you:"
+      - list [ref=e143]:
+        - listitem [ref=e144]: A realistic sense of your daily capacity (most people can do 8–12 focused Pomodoros per day)
+        - listitem [ref=e145]: Data to plan future work ("this project will take about 16 Pomodoros")
+        - listitem [ref=e146]: Motivation through visible progress
+      - separator [ref=e147]
+      - heading "Which Interval Is Right for You?" [level=2] [ref=e148]
+      - paragraph [ref=e149]:
+        - text: "Here's what nobody tells you:"
+        - strong [ref=e150]: 25 minutes is a starting point, not a commandment.
+      - paragraph [ref=e151]: "Different work types and different brains respond to different intervals. Use this guide to find your sweet spot:"
+      - figure "There's no single 'correct' interval. Match the interval to your work type." [ref=e152]:
+        - 'img "Comparison table of different Pomodoro intervals: 15/3, 25/5, 50/10, and 90/20 minute work/break ratios" [ref=e153]'
+        - generic [ref=e154]: There's no single 'correct' interval. Match the interval to your work type.
+      - 'heading "The Classic: 25 / 5" [level=3] [ref=e155]'
+      - paragraph [ref=e156]:
+        - strong [ref=e157]: "Best for:"
+        - text: General knowledge work, email processing, writing first drafts, studying
+      - paragraph [ref=e158]:
+        - strong [ref=e159]: "Why it works:"
+        - text: Short enough to not feel daunting. Long enough to make meaningful progress. The 5-minute break prevents the "I'll just keep going" trap.
+      - paragraph [ref=e160]:
+        - strong [ref=e161]: "Try this if:"
+        - text: You're new to the technique, you struggle with procrastination, or your work involves lots of task-switching.
+      - 'heading "The Short Sprint: 15 / 3" [level=3] [ref=e162]'
+      - paragraph [ref=e163]:
+        - strong [ref=e164]: "Best for:"
+        - text: Tedious tasks you've been avoiding, ADHD-friendly work sessions, high-anxiety tasks
+      - paragraph [ref=e165]:
+        - strong [ref=e166]: "Why it works:"
+        - text: The activation energy to start a 15-minute task is almost zero. "I can do anything for 15 minutes" is a powerful mental trick.
+      - paragraph [ref=e167]:
+        - strong [ref=e168]: "Try this if:"
+        - text: You're dealing with executive function challenges, or you have a task you've been putting off for days.
+      - 'heading "The Deep Worker: 50 / 10" [level=3] [ref=e169]'
+      - paragraph [ref=e170]:
+        - strong [ref=e171]: "Best for:"
+        - text: Programming, design work, long-form writing, complex analysis
+      - paragraph [ref=e172]:
+        - strong [ref=e173]: "Why it works:"
+        - text: Creative and analytical work often requires 10–15 minutes just to load context into your brain. A 25-minute Pomodoro gives you only 10–15 minutes of actual deep work. Doubling the interval gives you a proper runway.
+      - paragraph [ref=e174]:
+        - strong [ref=e175]: "Try this if:"
+        - text: You consistently feel like 25 minutes cuts you off right when you're getting productive.
+      - 'heading "The Ultramarathon: 90 / 20" [level=3] [ref=e176]'
+      - paragraph [ref=e177]:
+        - strong [ref=e178]: "Best for:"
+        - text: Research sessions, creative projects, flow-state work
+      - paragraph [ref=e179]:
+        - strong [ref=e180]: "Why it works:"
+        - text: This aligns with the body's ultradian rhythm — the natural 90-minute cycle of high and low alertness. It's not technically Pomodoro anymore, but the principle is the same.
+      - paragraph [ref=e181]:
+        - strong [ref=e182]: "Try this if:"
+        - text: You're experienced with focus techniques and your work genuinely benefits from extended uninterrupted time.
+      - generic [ref=e183]:
+        - img "Info" [ref=e184]
+        - paragraph [ref=e187]: Not sure which interval to pick? Start with 25/5 for one week. If you consistently feel interrupted by the timer, move to 50/10. If 25 minutes feels too long, try 15/3. Let your experience guide you, not theory.
+      - generic [ref=e188]:
+        - img [ref=e190]
+        - generic [ref=e193]:
+          - paragraph [ref=e194]: Pomodoro Timer
+          - paragraph [ref=e195]: Free online timer — no signup required
+        - link "Try the Pomodoro timer →" [ref=e196] [cursor=pointer]:
+          - /url: /pomodoro-timer
+      - separator [ref=e197]
+      - heading "Common Mistakes (and How to Fix Them)" [level=2] [ref=e198]
+      - 'heading "Mistake 1: Treating the Timer as the Enemy" [level=3] [ref=e199]'
+      - paragraph [ref=e200]:
+        - text: If you're constantly watching the clock and feeling stressed, you're doing it wrong. The timer is a
+        - strong [ref=e201]: container
+        - text: ", not a cage. If 25 minutes feels oppressive, shorten it. The point is to create rhythm, not anxiety."
+      - 'heading "Mistake 2: Working Through Breaks" [level=3] [ref=e202]'
+      - paragraph [ref=e203]:
+        - text: We covered this above, but it bears repeating.
+        - strong [ref=e204]: Skipping breaks doesn't make you more productive.
+        - text: It makes you less productive, slower, and more error-prone after about 90 minutes.
+      - 'heading "Mistake 3: Using It for Everything" [level=3] [ref=e205]'
+      - paragraph [ref=e206]: "The Pomodoro Technique is not ideal for:"
+      - list [ref=e207]:
+        - listitem [ref=e208]: Meetings (you can't pause a conversation)
+        - listitem [ref=e209]: Creative brainstorming sessions (sometimes you need to follow a thread)
+        - listitem [ref=e210]: Tasks that take less than 5 minutes (just do them)
+      - paragraph [ref=e211]: Use it for focused, individual work. Don't force it where it doesn't fit.
+      - 'heading "Mistake 4: Overcomplicating the System" [level=3] [ref=e212]'
+      - paragraph [ref=e213]: "You don't need:"
+      - list [ref=e214]:
+        - listitem [ref=e215]: A special app with analytics dashboards
+        - listitem [ref=e216]: A color-coded task categorization system
+        - listitem [ref=e217]: A review process for your Pomodoro data
+      - paragraph [ref=e218]: A timer and a piece of paper. That's the system. Everything else is procrastination disguised as productivity.
+      - figure "The only Pomodoro setup you actually need." [ref=e219]:
+        - 'img "A minimal Pomodoro setup: laptop, notebook, pen, and a timer" [ref=e220]'
+        - generic [ref=e221]: The only Pomodoro setup you actually need.
+      - separator [ref=e222]
+      - heading "The Pomodoro Technique for Different Professions" [level=2] [ref=e223]
+      - heading "For Students" [level=3] [ref=e224]
+      - paragraph [ref=e225]: "The Pomodoro Technique is almost unfairly effective for studying. Here's why:"
+      - list [ref=e226]:
+        - listitem [ref=e227]:
+          - strong [ref=e228]: Spaced repetition + Pomodoros = superpower.
+          - text: Study one subject for 4 Pomodoros, switch to another, then come back. The breaks create natural spacing.
+        - listitem [ref=e229]:
+          - strong [ref=e230]: "Exam prep:"
+          - text: Use each Pomodoro for a different topic. Track how many Pomodoros each subject needs. This replaces vague "I studied for 6 hours" with concrete "I did 12 Pomodoros across 4 subjects."
+      - heading "For Programmers" [level=3] [ref=e231]
+      - paragraph [ref=e232]: "Programming has a unique challenge: deep context loading. You need 10–15 minutes just to hold a complex system in your head."
+      - list [ref=e233]:
+        - listitem [ref=e234]:
+          - text: Use
+          - strong [ref=e235]: 50/10 intervals
+          - text: for coding
+        - listitem [ref=e236]:
+          - text: Use
+          - strong [ref=e237]: 25/5 intervals
+          - text: for code review, documentation, and bug triage
+        - listitem [ref=e238]: During breaks, stand up. Seriously. Programmers who sit for 8 hours straight are not heroic — they're damaging their bodies.
+      - heading "For Writers" [level=3] [ref=e239]
+      - paragraph [ref=e240]: "Writing and the Pomodoro Technique are a natural fit:"
+      - list [ref=e241]:
+        - listitem [ref=e242]:
+          - strong [ref=e243]: "First drafts:"
+          - text: 25/5. Don't edit, just write. The timer gives you permission to be imperfect.
+        - listitem [ref=e244]:
+          - strong [ref=e245]: "Editing:"
+          - text: 50/10. Editing requires more sustained attention to catch inconsistencies.
+        - listitem [ref=e246]:
+          - strong [ref=e247]: "Research:"
+          - text: 25/5 with strict rules about not falling down rabbit holes. When you find something interesting but tangential, write it on your interruption list and keep going.
+      - heading "For Remote Workers" [level=3] [ref=e248]
+      - paragraph [ref=e249]:
+        - text: "If you work from home, the Pomodoro Technique solves one of the biggest remote work problems:"
+        - strong [ref=e250]: the blurred boundary between work and not-work.
+      - list [ref=e251]:
+        - listitem [ref=e252]: Pomodoros give you a clear "I'm working now" signal
+        - listitem [ref=e253]: Breaks give you guilt-free moments to throw in laundry, pet the dog, etc.
+        - listitem [ref=e254]: Tracking Pomodoros helps answer "what did I even do today?"
+      - separator [ref=e255]
+      - heading "Tools vs. No Tools" [level=2] [ref=e256]
+      - heading "The Case for a Dedicated Timer" [level=3] [ref=e257]
+      - paragraph [ref=e258]:
+        - text: A dedicated timer (like the
+        - link "GoTimer Pomodoro Timer" [ref=e259] [cursor=pointer]:
+          - /url: /pomodoro-timer
+        - text: ") offers advantages over your phone:"
+      - list [ref=e260]:
+        - listitem [ref=e261]:
+          - strong [ref=e262]: No distractions
+          - text: — no notifications, no apps, no temptation
+        - listitem [ref=e263]:
+          - strong [ref=e264]: Visible progress
+          - text: — see exactly where you are in your work session
+        - listitem [ref=e265]:
+          - strong [ref=e266]: Quick start
+          - text: — one click, not three taps and a scroll
+        - listitem [ref=e267]:
+          - strong [ref=e268]: Browser-based
+          - text: — works on any device, nothing to install
+      - heading "The Case for Pen and Paper" [level=3] [ref=e269]
+      - paragraph [ref=e270]: "Some Pomodoro purists insist on analog tools. There's merit to this:"
+      - list [ref=e271]:
+        - listitem [ref=e272]: The physical act of crossing off a Pomodoro is satisfying
+        - listitem [ref=e273]: Paper doesn't have a battery
+        - listitem [ref=e274]: Writing engages different neural pathways than typing
+      - heading "The Best Approach" [level=3] [ref=e275]
+      - paragraph [ref=e276]: Use a digital timer (for accuracy and convenience) with a paper tracking sheet (for engagement and satisfaction). Best of both worlds.
+      - generic [ref=e277]:
+        - img [ref=e279]
+        - generic [ref=e282]:
+          - paragraph [ref=e283]: Pomodoro Timer
+          - paragraph [ref=e284]: Free online timer — no signup required
+        - link "Try the Pomodoro timer →" [ref=e285] [cursor=pointer]:
+          - /url: /pomodoro-timer
+      - separator [ref=e286]
+      - heading "Frequently Asked Questions" [level=2] [ref=e287]
+      - paragraph [ref=e288]: "These are covered in the FAQ section below, but here are quick answers to the most common questions:"
+      - paragraph [ref=e289]:
+        - strong [ref=e290]: "\"What if my task takes more than one Pomodoro?\""
+        - text: Good — most meaningful work does. Just keep going with fresh Pomodoros. The boundary between Pomodoros is a checkpoint, not a stop sign.
+      - paragraph [ref=e291]:
+        - strong [ref=e292]: "\"What if I finish my task before the timer ends?\""
+        - text: Use the remaining time for review, cleanup, or preparation for the next task. Don't start a new task mid-Pomodoro.
+      - paragraph [ref=e293]:
+        - strong [ref=e294]: "\"Does the Pomodoro Technique work with ADHD?\""
+        - text: Many people with ADHD find shorter intervals (15/3) extremely helpful. The external timer provides structure that internal motivation can't. However, it's not a substitute for professional treatment.
+      - paragraph [ref=e295]:
+        - strong [ref=e296]: "\"Can I use the Pomodoro Technique in an open office?\""
+        - text: Yes, but you'll need to set expectations with colleagues. A visible timer or a "do not disturb" sign helps. Noise-canceling headphones are your friend.
+      - separator [ref=e297]
+      - heading "Start Your First Pomodoro Now" [level=2] [ref=e298]
+      - paragraph [ref=e299]:
+        - text: "You've read the guide. You know the theory. Now do the only thing that matters:"
+        - strong [ref=e300]: start a timer and work for 25 minutes.
+      - paragraph [ref=e301]: Don't optimize your system first. Don't download an app. Don't watch a YouTube video about it. Just start.
+      - generic [ref=e302]:
+        - img [ref=e304]
+        - generic [ref=e307]:
+          - paragraph [ref=e308]: Pomodoro Timer
+          - paragraph [ref=e309]: Free online timer — no signup required
+        - link "Try the Pomodoro timer →" [ref=e310] [cursor=pointer]:
+          - /url: /pomodoro-timer
+      - paragraph [ref=e311]: The Pomodoro Technique works not because it's clever, but because it's simple enough to actually use. The best productivity system is the one you'll do tomorrow, and the day after that, and the day after that.
+      - paragraph [ref=e312]: Set the timer. Do the work. Take the break. Repeat.
+    - generic [ref=e314]:
+      - heading "Frequently Asked Questions" [level=2] [ref=e317]
+      - generic [ref=e318]:
+        - generic [ref=e319]:
+          - term [ref=e320]: What is the Pomodoro Technique?
+          - definition [ref=e321]: The Pomodoro Technique is a time management method where you work in focused 25-minute intervals (called Pomodoros) separated by 5-minute breaks. After completing 4 Pomodoros, you take a longer 15-30 minute break. It was created by Francesco Cirillo in the late 1980s and is named after the tomato-shaped kitchen timer he used.
+        - generic [ref=e322]:
+          - term [ref=e323]: How long is a Pomodoro session?
+          - definition [ref=e324]: "A classic Pomodoro session is 25 minutes of focused work followed by a 5-minute break. However, you can adjust the intervals to suit your work type: 15/3 for short sprints, 50/10 for deep work like programming, or 90/20 for extended creative sessions."
+        - generic [ref=e325]:
+          - term [ref=e326]: Does the Pomodoro Technique actually work?
+          - definition [ref=e327]: Yes, research supports the principles behind it. Timeboxing creates urgency (Parkinson's Law), regular breaks prevent cognitive fatigue, and single-tasking outperforms multitasking according to Stanford research. Most people can sustain 8-12 focused Pomodoros per day.
+        - generic [ref=e328]:
+          - term [ref=e329]: What should I do during Pomodoro breaks?
+          - definition [ref=e330]: During your 5-minute breaks, stand up and stretch, get water, or look away from your screen (the 20-20-20 rule). Avoid checking social media or email — these are stimulating, not restful. During longer 15-30 minute breaks, take a walk, eat a snack, or do a non-screen activity.
+        - generic [ref=e331]:
+          - term [ref=e332]: Can I change the 25-minute Pomodoro interval?
+          - definition [ref=e333]: Absolutely. The 25-minute interval is a starting point, not a rule. Try 15-minute intervals if you struggle with procrastination or have ADHD, 50-minute intervals for deep work like programming or writing, or 90-minute intervals to match your body's natural ultradian rhythm.
+        - generic [ref=e334]:
+          - term [ref=e335]: What if I get interrupted during a Pomodoro?
+          - definition [ref=e336]: "For internal interruptions (your own thoughts), write them down on paper and return to your task. For external interruptions, use the 'Inform, Negotiate, Call Back' strategy: tell the person you're in the middle of something and ask if you can get back to them in 15 minutes. If the interruption can't wait, void the Pomodoro and start a new one."
+        - generic [ref=e337]:
+          - term [ref=e338]: Is the Pomodoro Technique good for studying?
+          - definition [ref=e339]: The Pomodoro Technique is extremely effective for studying. It naturally creates spaced repetition when you rotate subjects across Pomodoros, and tracking Pomodoros gives you concrete data ('12 Pomodoros across 4 subjects') instead of vague time estimates ('I studied for 6 hours').
+        - generic [ref=e340]:
+          - term [ref=e341]: Do I need a special app for the Pomodoro Technique?
+          - definition [ref=e342]: No. All you need is a timer and a way to track your completed Pomodoros. A free online timer like GoTimer's Pomodoro Timer combined with a pen and paper is the simplest and most effective setup. Avoid overcomplicating the system with analytics dashboards — simplicity is the point.
+    - link "Back to all articles" [ref=e345] [cursor=pointer]:
+      - /url: /blog
+      - img [ref=e346]
+      - text: Back to all articles
+  - contentinfo [ref=e348]:
+    - generic [ref=e349]:
+      - generic [ref=e350]:
+        - generic [ref=e351]:
+          - heading "Timers" [level=3] [ref=e352]
+          - list [ref=e353]:
+            - listitem [ref=e354]:
+              - link "Countdown Timer" [ref=e355] [cursor=pointer]:
+                - /url: /countdown-setup
+            - listitem [ref=e356]:
+              - link "Chess Clock" [ref=e357] [cursor=pointer]:
+                - /url: /chess-clock-setup
+            - listitem [ref=e358]:
+              - link "Round Timer" [ref=e359] [cursor=pointer]:
+                - /url: /round-timer-setup
+        - generic [ref=e360]:
+          - heading "Features" [level=3] [ref=e361]
+          - list [ref=e362]:
+            - listitem [ref=e363]:
+              - link "Public Challenges" [ref=e364] [cursor=pointer]:
+                - /url: /public-challenges
+            - listitem [ref=e365]:
+              - link "Partners" [ref=e366] [cursor=pointer]:
+                - /url: /partners
+        - generic [ref=e367]:
+          - heading "Legal & Info" [level=3] [ref=e368]
+          - list [ref=e369]:
+            - listitem [ref=e370]:
+              - link "Privacy Policy" [ref=e371] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e372]:
+              - link "Terms of Service" [ref=e373] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e374]:
+              - button "Contact Us" [ref=e375] [cursor=pointer]
+            - listitem [ref=e376]:
+              - link "Sitemap" [ref=e377] [cursor=pointer]:
+                - /url: /sitemap.xml
+      - generic [ref=e378]: © 2026 GoTimer.org
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e384] [cursor=pointer]:
+    - img [ref=e385]
+  - alert [ref=e388]

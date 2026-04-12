@@ -102,7 +102,7 @@ export function ChallengeHistogram({
             content={({ active, payload, label }) => {
               if (!active || !payload?.length) return null;
               return (
-                <div className="bg-card border rounded-lg p-2 shadow-md text-sm">
+                <div className="bg-surface-container-highest rounded-[0.75rem] p-2 shadow-[var(--shadow-soft)] text-sm">
                   <div className="font-medium mb-1">{label}</div>
                   {payload.map((p) => (
                     <div key={p.name} className="flex items-center gap-2">
@@ -121,7 +121,7 @@ export function ChallengeHistogram({
           <Line
             type="monotone"
             dataKey={my_name}
-            stroke="oklch(0.82 0.17 85)"
+            stroke="var(--chart-1)"
             strokeWidth={2}
             dot={{ r: 4 }}
             activeDot={{ r: 6 }}
@@ -129,7 +129,7 @@ export function ChallengeHistogram({
           <Line
             type="monotone"
             dataKey={opponent_name}
-            stroke="oklch(0.5 0.02 260)"
+            stroke="var(--chart-2)"
             strokeWidth={2}
             dot={{ r: 4 }}
             activeDot={{ r: 6 }}

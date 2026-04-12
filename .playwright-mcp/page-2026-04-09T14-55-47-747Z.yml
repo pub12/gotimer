@@ -1,0 +1,97 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "GoTimer logo GoTimer.org" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "GoTimer logo" [ref=e6]
+        - generic [ref=e7]: GoTimer.org
+      - navigation [ref=e8]:
+        - link "Home" [ref=e9] [cursor=pointer]:
+          - /url: /
+          - img [ref=e10]
+          - generic [ref=e13]: Home
+        - link "My Challenges" [ref=e14] [cursor=pointer]:
+          - /url: /challenges
+          - img [ref=e15]
+          - generic [ref=e24]: My Challenges
+        - link "Leaderboard" [ref=e25] [cursor=pointer]:
+          - /url: /leaderboard
+          - img [ref=e26]
+          - generic [ref=e32]: Leaderboard
+        - link "Public Challenges" [ref=e33] [cursor=pointer]:
+          - /url: /public-challenges
+          - img [ref=e34]
+          - generic [ref=e37]: Public Challenges
+      - generic [ref=e38]:
+        - link "Settings" [ref=e39] [cursor=pointer]:
+          - /url: /hazo_auth/my_settings
+          - img [ref=e40]
+          - generic [ref=e43]: Settings
+        - link "Support" [ref=e44] [cursor=pointer]:
+          - /url: mailto:pubs@hazoservices.com
+          - img [ref=e45]
+          - generic [ref=e48]: Support
+    - main [ref=e49]:
+      - generic [ref=e51]:
+        - heading "Meme-First Leaderboard" [level=1] [ref=e52]
+        - generic [ref=e54]:
+          - img [ref=e55]
+          - textbox "Find champions..." [ref=e58]
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - link "All Types" [ref=e62] [cursor=pointer]:
+            - /url: /leaderboard
+          - link "Countdown" [ref=e63] [cursor=pointer]:
+            - /url: /leaderboard?timer_type=countdown
+          - link "Chess Clock" [ref=e64] [cursor=pointer]:
+            - /url: /leaderboard?timer_type=chess-clock
+          - link "Round Timer" [ref=e65] [cursor=pointer]:
+            - /url: /leaderboard?timer_type=round-timer
+        - generic [ref=e66]:
+          - generic [ref=e68]:
+            - heading "Global Arena" [level=2] [ref=e69]
+            - paragraph [ref=e70]: Top challenges this week
+          - table [ref=e72]:
+            - rowgroup [ref=e73]:
+              - row "Rank Challenge Format Players Activity" [ref=e74]:
+                - columnheader "Rank" [ref=e75]
+                - columnheader "Challenge" [ref=e76]
+                - columnheader "Format" [ref=e77]
+                - columnheader "Players" [ref=e78]
+                - columnheader "Activity" [ref=e79]
+            - rowgroup [ref=e80]:
+              - row "1 Lets go head-to-head 1 Mar 2" [ref=e81] [cursor=pointer]:
+                - cell "1" [ref=e82]
+                - cell "Lets go" [ref=e83]:
+                  - link "Lets go" [ref=e84]:
+                    - /url: /public-challenges/afadd7da-66fc-4a34-ac85-4c582f7461ea
+                - cell "head-to-head" [ref=e85]
+                - cell "1" [ref=e86]:
+                  - generic [ref=e87]:
+                    - img [ref=e88]
+                    - text: "1"
+                - cell "Mar 2" [ref=e93]:
+                  - generic [ref=e94]:
+                    - img [ref=e95]
+                    - text: Mar 2
+              - row "2 2026-02 February Fire Champ head-to-head 2 Mar 1" [ref=e98] [cursor=pointer]:
+                - cell "2" [ref=e99]
+                - cell "2026-02 February Fire Champ" [ref=e100]:
+                  - link "2026-02 February Fire Champ" [ref=e101]:
+                    - /url: /public-challenges/742a862e-5e2e-404a-8d32-dab2a824ba8b
+                - cell "head-to-head" [ref=e102]
+                - cell "2" [ref=e103]:
+                  - generic [ref=e104]:
+                    - img [ref=e105]
+                    - text: "2"
+                - cell "Mar 1" [ref=e110]:
+                  - generic [ref=e111]:
+                    - img [ref=e112]
+                    - text: Mar 1
+        - generic [ref=e115]:
+          - heading "About the GoTimer Leaderboard" [level=2] [ref=e116]
+          - paragraph [ref=e117]: The GoTimer leaderboard showcases public challenges created by players around the world. Whether you prefer head-to-head 1v1 matches, group competitions with a join code, or solo session tracking — every format is represented here.
+          - paragraph [ref=e118]: Filter by timer type to find challenges for countdown timers, chess clocks, or round timers. Click any challenge to view its full standings and game history.
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e124] [cursor=pointer]:
+    - img [ref=e125]

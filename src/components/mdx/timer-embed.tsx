@@ -11,22 +11,22 @@ export function TimerEmbed({ type, duration }: TimerEmbedProps) {
   const label = type.charAt(0).toUpperCase() + type.slice(1);
 
   return (
-    <div className="my-6 flex items-center gap-4 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-        <Timer className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+    <div className="my-6 flex items-center gap-4 rounded-[0.75rem] bg-surface-container-low p-4 border-l-4 border-l-accent">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-container">
+        <Timer className="h-5 w-5 text-accent" />
       </div>
       <div className="flex-1">
-        <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+        <p className="text-sm font-medium text-foreground">
           {label} Timer
           {duration ? ` (${duration}s)` : ""}
         </p>
-        <p className="text-xs text-blue-700 dark:text-blue-300">
+        <p className="text-xs text-muted-foreground">
           Free online timer — no signup required
         </p>
       </div>
       <Link
         href={href}
-        className="shrink-0 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+        className="shrink-0 rounded-[0.5rem] bg-secondary px-4 py-2 text-sm font-medium text-white transition-all duration-200 ease-out hover:scale-105"
       >
         Try the {label} timer &rarr;
       </Link>

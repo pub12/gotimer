@@ -17,13 +17,13 @@ export default function AdminBlogNewPage() {
     if (!loading && (!authenticated || !permission_ok)) router.push("/");
   }, [loading, authenticated, permission_ok, router]);
 
-  if (loading) return <main className="p-8"><p className="text-gray-500">Loading...</p></main>;
+  if (loading) return <main className="p-8"><p className="text-muted-foreground">Loading...</p></main>;
   if (!authenticated || !permission_ok) return null;
 
   return (
     <main className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">New Blog Post</h1>
+        <h1 className="text-2xl font-headline font-black text-foreground">New Blog Post</h1>
       </div>
       <PostForm />
     </main>

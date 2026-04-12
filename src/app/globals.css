@@ -29,8 +29,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-inter);
+  --font-headline: var(--font-lexend);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -64,99 +65,360 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* Surface tier system */
+  --color-surface: var(--surface);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  /* Shadow tokens */
+  --shadow-soft: 0 8px 32px rgba(4, 21, 52, 0.06);
+  --shadow-soft-lg: 0 16px 64px rgba(4, 21, 52, 0.06);
+  /* Glassmorphism tokens */
+  --glass-bg: rgba(248, 249, 255, 0.72);
+  --glass-blur: 16px;
+  --glass-border: rgba(255, 255, 255, 0.2);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.985 0.002 90);
-  --foreground: oklch(0.17 0.02 75);
+  --radius: 0.75rem;
+  --background: #f8f9ff;
+  --foreground: #041534;
 
-  /* hazo_auth component CSS variables - map to app theme */
-  --hazo-text-primary: oklch(0.17 0.02 75);
-  --hazo-text-secondary: oklch(0.35 0.02 75);
-  --hazo-text-muted: oklch(0.55 0.02 75);
-  --hazo-text-subtle: oklch(0.65 0.02 75);
-  --hazo-border: oklch(0.91 0.02 85);
-  --hazo-border-emphasis: oklch(0.80 0.02 85);
-  --hazo-bg-subtle: oklch(0.97 0.002 90);
-  --hazo-bg-emphasis: oklch(0.93 0.01 85);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.17 0.02 75);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.17 0.02 75);
-  --primary: oklch(0.82 0.17 85);
-  --primary-foreground: oklch(0.17 0.02 75);
-  --secondary: oklch(0.96 0.01 85);
-  --secondary-foreground: oklch(0.25 0.02 75);
-  --muted: oklch(0.96 0.01 85);
-  --muted-foreground: oklch(0.55 0.02 75);
-  --accent: oklch(0.93 0.04 85);
-  --accent-foreground: oklch(0.25 0.02 75);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.91 0.02 85);
-  --input: oklch(0.91 0.02 85);
-  --ring: oklch(0.82 0.17 85);
-  --chart-1: oklch(0.82 0.17 85);
-  --chart-2: oklch(0.65 0.15 45);
-  --chart-3: oklch(0.60 0.12 160);
-  --chart-4: oklch(0.70 0.14 280);
-  --chart-5: oklch(0.55 0.20 30);
-  --sidebar: oklch(0.98 0.005 85);
-  --sidebar-foreground: oklch(0.17 0.02 75);
-  --sidebar-primary: oklch(0.82 0.17 85);
-  --sidebar-primary-foreground: oklch(0.17 0.02 75);
-  --sidebar-accent: oklch(0.96 0.01 85);
-  --sidebar-accent-foreground: oklch(0.25 0.02 75);
-  --sidebar-border: oklch(0.91 0.02 85);
-  --sidebar-ring: oklch(0.82 0.17 85);
+  /* Kinetic Clubhouse surface tier system */
+  --surface: #f8f9ff;
+  --surface-container-low: #f1f3fb;
+  --surface-container: #ebedf6;
+  --surface-container-high: #e5e7f0;
+  --surface-container-highest: #dfe1ea;
+  --on-surface: #041534;
+  --on-surface-variant: #3a4158;
+
+  /* hazo_auth component CSS variables - map to Kinetic Clubhouse theme */
+  --hazo-text-primary: #041534;
+  --hazo-text-secondary: #3a4158;
+  --hazo-text-muted: #5a6178;
+  --hazo-text-subtle: #7a8198;
+  --hazo-border: transparent;
+  --hazo-border-emphasis: #dfe1ea;
+  --hazo-bg-subtle: #f1f3fb;
+  --hazo-bg-emphasis: #ebedf6;
+
+  --card: #f1f3fb;
+  --card-foreground: #041534;
+  --popover: #f1f3fb;
+  --popover-foreground: #041534;
+  --primary: #041534;
+  --primary-foreground: #ffffff;
+  --secondary: #ab3514;
+  --secondary-foreground: #ffffff;
+  --muted: #ebedf6;
+  --muted-foreground: #3a4158;
+  --accent: #755b00;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --border: transparent;
+  --input: #ebedf6;
+  --ring: #041534;
+
+  /* Status colors */
+  --status-active: #16a34a;
+  --status-win: #755b00;
+  --status-loss: #ab3514;
+  --status-reported: #6366f1;
+
+  /* Chart colors */
+  --chart-1: #041534;
+  --chart-2: #ab3514;
+  --chart-3: #755b00;
+  --chart-4: #2d6a4f;
+  --chart-5: #7b2cbf;
+
+  /* Sidebar */
+  --sidebar: #041534;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ab3514;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0d2654;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: transparent;
+  --sidebar-ring: #ab3514;
 }
 
 .dark {
-  --background: oklch(0.15 0.015 75);
-  --foreground: oklch(0.96 0.005 85);
-  --card: oklch(0.20 0.015 75);
-  --card-foreground: oklch(0.96 0.005 85);
-  --popover: oklch(0.20 0.015 75);
-  --popover-foreground: oklch(0.96 0.005 85);
-  --primary: oklch(0.82 0.17 85);
-  --primary-foreground: oklch(0.17 0.02 75);
-  --secondary: oklch(0.26 0.015 75);
-  --secondary-foreground: oklch(0.96 0.005 85);
-  --muted: oklch(0.26 0.015 75);
-  --muted-foreground: oklch(0.65 0.02 85);
-  --accent: oklch(0.30 0.03 85);
-  --accent-foreground: oklch(0.96 0.005 85);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.82 0.17 85);
-  --chart-1: oklch(0.82 0.17 85);
-  --chart-2: oklch(0.70 0.18 45);
-  --chart-3: oklch(0.65 0.15 160);
-  --chart-4: oklch(0.75 0.16 280);
-  --chart-5: oklch(0.65 0.22 30);
-  --sidebar: oklch(0.20 0.015 75);
-  --sidebar-foreground: oklch(0.96 0.005 85);
-  --sidebar-primary: oklch(0.82 0.17 85);
-  --sidebar-primary-foreground: oklch(0.17 0.02 75);
-  --sidebar-accent: oklch(0.26 0.015 75);
-  --sidebar-accent-foreground: oklch(0.96 0.005 85);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.82 0.17 85);
+  --background: #041534;
+  --foreground: #f1f3fb;
+
+  --surface: #041534;
+  --surface-container-low: #071d42;
+  --surface-container: #0a2550;
+  --surface-container-high: #0d2654;
+  --surface-container-highest: #112d5e;
+  --on-surface: #f1f3fb;
+  --on-surface-variant: #a0a8c0;
+
+  --card: #071d42;
+  --card-foreground: #f1f3fb;
+  --popover: #071d42;
+  --popover-foreground: #f1f3fb;
+  --primary: #f1f3fb;
+  --primary-foreground: #041534;
+  --secondary: #d94a24;
+  --secondary-foreground: #ffffff;
+  --muted: #0a2550;
+  --muted-foreground: #a0a8c0;
+  --accent: #a88b2a;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #f1f3fb;
+
+  --chart-1: #f1f3fb;
+  --chart-2: #d94a24;
+  --chart-3: #a88b2a;
+  --chart-4: #52b788;
+  --chart-5: #a78bfa;
+
+  --sidebar: #041534;
+  --sidebar-foreground: #f1f3fb;
+  --sidebar-primary: #d94a24;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #0a2550;
+  --sidebar-accent-foreground: #f1f3fb;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #d94a24;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-transparent outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
   }
 }
 
+/* Glassmorphism fallback for older browsers */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-nav {
+    background: var(--surface) !important;
+  }
+}
+
+/* Timer page content — rich typography for admin-authored HTML */
+.timer-page-content {
+  color: var(--on-surface-variant, #3a4158);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.timer-page-content h2 {
+  font-family: var(--font-lexend), sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: var(--on-surface, #041534);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.timer-page-content h3 {
+  font-family: var(--font-lexend), sans-serif;
+  font-weight: 900;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: var(--on-surface, #041534);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.timer-page-content p {
+  margin-bottom: 1rem;
+}
+
+.timer-page-content ul,
+.timer-page-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.timer-page-content ul {
+  list-style: disc;
+}
+
+.timer-page-content ol {
+  list-style: decimal;
+}
+
+.timer-page-content li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.timer-page-content li strong {
+  color: var(--on-surface, #041534);
+}
+
+.timer-page-content a {
+  color: var(--secondary, #ab3514);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.timer-page-content a:hover {
+  color: var(--secondary, #ab3514);
+  opacity: 0.8;
+}
+
+.timer-page-content blockquote {
+  border-left: 4px solid var(--secondary, #ab3514);
+  padding: 0.75rem 1.25rem;
+  margin: 1.5rem 0;
+  background: var(--surface-container-low, #f1f3fb);
+  border-radius: 0 0.75rem 0.75rem 0;
+  font-style: italic;
+  color: var(--on-surface, #041534);
+}
+
+.timer-page-content code {
+  background: var(--surface-container, #ebedf6);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+/* Blog article content — rich editorial typography for MDX posts */
+.blog-article-content {
+  color: var(--on-surface-variant, #3a4158);
+  font-size: 1.125rem;
+  line-height: 1.85;
+}
+
+.blog-article-content > *:first-child {
+  margin-top: 0;
+}
+
+.blog-article-content h2 {
+  font-family: var(--font-lexend), sans-serif;
+  font-weight: 900;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  color: var(--on-surface, #041534);
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--surface-container-high, #e5e7f0);
+}
+
+.blog-article-content > h2:first-child,
+.blog-article-content > *:first-child + h2 {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.blog-article-content h3 {
+  font-family: var(--font-lexend), sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  line-height: 1.35;
+  color: var(--on-surface, #041534);
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-article-content h4 {
+  font-family: var(--font-lexend), sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: var(--on-surface, #041534);
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-article-content p {
+  margin-bottom: 1.25rem;
+}
+
+.blog-article-content ul,
+.blog-article-content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.blog-article-content ul {
+  list-style: disc;
+}
+
+.blog-article-content ol {
+  list-style: decimal;
+}
+
+.blog-article-content li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.blog-article-content li strong {
+  color: var(--on-surface, #041534);
+}
+
+.blog-article-content a:not([class*="bg-"]) {
+  color: var(--secondary, #ab3514);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-thickness 0.15s, opacity 0.15s;
+}
+
+.blog-article-content a:not([class*="bg-"]):hover {
+  text-decoration-thickness: 2px;
+  opacity: 0.85;
+}
+
+.blog-article-content blockquote {
+  border-left: 4px solid var(--secondary, #ab3514);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  background: var(--surface-container-low, #f1f3fb);
+  border-radius: 0 0.75rem 0.75rem 0;
+  font-style: italic;
+  color: var(--on-surface, #041534);
+}
+
+.blog-article-content code {
+  background: var(--surface-container, #ebedf6);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+.blog-article-content strong {
+  color: var(--on-surface, #041534);
+  font-weight: 700;
+}
+
+.blog-article-content hr {
+  border: none;
+  height: 1px;
+  background: var(--surface-container-high, #e5e7f0);
+  margin: 3rem 0;
+}
+
 /* Smooth transition for countdown ring progress arc */
 .ring-progress-transition {
   transition: stroke-dashoffset 1s linear;
+}
+
+/* Fullscreen timer flash animation for final seconds */
+@keyframes timer-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.animate-timer-flash {
+  animation: timer-flash 0.5s ease-in-out infinite;
 }
 
 /* Smooth transition for horizontal progress bar fill */
@@ -184,11 +446,11 @@
   z-index: 50;
   display: grid;
   gap: 1rem;
-  background-color: var(--background, #ffffff);
-  border: 1px solid var(--border, #e5e7eb);
+  background-color: var(--surface-container-low, #f1f3fb);
+  border: none;
   padding: 1.5rem;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  border-radius: 0.5rem;
+  box-shadow: var(--shadow-soft-lg, 0 16px 64px rgba(4, 21, 52, 0.06));
+  border-radius: 1rem;
   max-width: 56rem;
   max-height: 90vh;
   overflow-y: auto;

@@ -28,7 +28,7 @@ function StatusBadge({ status }: { status: TimerPage["status"] }) {
     );
   }
   return (
-    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container text-muted-foreground">
       Draft
     </span>
   );
@@ -43,7 +43,7 @@ function TimerTypeBadge({ type }: { type: string }) {
   return (
     <span
       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-        colors[type] ?? "bg-gray-100 text-gray-700"
+        colors[type] ?? "bg-surface-container text-muted-foreground"
       }`}
     >
       {type}
@@ -83,7 +83,7 @@ export default function AdminTimerPagesPage() {
   if (auth_loading || loading) {
     return (
       <main className="p-8 min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </main>
     );
   }
@@ -95,8 +95,8 @@ export default function AdminTimerPagesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Timer Pages</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-headline font-black text-foreground">Timer Pages</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage SEO timer pages for organic search traffic.
           </p>
         </div>
@@ -111,8 +111,8 @@ export default function AdminTimerPagesPage() {
 
       {/* Table */}
       {pages.length === 0 ? (
-        <div className="bg-white rounded-xl border p-10 text-center">
-          <p className="text-gray-500 mb-4">No timer pages yet.</p>
+        <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-10 text-center">
+          <p className="text-muted-foreground mb-4">No timer pages yet.</p>
           <Link
             href="/admin/timer-pages/new"
             className="text-blue-600 hover:text-blue-800 font-medium no-underline"
@@ -121,23 +121,23 @@ export default function AdminTimerPagesPage() {
           </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border overflow-hidden">
+        <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Title</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Slug</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Timer Type</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Actions</th>
+                <tr className="border-b bg-surface-container-low">
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Title</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Slug</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Timer Type</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-surface-container">
                 {pages.map((page) => (
-                  <tr key={page.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 font-medium text-gray-900">{page.title}</td>
-                    <td className="px-4 py-3 text-gray-500 font-mono text-xs">/{page.slug}</td>
+                  <tr key={page.id} className="hover:bg-surface-container-low transition-colors">
+                    <td className="px-4 py-3 font-medium text-foreground">{page.title}</td>
+                    <td className="px-4 py-3 text-muted-foreground font-mono text-xs">/{page.slug}</td>
                     <td className="px-4 py-3">
                       <TimerTypeBadge type={page.timer_type} />
                     </td>
@@ -156,7 +156,7 @@ export default function AdminTimerPagesPage() {
                         <Link
                           href={`/${page.slug}`}
                           target="_blank"
-                          className="inline-flex items-center gap-1.5 text-gray-500 hover:text-gray-700 font-medium text-xs no-underline"
+                          className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground font-medium text-xs no-underline"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                           View

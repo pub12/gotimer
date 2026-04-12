@@ -30,10 +30,10 @@ export function TrashTalkBanner({ type }: TrashTalkBannerProps) {
 
   return (
     <div
-      className={`p-4 rounded-lg text-center text-sm md:text-base font-medium ${
+      className={`p-4 rounded-[0.75rem] shadow-[var(--shadow-soft)] text-center text-sm md:text-base font-medium ${
         type === "win"
-          ? "bg-primary/10 text-primary border border-primary/20"
-          : "bg-destructive/10 text-destructive border border-destructive/20"
+          ? "bg-accent/10 text-accent"
+          : "bg-destructive/10 text-destructive"
       }`}
     >
       &ldquo;{quote}&rdquo;

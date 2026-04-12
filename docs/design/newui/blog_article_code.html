@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#1b2a4a",
+                    "surface-container": "#e6eeff",
+                    "primary": "#041534",
+                    "on-surface-variant": "#45464e",
+                    "on-surface": "#0d1c2e",
+                    "on-secondary-container": "#651400",
+                    "background": "#f8f9ff",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#241a00",
+                    "on-tertiary-fixed-variant": "#594400",
+                    "outline": "#75777f",
+                    "surface-tint": "#4f5e81",
+                    "secondary": "#ab3514",
+                    "tertiary-fixed": "#ffdf91",
+                    "inverse-surface": "#233144",
+                    "outline-variant": "#c5c6cf",
+                    "on-tertiary-container": "#503d00",
+                    "tertiary-container": "#d3a500",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#ffdbd2",
+                    "tertiary-fixed-dim": "#f3c00a",
+                    "primary-fixed": "#d9e2ff",
+                    "on-secondary-fixed-variant": "#891e00",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "surface-variant": "#d5e3fc",
+                    "primary-fixed-dim": "#b7c6ee",
+                    "on-background": "#0d1c2e",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#755b00",
+                    "surface-dim": "#ccdbf3",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-container": "#fd6f4a",
+                    "on-secondary-fixed": "#3c0800",
+                    "inverse-primary": "#b7c6ee",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#0a1a3a",
+                    "on-primary-fixed-variant": "#384668",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#8392b7",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#ffb4a1",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-high": "#dce9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ease-out-quint { transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
+        .no-line-structure { border: none !important; }
+        .glass-nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopNavBar -->
+<nav class="sticky top-0 w-full z-50 bg-surface/80 glass-nav shadow-sm">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<a class="text-2xl font-black text-primary tracking-tighter font-headline" href="/">GoTimer.org</a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-on-surface hover:text-secondary font-medium transition-colors font-headline" href="#">Timers</a>
+<a class="text-on-surface hover:text-secondary font-medium transition-colors font-headline" href="#">Leaderboard</a>
+<a class="text-secondary font-bold border-b-2 border-secondary font-headline" href="#">Blog</a>
+<a class="text-on-surface hover:text-secondary font-medium transition-colors font-headline" href="#">Challenges</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 bg-secondary text-white font-bold rounded-full hover:scale-105 transition-transform duration-200 ease-out shadow-lg">Login</button>
+</div>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-12 relative">
+<!-- Center Column (720px focused) -->
+<div class="flex-1 max-w-[720px] mx-auto">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 mb-8 text-sm font-medium text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Blog</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Cooking</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-bold">Sourdough</span>
+</nav>
+<!-- Header Section -->
+<header class="mb-12">
+<h1 class="text-4xl md:text-5xl font-black font-headline tracking-tight mb-6 leading-tight">
+                    How Long to Proof Sourdough: The Ultimate Timing Guide
+                </h1>
+<div class="flex flex-wrap items-center gap-4 text-sm font-medium">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Author" data-alt="Portrait photo of a professional chef wearing white uniform in a bright modern kitchen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyXSaZ4vcgD1Gzy7aQRX4k5c2rg-qgr08cCZ2lUVFT1tG5KDWTUQabdpjpIsXc9wBRNfIATmxOg0ObbV9ZMSIKqVIIT-JrrpfOGaIfpbbirjI73_yiCVot-jMC1FMRf9eXY10CWaZiuOCQT8OS54tENww2zr2yncW7RpQDyIwcElEtuLaaZ3viGWt16udnhlivbd2BCFJz2LkN6NrMBNQ5FGfTqRGKD-ZbR5hKZt7Sjy9EsCHb02N28mt2LSR8bsR5rrMq7r2ghF0"/>
+</div>
+<span>By Alex Baker</span>
+</div>
+<span class="text-outline-variant">|</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+<span>May 14, 2024</span>
+</div>
+<span class="text-outline-variant">|</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">schedule</span>
+<span>12 min read</span>
+</div>
+<div class="px-3 py-1 bg-surface-container-highest text-primary font-bold rounded-full text-xs uppercase tracking-wider">Guide</div>
+</div>
+</header>
+<!-- Featured Image -->
+<div class="relative mb-12 rounded-xl overflow-hidden group">
+<img class="w-full aspect-[16/9] object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close-up of a rustic sourdough boule in a proofing basket dusted with flour, soft natural morning light from a window" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyEuMI5hQPrk0hD-SkEQekz5gwypycUJq6sIS35lZMmivo-lS-jGKBjhGxGw2MyXZSu6KJzrvT8vhtRbYM1qkTLR2JN2moHbGxFz4stKkJfxNmZx9cKmvFTCcy--ODzZ5JfDW95TUStvx_0RXJ-UVl0p4NTwlmnsWq14yBDl6ZykO0R06aKt2hPrnvdLnfm4oLydNJ__MCG9y-qqL7cwUrlC8AVZ3efE9mrkjNijhhsAq-67piakzhvNgNxM5p1qOLpTf_C8YQox8"/>
+<!-- Mascot Corner -->
+<div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur p-3 rounded-xl flex items-center gap-3 shadow-xl border border-white/20">
+<div class="w-12 h-12 bg-primary flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-white text-3xl">restaurant</span>
+</div>
+<div>
+<p class="text-[10px] font-bold text-secondary uppercase tracking-widest">Chef The Cook</p>
+<p class="text-xs font-semibold text-primary">"Patience is the main ingredient!"</p>
+</div>
+</div>
+</div>
+<!-- Article Body -->
+<article class="prose prose-slate max-w-none text-on-surface leading-[1.7] font-body space-y-8">
+<!-- Quick Answer Callout -->
+<div class="bg-surface-container-low p-8 rounded-xl border-l-4 border-secondary shadow-sm">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary text-3xl">lightbulb</span>
+<div>
+<h3 class="text-lg font-bold font-headline mb-2">Quick Answer</h3>
+<p class="text-on-surface-variant font-medium">For most recipes at room temperature (70°F/21°C), sourdough requires **4 to 6 hours for bulk fermentation** and **2 to 3 hours for final proofing**. For best flavor, a cold retard in the fridge for **12 to 24 hours** is recommended.</p>
+</div>
+</div>
+</div>
+<p class="text-lg text-on-surface-variant">Sourdough baking is a delicate dance between temperature, hydration, and time. Unlike commercial yeast, wild yeast operates on its own schedule. Understanding how to read your dough is more important than watching the clock, but having a baseline is essential for planning your day.</p>
+<h2 class="text-3xl font-black font-headline tracking-tight mt-12 mb-6 border-l-4 border-secondary pl-6" id="factors">Key Factors Affecting Proofing</h2>
+<p>The time your sourdough takes to proof isn't just about the recipe. Several environmental variables can speed up or slow down the process significantly.</p>
+<!-- Comparison Table -->
+<div class="overflow-hidden rounded-xl bg-surface-container-highest my-12">
+<table class="w-full text-left border-collapse">
+<thead class="bg-primary text-white">
+<tr>
+<th class="p-4 font-headline text-sm font-bold">Variable</th>
+<th class="p-4 font-headline text-sm font-bold">Fast Proofing</th>
+<th class="p-4 font-headline text-sm font-bold">Slow Proofing</th>
+</tr>
+</thead>
+<tbody class="text-sm font-medium">
+<tr class="border-b border-surface-container">
+<td class="p-4 text-primary font-bold">Temperature</td>
+<td class="p-4">Warm (78°F+)</td>
+<td class="p-4">Cool (65°F-)</td>
+</tr>
+<tr class="border-b border-surface-container">
+<td class="p-4 text-primary font-bold">Starter Strength</td>
+<td class="p-4">Active &amp; Peaked</td>
+<td class="p-4">Slugish/Unfed</td>
+</tr>
+<tr class="bg-white/30">
+<td class="p-4 text-primary font-bold">Hydration</td>
+<td class="p-4">High (80%+)</td>
+<td class="p-4">Low (65%-)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 class="text-3xl font-black font-headline tracking-tight mt-12 mb-6 border-l-4 border-secondary pl-6" id="steps">The Proofing Phases</h2>
+<!-- Step Cards -->
+<div class="grid gap-6 mt-8">
+<div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow flex gap-6 items-start">
+<div class="w-12 h-12 rounded-full bg-secondary text-white flex items-center justify-center font-black text-xl shrink-0">1</div>
+<div>
+<h4 class="text-xl font-bold font-headline mb-2 text-primary">Bulk Fermentation</h4>
+<p class="text-on-surface-variant">This is where the magic happens. The dough develops strength and volume. Look for bubbles on the surface and a 50-75% increase in size.</p>
+</div>
+</div>
+<div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow flex gap-6 items-start">
+<div class="w-12 h-12 rounded-full bg-secondary text-white flex items-center justify-center font-black text-xl shrink-0">2</div>
+<div>
+<h4 class="text-xl font-bold font-headline mb-2 text-primary">Bench Rest &amp; Shaping</h4>
+<p class="text-on-surface-variant">A 20-30 minute rest after pre-shaping allows the gluten to relax, making the final tight shaping much easier.</p>
+</div>
+</div>
+<div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow flex gap-6 items-start">
+<div class="w-12 h-12 rounded-full bg-secondary text-white flex items-center justify-center font-black text-xl shrink-0">3</div>
+<div>
+<h4 class="text-xl font-bold font-headline mb-2 text-primary">Final Proof</h4>
+<p class="text-on-surface-variant">The final rise in the banneton. This can be done at room temp (shorter) or in the fridge (longer and tastier).</p>
+</div>
+</div>
+</div>
+<!-- Pull Quote -->
+<div class="my-12 px-8 py-10 bg-secondary-fixed/30 rounded-2xl border-2 border-secondary/10 relative overflow-hidden">
+<span class="material-symbols-outlined absolute -top-4 -left-4 text-9xl text-secondary/5 pointer-events-none">format_quote</span>
+<p class="text-2xl font-black font-headline text-on-secondary-fixed leading-tight italic">
+                        "Your dough is a living thing. If it's cold, give it a sweater. If it's hot, give it some space. Time is just a suggestion; the dough tells the truth."
+                    </p>
+<div class="mt-4 text-secondary font-bold font-headline text-right">— Chef The Cook</div>
+</div>
+<h2 class="text-3xl font-black font-headline tracking-tight mt-12 mb-6 border-l-4 border-secondary pl-6" id="cold-retard">The Power of Cold Retard</h2>
+<p>Cold retarding is the process of putting your shaped dough in the refrigerator (usually 38°F / 3°C) for a long period. This slows down the yeast significantly but allows the bacteria to continue producing lactic and acetic acids.</p>
+<ul class="list-disc pl-6 space-y-2 text-on-surface-variant marker:text-secondary">
+<li><strong>Enhanced Flavor:</strong> Develops that characteristic "sour" tang.</li>
+<li><strong>Better Oven Spring:</strong> Cold dough hits the hot oven and creates more steam.</li>
+<li><strong>Easier Scoring:</strong> Cold dough is firmer and easier to cut decorative patterns into.</li>
+</ul>
+<!-- CTA Timer Card -->
+<div class="mt-16 p-8 rounded-3xl bg-primary text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-20 blur-3xl rounded-full translate-x-16 -translate-y-16"></div>
+<div class="relative z-10 text-center md:text-left">
+<h3 class="text-2xl md:text-3xl font-black font-headline mb-2">Master Your Proofing Time</h3>
+<p class="text-blue-200 font-medium mb-6">Set a precision timer with multi-stage alerts for bulk fermentation and final proof.</p>
+<button class="px-8 py-4 bg-secondary hover:bg-secondary-container text-white font-bold rounded-full text-lg shadow-xl hover:scale-105 transition-all flex items-center gap-2 mx-auto md:mx-0">
+<span class="material-symbols-outlined">timer</span>
+                            Start Sourdough Timer
+                        </button>
+</div>
+<div class="text-6xl md:text-8xl font-black font-headline text-secondary-fixed/20 select-none">
+                        04:00
+                    </div>
+</div>
+</article>
+<!-- FAQ Accordion -->
+<section class="mt-20">
+<h3 class="text-2xl font-black font-headline mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">help_center</span>
+                    Frequently Asked Questions
+                </h3>
+<div class="space-y-4">
+<div class="bg-surface-container-low rounded-xl p-6">
+<details class="group">
+<summary class="flex justify-between items-center font-bold text-lg list-none cursor-pointer">
+<span>Can I over-proof sourdough?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="mt-4 text-on-surface-variant leading-relaxed">Yes. Over-proofed dough becomes weak, sticky, and will collapse in the oven. It will have a very acidic smell and won't hold its shape when scored.</p>
+</details>
+</div>
+<div class="bg-surface-container-low rounded-xl p-6">
+<details class="group">
+<summary class="flex justify-between items-center font-bold text-lg list-none cursor-pointer">
+<span>How do I do the "Finger Poke Test"?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<p class="mt-4 text-on-surface-variant leading-relaxed">Gently poke the dough with a floured finger. If it springs back immediately, it's under-proofed. If it stays indented, it's over-proofed. If it springs back slowly and leaves a slight dimple, it's perfect.</p>
+</details>
+</div>
+</div>
+</section>
+<!-- Comments -->
+<section class="mt-20 border-t border-surface-container pt-12">
+<h3 class="text-2xl font-black font-headline mb-8">Comments (14)</h3>
+<div class="space-y-8">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest shrink-0"></div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-bold text-primary">Sarah Miller</span>
+<span class="text-xs text-outline-variant">2 days ago</span>
+</div>
+<p class="text-sm text-on-surface-variant">The cold retard tip was a game changer for me! My loaves are finally getting that ear I wanted.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest shrink-0"></div>
+<div class="w-full">
+<textarea class="w-full bg-surface-container-low border-none rounded-xl p-4 focus:ring-2 focus:ring-secondary text-sm" placeholder="Write a comment..."></textarea>
+<button class="mt-2 px-6 py-2 bg-primary text-white font-bold rounded-lg text-sm self-end">Post Comment</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sticky Sidebar (TOC) -->
+<aside class="hidden lg:block w-64 shrink-0">
+<div class="sticky top-32 space-y-8">
+<div>
+<h4 class="text-xs font-black font-headline uppercase tracking-widest text-secondary mb-4">On this page</h4>
+<ul class="space-y-3 text-sm font-semibold">
+<li><a class="text-primary hover:text-secondary border-l-2 border-secondary pl-4 transition-colors" href="#factors">Key Factors</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary pl-4 transition-colors" href="#steps">Proofing Phases</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary pl-4 transition-colors" href="#cold-retard">Cold Retard</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary pl-4 transition-colors" href="#">Common Problems</a></li>
+</ul>
+</div>
+<div class="bg-surface-container-highest p-6 rounded-2xl">
+<h4 class="font-bold font-headline text-primary mb-2">Join the Club</h4>
+<p class="text-xs text-on-surface-variant mb-4 leading-relaxed">Get the weekly "Precision Productivity" newsletter for bakers and makers.</p>
+<input class="w-full text-xs rounded-lg border-none bg-white mb-2 p-3" placeholder="Email address" type="email"/>
+<button class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg">Subscribe</button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Content: Related -->
+<section class="max-w-7xl mx-auto px-6 py-20 bg-surface-container-low">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+<!-- Related Timers -->
+<div>
+<h3 class="text-2xl font-black font-headline mb-8">Related Timers</h3>
+<div class="space-y-4">
+<div class="bg-white p-4 rounded-xl flex items-center justify-between shadow-sm hover:translate-x-2 transition-transform cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">timer</span>
+<div>
+<p class="font-bold text-primary">Sourdough Bulk Rise</p>
+<p class="text-xs text-on-surface-variant">Recommended: 4-6 hours</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<div class="bg-white p-4 rounded-xl flex items-center justify-between shadow-sm hover:translate-x-2 transition-transform cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">timer</span>
+<div>
+<p class="font-bold text-primary">Autolyse Rest</p>
+<p class="text-xs text-on-surface-variant">Recommended: 30-60 mins</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<div class="bg-white p-4 rounded-xl flex items-center justify-between shadow-sm hover:translate-x-2 transition-transform cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">timer</span>
+<div>
+<p class="font-bold text-primary">Pizza Dough Retard</p>
+<p class="text-xs text-on-surface-variant">Recommended: 24-48 hours</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Related Articles -->
+<div>
+<h3 class="text-2xl font-black font-headline mb-8">Related Articles</h3>
+<div class="space-y-4">
+<div class="bg-white p-4 rounded-xl flex gap-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-20 h-20 rounded-lg bg-surface-container overflow-hidden shrink-0">
+<img alt="Starter" data-alt="Glass jar of active bubbling sourdough starter with a rubber band marker on a wooden counter" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrSi-H1NYiGHl503OrbA9pa6MB25nlJRJ8MEl_8H2B-hMNODwZxf5FOmUeL-Jd5ceUjWczcNG14M96ZAKf3CLlZ_80c9fnvG3MHXrYOt7dItVQgLV6PVXcnqUtQ-n60zN9YgiEbE3DV0oC8RhFKrOAfdjYgZRQWLZ63kKs2HDeXZ6juXsy86pf_62x_kezWrU-XmIdV1APCmLCaSIlmGXEGDLxIg1V7r-qqtapZORgtmKDnibOdpQgSCvf2KRiJp2Iop3T-A5Eih8"/>
+</div>
+<div>
+<p class="font-bold text-primary mb-1">Maintaining Your Sourdough Starter</p>
+<p class="text-xs text-on-surface-variant line-clamp-2">Learn the best feeding ratios for a robust, active starter that rises predictably...</p>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl flex gap-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<div class="w-20 h-20 rounded-lg bg-surface-container overflow-hidden shrink-0">
+<img alt="Flour" data-alt="Various bowls of different artisanal flours like rye, whole wheat, and bread flour on a rustic table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF2QpudH7lemfHlXPjN2q7spUEawqsRMpDxpbpbokF6C0wvmmQ3XN3r50duAXR2Pa4aSyM00OMVOBYcTRjH6IwAoQWXD0FeeP7NUa92Y614jW8LP7XmSCWdXBRR72epUNl6mlIBHmYZ-MNW_tukrpi1OST9HVxb5UYeHbYXW0pfqQ97sTujORipe9zum147RyeV5f1Nfu2RUY6NznpSmRfGOG0PIcSUpIwPmx97MSnW-wmJi2M1KGWB68cTZuHevE6hM-iPG9sHCc"/>
+</div>
+<div>
+<p class="font-bold text-primary mb-1">Best Flours for Sourdough</p>
+<p class="text-xs text-on-surface-variant line-clamp-2">Does protein content really matter? We test 5 different bread flours for the perfect crumb.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full rounded-t-3xl mt-12 bg-primary text-white">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-12 py-16 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="text-xl font-bold text-white font-headline mb-4">GoTimer.org</div>
+<p class="text-sm text-slate-300 opacity-80 leading-relaxed">Precision timing for people who take their craft seriously. From baking to focus sessions.</p>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg mb-6 text-secondary">Explore</h4>
+<ul class="space-y-4 text-sm font-medium text-slate-300">
+<li><a class="hover:text-secondary transition-colors" href="#">Timers</a></li>
+<li><a class="hover:text-secondary transition-colors" href="#">Challenges</a></li>
+<li><a class="text-white underline" href="#">Blog</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg mb-6 text-secondary">Community</h4>
+<ul class="space-y-4 text-sm font-medium text-slate-300">
+<li><a class="hover:text-secondary transition-colors" href="#">Leaderboard</a></li>
+<li><a class="hover:text-secondary transition-colors" href="#">About</a></li>
+<li><a class="hover:text-secondary transition-colors" href="#">Login</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg mb-6 text-secondary">Connect</h4>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-secondary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white text-lg">share</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-secondary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white text-lg">mail</span>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-12 py-8 border-t border-white/10 text-center text-xs text-slate-400 font-medium tracking-wide">
+            © 2024 GoTimer.org - Precision Productivity
+        </div>
+</footer>
+</body></html>

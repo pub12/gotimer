@@ -31,21 +31,21 @@ export function ScoreDisplay({
           <img
             src={player1_picture}
             alt={player1_name}
-            className="w-12 h-12 rounded-full mx-auto mb-1 object-cover"
+            className="w-12 h-12 rounded-full mx-auto mb-1 object-cover shadow-[var(--shadow-soft)]"
             onError={(e) => {
               e.currentTarget.style.display = "none";
               e.currentTarget.nextElementSibling?.classList.remove("hidden");
             }}
           />
         ) : null}
-        <div className={`w-12 h-12 rounded-full mx-auto mb-1 bg-primary/20 flex items-center justify-center text-primary font-bold text-lg ${player1_picture ? "hidden" : ""}`}>
+        <div className={`w-12 h-12 rounded-full mx-auto mb-1 bg-surface-container flex items-center justify-center text-primary font-headline font-black text-lg shadow-[var(--shadow-soft)] ${player1_picture ? "hidden" : ""}`}>
           {player1_name.charAt(0).toUpperCase()}
         </div>
         <div className="text-sm md:text-base font-medium text-muted-foreground truncate">
           {player1_name}
         </div>
         <div
-          className={`text-3xl md:text-6xl font-bold mt-1 ${
+          className={`text-3xl md:text-6xl font-headline font-black mt-1 ${
             p1_winning ? "text-primary" : "text-foreground"
           }`}
         >
@@ -69,21 +69,21 @@ export function ScoreDisplay({
           <img
             src={player2_picture}
             alt={player2_name}
-            className="w-12 h-12 rounded-full mx-auto mb-1 object-cover"
+            className="w-12 h-12 rounded-full mx-auto mb-1 object-cover shadow-[var(--shadow-soft)]"
             onError={(e) => {
               e.currentTarget.style.display = "none";
               e.currentTarget.nextElementSibling?.classList.remove("hidden");
             }}
           />
         ) : null}
-        <div className={`w-12 h-12 rounded-full mx-auto mb-1 bg-muted flex items-center justify-center text-muted-foreground font-bold text-lg ${player2_picture ? "hidden" : ""}`}>
+        <div className={`w-12 h-12 rounded-full mx-auto mb-1 bg-surface-container-high flex items-center justify-center text-muted-foreground font-headline font-black text-lg shadow-[var(--shadow-soft)] ${player2_picture ? "hidden" : ""}`}>
           {player2_name.charAt(0).toUpperCase()}
         </div>
         <div className="text-sm md:text-base font-medium text-muted-foreground truncate">
           {player2_name}
         </div>
         <div
-          className={`text-3xl md:text-6xl font-bold mt-1 ${
+          className={`text-3xl md:text-6xl font-headline font-black mt-1 ${
             p2_winning ? "text-primary" : "text-foreground"
           }`}
         >

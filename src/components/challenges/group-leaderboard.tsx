@@ -27,11 +27,11 @@ export function GroupLeaderboard({
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b text-left text-muted-foreground">
-            <th className="pb-3 pr-4 font-medium">Rank</th>
-            <th className="pb-3 pr-4 font-medium">Player</th>
-            <th className="pb-3 pr-4 font-medium text-right">Score</th>
-            <th className="pb-3 font-medium text-right">Games Played</th>
+          <tr className="text-left text-muted-foreground bg-surface-container-highest">
+            <th className="py-3 pr-4 pl-3 font-medium rounded-l-[0.75rem]">Rank</th>
+            <th className="py-3 pr-4 font-medium">Player</th>
+            <th className="py-3 pr-4 font-medium text-right">Score</th>
+            <th className="py-3 pr-3 font-medium text-right rounded-r-[0.75rem]">Games Played</th>
           </tr>
         </thead>
         <tbody>
@@ -41,9 +41,9 @@ export function GroupLeaderboard({
             return (
               <tr
                 key={p.user_id}
-                className={`border-b last:border-0 ${is_me ? "bg-primary/5" : ""}`}
+                className={`${is_me ? "bg-primary/5" : "even:bg-surface-container-low"}`}
               >
-                <td className="py-3 pr-4 font-semibold text-muted-foreground">
+                <td className="py-3 pr-4 pl-3 font-headline font-black text-muted-foreground">
                   #{i + 1}
                 </td>
                 <td className="py-3 pr-4">
@@ -55,8 +55,8 @@ export function GroupLeaderboard({
                     <span className="ml-2 text-xs text-muted-foreground">creator</span>
                   )}
                 </td>
-                <td className="py-3 pr-4 text-right font-semibold">{p.score}</td>
-                <td className="py-3 text-right text-muted-foreground">{p.games_played}</td>
+                <td className="py-3 pr-4 text-right font-headline font-black">{p.score}</td>
+                <td className="py-3 pr-3 text-right text-muted-foreground">{p.games_played}</td>
               </tr>
             );
           })}

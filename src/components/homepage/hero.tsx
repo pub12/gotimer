@@ -2,7 +2,12 @@
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Play, Pause, Minus, Plus, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import Image from "next/image";
+import { Play, Pause, Minus, Plus, RotateCcw, Volume2, VolumeX, Maximize, Pencil } from "lucide-react";
+import { ProgressRing } from "@/components/ui/progress-ring";
+import { Button } from "@/components/ui/button";
+import TimerShell from "@/components/shared/timer-shell";
+
 
 const SUB_HEADLINES = [
   "25-minute Pomodoro? Done.",
@@ -17,12 +22,6 @@ const QUICK_PICKS = [
   { label: "Board Games", seconds: null, href: "/board-games" },
   { label: "Custom", seconds: null, href: "/countdown-setup" },
 ];
-
-// SVG ring constants
-const RING_SIZE = 240;
-const STROKE_WIDTH = 10;
-const RADIUS = 110;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 function format_time(total_seconds: number): string {
   const m = Math.floor(total_seconds / 60);
@@ -39,6 +38,12 @@ export default function Hero() {
   const [audio_enabled, set_audio_enabled] = useState(false);
   const audio_ctx_ref = useRef<AudioContext | null>(null);
   const prev_remaining = useRef(remaining);
+
+  // Reset when duration changes
+  useEffect(() => {
+    set_remaining(duration);
+    set_running(false);
+  }, [duration]);
 
   // Rotate sub-headlines
   useEffect(() => {
@@ -108,13 +113,6 @@ export default function Hero() {
     }
   };
 
-  const adjust_duration = (delta: number) => {
-    if (running) return;
-    const new_dur = Math.max(60, Math.min(3600, duration + delta));
-    set_duration(new_dur);
-    set_remaining(new_dur);
-  };
-
   const handle_start = () => {
     if (remaining === 0) {
       set_remaining(duration);
@@ -138,127 +136,79 @@ export default function Hero() {
   };
 
   const progress = duration > 0 ? remaining / duration : 0;
-  const dash_offset = CIRCUMFERENCE * (1 - progress);
+  const ringColor = running && remaining > 0 ? "#2ECC71" : "var(--secondary, #ab3514)";
+  const status_text = remaining === 0 ? "Time's up!" : running ? "Counting down..." : "Ready";
+
+  const btn_cls = (fs: boolean) =>
+    `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors cursor-pointer`;
+  const reset_cls = (fs: boolean) =>
+    `flex items-center justify-center gap-2 rounded-2xl ${fs ? "py-4 sm:py-5 px-6 text-lg" : "py-3 sm:py-4 px-5 text-base"} font-semibold transition-colors disabled:opacity-40 bg-surface-container-low text-foreground hover:bg-surface-container-high cursor-pointer disabled:cursor-not-allowed`;
 
   return (
-    <section className="w-full bg-[#1A1A2E] text-white py-12 md:py-20 px-4">
-      <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+    <section className="w-full bg-primary text-primary-foreground py-12 md:py-20 px-4">
+      <div className="relative max-w-5xl mx-auto flex flex-col items-center text-center">
+        {/* Mascot — absolute positioned on left, only md+ */}
+        <Image
+          src="/mascots/drake-timer.png"
+          alt="Drake the Explorer holding a stopwatch"
+          width={320}
+          height={320}
+          className="hidden md:block absolute -left-4 lg:-left-8 top-1/2 -translate-y-1/2 w-56 lg:w-72 xl:w-80 object-contain drop-shadow-lg pointer-events-none"
+          priority
+        />
+
         {/* Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 leading-tight">
+        <h1 className="font-headline font-black text-3xl sm:text-4xl md:text-6xl mb-4 leading-tight">
           Every Timer. Every Game.{" "}
-          <span className="text-[#FF6B35]">One Leaderboard.</span>
+          <span className="text-secondary">One Leaderboard.</span>
         </h1>
 
         {/* Rotating sub-headline */}
-        <p className="text-lg md:text-xl text-gray-300 mb-10 h-7 transition-opacity duration-500">
+        <p className="text-lg md:text-xl text-primary-foreground/70 mb-10 h-7 transition-opacity duration-500" aria-live="polite">
           {SUB_HEADLINES[sub_index]}
         </p>
 
-        {/* Timer widget */}
-        <div className="flex flex-col items-center gap-6 mb-8">
-          {/* Progress ring with time */}
-          <div className="relative w-56 h-56 md:w-64 md:h-64 flex items-center justify-center">
-            <svg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="w-full h-full -rotate-90">
-              <circle
-                cx={RING_SIZE / 2}
-                cy={RING_SIZE / 2}
-                r={RADIUS}
-                fill="none"
-                stroke="#2C3E50"
-                strokeWidth={STROKE_WIDTH}
-              />
-              <circle
-                cx={RING_SIZE / 2}
-                cy={RING_SIZE / 2}
-                r={RADIUS}
-                fill="none"
-                stroke={running && remaining > 0 ? "#2ECC71" : "#FF6B35"}
-                strokeWidth={STROKE_WIDTH}
-                strokeLinecap="round"
-                strokeDasharray={CIRCUMFERENCE}
-                strokeDashoffset={dash_offset}
-                style={{ transition: "stroke-dashoffset 0.3s ease" }}
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-5xl md:text-6xl font-bold font-mono tracking-wider">
-                {format_time(remaining)}
-              </span>
-              {remaining === 0 && (
-                <span className="text-[#FF6B35] text-sm font-semibold mt-1">Time&apos;s up!</span>
-              )}
-            </div>
-          </div>
-
-          {/* Duration adjust controls (only when not running) */}
-          {!running && remaining === duration && (
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => adjust_duration(-60)}
-                disabled={duration <= 60}
-                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors disabled:opacity-30"
-                aria-label="Decrease 1 minute"
-              >
-                <Minus className="w-6 h-6" />
-              </button>
-              <span className="text-lg font-medium text-gray-300 w-20 text-center">
-                {Math.floor(duration / 60)} min
-              </span>
-              <button
-                onClick={() => adjust_duration(60)}
-                disabled={duration >= 3600}
-                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors disabled:opacity-30"
-                aria-label="Increase 1 minute"
-              >
-                <Plus className="w-6 h-6" />
-              </button>
-            </div>
-          )}
-
-          {/* Start / Pause / Reset controls */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handle_start}
-              className="px-10 py-3.5 rounded-2xl bg-[#FF6B35] hover:bg-[#e85a28] text-white text-lg font-bold transition-colors flex items-center gap-2"
-            >
-              {running ? (
-                <>
-                  <Pause className="w-5 h-5" /> Pause
-                </>
-              ) : remaining === 0 ? (
-                <>
-                  <RotateCcw className="w-5 h-5" /> Restart
-                </>
-              ) : remaining < duration ? (
-                <>
-                  <Play className="w-5 h-5" /> Resume
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5" /> Start
-                </>
-              )}
-            </button>
-
-            {(running || remaining < duration) && remaining > 0 && (
-              <button
-                onClick={handle_reset}
-                className="px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-lg font-semibold transition-colors flex items-center gap-2"
-              >
-                <RotateCcw className="w-5 h-5" /> Reset
-              </button>
+        {/* Timer — centered */}
+        <div className="flex flex-col md:flex-row items-center gap-8 mb-8">
+          <TimerShell
+            timer_label="Countdown Timer"
+            status_text={status_text}
+            audio_enabled={audio_enabled}
+            on_toggle_audio={toggle_audio}
+            duration={{ value: duration, onChange: set_duration }}
+            defaults={{ duration: 300 }}
+            remaining={remaining}
+            running={running}
+            dark
+            controls={({ is_fullscreen: fs }) => (
+              <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
+                <button onClick={handle_start} className={btn_cls(fs)}>
+                  {running ? <><Pause className="w-5 h-5" /> Pause</> : remaining === 0 ? <><RotateCcw className="w-5 h-5" /> Restart</> : remaining < duration ? <><Play className="w-5 h-5" /> Resume</> : <><Play className="w-5 h-5" /> Start</>}
+                </button>
+                <button onClick={handle_reset} disabled={remaining === duration && !running} className={reset_cls(fs)}>
+                  <RotateCcw className="w-5 h-5" /> Reset
+                </button>
+              </div>
             )}
-
-            <button
-              onClick={toggle_audio}
-              aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
-              className={`p-3 rounded-full transition-colors ${
-                audio_enabled ? "bg-[#FF6B35]/20 text-[#FF6B35]" : "bg-white/10 text-gray-400 hover:text-white"
-              }`}
-            >
-              {audio_enabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-            </button>
-          </div>
+          >
+            {() => (
+              <ProgressRing
+                progress={progress}
+                size="lg"
+                color={ringColor}
+                trackColor="rgba(255,255,255,0.15)"
+              >
+                <div className="flex flex-col items-center justify-center">
+                  <span className="text-5xl md:text-6xl font-bold font-mono tracking-wider text-primary-foreground">
+                    {format_time(remaining)}
+                  </span>
+                  {remaining === 0 && (
+                    <span className="text-secondary text-sm font-semibold mt-1">Time&apos;s up!</span>
+                  )}
+                </div>
+              </ProgressRing>
+            )}
+          </TimerShell>
         </div>
 
         {/* Quick-pick buttons */}
@@ -267,7 +217,7 @@ export default function Hero() {
             <button
               key={pick.label}
               onClick={() => handle_quick_pick(pick)}
-              className="px-5 py-2.5 rounded-full border border-[#FF6B35]/40 text-[#FF6B35] hover:bg-[#FF6B35] hover:text-white text-sm font-medium transition-colors"
+              className="px-5 py-2.5 rounded-full bg-secondary/10 text-secondary hover:bg-secondary hover:text-secondary-foreground text-sm font-medium transition-all duration-200 ease-out hover:scale-105 cursor-pointer"
             >
               {pick.label}
             </button>

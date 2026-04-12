@@ -1,64 +1,71 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Trophy, Swords, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function LeaderboardTeaser() {
   return (
-    <section className="w-full py-12 md:py-16 px-4 bg-white">
+    <section className="w-full py-12 md:py-16 px-4 bg-surface-container-low">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 bg-[#FFA500]/10 text-[#FFA500] rounded-full px-4 py-1.5 text-sm font-semibold mb-6">
+        <div className="inline-flex items-center gap-2 bg-accent/10 text-accent rounded-full px-4 py-1.5 text-sm font-semibold mb-6">
           <Trophy className="w-4 h-4" />
           Leaderboards &amp; Challenges
         </div>
 
-        <h2 className="text-2xl md:text-4xl font-bold text-[#1A1A2E] mb-4">
+        <Image
+          src="/mascots/scout-victory.png"
+          alt="Scout celebrating with a trophy"
+          width={110}
+          height={110}
+          className="w-24 h-24 md:w-28 md:h-28 object-contain mx-auto mb-4"
+        />
+        <h2 className="font-headline font-black text-2xl md:text-4xl text-foreground mb-4">
           Challenge Your Friends. Climb the Leaderboard.
         </h2>
-        <p className="text-[#2C3E50]/70 max-w-2xl mx-auto mb-10">
+        <p className="text-muted-foreground max-w-2xl mx-auto mb-10">
           Create head-to-head challenges for any game, track wins and losses over time,
           and see who really deserves bragging rights.
         </p>
 
         {/* Challenge preview card */}
-        <div className="bg-[#1A1A2E] rounded-2xl p-6 md:p-8 max-w-lg mx-auto mb-10 text-left">
+        <div className="bg-primary rounded-[1rem] p-6 md:p-8 max-w-lg mx-auto mb-10 text-left shadow-[var(--shadow-soft-lg)]">
           <div className="flex items-center gap-3 mb-4">
-            <Swords className="w-5 h-5 text-[#FFA500]" />
-            <span className="text-white font-semibold">Sample Challenge</span>
+            <Swords className="w-5 h-5 text-accent" />
+            <span className="text-primary-foreground font-headline font-semibold">Sample Challenge</span>
           </div>
           <div className="flex items-center justify-between mb-4">
             <div className="text-center flex-1">
-              <div className="text-3xl font-bold text-white font-mono">7</div>
-              <div className="text-xs text-gray-400 mt-1">Player 1</div>
+              <div className="text-3xl font-headline font-black text-primary-foreground font-mono">7</div>
+              <div className="text-xs text-primary-foreground/50 mt-1">Player 1</div>
             </div>
-            <div className="text-gray-500 text-sm font-medium px-3">vs</div>
+            <div className="text-primary-foreground/40 text-sm font-medium px-3">vs</div>
             <div className="text-center flex-1">
-              <div className="text-3xl font-bold text-white font-mono">5</div>
-              <div className="text-xs text-gray-400 mt-1">Player 2</div>
+              <div className="text-3xl font-headline font-black text-primary-foreground font-mono">5</div>
+              <div className="text-xs text-primary-foreground/50 mt-1">Player 2</div>
             </div>
           </div>
-          <div className="w-full bg-gray-700 rounded-full h-2 mb-2">
+          <div className="w-full bg-primary-foreground/10 rounded-full h-2 mb-2">
             <div
-              className="bg-[#FFA500] h-2 rounded-full"
+              className="bg-accent h-2 rounded-full"
               style={{ width: "58%" }}
             />
           </div>
-          <p className="text-xs text-gray-500">12 games played</p>
+          <p className="text-xs text-primary-foreground/40">12 games played</p>
         </div>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/challenges/create"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-[#FF6B35] hover:bg-[#e85a28] text-white text-lg font-bold transition-colors no-underline"
-          >
-            Start a Challenge <ArrowRight className="w-5 h-5" />
-          </Link>
-          <Link
-            href="/public-challenges"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl border-2 border-[#FF6B35] text-[#FF6B35] hover:bg-[#FF6B35] hover:text-white text-lg font-semibold transition-colors no-underline"
-          >
-            View Leaderboard
-          </Link>
+          <Button variant="secondary" size="lg" asChild>
+            <Link href="/challenges/create" className="text-lg font-bold px-8 py-3.5 no-underline">
+              Start a Challenge <ArrowRight className="w-5 h-5" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" asChild>
+            <Link href="/public-challenges" className="text-lg font-semibold px-8 py-3.5 no-underline">
+              View Leaderboard
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

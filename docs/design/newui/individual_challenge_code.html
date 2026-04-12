@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(248, 249, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+            color: #0d1c2e;
+        }
+        h1, h2, h3, .headline-lg {
+            font-family: 'Lexend', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c5c6cf",
+                        "on-tertiary-container": "#503d00",
+                        "surface-container-highest": "#d5e3fc",
+                        "surface-container": "#e6eeff",
+                        "on-primary-fixed": "#0a1a3a",
+                        "secondary-fixed": "#ffdbd2",
+                        "primary-fixed": "#d9e2ff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "outline": "#75777f",
+                        "on-secondary-fixed": "#3c0800",
+                        "on-surface-variant": "#45464e",
+                        "on-background": "#0d1c2e",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "on-secondary-container": "#651400",
+                        "primary-fixed-dim": "#b7c6ee",
+                        "on-primary-container": "#8392b7",
+                        "on-secondary-fixed-variant": "#891e00",
+                        "tertiary-container": "#d3a500",
+                        "surface-dim": "#ccdbf3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#233144",
+                        "surface-variant": "#d5e3fc",
+                        "secondary-fixed-dim": "#ffb4a1",
+                        "inverse-primary": "#b7c6ee",
+                        "tertiary-fixed": "#ffdf91",
+                        "surface-tint": "#4f5e81",
+                        "primary": "#041534",
+                        "tertiary-fixed-dim": "#f3c00a",
+                        "primary-container": "#1b2a4a",
+                        "on-primary-fixed-variant": "#384668",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#0d1c2e",
+                        "surface-container-high": "#dce9ff",
+                        "secondary": "#ab3514",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary": "#755b00",
+                        "secondary-container": "#fd6f4a",
+                        "inverse-on-surface": "#eaf1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface selection:bg-secondary/30">
+<!-- TopNavBar -->
+<nav class="bg-[#f8f9ff]/80 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-[0_16px_48px_-12px_rgba(13,28,46,0.06)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="hover:scale-105 transition-all duration-200 ease-out active:scale-95 text-primary flex items-center justify-center h-10 w-10 bg-surface-container rounded-full">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="font-['Lexend'] tracking-tighter headline-lg text-2xl font-black italic text-primary">March Madness</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-primary hover:scale-105 transition-all p-2">leaderboard</button>
+<button class="material-symbols-outlined text-primary hover:scale-105 transition-all p-2">notifications</button>
+<div class="h-10 w-10 rounded-full bg-surface-container-highest overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="professional portrait of a young man with a slight smile and confident expression in soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAADsxEJ8HbqvLV3KzYORtEcrrXMVYtwWmgTsp0orBFaNC66-osfapH2uLFDVRQXrhtQiCKV1DkVUKSNO81ywNhcN4pGyKPxxGQjezSq7UhgpLo56_b5MeQWeMJ04jJoVLa3aGkDcT0Hdlmkho9bUsR7_s6CcdV59xK_EDjSL4NfX6rxhRQLYZTKHIBUlTZ24UFBqKw9hjIAhTf_w61HceGI3kThHQiebPhpYyZ9ph4YF3WQE8WxmRZtHida17IvkoiP4_u4pegMNg"/>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-screen-2xl mx-auto px-6 py-8 space-y-12">
+<!-- Hero Section: Head-to-Head -->
+<section class="relative overflow-hidden rounded-[2.5rem] bg-primary-container text-white p-8 md:p-16 shadow-2xl">
+<!-- Background Giphy Style Image -->
+<div class="absolute inset-0 z-0 opacity-20">
+<img class="w-full h-full object-cover" data-alt="dynamic abstract background with floating particles, neon trails, and high energy cinematic lighting in deep blue and orange" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJWpb1e_i_fP-G_oRtPIVJ36a_SAUufVMj5WHCuPPWvE3gJT3uzOv7ggYPcvxLwd2nJiUBMW8lS_6sUCJ2ISU258EwpSfnh9tlkp5S5h3Lumukwtgj1QP__CTQYUb2_68lGui1ZyasycNrJdemFu0pcFeC6A6arS1_LHCpGkv-nUhe8Wh8Tsmakqp696S_ZtyN1h3BdNqxXWyDRgIFpatO1SDTXr7TwdZzLQLBPOBG2BMLETX4-QRLwSBmoscxgvN1DsmGneaKTMI"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent z-10"></div>
+<div class="relative z-20 flex flex-col md:flex-row items-center justify-between gap-12">
+<!-- Competitor 1 -->
+<div class="flex flex-col items-center gap-4 text-center">
+<div class="relative">
+<div class="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-secondary-container p-1 bg-surface-container-low shadow-lg">
+<img class="w-full h-full rounded-full object-cover" data-alt="close-up portrait of user mascot smiling confidently with warm cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQcaqMZL6pb4_05a3c3Z3WG2eWtpQScK_kGCrbhWWVNl189ChRsnisdSj9ieU8ZLYlnaFfnbptKydAB5SRZ2ztmCKZ_Xxqc_sSN-vhkYPI7ge8t_3_K5hl6PK3kLfD0Yg9o9sewgRm2rhijB0cwf0UmX5B79e8f-BI-v3PUPvy4U8fq7C6Vp6_FQieKROb7q2qQxrRwHs_UaL8WyI-wGugq_6eAHpZWOONlSVGx6l5ix8I7Z7jVO5DQihQ5TgHcuR_dqVft8-8TAM"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-secondary text-white px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">P1</div>
+</div>
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight">Meme Master</h3>
+<p class="text-on-primary-container/80 text-sm font-body">Rank: Kinetic Legend</p>
+</div>
+</div>
+<!-- Score & GIF -->
+<div class="flex flex-col items-center gap-6">
+<div class="flex items-center gap-8 md:gap-16">
+<span class="font-headline text-7xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">17</span>
+<div class="flex flex-col items-center">
+<span class="font-headline text-2xl font-bold text-secondary-container">VS</span>
+<div class="h-16 w-[2px] bg-gradient-to-b from-transparent via-secondary-container to-transparent opacity-50"></div>
+</div>
+<span class="font-headline text-7xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">19</span>
+</div>
+<!-- Featured GIF Display -->
+<div class="w-64 h-48 rounded-2xl overflow-hidden border-4 border-white/10 shadow-inner group relative">
+<img class="w-full h-full object-cover" data-alt="energetic celebration gif showing a person dancing excitedly under bright concert lights and strobe effects" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJcM17sX7_e7gGfe2KHspW9EzYiXN323yq6gVnta7k8VAuYrKq2yAtgB3exDfwTumdTzv8ue4otcOZ5corQLhDTPbBILtvLzKo5VPekrMceb9j3TYpgPsdHbi61I9Wn6Q9D-rHGtoIokTHayO3D-QfQdoMjS-dwz4J4HkloQg8ROnRAbZ5K21YnLwcsL7rf0cyGXRTuik2KmYrsS9yHkJ1-UFXKqiKHKhOyYim3c_tyFEZQ9rU101UNRztFcfjrO8FEIQxvWaOc-4"/>
+<div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-4xl">play_circle</span>
+</div>
+</div>
+</div>
+<!-- Competitor 2 -->
+<div class="flex flex-col items-center gap-4 text-center">
+<div class="relative">
+<div class="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-tertiary-container p-1 bg-surface-container-low shadow-lg">
+<img class="w-full h-full rounded-full object-cover" data-alt="vibrant portrait of a female competitor with determined expression in high-contrast professional studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr-RnVVWhl-6hyvqwiFkuonvExdHHgZwnj6YbE2FIqV4YpWqc2PTmIrYFxPKOTuxm2whEKcxb2zu_xouYGN1SLEMP1FQ9zSpdRRVESPtFkIeb49_EwbNVBSv2JP7Ka_PFLjUEYDSqwzDbiRHk8F2Tk8w1CvA8V9nq25GztoSRt7_nvR3E6tshLvavnUrjKiBLo8mYLIPvzQJeqVnqPBNnPL1RFiM4v68gxvIzrU81yexuGMAKbiPvuN-TBEPYrK8LyEnzG_IhAZDU"/>
+</div>
+<div class="absolute -bottom-2 -left-2 bg-tertiary-container text-on-tertiary-container px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">P2</div>
+</div>
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight">The Gifter</h3>
+<p class="text-on-primary-container/80 text-sm font-body">Rank: Vibe Shifter</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Primary Action -->
+<div class="flex justify-center -mt-20 relative z-30">
+<button class="bg-gradient-to-r from-secondary to-secondary-container text-white px-12 py-6 rounded-full font-headline font-black text-xl tracking-tighter shadow-[0_20px_40px_rgba(171,53,20,0.3)] hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+                ADD GAME RESULT
+            </button>
+</div>
+<!-- Bento Layout: Stats & History -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Game History Chart -->
+<div class="lg:col-span-2 bg-surface-container-low rounded-[2rem] p-8 space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline text-2xl font-black text-primary">Score Progression</h2>
+<p class="text-on-surface-variant font-body">March Season Trends</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-xs font-bold font-label uppercase tracking-widest text-on-surface-variant">P1</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-tertiary-container"></span>
+<span class="text-xs font-bold font-label uppercase tracking-widest text-on-surface-variant">P2</span>
+</div>
+</div>
+</div>
+<!-- Mockup Line Chart -->
+<div class="h-64 relative mt-4">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 400 100">
+<!-- P1 Line -->
+<path d="M0,80 Q50,70 100,50 T200,60 T300,40 T400,30" fill="none" stroke="#ab3514" stroke-linecap="round" stroke-width="4"></path>
+<!-- P2 Line -->
+<path d="M0,90 Q50,85 100,70 T200,40 T300,35 T400,20" fill="none" stroke="#d3a500" stroke-linecap="round" stroke-width="4"></path>
+<!-- Reference Points -->
+<circle cx="400" cy="30" fill="#ab3514" r="6"></circle>
+<circle cx="400" cy="20" fill="#d3a500" r="6"></circle>
+</svg>
+<!-- Grid Lines Mockup -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-5 pointer-events-none">
+<div class="border-t border-primary w-full"></div>
+<div class="border-t border-primary w-full"></div>
+<div class="border-t border-primary w-full"></div>
+<div class="border-t border-primary w-full"></div>
+</div>
+</div>
+</div>
+<!-- Side Stats Card -->
+<div class="bg-surface-container-highest rounded-[2rem] p-8 space-y-8 flex flex-col justify-center">
+<div class="space-y-2">
+<span class="text-xs font-black tracking-widest uppercase text-primary/40">Win Rate</span>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-headline font-black text-secondary">52%</span>
+<span class="text-sm font-body text-on-surface-variant">Avg Performance</span>
+</div>
+</div>
+<div class="space-y-2">
+<span class="text-xs font-black tracking-widest uppercase text-primary/40">Longest Streak</span>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-headline font-black text-tertiary-container">8</span>
+<span class="text-sm font-body text-on-surface-variant">Games Won</span>
+</div>
+</div>
+<div class="pt-4 border-t border-primary/5">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-surface shadow-md" data-alt="close-up of a smiling man's face in warm natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmt6SEOOdrUqFobEvAVcaId-xsT7k4Ji97UEjnI_FAtPsYpKsqDt9IUuP1DTnLSKk5K8-bYKMkcpJ-UQSMkALlNU981xbYhaDalptYgU0dGa_rciA9zJT423SlH-IGvVngms9VCXQeCmqkotpFvXLfmcnA9f9f_Tr8Ibr7e6meG1Rf4PJUeHkoKjP5DLR998uwWIYI7hLpQf6x6Fp-hNRqLS46BAiYTCHT3eXYBZMGNYj8vFz6iBcEa8aKeKocwUj2C99IhVM7P8k"/>
+<img class="w-10 h-10 rounded-full border-2 border-surface shadow-md" data-alt="professional portrait of a person looking forward in cool office lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArcLBAbMq49ejV-rctIPPtq2NP_mFkoxz6rYGz0zWKW6HV49xRitrPFwRuOJQYSwNf7eeA7c8KZ8hIHiY7gqDDXYn1iiX-Mn2ZUfXd68TfAivE63oTdFKa9We_VBAlOoDXnXwJPgJKCnZWPUYtnkIi9_6pklUwTiu0T5tT1VvZnNQyTKVgms1xE9BLYcB3pZJpRN4tsJg-x5f2KAftWxiXyo96l5JAvK7AsQ2wQUo_ArVPi2zyJ-e7fpPU25M79hH2KtAh3C3LQrs"/>
+<img class="w-10 h-10 rounded-full border-2 border-surface shadow-md" data-alt="softly lit portrait of a woman with a gentle expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLYRID_KpZRKSISdaylLCkcodYxx8sV7DnAReiQ5Vfl0Lg8W6cZyqQxqFkobwXrXMv1qtWnBlRDp6iPR8LJpD00e1O1VsZlERMcOfywy5vq3ryEwWSV8ewkD-9fM9TmBu9DJnSegHZsg6ql4fxM80qNjmJ-9ts-YbDgabLBX5NQbK5TO-YsU-lmKFnkuErFN0IyvSXL6j1Wnn_XzbejTESDhMCuymB21kb-VlLZ0qg4uUgaD9bfW8vfJS70bLOYn2sLvD41ahrfhE"/>
+<div class="w-10 h-10 rounded-full bg-primary-container text-white flex items-center justify-center text-[10px] font-bold border-2 border-surface shadow-md">+12</div>
+</div>
+<p class="mt-4 text-sm font-medium text-primary">Spectators following this match</p>
+</div>
+</div>
+<!-- Game History Feed -->
+<div class="lg:col-span-3 space-y-8">
+<div class="flex items-center gap-4">
+<h2 class="font-headline text-3xl font-black text-primary italic">GAME HISTORY</h2>
+<div class="h-[2px] flex-1 bg-surface-container-highest"></div>
+</div>
+<div class="space-y-6">
+<!-- Feed Item 1 -->
+<div class="bg-surface-container-low p-6 rounded-3xl flex flex-col md:flex-row gap-8 items-start md:items-center hover:scale-[1.01] transition-transform duration-200 cursor-pointer">
+<div class="w-20 font-headline font-black text-primary-container text-center flex flex-col items-center">
+<span class="text-xs uppercase tracking-tighter opacity-50">MAR</span>
+<span class="text-4xl leading-none">12</span>
+</div>
+<div class="flex-1 flex items-center gap-6">
+<div class="h-16 w-16 rounded-2xl overflow-hidden shadow-lg border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="winner avatar photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDncJE5d0raf0kzYAhx-ZHQBLWRjOYZF8p3FHCz0iV4rmBeW7ee1cN3siUx0W2sEeHae9SBLBugL3sQYgU9nPhAOV8KY-rbXWU-Fsapl7-CVMvCAjTMymyl_Hxo1OUpWOnBJpl793T5kH_rZqVFLEGIJAcU8igdLIWNYIcstDiYxEdAvRh3V0BIWuexjhuh1Q4lbPxbxWVmY4riNXup93W4D77KFO1q2EM0VhQKei5m6R8LVRiigFlI0uAvk7EkqrEGcrow2H1g_VQ"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-primary">Meme Master destroyed The Gifter</h4>
+<p class="text-sm font-body text-on-surface-variant italic">"Not today, satan! 👋"</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-48 h-28 rounded-xl overflow-hidden bg-black shadow-xl group relative">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Taylor Swift 'L' gesture gif representation with dramatic pop aesthetic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4qXZ9MyQxH5aqAFt_zO9dn6QWgeuKnrJgeVTm8E1eLB0YnERf1U-zUpyKeYHbwtyxhZW_0VYenB09hZB5TYkek1AnltSAAlHMuuAh3UTehLc1GzlSYy8R-MyY09aVW_jXMQfjv2w36doH2da5PsdOWdJ2u6xYQvZSY18cdpe4fg4KwKO3xUVT5A4sWEXIu9-HeeLt5t0mQ6aj2M8OJdXzq9ml5V59mCy1f15dIuvwmyV7prnmLGth6-ASJQjhtUn0HalMWy0FQvM"/>
+<div class="absolute bottom-2 left-2 bg-black/60 px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-widest">Taylor L</div>
+</div>
+<div class="h-12 w-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+</div>
+</div>
+<!-- Feed Item 2 -->
+<div class="bg-surface-container-low p-6 rounded-3xl flex flex-col md:flex-row gap-8 items-start md:items-center hover:scale-[1.01] transition-transform duration-200 cursor-pointer">
+<div class="w-20 font-headline font-black text-primary-container text-center flex flex-col items-center">
+<span class="text-xs uppercase tracking-tighter opacity-50">MAR</span>
+<span class="text-4xl leading-none">11</span>
+</div>
+<div class="flex-1 flex items-center gap-6">
+<div class="h-16 w-16 rounded-2xl overflow-hidden shadow-lg border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="winner avatar photo female" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSomjG1TaJTebbtswMQSo7CoAP8mYcmWEOSpADGHM6CDfV0lH32OZd9n5S760L7yorQgr1RPo1z05dtPuVYBTSNslng8eLP4rpVppI7W6DKGnyOLgYn20c3DDg4cum1udtVnsCMDW4JNskLiUIGJwg40zEl0GF_zLvDw5Xx5RtaCwVExc8L1aY53LLIsEJx_cZ1nt4H5Yawpvo8gbEYDLUBbbJ6ATbCPRpcoETzC-iYcgSwQ-GjLsZpuKnACsVOqpDEhj4oZQ7lWU"/>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg text-primary">The Gifter secured a flawless victory</h4>
+<p class="text-sm font-body text-on-surface-variant italic">"Who da man? I da man! 🏆"</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-48 h-28 rounded-xl overflow-hidden bg-black shadow-xl group relative">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="energetic 'Who da man' gif representation with celebratory crowd and bright flash lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq_AX9JLH4AHNmVqeLFbhSPv0Key_x6P4UkhpIJUTl64LKoxVxkici6qoDcMorNt5VrkuX8Xq9N-WAd27czqTZIiwwfXh2NXXFB1RH_POuvtn-n9Vvv0QFDcXHc4tIdnDnp9ZnOTYZbfFueljThAS4qLhQ8uURuXuca7BK2DRT6qRxEEggqmK_Q-MfjAk16H-Wns9Y3YeYZJ2jaeh560IWNiutvMKYYM3ReOp9iA1je5eKq51nFBXAY7vZc46dNd__4BvP5ETEU6Q"/>
+<div class="absolute bottom-2 left-2 bg-black/60 px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-widest">Who da man</div>
+</div>
+<div class="h-12 w-12 rounded-full bg-tertiary-container/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-6 pb-8 pt-4 bg-[#f8f9ff]/80 dark:bg-[#041534]/90 backdrop-blur-2xl z-50 border-t border-[#0d1c2e]/5">
+<div class="flex flex-col items-center justify-center text-[#041534] opacity-60 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="font-['Lexend'] text-[10px] uppercase font-bold tracking-widest mt-1">Play</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#ef6c00] text-white rounded-full h-14 w-14 -mt-6 shadow-[0_0_20px_rgba(239,108,0,0.4)] active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+<span class="font-['Lexend'] text-[10px] uppercase font-bold tracking-widest sr-only">Rank</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#041534] opacity-60 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined">gif_box</span>
+<span class="font-['Lexend'] text-[10px] uppercase font-bold tracking-widest mt-1">Memes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#041534] opacity-60 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined">group</span>
+<span class="font-['Lexend'] text-[10px] uppercase font-bold tracking-widest mt-1">Social</span>
+</div>
+</nav>
+<!-- Bottom Padding for Nav -->
+<div class="h-32"></div>
+</body></html>

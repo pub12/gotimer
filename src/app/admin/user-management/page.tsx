@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/navbar";
 import { use_hazo_auth } from "hazo_auth/client";
 import { UserManagementLayout } from "hazo_auth/components/layouts/user_management";
 
@@ -22,8 +21,7 @@ export default function AdminUserManagementPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <Navbar />
+      <main className="p-8">
         <p className="text-muted-foreground">Loading...</p>
       </main>
     );
@@ -32,11 +30,8 @@ export default function AdminUserManagementPage() {
   if (!authenticated || !permission_ok) return null;
 
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
-      <Navbar />
-      <div className="w-full max-w-6xl mx-auto">
-        <UserManagementLayout />
-      </div>
+    <main className="p-8 max-w-6xl">
+      <UserManagementLayout />
     </main>
   );
 }

@@ -45,25 +45,26 @@ export function OverallHistogram({ challenges }: OverallHistogramProps) {
           <YAxis allowDecimals={false} fontSize={12} />
           <Tooltip
             contentStyle={{
-              background: "var(--card)",
-              border: "1px solid var(--border)",
-              borderRadius: "8px",
+              background: "var(--surface-container-highest)",
+              border: "none",
+              borderRadius: "0.75rem",
+              boxShadow: "var(--shadow-soft)",
             }}
           />
           <Legend />
           <Bar
             dataKey="My Wins"
-            fill="oklch(0.82 0.17 85)"
+            fill="var(--chart-1)"
             radius={[4, 4, 0, 0]}
           />
           <Bar
             dataKey="Opponent Wins"
-            fill="oklch(0.5 0.02 260)"
+            fill="var(--chart-2)"
             radius={[4, 4, 0, 0]}
           />
           <Bar
             dataKey="Draws"
-            fill="oklch(0.7 0.02 85)"
+            fill="var(--chart-3)"
             radius={[4, 4, 0, 0]}
           />
         </BarChart>

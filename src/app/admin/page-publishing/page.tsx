@@ -36,7 +36,7 @@ function StatusBadge({ status }: { status: TimerPage["status"] }) {
     );
   }
   return (
-    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container text-muted-foreground">
       Draft
     </span>
   );
@@ -145,7 +145,7 @@ export default function AdminPagePublishingPage() {
   if (auth_loading || loading) {
     return (
       <main className="p-8 min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </main>
     );
   }
@@ -161,8 +161,8 @@ export default function AdminPagePublishingPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Page Publishing</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-headline font-black text-foreground">Page Publishing</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage the publish status of all timer pages.
           </p>
         </div>
@@ -191,47 +191,47 @@ export default function AdminPagePublishingPage() {
 
       {/* Table */}
       {pages.length === 0 ? (
-        <div className="bg-white rounded-xl border p-10 text-center">
-          <p className="text-gray-500">No timer pages found.</p>
+        <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-10 text-center">
+          <p className="text-muted-foreground">No timer pages found.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border overflow-hidden">
+        <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b bg-gray-50">
+                <tr className="border-b bg-surface-container-low">
                   <th className="px-4 py-3 text-left w-10">
                     <input
                       type="checkbox"
                       checked={selected.size === pages.length && pages.length > 0}
                       onChange={toggle_all}
-                      className="rounded border-gray-300 cursor-pointer"
+                      className="rounded border-surface-container cursor-pointer"
                     />
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                     Title
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                     Slug
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                     Status
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                     Days in state
                   </th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">
+                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-surface-container">
                 {pages.map((page) => {
                   const busy = action_loading.has(page.id);
                   return (
                     <React.Fragment key={page.id}>
                       <tr
-                        className={`hover:bg-gray-50 transition-colors ${
+                        className={`hover:bg-surface-container-low transition-colors ${
                           selected.has(page.id) ? "bg-blue-50" : ""
                         }`}
                       >
@@ -240,19 +240,19 @@ export default function AdminPagePublishingPage() {
                             type="checkbox"
                             checked={selected.has(page.id)}
                             onChange={() => toggle_select(page.id)}
-                            className="rounded border-gray-300 cursor-pointer"
+                            className="rounded border-surface-container cursor-pointer"
                           />
                         </td>
-                        <td className="px-4 py-3 font-medium text-gray-900">
+                        <td className="px-4 py-3 font-medium text-foreground">
                           {page.title}
                         </td>
-                        <td className="px-4 py-3 text-gray-500 font-mono text-xs">
+                        <td className="px-4 py-3 text-muted-foreground font-mono text-xs">
                           /{page.slug}
                         </td>
                         <td className="px-4 py-3">
                           <StatusBadge status={page.status} />
                         </td>
-                        <td className="px-4 py-3 text-gray-500">
+                        <td className="px-4 py-3 text-muted-foreground">
                           {days_in_state(page)}d
                         </td>
                         <td className="px-4 py-3">
@@ -272,7 +272,7 @@ export default function AdminPagePublishingPage() {
                                 variant="outline"
                                 disabled={busy}
                                 onClick={() => unpublish_page(page.id)}
-                                className="h-7 px-3 text-xs text-gray-600"
+                                className="h-7 px-3 text-xs text-muted-foreground"
                               >
                                 {busy ? "..." : "Unpublish"}
                               </Button>

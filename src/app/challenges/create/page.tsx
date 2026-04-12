@@ -4,6 +4,7 @@ import React, { Suspense, useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 import { use_auth_status } from "hazo_auth/client";
 import { GifPicker } from "@/components/challenges/gif-picker";
 import { ArrowLeft, Image, X, ChevronDown, Plus } from "lucide-react";
@@ -121,18 +122,20 @@ function CreateChallengeForm() {
 
   if (is_loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
+      <>
         <Navbar />
-        <p className="text-muted-foreground">Loading...</p>
-      </main>
+        <main className="min-h-screen flex items-center justify-center bg-surface pt-14 md:pt-20">
+          <p className="text-muted-foreground">Loading...</p>
+        </main>
+      </>
     );
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
+    <>
       <Navbar />
-
-      <div className="w-full max-w-lg mx-auto">
+      <main className="min-h-screen bg-surface pt-14 md:pt-20">
+      <div className="w-full max-w-lg mx-auto p-6 lg:p-8">
         <button
           onClick={() => router.push("/challenges")}
           className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 bg-transparent border-none cursor-pointer"
@@ -142,7 +145,7 @@ function CreateChallengeForm() {
         </button>
 
         {!created_id ? (
-          <div className="bg-card rounded-xl p-6 shadow-sm border">
+          <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)]">
             <h1 className="text-2xl font-bold mb-6">Create a Challenge</h1>
 
             <div className="space-y-4">
@@ -349,7 +352,7 @@ function CreateChallengeForm() {
             </div>
           </div>
         ) : (
-          <div className="bg-card rounded-xl p-6 shadow-sm border text-center">
+          <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] text-center">
             <div className="text-4xl mb-4">🎉</div>
             <h2 className="text-2xl font-bold mb-2">Challenge Created!</h2>
 
@@ -402,17 +405,21 @@ function CreateChallengeForm() {
           </div>
         )}
       </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
 
 export default function CreateChallengePage() {
   return (
     <Suspense fallback={
-      <main className="min-h-screen flex items-center justify-center">
+      <>
         <Navbar />
-        <p className="text-muted-foreground">Loading...</p>
-      </main>
+        <main className="min-h-screen flex items-center justify-center bg-surface pt-14 md:pt-20">
+          <p className="text-muted-foreground">Loading...</p>
+        </main>
+      </>
     }>
       <CreateChallengeForm />
     </Suspense>

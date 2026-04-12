@@ -113,7 +113,7 @@ function SidebarContent({ pathname, on_close }: { pathname: string; on_close?: (
 
       {/* Admin heading */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
-        <span className="text-white/60 font-semibold text-xs uppercase tracking-widest">Admin Panel</span>
+        <span className="font-headline text-white/60 font-black text-xs uppercase tracking-widest">Admin Panel</span>
         {on_close && (
           <button
             onClick={on_close}
@@ -142,9 +142,9 @@ function SidebarContent({ pathname, on_close }: { pathname: string; on_close?: (
                       href={item.href}
                       onClick={on_close}
                       className={[
-                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline",
+                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-out no-underline",
                         is_active
-                          ? "bg-[#FF6B35] text-white"
+                          ? "bg-secondary text-white"
                           : "text-white/80 hover:text-white hover:bg-white/10",
                       ].join(" ")}
                     >
@@ -172,16 +172,14 @@ export function AdminSidebar() {
     <>
       {/* Desktop sidebar */}
       <aside
-        className="hidden md:flex flex-col w-[250px] shrink-0 min-h-screen"
-        style={{ backgroundColor: "#1A1A2E" }}
+        className="hidden md:flex flex-col w-[250px] shrink-0 min-h-screen bg-primary"
       >
         <SidebarContent pathname={pathname} />
       </aside>
 
       {/* Mobile hamburger button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg text-white"
-        style={{ backgroundColor: "#1A1A2E" }}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg text-white bg-primary"
         onClick={() => set_mobile_open(true)}
         aria-label="Open admin menu"
       >
@@ -196,8 +194,7 @@ export function AdminSidebar() {
             onClick={() => set_mobile_open(false)}
           />
           <aside
-            className="md:hidden fixed top-0 left-0 h-full w-[250px] z-50 flex flex-col"
-            style={{ backgroundColor: "#1A1A2E" }}
+            className="md:hidden fixed top-0 left-0 h-full w-[250px] z-50 flex flex-col bg-primary"
           >
             <SidebarContent
               pathname={pathname}

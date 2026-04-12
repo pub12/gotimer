@@ -1,0 +1,330 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - navigation [ref=e3]:
+      - button "Go to Home" [ref=e4] [cursor=pointer]:
+        - img "GoTimer logo" [ref=e5]
+        - generic [ref=e6]: GoTimer.org
+      - generic [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - img [ref=e9]
+          - generic [ref=e12]: Home
+        - link "Public Challenges" [ref=e13] [cursor=pointer]:
+          - /url: /public-challenges
+          - img [ref=e14]
+          - generic [ref=e17]: Public Challenges
+        - link "Blog" [ref=e18] [cursor=pointer]:
+          - /url: /blog
+          - img [ref=e19]
+          - generic [ref=e21]: Blog
+    - generic [ref=e24]:
+      - heading "Every Timer. Every Game. One Leaderboard." [level=1] [ref=e25]
+      - paragraph [ref=e26]: 25-minute Pomodoro? Done.
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - img [ref=e30]
+          - generic [ref=e35]: 05:00
+        - generic [ref=e36]:
+          - button "Decrease 1 minute" [ref=e37]:
+            - img [ref=e38]
+          - button "5 min" [ref=e39]:
+            - text: 5 min
+            - img [ref=e40]
+          - button "Increase 1 minute" [ref=e43]:
+            - img [ref=e44]
+        - generic [ref=e45]:
+          - button "Start" [ref=e46]:
+            - img [ref=e47]
+            - text: Start
+          - button "Reset" [disabled] [ref=e49]:
+            - img [ref=e50]
+            - text: Reset
+        - generic [ref=e53]:
+          - generic [ref=e54]: Countdown Timer
+          - button "Enable Sound" [ref=e56]:
+            - img [ref=e57]
+          - button "Full Screen" [ref=e61]:
+            - img [ref=e62]
+      - generic [ref=e67]:
+        - button "25 min Pomodoro" [ref=e68]
+        - button "20 min HIIT" [ref=e69]
+        - button "Board Games" [ref=e70]
+        - button "Custom" [ref=e71]
+    - generic [ref=e73]:
+      - heading "A Timer for Everything" [level=2] [ref=e74]
+      - paragraph [ref=e75]: Pick your activity. We handle the rest.
+      - generic [ref=e76]:
+        - link "Sleep Wind-down timers for better sleep" [ref=e77] [cursor=pointer]:
+          - /url: /sleep-timer
+          - img [ref=e79]
+          - generic [ref=e81]:
+            - heading "Sleep" [level=3] [ref=e82]
+            - paragraph [ref=e83]: Wind-down timers for better sleep
+        - link "5 Minute Timer Quick 5-minute countdown" [ref=e84] [cursor=pointer]:
+          - /url: /5-minute-timer
+          - img [ref=e86]
+          - generic [ref=e89]:
+            - heading "5 Minute Timer" [level=3] [ref=e90]
+            - paragraph [ref=e91]: Quick 5-minute countdown
+        - link "10 Minute Timer 10-minute countdown timer" [ref=e92] [cursor=pointer]:
+          - /url: /10-minute-timer
+          - img [ref=e94]
+          - generic [ref=e97]:
+            - heading "10 Minute Timer" [level=3] [ref=e98]
+            - paragraph [ref=e99]: 10-minute countdown timer
+        - link "15 Minute Timer 15-minute countdown timer" [ref=e100] [cursor=pointer]:
+          - /url: /15-minute-timer
+          - img [ref=e102]
+          - generic [ref=e105]:
+            - heading "15 Minute Timer" [level=3] [ref=e106]
+            - paragraph [ref=e107]: 15-minute countdown timer
+        - link "20 Minute Timer 20-minute countdown timer" [ref=e108] [cursor=pointer]:
+          - /url: /20-minute-timer
+          - img [ref=e110]
+          - generic [ref=e113]:
+            - heading "20 Minute Timer" [level=3] [ref=e114]
+            - paragraph [ref=e115]: 20-minute countdown timer
+        - link "25 Minute Timer 25-minute countdown timer" [ref=e116] [cursor=pointer]:
+          - /url: /25-minute-timer
+          - img [ref=e118]
+          - generic [ref=e121]:
+            - heading "25 Minute Timer" [level=3] [ref=e122]
+            - paragraph [ref=e123]: 25-minute countdown timer
+        - link "30 Minute Timer 30-minute countdown timer" [ref=e124] [cursor=pointer]:
+          - /url: /30-minute-timer
+          - img [ref=e126]
+          - generic [ref=e129]:
+            - heading "30 Minute Timer" [level=3] [ref=e130]
+            - paragraph [ref=e131]: 30-minute countdown timer
+        - link "45 Minute Timer 45-minute countdown timer" [ref=e132] [cursor=pointer]:
+          - /url: /45-minute-timer
+          - img [ref=e134]
+          - generic [ref=e137]:
+            - heading "45 Minute Timer" [level=3] [ref=e138]
+            - paragraph [ref=e139]: 45-minute countdown timer
+        - link "60 Minute Timer 60-minute countdown timer" [ref=e140] [cursor=pointer]:
+          - /url: /60-minute-timer
+          - img [ref=e142]
+          - generic [ref=e145]:
+            - heading "60 Minute Timer" [level=3] [ref=e146]
+            - paragraph [ref=e147]: 60-minute countdown timer
+        - link "Pomodoro 25-minute focus sessions with breaks" [ref=e148] [cursor=pointer]:
+          - /url: /pomodoro-timer
+          - img [ref=e150]
+          - generic [ref=e153]:
+            - heading "Pomodoro" [level=3] [ref=e154]
+            - paragraph [ref=e155]: 25-minute focus sessions with breaks
+        - link "Hiit Interval training with work and rest periods" [ref=e156] [cursor=pointer]:
+          - /url: /hiit-timer
+          - img [ref=e158]
+          - generic [ref=e160]:
+            - heading "Hiit" [level=3] [ref=e161]
+            - paragraph [ref=e162]: Interval training with work and rest periods
+        - link "Meditation Guided mindfulness with gentle alerts" [ref=e163] [cursor=pointer]:
+          - /url: /meditation-timer
+          - img [ref=e165]
+          - generic [ref=e175]:
+            - heading "Meditation" [level=3] [ref=e176]
+            - paragraph [ref=e177]: Guided mindfulness with gentle alerts
+        - link "Breathing Box breathing and relaxation exercises" [ref=e178] [cursor=pointer]:
+          - /url: /breathing-timer
+          - img [ref=e180]
+          - generic [ref=e184]:
+            - heading "Breathing" [level=3] [ref=e185]
+            - paragraph [ref=e186]: Box breathing and relaxation exercises
+        - link "Cooking Kitchen timers for recipes and baking" [ref=e187] [cursor=pointer]:
+          - /url: /cooking-timer
+          - img [ref=e189]
+          - generic [ref=e193]:
+            - heading "Cooking" [level=3] [ref=e194]
+            - paragraph [ref=e195]: Kitchen timers for recipes and baking
+        - link "Egg Perfect eggs every time with precision timing" [ref=e196] [cursor=pointer]:
+          - /url: /egg-timer
+          - img [ref=e198]
+          - generic [ref=e200]:
+            - heading "Egg" [level=3] [ref=e201]
+            - paragraph [ref=e202]: Perfect eggs every time with precision timing
+        - link "Fasting Track intermittent fasting windows" [ref=e203] [cursor=pointer]:
+          - /url: /fasting-timer
+          - img [ref=e205]
+          - generic [ref=e208]:
+            - heading "Fasting" [level=3] [ref=e209]
+            - paragraph [ref=e210]: Track intermittent fasting windows
+        - link "Study Timed study blocks with progress tracking" [ref=e211] [cursor=pointer]:
+          - /url: /study-timer
+          - img [ref=e213]
+          - generic [ref=e215]:
+            - heading "Study" [level=3] [ref=e216]
+            - paragraph [ref=e217]: Timed study blocks with progress tracking
+        - link "Classroom Activity timers for teachers and students" [ref=e218] [cursor=pointer]:
+          - /url: /classroom-timer
+          - img [ref=e220]
+          - generic [ref=e223]:
+            - heading "Classroom" [level=3] [ref=e224]
+            - paragraph [ref=e225]: Activity timers for teachers and students
+        - link "Presentation Keep talks and meetings on schedule" [ref=e226] [cursor=pointer]:
+          - /url: /presentation-timer
+          - img [ref=e228]
+          - generic [ref=e231]:
+            - heading "Presentation" [level=3] [ref=e232]
+            - paragraph [ref=e233]: Keep talks and meetings on schedule
+        - link "Adhd focus Low-distraction timers for deep work" [ref=e234] [cursor=pointer]:
+          - /url: /adhd-focus-timer
+          - img [ref=e236]
+          - generic [ref=e242]:
+            - heading "Adhd focus" [level=3] [ref=e243]
+            - paragraph [ref=e244]: Low-distraction timers for deep work
+        - link "Board Games Turn timers and chess clocks for game night" [ref=e245] [cursor=pointer]:
+          - /url: /board-games
+          - img [ref=e247]
+          - generic [ref=e249]:
+            - heading "Board Games" [level=3] [ref=e250]
+            - paragraph [ref=e251]: Turn timers and chess clocks for game night
+    - generic [ref=e253]:
+      - generic [ref=e254]:
+        - img [ref=e255]
+        - text: Leaderboards & Challenges
+      - heading "Challenge Your Friends. Climb the Leaderboard." [level=2] [ref=e261]
+      - paragraph [ref=e262]: Create head-to-head challenges for any game, track wins and losses over time, and see who really deserves bragging rights.
+      - generic [ref=e263]:
+        - generic [ref=e264]:
+          - img [ref=e265]
+          - generic [ref=e274]: Sample Challenge
+        - generic [ref=e275]:
+          - generic [ref=e276]:
+            - generic [ref=e277]: "7"
+            - generic [ref=e278]: Player 1
+          - generic [ref=e279]: vs
+          - generic [ref=e280]:
+            - generic [ref=e281]: "5"
+            - generic [ref=e282]: Player 2
+        - paragraph [ref=e285]: 12 games played
+      - generic [ref=e286]:
+        - link "Start a Challenge" [ref=e287] [cursor=pointer]:
+          - /url: /challenges/create
+          - text: Start a Challenge
+          - img
+        - link "View Leaderboard" [ref=e288] [cursor=pointer]:
+          - /url: /public-challenges
+    - generic [ref=e290]:
+      - generic [ref=e291]:
+        - generic [ref=e292]:
+          - paragraph [ref=e293]: 12,400+
+          - paragraph [ref=e294]: Timers Started
+        - img [ref=e296]
+      - generic [ref=e299]:
+        - generic [ref=e300]:
+          - paragraph [ref=e301]: 850+
+          - paragraph [ref=e302]: Active Challenges
+        - img [ref=e304]
+      - generic [ref=e313]:
+        - generic [ref=e314]:
+          - paragraph [ref=e315]: 2,100+
+          - paragraph [ref=e316]: Users Competing
+        - img [ref=e318]
+    - generic [ref=e324]:
+      - heading "How It Works" [level=2] [ref=e325]
+      - paragraph [ref=e326]: Three steps. Zero friction.
+      - generic [ref=e327]:
+        - generic [ref=e328]:
+          - img [ref=e330]
+          - generic [ref=e333]: Step 1
+          - heading "Pick a Timer" [level=3] [ref=e334]
+          - paragraph [ref=e335]: Choose from Pomodoro, HIIT, board game, or any of our 10+ timer categories.
+        - generic [ref=e336]:
+          - img [ref=e338]
+          - generic [ref=e340]: Step 2
+          - heading "Start It" [level=3] [ref=e341]
+          - paragraph [ref=e342]: Hit start and go. No sign-up needed. Works on any device, any browser.
+        - generic [ref=e343]:
+          - img [ref=e345]
+          - generic [ref=e351]: Step 3
+          - heading "Add a Leaderboard" [level=3] [ref=e352]
+          - paragraph [ref=e353]: Create challenges, invite friends, and track who wins over time.
+    - generic [ref=e355]:
+      - generic [ref=e356]:
+        - img [ref=e357]
+        - text: Guides & Tips
+      - heading "Timer Guides & Best Practices" [level=2] [ref=e359]
+      - paragraph [ref=e360]: Learn how to make the most of your timers with our expert guides on Pomodoro technique, HIIT training, board game pacing, and more.
+      - link "Read the Blog" [ref=e361] [cursor=pointer]:
+        - /url: /blog
+        - text: Read the Blog
+        - img
+    - generic [ref=e364]:
+      - heading "Frequently Asked Questions" [level=2] [ref=e365]
+      - generic [ref=e366]:
+        - group [ref=e367]:
+          - generic "What is a chess clock for board games?" [ref=e368] [cursor=pointer]:
+            - text: What is a chess clock for board games?
+            - img [ref=e369]
+        - group [ref=e371]:
+          - generic "How do I time board game turns?" [ref=e372] [cursor=pointer]:
+            - text: How do I time board game turns?
+            - img [ref=e373]
+        - group [ref=e375]:
+          - generic "Can I track game scores with friends?" [ref=e376] [cursor=pointer]:
+            - text: Can I track game scores with friends?
+            - img [ref=e377]
+        - group [ref=e379]:
+          - generic "What board games need a timer?" [ref=e380] [cursor=pointer]:
+            - text: What board games need a timer?
+            - img [ref=e381]
+        - group [ref=e383]:
+          - generic "Is GoTimer free to use?" [ref=e384] [cursor=pointer]:
+            - text: Is GoTimer free to use?
+            - img [ref=e385]
+        - group [ref=e387]:
+          - generic "Does GoTimer work on mobile phones?" [ref=e388] [cursor=pointer]:
+            - text: Does GoTimer work on mobile phones?
+            - img [ref=e389]
+        - group [ref=e391]:
+          - generic "Can I use GoTimer for ADHD focus sessions?" [ref=e392] [cursor=pointer]:
+            - text: Can I use GoTimer for ADHD focus sessions?
+            - img [ref=e393]
+    - paragraph [ref=e396]:
+      - text: For support or feature requests, contact
+      - link "pubs@hazoservices.com" [ref=e397] [cursor=pointer]:
+        - /url: mailto:pubs@hazoservices.com
+    - generic [ref=e399]:
+      - generic [ref=e400]:
+        - generic [ref=e401]:
+          - heading "Timers" [level=3] [ref=e402]
+          - list [ref=e403]:
+            - listitem [ref=e404]:
+              - link "Countdown Timer" [ref=e405] [cursor=pointer]:
+                - /url: /countdown-setup
+            - listitem [ref=e406]:
+              - link "Chess Clock" [ref=e407] [cursor=pointer]:
+                - /url: /chess-clock-setup
+            - listitem [ref=e408]:
+              - link "Round Timer" [ref=e409] [cursor=pointer]:
+                - /url: /round-timer-setup
+        - generic [ref=e410]:
+          - heading "Features" [level=3] [ref=e411]
+          - list [ref=e412]:
+            - listitem [ref=e413]:
+              - link "Public Challenges" [ref=e414] [cursor=pointer]:
+                - /url: /public-challenges
+            - listitem [ref=e415]:
+              - link "Partners" [ref=e416] [cursor=pointer]:
+                - /url: /partners
+        - generic [ref=e417]:
+          - heading "Legal & Info" [level=3] [ref=e418]
+          - list [ref=e419]:
+            - listitem [ref=e420]:
+              - link "Privacy Policy" [ref=e421] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e422]:
+              - link "Terms of Service" [ref=e423] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e424]:
+              - button "Contact Us" [ref=e425] [cursor=pointer]
+            - listitem [ref=e426]:
+              - link "Sitemap" [ref=e427] [cursor=pointer]:
+                - /url: /sitemap.xml
+      - generic [ref=e428]: © 2026 GoTimer.org
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e434] [cursor=pointer]:
+    - img [ref=e435]
+  - alert [ref=e438]

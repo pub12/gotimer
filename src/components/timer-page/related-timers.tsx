@@ -15,11 +15,11 @@ interface RelatedTimersProps {
 function TimerIcon({ type }: { type: string }) {
   switch (type) {
     case "interval":
-      return <Activity className="w-5 h-5 text-red-500" />;
+      return <Activity className="w-5 h-5 text-secondary" />;
     case "stopwatch":
-      return <Clock className="w-5 h-5 text-emerald-500" />;
+      return <Clock className="w-5 h-5 text-accent" />;
     default:
-      return <Timer className="w-5 h-5 text-blue-500" />;
+      return <Timer className="w-5 h-5 text-primary" />;
   }
 }
 
@@ -28,18 +28,18 @@ export default function RelatedTimers({ pages }: RelatedTimersProps) {
 
   return (
     <section className="mb-8">
-      <h2 className="text-2xl font-semibold mb-4">Related Timers</h2>
+      <h2 className="text-2xl font-headline font-black mb-4">Related Timers</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {pages.map((page) => (
           <Link
             key={page.slug}
             href={`/${page.slug}`}
-            className="flex items-center gap-3 bg-white rounded-xl border p-4 hover:shadow-md hover:border-blue-200 transition-all no-underline group"
+            className="flex items-center gap-3 bg-card rounded-[1rem] p-4 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-soft-lg)] transition-all no-underline group"
           >
-            <div className="shrink-0 w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+            <div className="shrink-0 w-10 h-10 bg-surface-container-low rounded-[0.75rem] flex items-center justify-center group-hover:bg-surface-container-high transition-colors">
               <TimerIcon type={page.timer_type} />
             </div>
-            <span className="text-sm font-medium text-gray-800 group-hover:text-blue-700 transition-colors">
+            <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
               {page.title}
             </span>
           </Link>

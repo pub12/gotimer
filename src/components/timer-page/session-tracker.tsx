@@ -56,7 +56,7 @@ export function SessionTracker({ timer_type, children }: SessionTrackerProps) {
   return (
     <div className="text-sm text-muted-foreground text-center">
       {session_count_today > 0
-        ? `Session ${session_count_today} today`
+        ? <span>Session <span className="font-headline font-black text-foreground">{session_count_today}</span> today</span>
         : "Start your first session today"}
     </div>
   );

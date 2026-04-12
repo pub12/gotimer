@@ -27,8 +27,8 @@ function CharacterCard({
   const [img_error, set_img_error] = useState(false);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden group">
-      <div className="relative aspect-square bg-gray-100 flex items-center justify-center">
+    <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] overflow-hidden group">
+      <div className="relative aspect-square bg-surface-container flex items-center justify-center">
         {!img_error ? (
           <Image
             src={character.file_path}
@@ -38,22 +38,22 @@ function CharacterCard({
             onError={() => set_img_error(true)}
           />
         ) : (
-          <ImageIcon className="w-12 h-12 text-gray-300" />
+          <ImageIcon className="w-12 h-12 text-muted-foreground" />
         )}
         <button
           onClick={() => on_delete(character.id, character.character_name)}
-          className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/90 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50 border-none cursor-pointer"
+          className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/90 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 border-none cursor-pointer"
           aria-label="Delete character"
         >
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
       <div className="p-3">
-        <p className="text-sm font-semibold text-gray-800 truncate">{character.character_name}</p>
+        <p className="text-sm font-semibold text-foreground truncate">{character.character_name}</p>
         {character.scene_description && (
-          <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{character.scene_description}</p>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{character.scene_description}</p>
         )}
-        <p className="text-xs text-gray-300 mt-1">
+        <p className="text-xs text-muted-foreground mt-1">
           {new Date(character.created_at).toLocaleDateString()}
         </p>
       </div>
@@ -134,12 +134,12 @@ export default function AdminCharactersPage() {
     <main className="p-8 max-w-5xl">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Character Library</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Manage character images used in timer pages and blog posts.</p>
+          <h1 className="text-2xl font-headline font-black text-foreground">Character Library</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">Manage character images used in timer pages and blog posts.</p>
         </div>
         <button
           onClick={() => set_show_form((v) => !v)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#FF6B35] text-white rounded-lg text-sm font-medium hover:bg-[#e55a2b] transition-colors border-none cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-[0.75rem] text-sm font-medium hover:bg-secondary/90 transition-colors border-none cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           Add Character
@@ -147,47 +147,47 @@ export default function AdminCharactersPage() {
       </div>
 
       {show_form && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-          <h2 className="text-base font-semibold text-gray-800 mb-4">New Character</h2>
+        <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5 mb-6">
+          <h2 className="text-base font-semibold text-foreground mb-4">New Character</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Character Name *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Character Name *</label>
               <input
                 type="text"
                 value={form.character_name}
                 onChange={(e) => set_form((f) => ({ ...f, character_name: e.target.value }))}
                 placeholder="e.g. Timer Bot"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30"
+                className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">File Path / URL *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">File Path / URL *</label>
               <input
                 type="text"
                 value={form.file_path}
                 onChange={(e) => set_form((f) => ({ ...f, file_path: e.target.value }))}
                 placeholder="/images/characters/bot.png"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30"
+                className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Scene Description</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Scene Description</label>
               <input
                 type="text"
                 value={form.scene_description}
                 onChange={(e) => set_form((f) => ({ ...f, scene_description: e.target.value }))}
                 placeholder="e.g. Friendly robot holding a stopwatch"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30"
+                className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Generation Prompt</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Generation Prompt</label>
               <input
                 type="text"
                 value={form.generation_prompt}
                 onChange={(e) => set_form((f) => ({ ...f, generation_prompt: e.target.value }))}
                 placeholder="Runware prompt (optional)"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30"
+                className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30"
               />
             </div>
           </div>
@@ -196,13 +196,13 @@ export default function AdminCharactersPage() {
             <button
               onClick={handle_add}
               disabled={saving}
-              className="px-4 py-2 bg-[#FF6B35] text-white rounded-lg text-sm font-medium hover:bg-[#e55a2b] disabled:opacity-50 border-none cursor-pointer"
+              className="px-4 py-2 bg-secondary text-secondary-foreground rounded-[0.75rem] text-sm font-medium hover:bg-secondary/90 disabled:opacity-50 border-none cursor-pointer"
             >
               {saving ? "Saving..." : "Save Character"}
             </button>
             <button
               onClick={() => { set_show_form(false); set_form_error(""); }}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 border-none cursor-pointer"
+              className="px-4 py-2 bg-surface-container text-foreground rounded-lg text-sm font-medium hover:bg-surface-container-low border-none cursor-pointer"
             >
               Cancel
             </button>
@@ -211,11 +211,11 @@ export default function AdminCharactersPage() {
       )}
 
       {chars_loading ? (
-        <p className="text-gray-500 text-sm">Loading characters...</p>
+        <p className="text-muted-foreground text-sm">Loading characters...</p>
       ) : characters.length === 0 ? (
-        <div className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-10 text-center">
-          <ImageIcon className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-400 text-sm">No characters yet. Add one to get started.</p>
+        <div className="bg-surface-container-low border border-dashed border-surface-container rounded-[1rem] p-10 text-center">
+          <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+          <p className="text-muted-foreground text-sm">No characters yet. Add one to get started.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

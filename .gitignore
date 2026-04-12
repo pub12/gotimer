@@ -47,6 +47,9 @@ yarn-error.log*
 # worktrees
 /.worktrees/
 
+# superpowers brainstorm sessions
+.superpowers/
+
 # vercel
 .vercel
 

@@ -118,18 +118,18 @@ export default function AdminBlogCategoriesPage() {
   }
 
   if (auth_loading || loading) {
-    return <main className="p-8"><p className="text-gray-500">Loading...</p></main>;
+    return <main className="p-8"><p className="text-muted-foreground">Loading...</p></main>;
   }
 
   if (!authenticated || !permission_ok) return null;
 
   return (
     <main className="p-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Blog Categories</h1>
+      <h1 className="text-2xl font-headline font-black text-foreground mb-6">Blog Categories</h1>
 
       {/* Create form */}
-      <section className="border rounded-lg p-5 mb-8 bg-gray-50">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">New Category</h2>
+      <section className="rounded-[1rem] p-5 mb-8 bg-surface-container-low shadow-[var(--shadow-soft)]">
+        <h2 className="text-sm font-semibold text-foreground mb-4">New Category</h2>
         {error && (
           <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700">
             {error}
@@ -137,17 +137,17 @@ export default function AdminBlogCategoriesPage() {
         )}
         <form onSubmit={handle_create} className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Name *</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Name *</label>
             <input
               type="text"
               value={new_name}
               onChange={(e) => set_new_name(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full border border-surface-container rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
               placeholder="Category name"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Slug *</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Slug *</label>
             <input
               type="text"
               value={new_slug}
@@ -155,29 +155,29 @@ export default function AdminBlogCategoriesPage() {
                 set_slug_edited(true);
                 set_new_slug(e.target.value);
               }}
-              className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full border border-surface-container rounded px-3 py-1.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-gray-400"
               placeholder="category-slug"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Colour</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Colour</label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
                 value={new_colour}
                 onChange={(e) => set_new_colour(e.target.value)}
-                className="w-9 h-9 border border-gray-300 rounded cursor-pointer"
+                className="w-9 h-9 border border-surface-container rounded cursor-pointer"
               />
-              <span className="text-xs text-gray-500 font-mono">{new_colour}</span>
+              <span className="text-xs text-muted-foreground font-mono">{new_colour}</span>
             </div>
           </div>
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Description</label>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Description</label>
             <input
               type="text"
               value={new_description}
               onChange={(e) => set_new_description(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="w-full border border-surface-container rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
               placeholder="Optional description"
             />
           </div>
@@ -185,7 +185,7 @@ export default function AdminBlogCategoriesPage() {
             <button
               type="submit"
               disabled={saving}
-              className="px-4 py-2 bg-gray-900 text-white text-sm rounded-md hover:bg-gray-700 transition-colors disabled:opacity-50"
+              className="px-4 py-2 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {saving ? "Creating…" : "Create Category"}
             </button>
@@ -195,34 +195,34 @@ export default function AdminBlogCategoriesPage() {
 
       {/* Categories table */}
       {categories.length === 0 ? (
-        <p className="text-gray-500">No categories yet.</p>
+        <p className="text-muted-foreground">No categories yet.</p>
       ) : (
         <div className="border rounded-lg overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-surface-container-low border-b">
               <tr>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Name</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Slug</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Colour</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-700">Actions</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Name</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Slug</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Colour</th>
+                <th className="text-left px-4 py-3 font-medium text-foreground">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {categories.map((cat) => (
-                <tr key={cat.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900">{cat.name}</td>
-                  <td className="px-4 py-3 text-gray-500 font-mono text-xs">{cat.slug}</td>
+                <tr key={cat.id} className="hover:bg-surface-container-low">
+                  <td className="px-4 py-3 font-medium text-foreground">{cat.name}</td>
+                  <td className="px-4 py-3 text-muted-foreground font-mono text-xs">{cat.slug}</td>
                   <td className="px-4 py-3">
                     {cat.colour ? (
                       <div className="flex items-center gap-2">
                         <span
-                          className="w-4 h-4 rounded-full border border-gray-200 inline-block"
+                          className="w-4 h-4 rounded-full border border-surface-container inline-block"
                           style={{ backgroundColor: cat.colour }}
                         />
-                        <span className="text-xs text-gray-500 font-mono">{cat.colour}</span>
+                        <span className="text-xs text-muted-foreground font-mono">{cat.colour}</span>
                       </div>
                     ) : (
-                      <span className="text-gray-400 text-xs">—</span>
+                      <span className="text-muted-foreground text-xs">—</span>
                     )}
                   </td>
                   <td className="px-4 py-3">

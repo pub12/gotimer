@@ -59,7 +59,7 @@ export default function AdminBlogEditPage() {
   }, [auth_loading, authenticated, permission_ok, id]);
 
   if (auth_loading || loading) {
-    return <main className="p-8"><p className="text-gray-500">Loading...</p></main>;
+    return <main className="p-8"><p className="text-muted-foreground">Loading...</p></main>;
   }
 
   if (!authenticated || !permission_ok) return null;
@@ -86,8 +86,8 @@ export default function AdminBlogEditPage() {
   return (
     <main className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Edit Post</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-headline font-black text-foreground">Edit Post</h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Status: <span className="font-medium capitalize">{post.status}</span>
         </p>
       </div>

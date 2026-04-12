@@ -31,12 +31,12 @@ function StatCard({
   color: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4">
+    <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5 flex items-start gap-4">
       <div className={`p-3 rounded-lg ${color}`}>{icon}</div>
       <div>
-        <p className="text-sm text-gray-500">{label}</p>
-        <p className="text-2xl font-bold text-gray-900">{value}</p>
-        {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+        <p className="text-sm text-muted-foreground">{label}</p>
+        <p className="font-headline text-2xl font-black text-foreground">{value}</p>
+        {sub && <p className="text-xs text-muted-foreground mt-0.5">{sub}</p>}
       </div>
     </div>
   );
@@ -69,10 +69,10 @@ export default function AdminDashboardPage() {
 
   return (
     <main className="p-8 max-w-5xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
+      <h1 className="font-headline text-2xl font-black text-foreground mb-6">Dashboard</h1>
 
       {stats_loading ? (
-        <p className="text-gray-500">Loading stats...</p>
+        <p className="text-muted-foreground">Loading stats...</p>
       ) : stats ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -80,46 +80,55 @@ export default function AdminDashboardPage() {
               label="Published Pages"
               value={stats.published_pages}
               sub={`${stats.draft_pages} draft`}
-              icon={<FileText className="w-5 h-5 text-blue-600" />}
-              color="bg-blue-50"
+              icon={<FileText className="w-5 h-5 text-primary" />}
+              color="bg-surface-container"
             />
             <StatCard
               label="Active Challenges"
               value={stats.active_challenges}
-              icon={<Gamepad2 className="w-5 h-5 text-orange-600" />}
-              color="bg-orange-50"
+              icon={<Gamepad2 className="w-5 h-5 text-secondary" />}
+              color="bg-surface-container"
             />
             <StatCard
               label="Blog Posts"
               value={stats.published_blog}
               sub={`${stats.draft_blog} draft`}
-              icon={<BookOpen className="w-5 h-5 text-green-600" />}
-              color="bg-green-50"
+              icon={<BookOpen className="w-5 h-5 text-accent" />}
+              color="bg-surface-container"
             />
             <StatCard
               label="Timer Starts"
               value="Setup required"
-              icon={<Clock className="w-5 h-5 text-purple-600" />}
-              color="bg-purple-50"
+              icon={<Clock className="w-5 h-5 text-primary" />}
+              color="bg-surface-container"
             />
           </div>
 
           {stats.draft_pages_list.length > 0 && (
             <section>
-              <h2 className="text-lg font-semibold text-gray-800 mb-3">Publishing Queue</h2>
-              <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+              <h2 className="font-headline text-lg font-black text-foreground mb-3">Publishing Queue</h2>
+              <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] divide-y divide-surface-container">
                 {stats.draft_pages_list.map((page) => (
                   <div key={page.id} className="flex items-center justify-between px-4 py-3">
                     <div>
-                      <p className="text-sm font-medium text-gray-800">{page.title}</p>
-                      <p className="text-xs text-gray-400">/{page.slug}</p>
+                      <p className="text-sm font-medium text-foreground">{page.title}</p>
+                      <p className="text-xs text-muted-foreground">/{page.slug}</p>
                     </div>
-                    <Link
-                      href={`/admin/timer-pages/${page.id}`}
-                      className="text-xs text-blue-600 hover:underline"
-                    >
-                      Edit
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      <Link
+                        href={`/${page.slug}`}
+                        target="_blank"
+                        className="text-xs text-primary hover:underline"
+                      >
+                        View
+                      </Link>
+                      <Link
+                        href={`/admin/timer-pages/${page.id}`}
+                        className="text-xs text-secondary hover:underline"
+                      >
+                        Edit
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -127,7 +136,7 @@ export default function AdminDashboardPage() {
           )}
         </>
       ) : (
-        <p className="text-red-500">Failed to load stats.</p>
+        <p className="text-destructive">Failed to load stats.</p>
       )}
     </main>
   );

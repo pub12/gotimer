@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/navbar";
 import { use_hazo_auth } from "hazo_auth/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -75,8 +74,7 @@ export default function AdminAuditLogPage() {
 
   if (auth_loading || loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <Navbar />
+      <main className="p-8">
         <p className="text-muted-foreground">Loading...</p>
       </main>
     );
@@ -87,23 +85,22 @@ export default function AdminAuditLogPage() {
   const total_pages = Math.max(1, Math.ceil(total / limit));
 
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
-      <Navbar />
-      <div className="w-full max-w-7xl mx-auto">
+    <main className="p-8 max-w-7xl">
+      <div className="w-full">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Audit Log (Admin)</h1>
+          <h1 className="text-2xl font-headline font-black text-foreground">Audit Log (Admin)</h1>
           <p className="text-sm text-muted-foreground">
             {total} total entr{total === 1 ? "y" : "ies"}
           </p>
         </div>
 
         {entries.length === 0 ? (
-          <div className="bg-card rounded-xl p-8 shadow-sm border text-center">
+          <div className="bg-card rounded-[1rem] p-8 shadow-[var(--shadow-soft)] text-center">
             <p className="text-muted-foreground">No audit log entries found.</p>
           </div>
         ) : (
           <>
-            <div className="bg-card rounded-xl shadow-sm border overflow-x-auto">
+            <div className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b bg-muted/50">

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c5c6cf",
+                    "on-tertiary-container": "#503d00",
+                    "surface-container-highest": "#d5e3fc",
+                    "surface-container": "#e6eeff",
+                    "on-primary-fixed": "#0a1a3a",
+                    "secondary-fixed": "#ffdbd2",
+                    "primary-fixed": "#d9e2ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#241a00",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "outline": "#75777f",
+                    "on-secondary-fixed": "#3c0800",
+                    "on-surface-variant": "#45464e",
+                    "on-background": "#0d1c2e",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed-variant": "#594400",
+                    "on-secondary-container": "#651400",
+                    "primary-fixed-dim": "#b7c6ee",
+                    "on-primary-container": "#8392b7",
+                    "on-secondary-fixed-variant": "#891e00",
+                    "tertiary-container": "#d3a500",
+                    "surface-dim": "#ccdbf3",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#f8f9ff",
+                    "on-secondary": "#ffffff",
+                    "inverse-surface": "#233144",
+                    "surface-variant": "#d5e3fc",
+                    "secondary-fixed-dim": "#ffb4a1",
+                    "inverse-primary": "#b7c6ee",
+                    "tertiary-fixed": "#ffdf91",
+                    "surface-tint": "#4f5e81",
+                    "primary": "#041534",
+                    "tertiary-fixed-dim": "#f3c00a",
+                    "primary-container": "#1b2a4a",
+                    "on-primary-fixed-variant": "#384668",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0d1c2e",
+                    "surface-container-high": "#dce9ff",
+                    "secondary": "#ef6c00",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary": "#755b00",
+                    "secondary-container": "#fd6f4a",
+                    "inverse-on-surface": "#eaf1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-lexend { font-family: 'Lexend', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen w-64 bg-[#eff4ff] dark:bg-[#041534] p-4 gap-2 sticky top-0 shadow-2xl shadow-[#0d1c2e]/5 rounded-r-3xl shrink-0">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-xl font-black text-[#041534] dark:text-white leading-none">Meme Master</h1>
+<p class="text-xs opacity-60">Rank: Kinetic Legend</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-grow">
+<a class="text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 p-3 rounded-xl flex items-center gap-3 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-medium">Challenges</span>
+</a>
+<!-- Active State: Leaderboard Hub / Game Challenges -->
+<a class="bg-gradient-to-br from-[#041534] to-[#1b2a4a] text-white p-3 rounded-xl flex items-center gap-3 shadow-lg transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">workspace_premium</span>
+<span class="font-medium">Leaderboard</span>
+</a>
+<a class="text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 p-3 rounded-xl flex items-center gap-3 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">mood</span>
+<span class="font-medium">Vibe Check</span>
+</a>
+<a class="text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 p-3 rounded-xl flex items-center gap-3 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">celebration</span>
+<span class="font-medium">Giphy Arena</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-[#0d1c2e]/5 pt-4">
+<a class="text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 p-3 rounded-xl flex items-center gap-3 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+<a class="text-[#0d1c2e] dark:text-[#d5e3fc] hover:bg-[#d5e3fc]/50 p-3 rounded-xl flex items-center gap-3 transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-medium">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow pb-24 md:pb-8">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-[#f8f9ff]/80 dark:bg-[#041534]/80 backdrop-blur-xl shadow-[0_16px_48px_-12px_rgba(13,28,46,0.06)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-black italic tracking-tighter text-[#041534] dark:text-[#f8f9ff] font-lexend">GoTimer.org</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-[#eff4ff] dark:bg-[#1b2a4a] rounded-full px-4 py-2 gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Find a challenger..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#0d1c2e] dark:text-[#d5e3fc] cursor-pointer hover:scale-110 transition-transform">leaderboard</span>
+<span class="material-symbols-outlined text-[#0d1c2e] dark:text-[#d5e3fc] cursor-pointer hover:scale-110 transition-transform">notifications</span>
+<div class="w-8 h-8 rounded-full bg-[#d5e3fc] border-2 border-primary-container overflow-hidden">
+<img alt="Profile" data-alt="close up avatar of a professional gamer with stylized neon lighting and a futuristic aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRtVODKXBx764rQdUv_UiEZIQDKXxB-yXdqclXEeeurIIOnX5F4HaSHBxA5ZhClvDnuuboflmcaNljO9OqMxqx3ImeG9uYov8wh1IZnr76rFsrxeDF2mQ-EWT_7OEE3qaTqGMaT87tX1mZY9SpVEz-oxhO1VAR1Z6MxziCqPchTNEC9MKpsmZGJZGmhfoyz4hUsldt9PDe1BCpOu3G6u0Q0JcerxrsHJ4Y9nuqtuBkYrZySG6lNd0VtKdAsOLnJRuB6WIrD2MhHw0"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="max-w-7xl mx-auto px-6 pt-8">
+<!-- Hero Header -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+<div>
+<h2 class="text-4xl md:text-5xl font-black tracking-tighter font-lexend text-primary mb-2">Game Challenges</h2>
+<p class="text-on-surface-variant text-lg">Crush your friends, dominate the arena, and secure your legacy.</p>
+</div>
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined">add_circle</span>
+                    New Challenge
+                </button>
+</section>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Active Challenges & Chart -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Your Challenges Section -->
+<section>
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-2xl font-bold font-lexend text-primary">Your Challenges</h3>
+<span class="text-secondary font-bold text-sm tracking-widest uppercase">Live Now</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Challenge Card 1 -->
+<div class="relative group h-64 rounded-3xl overflow-hidden bg-surface-container-highest shadow-xl transition-transform duration-300 hover:-translate-y-2">
+<img alt="Challenge BG" class="absolute inset-0 w-full h-full object-cover" data-alt="vibrant neon electronic sports arena with crowds and glowing computer screens in a cinematic wide shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7OVYH1Pi-oohVEPszn9Rzbow6NimPA7tmo8OlSNM3BLfMoUBnEhDQI5iHiYQbn3Rw4q_ZwyzQ7V1dyGU6nlwahrTT-Zo2VJDgJTAC3bTTzOZP02pZ4cx2t8vRe3ACJHEG37MKIFFk_QKxCyFEwrXHSDuee4BwxUdmK1nriHEQnNFcY1fxybSR1fmGbR-43wtLpotGmBLB4Vj4muaorT4kAxnVRnChDU0vbiccav6hX5J9wi5KRq_avKkUK0HIeVL8zSaTk2mIYFc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent"></div>
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="flex -space-x-3">
+<div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden z-10">
+<img alt="User" data-alt="professional portrait of a young person in a dark hoodie with subtle blue lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCktPmyxxNGWTP7ul7IKqVtIPmbCxkYJI7X4arcAuzfjF_11B7xdvn89tZH09srIsiSgeHYlyb6HRm2TBhk0jZMnmYgq5zNNtA-BOerm_NywC3NNLX2v-lj2pI5A-sNLIW46pLkNIeU5jiumNQw0ogqw3hRr566bgETfxUHf-Xvj7GYA3tqgg3WPXVf9VcxtvkNSAeZeNDVT6oALjrlg4YEYDqstEccB2KGFJWtUyIkJPyFFb_GmdRZNnY6i7ttZNlzSGVNDZDJzXo"/>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden">
+<img alt="Opponent" data-alt="portrait of a competitive gamer wearing a headset in a dark room with orange ambient light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2yurat5_xOtUcYmO4aubt6JwxCJ5cTdl5qh-uTLZYxBgF9YNQiPmG1AbtSIRwfgTF80tXmD3vq7lAjZxaBJvJ96K_GaWcywyWvPOS8NUMd3EgxgzKLha8YVBcNHzKUdEI5c942ol5MmagkI6yH2cv2uM5T03T6FYVN1ybqW0JnwK-TaWWDYbnDn05Ey2ie-MUBZtBWzcZ4sKOHutT-Y8pE1JIAJmZuabYqUajubGVv1cUMpmRdClScmHK6Nb6KKUD-3FrjwfO3xo"/>
+</div>
+</div>
+<div class="bg-secondary text-white px-3 py-1 rounded-full text-xs font-black">1v1 SPRINT</div>
+</div>
+<div>
+<div class="text-white/60 text-sm font-bold uppercase tracking-widest mb-1">Meme-Off vs. JohnDoe</div>
+<div class="flex items-end gap-3">
+<span class="text-5xl font-black text-white font-lexend">17 - 19</span>
+<span class="text-secondary font-bold mb-2">Losing</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Challenge Card 2 -->
+<div class="relative group h-64 rounded-3xl overflow-hidden bg-surface-container-highest shadow-xl transition-transform duration-300 hover:-translate-y-2">
+<img alt="Challenge BG" class="absolute inset-0 w-full h-full object-cover" data-alt="top-down artistic view of professional gaming keyboard with rgb lighting and blurred futuristic elements" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtv6-zICpc9wdngCDWsSIR1kK06Z5U8l1A9W08RaKO7oSLKM1Re1zJOUhgJBnQDfzJWJmwyhgs-SYnvxz2DWwODVRryjlw1yxPi50Q8VElPgcl6XXP-acLVZPhemLrSbPB2tLZeJlKNKb92BlK1StMf9gXIdhOqHLg1hE4l7I9-_5d9HbPnUQ1JkTNKkEm_GVUh1L4G5tnozYTmMylyhLDhJmcyM1Hh-fQcXN37JKJdIMis6FKsSZwzptKL6gdhv-e1YtrnvsU4-Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent"></div>
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="flex -space-x-3">
+<div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden z-10">
+<img alt="User" data-alt="portrait of a confident gamer with neon backlighting and cinematic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNf4jQ_cgmY0hk2dUace0p0EF-R--geovL-Rl0pWZ8FZ4Oyn_xoIzu-GPyi6liGWMzR84t6hsjacr5goF3AgwVMcv5K8gdUzHFllcm2yFeaEYILzmGtbKSGazdrVCGMKYRUJxxVWETKrwHaH66OaZDbpxsR-R7kRG1KtdeGpFL2uAHfhnRYSx-9dFJw7RcB-wNhjzVL3C6l7AJNh4vdwUxMpxFNrlehS__b_P2NsONXnEHo6uUFoUIDBKtt1UAPFdxRa39Yuo9gt0"/>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-white overflow-hidden">
+<img alt="Opponent" data-alt="energetic profile of a player with dynamic lighting in an urban gaming studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_p5gp2a3lJ0C5C1URK7ny9RVh0Z00KKmFkGWtzdo7DnPixy9hDRC2jBeWhdVkiCivKQ74_tNkzf0Z1e2GzFD1Ws1Zd5pAkPj8OxUGc4FfshiluLAGeq3ULZrRiokFZpzNUZ2isToy-yiBDpc1ovjXNM2s-VgRrGfoHv-uHxpb6pGis695TIkNGqCSGHsmx4Ho7wxx_5m1nulEdMo2cU-AAzhKEyxz0gvHd2JfSSKyfAhsqoPW4mous1aeAb39AmKbkCOxH_SpfaE"/>
+</div>
+</div>
+<div class="bg-tertiary text-white px-3 py-1 rounded-full text-xs font-black">KING OF HILL</div>
+</div>
+<div>
+<div class="text-white/60 text-sm font-bold uppercase tracking-widest mb-1">Speed Run vs. Alexa99</div>
+<div class="flex items-end gap-3">
+<span class="text-5xl font-black text-white font-lexend">42 - 12</span>
+<span class="text-green-400 font-bold mb-2">Crushing it!</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Overall Performance Chart -->
+<section class="bg-surface-container-low rounded-[2.5rem] p-8">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="text-2xl font-bold font-lexend text-primary">Overall Performance</h3>
+<p class="text-on-surface-variant">Your win/loss ratio over the last 7 days.</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="text-xs font-bold uppercase tracking-widest">Wins</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary-container opacity-40"></div>
+<span class="text-xs font-bold uppercase tracking-widest">Losses</span>
+</div>
+</div>
+</div>
+<!-- Pseudo Bar Chart -->
+<div class="flex items-baseline justify-between h-48 px-4 gap-4">
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-1/4 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-3/4 rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">MON</span>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-1/2 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-1/2 rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">TUE</span>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-1/6 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-5/6 rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">WED</span>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-2/3 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-1/3 rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">THU</span>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-1/5 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-4/5 rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">FRI</span>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-0 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-full rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">SAT</span>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full flex flex-col justify-end gap-1 h-32">
+<div class="bg-primary-container opacity-20 w-full h-1/3 rounded-t-lg"></div>
+<div class="bg-secondary w-full h-2/3 rounded-t-lg shadow-lg group-hover:scale-y-105 transition-transform origin-bottom"></div>
+</div>
+<span class="text-xs font-bold mt-3 opacity-50">SUN</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Game History -->
+<aside class="lg:col-span-4">
+<div class="bg-surface-container-highest rounded-[2.5rem] p-6 sticky top-28 h-[calc(100vh-10rem)] overflow-y-auto">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-secondary">history</span>
+<h3 class="text-2xl font-bold font-lexend text-primary">Game History</h3>
+</div>
+<div class="space-y-6">
+<!-- History Item 1 -->
+<div class="bg-surface p-4 rounded-2xl shadow-sm border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-bold text-primary">Victory vs. ShadowPlayer</p>
+<p class="text-xs text-on-surface-variant">2 hours ago • Rank Up!</p>
+</div>
+<span class="bg-secondary-container text-white px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter">WIN</span>
+</div>
+<div class="w-full h-32 rounded-xl overflow-hidden mb-2">
+<img alt="Win Reaction" class="w-full h-full object-cover" data-alt="vibrant animated gif of a celebratory dance with bright disco lights and high energy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV-zs1-jo7OHwcnzSMxOgnI6woId8oRNMeHpYiGEMe3RU2Yst4NT15_LhT3_k9L6jeGQeQRw6e_SopHi27FtD-LLpqf860cE42Jzrq4kEfupyFC7SI_QWMg00UcptqyihYT_bz1Cw7yaCO_kZCl7V1GaXo_9yjX3lm1ohJIcSi_kSUtQh-iC5ACUrBp5L5ZzkHaTQvm5zdpkBTqXlDG73oMzFzg1BwU8QpxFpDZyBKGnIfTVsmFf11uH5Lb1Xc2i0ckXQaZNcqWSo"/>
+</div>
+<div class="text-xs font-medium text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+                                    +150 Kinetic Points
+                                </div>
+</div>
+<!-- History Item 2 -->
+<div class="bg-surface p-4 rounded-2xl shadow-sm border-l-4 border-primary">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-bold text-primary">Defeat vs. MemeLord</p>
+<p class="text-xs text-on-surface-variant">Yesterday • Tough break</p>
+</div>
+<span class="bg-primary text-white px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter">LOSS</span>
+</div>
+<div class="w-full h-32 rounded-xl overflow-hidden mb-2">
+<img alt="Loss Reaction" class="w-full h-full object-cover" data-alt="dramatic and cinematic animated gif of a stylized character looking defeated under a rainy streetlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwqd2DHg5RJCdtaF5SFq7krLeUbcYFr0l1PJ0F9IFblUGPxUtevjMJrQEHgLper6JkYMVWNgA2gYBklwvEOA7jxxP00xlLUC13mKA_3edXyeo22jeF3NyHM1LQsyC8hHX6Fs4fEy8xdvoRzHPT5SU7G8Jvff4YKmZMcqwAmDUeNEpBWhHbldlfAYl9vcnjjfPGmAiZNoBG0fbbGzEg5KcPoQQ0jIAMfh18awBXXaWTQ-eNPJHESP4i0tcpbNAoiVI3nllSrQeWJ5k"/>
+</div>
+<div class="text-xs font-medium text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">remove_circle_outline</span>
+                                    -45 Kinetic Points
+                                </div>
+</div>
+<!-- History Item 3 -->
+<div class="bg-surface p-4 rounded-2xl shadow-sm border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-bold text-primary">Victory vs. NoobSlayer</p>
+<p class="text-xs text-on-surface-variant">2 days ago • Dominant Performance</p>
+</div>
+<span class="bg-secondary-container text-white px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter">WIN</span>
+</div>
+<div class="w-full h-32 rounded-xl overflow-hidden mb-2">
+<img alt="Win Reaction" class="w-full h-full object-cover" data-alt="high energy sports celebration gif with fireworks and cheering crowds in a digital art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD_p71itqVxGJTqJSVoQyL5T8-w1vDoc_cfdXnLYr8FI8X0KvizQvMdw8c-F0mglZ-I3eKBjMppQjcwylsBXmNg2xDerpiz46eInvMuDxrnV59Z3wVq7-1SYoEpuELIEw0AgMjJ9MoFMZC_t1cq2f2x-OMjLjWZYDuuFzw_yBdZyvSzYl-P7RlJ4mTkxA9Gbb2CqpHOM4CFKmAwvLHY4W4FlzU2cavykziilZpBdimeFHmSgAakTgPVDsb9-n2h8lxQFbk37Xa728"/>
+</div>
+<div class="text-xs font-medium text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">stars</span>
+                                    +320 Kinetic Points
+                                </div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-6 pb-8 pt-4 bg-[#f8f9ff]/80 dark:bg-[#041534]/90 backdrop-blur-2xl z-50 border-t border-[#0d1c2e]/5 shadow-[0_-8px_32px_rgba(13,28,46,0.08)]">
+<a class="flex flex-col items-center justify-center text-[#041534] dark:text-[#d5e3fc] opacity-60" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Play</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ef6c00] text-white rounded-full h-14 w-14 -mt-6 shadow-[0_0_20px_rgba(239,108,0,0.4)]" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Rank</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#041534] dark:text-[#d5e3fc] opacity-60" href="#">
+<span class="material-symbols-outlined">gif_box</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Memes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#041534] dark:text-[#d5e3fc] opacity-60" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-lexend text-[10px] uppercase font-bold tracking-widest mt-1">Social</span>
+</a>
+</nav>
+</body></html>

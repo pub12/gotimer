@@ -44,13 +44,13 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
+      <label className="block text-xs font-medium text-muted-foreground mb-1">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(name, e.target.value)}
         placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30"
+        className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30"
       />
     </div>
   );
@@ -122,39 +122,39 @@ export default function AdminSettingsPage() {
 
   return (
     <main className="p-8 max-w-2xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Site Settings</h1>
+      <h1 className="text-2xl font-headline font-black text-foreground mb-6">Site Settings</h1>
 
       {fetch_loading ? (
-        <p className="text-gray-500">Loading settings...</p>
+        <p className="text-muted-foreground">Loading settings...</p>
       ) : (
         <form onSubmit={handle_save} className="space-y-8">
           {/* General */}
-          <section className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h2 className="text-base font-semibold text-gray-800">General</h2>
+          <section className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5 space-y-4">
+            <h2 className="text-base font-semibold text-foreground">General</h2>
             <Field label="Site Name" name="site_name" value={form.site_name} onChange={handle_change} placeholder="GoTimer" />
             <Field label="Tagline" name="tagline" value={form.tagline} onChange={handle_change} placeholder="Your tagline here" />
             <Field label="Contact Email" name="contact_email" value={form.contact_email} onChange={handle_change} type="email" placeholder="hello@gotimer.org" />
           </section>
 
           {/* Homepage */}
-          <section className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h2 className="text-base font-semibold text-gray-800">Homepage</h2>
+          <section className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5 space-y-4">
+            <h2 className="text-base font-semibold text-foreground">Homepage</h2>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Hero Rotating Text</label>
-              <p className="text-xs text-gray-400 mb-2">One phrase per line. These rotate in the hero banner.</p>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Hero Rotating Text</label>
+              <p className="text-xs text-muted-foreground mb-2">One phrase per line. These rotate in the hero banner.</p>
               <textarea
                 value={form.hero_rotating_text}
                 onChange={(e) => handle_change("hero_rotating_text", e.target.value)}
                 rows={5}
                 placeholder={"chess matches\nboard game nights\npub quizzes"}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF6B35]/30 font-mono"
+                className="w-full border border-surface-container rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/30 font-mono"
               />
             </div>
           </section>
 
           {/* Social Media */}
-          <section className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
-            <h2 className="text-base font-semibold text-gray-800">Social Media</h2>
+          <section className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5 space-y-4">
+            <h2 className="text-base font-semibold text-foreground">Social Media</h2>
             <Field label="Twitter / X URL" name="twitter_url" value={form.twitter_url} onChange={handle_change} placeholder="https://twitter.com/gotimer" />
             <Field label="Instagram URL" name="instagram_url" value={form.instagram_url} onChange={handle_change} placeholder="https://instagram.com/gotimer" />
             <Field label="YouTube URL" name="youtube_url" value={form.youtube_url} onChange={handle_change} placeholder="https://youtube.com/@gotimer" />
@@ -166,7 +166,7 @@ export default function AdminSettingsPage() {
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#FF6B35] text-white rounded-lg text-sm font-medium hover:bg-[#e55a2b] disabled:opacity-50 border-none cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-secondary text-secondary-foreground rounded-[0.75rem] text-sm font-medium hover:bg-secondary/90 disabled:opacity-50 border-none cursor-pointer"
             >
               <Save className="w-4 h-4" />
               {saving ? "Saving..." : "Save Settings"}

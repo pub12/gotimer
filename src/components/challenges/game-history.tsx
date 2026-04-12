@@ -103,12 +103,12 @@ export function GameHistory({
         return (
           <div
             key={game.id}
-            className={`p-4 rounded-lg border ${
+            className={`p-4 rounded-[0.75rem] ${
               is_my_win
-                ? "border-primary/30 bg-primary/5"
+                ? "bg-accent/10"
                 : game.is_draw
-                ? "border-muted bg-muted/30"
-                : "border-border"
+                ? "bg-surface-container-high"
+                : "bg-surface-container-low"
             }`}
           >
             <div className="flex items-center justify-between">
@@ -135,7 +135,7 @@ export function GameHistory({
                   {game.is_draw ? "Draw" : `${winner_name} won`}
                 </span>
                 {!game.is_draw && game.points && game.points > 1 && (
-                  <span className="text-xs bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-medium">
+                  <span className="text-xs bg-accent/20 text-accent px-1.5 py-0.5 rounded-full font-medium">
                     +{game.points}pts
                   </span>
                 )}

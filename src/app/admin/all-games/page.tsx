@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Navbar from "@/components/navbar";
 import { use_hazo_auth } from "hazo_auth/client";
 import { Trophy, Users, Gamepad2 } from "lucide-react";
 
@@ -73,8 +72,7 @@ export default function AdminAllGamesPage() {
 
   if (auth_loading || loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
-        <Navbar />
+      <main className="p-8">
         <p className="text-muted-foreground">Loading...</p>
       </main>
     );
@@ -83,13 +81,12 @@ export default function AdminAllGamesPage() {
   if (!authenticated || !permission_ok) return null;
 
   return (
-    <main className="min-h-screen flex flex-col items-center bg-background p-4 pt-20">
-      <Navbar />
-      <div className="w-full max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">All Games (Admin)</h1>
+    <main className="p-8 max-w-5xl">
+      <div className="w-full">
+        <h1 className="text-2xl font-headline font-black text-foreground mb-6">All Games (Admin)</h1>
 
         {challenges.length === 0 ? (
-          <div className="bg-card rounded-xl p-8 shadow-sm border text-center">
+          <div className="bg-card rounded-[1rem] p-8 shadow-[var(--shadow-soft)] text-center">
             <p className="text-muted-foreground">No challenges found.</p>
           </div>
         ) : (
@@ -106,7 +103,7 @@ export default function AdminAllGamesPage() {
                 <Link
                   key={c.id}
                   href={c.is_public ? `/public-challenges/${c.id}` : "#"}
-                  className="block bg-card rounded-xl p-5 shadow-sm border hover:shadow-md transition-shadow no-underline text-foreground"
+                  className="block bg-card rounded-[1rem] p-5 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-soft-lg)] transition-shadow no-underline text-foreground"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -118,7 +115,7 @@ export default function AdminAllGamesPage() {
                               ? "bg-green-100 text-green-700"
                               : c.status === "completed"
                               ? "bg-blue-100 text-blue-700"
-                              : "bg-gray-100 text-gray-700"
+                              : "bg-surface-container text-muted-foreground"
                           }`}
                         >
                           {c.status}
@@ -128,7 +125,7 @@ export default function AdminAllGamesPage() {
                             public
                           </span>
                         ) : (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-surface-container text-muted-foreground">
                             private
                           </span>
                         )}

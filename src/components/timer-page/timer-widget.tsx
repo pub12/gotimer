@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Volume2, VolumeX, RotateCcw, Pause, Play } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { RotateCcw, Pause, Play } from "lucide-react";
+import TimerShell from "@/components/shared/timer-shell";
 
 interface TimerWidgetProps {
   timer_type: string; // "countdown" | "interval" | "stopwatch"
@@ -31,58 +33,46 @@ const STROKE_WIDTH = 12;
 const RADIUS = 134;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
+const RING_NORMAL = "relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center";
+const RING_FULLSCREEN = "relative w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem] md:w-[34rem] md:h-[34rem] flex items-center justify-center";
+
 function ProgressRing({ progress, color }: { progress: number; color: string }) {
   const dash_offset = CIRCUMFERENCE * (1 - progress);
   return (
     <svg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="w-full h-full -rotate-90">
-      <circle
-        cx={RING_SIZE / 2}
-        cy={RING_SIZE / 2}
-        r={RADIUS}
-        fill="none"
-        stroke="#E5E7EB"
-        strokeWidth={STROKE_WIDTH}
-      />
-      <circle
-        cx={RING_SIZE / 2}
-        cy={RING_SIZE / 2}
-        r={RADIUS}
-        fill="none"
-        stroke={color}
-        strokeWidth={STROKE_WIDTH}
-        strokeLinecap="round"
-        strokeDasharray={CIRCUMFERENCE}
-        strokeDashoffset={dash_offset}
-        style={{ transition: "stroke-dashoffset 0.3s ease" }}
-      />
+      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
+        stroke="var(--surface-container-high)" strokeWidth={STROKE_WIDTH} />
+      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
+        stroke={color} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
+        strokeDasharray={CIRCUMFERENCE} strokeDashoffset={dash_offset}
+        style={{ transition: "stroke-dashoffset 0.3s ease" }} />
     </svg>
   );
 }
 
-function TimeDisplay({ seconds }: { seconds: number }) {
+function TimeDisplay({ seconds }: { seconds: number; large?: boolean }) {
   const formatted = format_time(seconds);
   const parts = formatted.split(":");
-  const labels =
-    parts.length === 3
-      ? ["Hours", "Minutes", "Seconds"]
-      : ["Minutes", "Seconds"];
+  const has_hours = parts.length === 3;
+  const labels = has_hours ? ["Hours", "Minutes", "Seconds"] : ["Minutes", "Seconds"];
+
+  // Smaller digits when HH:MM:SS to fit inside ring
+  const digit_class = has_hours
+    ? "text-3xl sm:text-4xl md:text-5xl font-headline font-black text-foreground"
+    : "text-4xl sm:text-5xl md:text-7xl font-headline font-black text-foreground";
+  const colon_class = has_hours
+    ? "text-3xl sm:text-4xl md:text-5xl font-headline font-black text-foreground mb-3 sm:mb-4"
+    : "text-4xl sm:text-5xl md:text-7xl font-headline font-black text-foreground mb-4 sm:mb-5";
+  const label_class = "text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground mt-1";
 
   return (
-    <div className="flex items-baseline gap-1.5 sm:gap-2">
+    <div className={`flex items-baseline ${has_hours ? "gap-1 sm:gap-1.5" : "gap-1.5 sm:gap-2"}`}>
       {parts.map((part, i) => (
         <React.Fragment key={i}>
-          {i > 0 && (
-            <span className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-800 mb-4 sm:mb-5">
-              :
-            </span>
-          )}
+          {i > 0 && <span className={colon_class}>:</span>}
           <div className="flex flex-col items-center">
-            <span className="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-800 font-mono">
-              {part}
-            </span>
-            <span className="text-[10px] sm:text-xs uppercase tracking-wider text-gray-400 mt-1">
-              {labels[i]}
-            </span>
+            <span className={digit_class}>{part}</span>
+            <span className={label_class}>{labels[i]}</span>
           </div>
         </React.Fragment>
       ))}
@@ -91,153 +81,54 @@ function TimeDisplay({ seconds }: { seconds: number }) {
 }
 
 // ---- Countdown Timer ----
-function CountdownTimer({
-  duration,
-  audio_enabled,
-  play_beep,
-}: {
-  duration: number;
-  audio_enabled: boolean;
-  play_beep: (dur?: number, freq?: number) => void;
-}) {
+function useCountdownTimer(duration: number, play_beep: (dur?: number, freq?: number) => void) {
   const [remaining, set_remaining] = useState(duration);
   const [running, set_running] = useState(false);
   const prev_remaining = useRef(remaining);
 
-  useEffect(() => {
-    set_remaining(duration);
-    set_running(false);
-  }, [duration]);
+  useEffect(() => { set_remaining(duration); set_running(false); }, [duration]);
 
   useEffect(() => {
     if (!running || remaining <= 0) return;
-    const interval = setInterval(() => {
-      set_remaining((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    const interval = setInterval(() => set_remaining((p) => (p > 0 ? p - 1 : 0)), 1000);
     return () => clearInterval(interval);
   }, [running, remaining]);
 
   useEffect(() => {
-    if (running && remaining > 0 && remaining <= 10 && prev_remaining.current !== remaining) {
-      play_beep();
-    }
-    if (running && remaining === 0 && prev_remaining.current !== 0) {
-      play_beep(1.2, 1200);
-    }
+    if (running && remaining > 0 && remaining <= 10 && prev_remaining.current !== remaining) play_beep();
+    if (running && remaining === 0 && prev_remaining.current !== 0) play_beep(1.2, 1200);
     prev_remaining.current = remaining;
   }, [remaining, running, play_beep]);
 
   const progress = duration > 0 ? remaining / duration : 0;
 
   return {
-    display: (
-      <div className="relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center">
-        <ProgressRing progress={progress} color="#3B82F6" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <TimeDisplay seconds={remaining} />
-        </div>
-      </div>
-    ),
-    controls: (
-      <div className="flex gap-3 w-full max-w-sm">
-        <button
-          onClick={() => set_running(!running)}
-          className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl py-3 sm:py-4 text-base font-semibold transition-colors"
-        >
-          {running ? (
-            <>
-              <Pause className="w-5 h-5" /> Pause
-            </>
-          ) : (
-            <>
-              <Play className="w-5 h-5" /> {remaining < duration ? "Resume" : "Start"}
-            </>
-          )}
-        </button>
-        <button
-          onClick={() => {
-            set_remaining(duration);
-            set_running(false);
-          }}
-          disabled={remaining === duration && !running}
-          className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-3 sm:py-4 px-5 text-base font-semibold transition-colors disabled:opacity-40"
-        >
-          <RotateCcw className="w-5 h-5" /> Reset
-        </button>
-      </div>
-    ),
+    remaining, running, progress, set_running,
+    reset: () => { set_remaining(duration); set_running(false); },
     status_text: remaining === 0 ? "Time's up!" : running ? "Counting down..." : "Ready",
   };
 }
 
 // ---- Stopwatch Timer ----
-function StopwatchTimer() {
+function useStopwatchTimer() {
   const [elapsed, set_elapsed] = useState(0);
   const [running, set_running] = useState(false);
 
   useEffect(() => {
     if (!running) return;
-    const interval = setInterval(() => {
-      set_elapsed((prev) => prev + 1);
-    }, 1000);
+    const interval = setInterval(() => set_elapsed((p) => p + 1), 1000);
     return () => clearInterval(interval);
   }, [running]);
 
   return {
-    display: (
-      <div className="relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center">
-        <ProgressRing progress={1} color="#10B981" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <TimeDisplay seconds={elapsed} />
-        </div>
-      </div>
-    ),
-    controls: (
-      <div className="flex gap-3 w-full max-w-sm">
-        <button
-          onClick={() => set_running(!running)}
-          className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl py-3 sm:py-4 text-base font-semibold transition-colors"
-        >
-          {running ? (
-            <>
-              <Pause className="w-5 h-5" /> Pause
-            </>
-          ) : (
-            <>
-              <Play className="w-5 h-5" /> {elapsed > 0 ? "Resume" : "Start"}
-            </>
-          )}
-        </button>
-        <button
-          onClick={() => {
-            set_elapsed(0);
-            set_running(false);
-          }}
-          disabled={elapsed === 0 && !running}
-          className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-3 sm:py-4 px-5 text-base font-semibold transition-colors disabled:opacity-40"
-        >
-          <RotateCcw className="w-5 h-5" /> Reset
-        </button>
-      </div>
-    ),
+    elapsed, running, set_running,
+    reset: () => { set_elapsed(0); set_running(false); },
     status_text: running ? "Stopwatch running" : elapsed > 0 ? "Paused" : "Ready",
   };
 }
 
 // ---- Interval Timer ----
-function IntervalTimer({
-  work_seconds,
-  rest_seconds,
-  rounds,
-  audio_enabled,
-  play_beep,
-}: {
-  work_seconds: number;
-  rest_seconds: number;
-  rounds: number;
-  audio_enabled: boolean;
-  play_beep: (dur?: number, freq?: number) => void;
-}) {
+function useIntervalTimer(work_seconds: number, rest_seconds: number, rounds: number, play_beep: (dur?: number, freq?: number) => void) {
   const [phase, set_phase] = useState<"work" | "rest">("work");
   const [current_round, set_current_round] = useState(1);
   const [remaining, set_remaining] = useState(work_seconds);
@@ -246,54 +137,23 @@ function IntervalTimer({
   const prev_remaining = useRef(remaining);
 
   function reset_all() {
-    set_phase("work");
-    set_current_round(1);
-    set_remaining(work_seconds);
-    set_running(false);
-    set_finished(false);
+    set_phase("work"); set_current_round(1); set_remaining(work_seconds); set_running(false); set_finished(false);
   }
 
-  useEffect(() => {
-    reset_all();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [work_seconds, rest_seconds, rounds]);
+  useEffect(() => { reset_all(); }, [work_seconds, rest_seconds, rounds]);
 
   useEffect(() => {
     if (!running || finished) return;
     const interval = setInterval(() => {
       set_remaining((prev) => {
         if (prev > 1) return prev - 1;
-        // Time to switch
         if (phase === "work") {
-          if (rest_seconds > 0) {
-            set_phase("rest");
-            play_beep(0.5, 660);
-            return rest_seconds;
-          }
-          // No rest, go to next round
-          if (current_round < rounds) {
-            set_current_round((r) => r + 1);
-            play_beep(0.5, 660);
-            return work_seconds;
-          }
-          // Done
-          set_finished(true);
-          set_running(false);
-          play_beep(1.2, 1200);
-          return 0;
+          if (rest_seconds > 0) { set_phase("rest"); play_beep(0.5, 660); return rest_seconds; }
+          if (current_round < rounds) { set_current_round((r) => r + 1); play_beep(0.5, 660); return work_seconds; }
+          set_finished(true); set_running(false); play_beep(1.2, 1200); return 0;
         } else {
-          // End of rest
-          if (current_round < rounds) {
-            set_phase("work");
-            set_current_round((r) => r + 1);
-            play_beep(0.3, 880);
-            return work_seconds;
-          }
-          // Done
-          set_finished(true);
-          set_running(false);
-          play_beep(1.2, 1200);
-          return 0;
+          if (current_round < rounds) { set_phase("work"); set_current_round((r) => r + 1); play_beep(0.3, 880); return work_seconds; }
+          set_finished(true); set_running(false); play_beep(1.2, 1200); return 0;
         }
       });
     }, 1000);
@@ -301,178 +161,181 @@ function IntervalTimer({
   }, [running, finished, phase, current_round, rounds, work_seconds, rest_seconds, play_beep]);
 
   useEffect(() => {
-    if (running && remaining > 0 && remaining <= 3 && prev_remaining.current !== remaining) {
-      play_beep();
-    }
+    if (running && remaining > 0 && remaining <= 3 && prev_remaining.current !== remaining) play_beep();
     prev_remaining.current = remaining;
   }, [remaining, running, play_beep]);
 
   const phase_duration = phase === "work" ? work_seconds : rest_seconds;
   const progress = phase_duration > 0 ? remaining / phase_duration : 0;
-  const ring_color = phase === "work" ? "#EF4444" : "#3B82F6";
+  const ring_color = phase === "work" ? "var(--secondary)" : "var(--primary)";
 
   return {
-    display: (
-      <div className="relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center">
-        <ProgressRing progress={progress} color={ring_color} />
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span
-            className={`text-xs sm:text-sm font-bold uppercase tracking-widest mb-1 ${
-              phase === "work" ? "text-red-500" : "text-blue-500"
-            }`}
-          >
-            {finished ? "Done!" : phase === "work" ? "Work" : "Rest"}
-          </span>
-          <TimeDisplay seconds={remaining} />
-          <span className="text-xs text-gray-400 mt-2">
-            Round {current_round} / {rounds}
-          </span>
-        </div>
-      </div>
-    ),
-    controls: (
-      <div className="flex gap-3 w-full max-w-sm">
-        <button
-          onClick={() => {
-            if (finished) {
-              reset_all();
-            } else {
-              set_running(!running);
-            }
-          }}
-          className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white rounded-2xl py-3 sm:py-4 text-base font-semibold transition-colors"
-        >
-          {finished ? (
-            <>
-              <RotateCcw className="w-5 h-5" /> Restart
-            </>
-          ) : running ? (
-            <>
-              <Pause className="w-5 h-5" /> Pause
-            </>
-          ) : (
-            <>
-              <Play className="w-5 h-5" /> {remaining < phase_duration ? "Resume" : "Start"}
-            </>
-          )}
-        </button>
-        {!finished && (
-          <button
-            onClick={reset_all}
-            disabled={remaining === work_seconds && current_round === 1 && phase === "work" && !running}
-            className="flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-2xl py-3 sm:py-4 px-5 text-base font-semibold transition-colors disabled:opacity-40"
-          >
-            <RotateCcw className="w-5 h-5" /> Reset
-          </button>
-        )}
-      </div>
-    ),
-    status_text: finished
-      ? "Workout complete!"
-      : running
-      ? `${phase === "work" ? "Working" : "Resting"} - Round ${current_round}/${rounds}`
-      : "Ready",
+    phase, current_round, remaining, running, finished, progress, ring_color, phase_duration, rounds,
+    set_running, reset_all,
+    status_text: finished ? "Workout complete!" : running ? `${phase === "work" ? "Working" : "Resting"} - Round ${current_round}/${rounds}` : "Ready",
   };
 }
 
 // ---- Main Widget ----
 export default function TimerWidget({ timer_type, config }: TimerWidgetProps) {
+  const search_params = useSearchParams();
   const [audio_enabled, set_audio_enabled] = useState(false);
   const audio_context_ref = useRef<AudioContext | null>(null);
+
+  // Read initial values from URL query params
+  const initial_duration = Number(search_params.get("duration")) || config.duration || 60;
+  const initial_work = Number(search_params.get("work")) || config.work_seconds || 30;
+  const initial_rest = Number(search_params.get("rest")) || config.rest_seconds || 10;
+  const initial_rounds = Number(search_params.get("rounds")) || config.rounds || 8;
+
+  const [user_duration, set_user_duration] = useState(initial_duration);
+  const [user_work, set_user_work] = useState(initial_work);
+  const [user_rest, set_user_rest] = useState(initial_rest);
+  const [user_rounds, set_user_rounds] = useState(initial_rounds);
 
   const toggle_audio = () => {
     if (!audio_enabled) {
       try {
         if (!audio_context_ref.current) {
           audio_context_ref.current = new (
-            window.AudioContext ||
-            (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
+            window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
           )();
         }
         set_audio_enabled(true);
-      } catch {
-        // Audio not supported
-      }
+      } catch { /* Audio not supported */ }
     } else {
       set_audio_enabled(false);
     }
   };
 
-  const play_beep = useCallback(
-    (duration = 0.15, frequency = 880) => {
-      if (!audio_enabled || !audio_context_ref.current) return;
-      try {
-        const ctx = audio_context_ref.current;
-        if (ctx.state === "suspended") {
-          ctx.resume();
-        }
-        const oscillator = ctx.createOscillator();
-        const gain = ctx.createGain();
-        oscillator.type = "sine";
-        oscillator.frequency.value = frequency;
-        gain.gain.value = 0.2;
-        oscillator.connect(gain);
-        gain.connect(ctx.destination);
-        oscillator.start();
-        oscillator.stop(ctx.currentTime + duration);
-      } catch {
-        // Ignore errors
-      }
-    },
-    [audio_enabled]
-  );
+  const play_beep = useCallback((duration = 0.15, frequency = 880) => {
+    if (!audio_enabled || !audio_context_ref.current) return;
+    try {
+      const ctx = audio_context_ref.current;
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine"; osc.frequency.value = frequency; gain.gain.value = 0.2;
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + duration);
+    } catch { /* Ignore */ }
+  }, [audio_enabled]);
 
-  let timer_result: { display: React.ReactNode; controls: React.ReactNode; status_text: string };
+  // Timer hooks
+  const countdown = useCountdownTimer(user_duration, play_beep);
+  const stopwatch = useStopwatchTimer();
+  const interval = useIntervalTimer(user_work, user_rest, user_rounds, play_beep);
 
-  if (timer_type === "stopwatch") {
-    timer_result = StopwatchTimer();
-  } else if (timer_type === "interval") {
-    timer_result = IntervalTimer({
-      work_seconds: config.work_seconds ?? 30,
-      rest_seconds: config.rest_seconds ?? 10,
-      rounds: config.rounds ?? 8,
-      audio_enabled,
-      play_beep,
-    });
-  } else {
-    // countdown (default)
-    timer_result = CountdownTimer({
-      duration: config.duration ?? 60,
-      audio_enabled,
-      play_beep,
-    });
-  }
+  const timer_label = timer_type === "interval" ? "Interval Timer" : timer_type === "stopwatch" ? "Stopwatch" : "Countdown Timer";
+
+  const status_text = timer_type === "stopwatch" ? stopwatch.status_text
+    : timer_type === "interval" ? interval.status_text
+    : countdown.status_text;
+
+  const btn_cls = (fs: boolean) =>
+    `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
+  const reset_cls = (fs: boolean) =>
+    `flex items-center justify-center gap-2 bg-surface-container-low text-foreground hover:bg-surface-container-high rounded-2xl ${fs ? "py-4 sm:py-5 px-6 text-lg" : "py-3 sm:py-4 px-5 text-base"} font-semibold transition-colors disabled:opacity-40`;
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-12 flex flex-col items-center gap-4 sm:gap-5 md:gap-6 w-full max-w-md md:max-w-lg mx-auto relative">
-      {/* Audio toggle */}
-      <button
-        aria-label={audio_enabled ? "Disable Sound" : "Enable Sound"}
-        onClick={toggle_audio}
-        className={`absolute top-3 right-3 sm:top-4 sm:right-4 rounded-full p-2 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-          audio_enabled ? "bg-blue-100" : "bg-gray-100 hover:bg-gray-200"
-        }`}
-      >
-        {audio_enabled ? (
-          <Volume2 className="text-blue-600 w-5 h-5" />
-        ) : (
-          <VolumeX className="text-gray-500 w-5 h-5" />
-        )}
-      </button>
-
-      {/* Status */}
-      <div className="flex items-center gap-2 bg-blue-50 text-blue-600 rounded-full px-4 py-1.5 text-sm font-semibold uppercase tracking-wide">
-        <span className="w-2 h-2 rounded-full bg-blue-500" />
-        {timer_type === "interval" ? "Interval Timer" : timer_type === "stopwatch" ? "Stopwatch" : "Countdown Timer"}
-      </div>
-
-      <p className="text-gray-500 text-sm">{timer_result.status_text}</p>
-
-      {/* Timer display */}
-      {timer_result.display}
-
-      {/* Controls */}
-      {timer_result.controls}
-    </div>
+    <TimerShell
+      timer_label={timer_label}
+      status_text={status_text}
+      audio_enabled={audio_enabled}
+      on_toggle_audio={toggle_audio}
+      duration={timer_type === "countdown" ? { value: user_duration, onChange: set_user_duration } : undefined}
+      interval={timer_type === "interval" ? {
+        work: user_work, on_work_change: set_user_work,
+        rest: user_rest, on_rest_change: set_user_rest,
+        rounds: user_rounds, on_rounds_change: set_user_rounds,
+      } : undefined}
+      defaults={{
+        duration: config.duration ?? 60,
+        work: config.work_seconds ?? 30,
+        rest: config.rest_seconds ?? 10,
+        rounds: config.rounds ?? 8,
+      }}
+      remaining={timer_type === "countdown" ? countdown.remaining : timer_type === "interval" ? interval.remaining : undefined}
+      running={timer_type === "countdown" ? countdown.running : timer_type === "interval" ? interval.running : stopwatch.running}
+      controls={({ is_fullscreen: fs }) => {
+        if (timer_type === "stopwatch") {
+          return (
+            <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
+              <button onClick={() => stopwatch.set_running(!stopwatch.running)}
+                className={btn_cls(fs).replace("bg-secondary", "bg-accent").replace("hover:bg-secondary/90", "hover:bg-accent/90").replace("text-secondary-foreground", "text-white")}>
+                {stopwatch.running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {stopwatch.elapsed > 0 ? "Resume" : "Start"}</>}
+              </button>
+              <button onClick={stopwatch.reset} disabled={stopwatch.elapsed === 0 && !stopwatch.running} className={reset_cls(fs)}>
+                <RotateCcw className="w-5 h-5" /> Reset
+              </button>
+            </div>
+          );
+        }
+        if (timer_type === "interval") {
+          return (
+            <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
+              <button onClick={() => interval.finished ? interval.reset_all() : interval.set_running(!interval.running)} className={btn_cls(fs)}>
+                {interval.finished ? <><RotateCcw className="w-5 h-5" /> Restart</> : interval.running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {interval.remaining < interval.phase_duration ? "Resume" : "Start"}</>}
+              </button>
+              {!interval.finished && (
+                <button onClick={interval.reset_all} disabled={interval.remaining === user_work && interval.current_round === 1 && interval.phase === "work" && !interval.running} className={reset_cls(fs)}>
+                  <RotateCcw className="w-5 h-5" /> Reset
+                </button>
+              )}
+            </div>
+          );
+        }
+        // countdown
+        return (
+          <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
+            <button onClick={() => countdown.set_running(!countdown.running)} className={btn_cls(fs)}>
+              {countdown.running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {countdown.remaining < user_duration ? "Resume" : "Start"}</>}
+            </button>
+            <button onClick={countdown.reset} disabled={countdown.remaining === user_duration && !countdown.running} className={reset_cls(fs)}>
+              <RotateCcw className="w-5 h-5" /> Reset
+            </button>
+          </div>
+        );
+      }}
+    >
+      {({ ring_color }) => {
+        const rc = ring_color || "var(--secondary)";
+        if (timer_type === "stopwatch") {
+          return (
+            <div className={RING_NORMAL}>
+              <ProgressRing progress={1} color={ring_color || "var(--accent)"} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <TimeDisplay seconds={stopwatch.elapsed} large={false} />
+              </div>
+            </div>
+          );
+        }
+        if (timer_type === "interval") {
+          return (
+            <div className={RING_NORMAL}>
+              <ProgressRing progress={interval.progress} color={ring_color || interval.ring_color} />
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className={`text-xs sm:text-sm font-headline font-black uppercase tracking-widest mb-1 ${interval.phase === "work" ? "text-secondary" : "text-primary"}`}>
+                  {interval.finished ? "Done!" : interval.phase === "work" ? "Work" : "Rest"}
+                </span>
+                <TimeDisplay seconds={interval.remaining} large={false} />
+                <span className="text-xs mt-2 text-muted-foreground">
+                  Round {interval.current_round} / {interval.rounds}
+                </span>
+              </div>
+            </div>
+          );
+        }
+        // countdown
+        return (
+          <div className={RING_NORMAL}>
+            <ProgressRing progress={countdown.progress} color={rc} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <TimeDisplay seconds={countdown.remaining} large={false} />
+            </div>
+          </div>
+        );
+      }}
+    </TimerShell>
   );
 }

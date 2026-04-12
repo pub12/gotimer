@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GoTimer Admin | The Clubhouse</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lexend:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#ffb4a1",
+                      "surface-variant": "#d5e3fc",
+                      "surface-dim": "#ccdbf3",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#233144",
+                      "tertiary-container": "#d3a500",
+                      "on-primary-container": "#8392b7",
+                      "on-secondary-fixed-variant": "#891e00",
+                      "primary-fixed-dim": "#b7c6ee",
+                      "inverse-on-surface": "#eaf1ff",
+                      "surface-container-low": "#eff4ff",
+                      "tertiary": "#755b00",
+                      "secondary-container": "#fd6f4a",
+                      "surface-container-high": "#dce9ff",
+                      "secondary": "#ab3514",
+                      "surface": "#f8f9ff",
+                      "on-surface": "#0d1c2e",
+                      "surface-tint": "#4f5e81",
+                      "primary": "#041534",
+                      "tertiary-fixed-dim": "#f3c00a",
+                      "primary-container": "#1b2a4a",
+                      "on-primary-fixed-variant": "#384668",
+                      "inverse-primary": "#b7c6ee",
+                      "tertiary-fixed": "#ffdf91",
+                      "primary-fixed": "#d9e2ff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#ffdbd2",
+                      "surface-container-highest": "#d5e3fc",
+                      "surface-container": "#e6eeff",
+                      "on-primary-fixed": "#0a1a3a",
+                      "outline-variant": "#c5c6cf",
+                      "on-tertiary-container": "#503d00",
+                      "error": "#ba1a1a",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#651400",
+                      "on-tertiary-fixed-variant": "#594400",
+                      "on-background": "#0d1c2e",
+                      "background": "#f8f9ff",
+                      "on-secondary-fixed": "#3c0800",
+                      "on-surface-variant": "#45464e",
+                      "outline": "#75777f",
+                      "on-tertiary-fixed": "#241a00",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Lexend"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-lexend { font-family: 'Lexend', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-slate-100 dark:bg-slate-900 flex flex-col font-lexend font-medium text-sm no-line-architecture">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<img alt="GoTimer Mascot" class="w-10 h-10" data-alt="A friendly geometric flat-style mascot character shaped like a stopwatch with a smiling face in navy and orange tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG35F50d2_Di3ptBbYqLIjw712CYpHju928ukhTy1lTLcjrQRQ9pTSJODEBLrGA3du9CTQGIZoQ-mCEXzrcLTzBKoNMjMbGEvKArDct1h5eBuzoOVsUNbZdg7zaoQ1MRdo_0rubr-9ncgyeqcIvsqwYIALThyiGBnPkiG-LcGsy8m_lo71uU_AngktBvtiWdxTg-eMv717GikmAVkqiHTnEvPt0wOncuvAP4ZJiKubXt3Yae6SpR81341qleSfOJEujl3YZ-LGClk"/>
+<div>
+<div class="text-2xl font-black text-[#041534] dark:text-white leading-none">The Clubhouse</div>
+<div class="text-xs text-slate-500 font-normal">Admin Terminal</div>
+</div>
+</div>
+<nav class="space-y-1">
+<!-- User Management (Inactive) -->
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 pl-6 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-r-full transition-colors ease-out duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>User Management</span>
+</a>
+<!-- Timer Config (Inactive) -->
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 pl-6 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-r-full transition-colors ease-out duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span>Timer Config</span>
+</a>
+<!-- Challenges (Inactive) -->
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 pl-6 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-r-full transition-colors ease-out duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+<span>Challenges</span>
+</a>
+<!-- Analytics (Active) -->
+<a class="flex items-center gap-3 bg-white dark:bg-slate-800 text-[#041534] dark:text-white rounded-r-full shadow-sm ml-0 pr-4 py-3 pl-6 border-l-4 border-orange-500 ease-out duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span>Analytics</span>
+</a>
+<!-- Content (Inactive) -->
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 pl-6 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-r-full transition-colors ease-out duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined">article</span>
+<span>Content</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 space-y-1 border-t border-slate-200 dark:border-slate-800">
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 pl-6 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-r-full transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 pl-6 py-3 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-r-full transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>Logs</span>
+</a>
+<button class="w-full mt-4 bg-secondary text-on-secondary rounded-full py-3 font-bold shadow-sm hover:scale-[1.02] transition-transform">
+                Quick Action
+            </button>
+</div>
+</aside>
+<!-- TopNavBar & Main Canvas -->
+<div class="ml-64 min-h-screen flex flex-col">
+<header class="w-full top-0 sticky bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-16 shadow-sm z-30 font-lexend tracking-tight">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-secondary/20 transition-all text-sm" placeholder="Search system logs or users..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 hover:bg-slate-200/50 rounded-full transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-200/50 rounded-full transition-all duration-200 ease-out">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-slate-200 dark:border-slate-800">
+<div class="text-right">
+<div class="text-sm font-bold text-[#041534] dark:text-white">Admin Profile</div>
+<div class="text-[10px] text-slate-500 uppercase tracking-widest">Super User</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Admin Profile" class="w-full h-full object-cover" data-alt="Close-up professional portrait of a tech administrator in a modern office environment with soft bokeh lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArMGjdZWvYkliYIJfYbjvznXUm69Lcaiy1Oe4mvlVMocqqHur3T_R3SsGHl2czPNWKM3kruBoW_I_pEr9_UBa26n7aBJqEKdEajYYSLgpOT1pVG_5DTa4UcixrvpK_VeswCC-siKlsIOtUhHaR-Kpub0DNfZbzpOVU8YW2AUUNXRj8hT2a6-c-CYyMqg82pjHaK9q_dYBNfnbstuZRX7-JYOzYcVqsnM8A2ZKIQIoIfBLofEkGAdHaJw-eyQ4-HjGyBZXB8G6spuc"/>
+</div>
+</div>
+</div>
+</header>
+<main class="p-8 space-y-8 flex-1">
+<!-- Page Header Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="text-4xl font-extrabold text-primary tracking-tighter mb-2">The Clubhouse: Admin Overview</h1>
+<p class="text-on-surface-variant font-body">Operational pulse of the GoTimer ecosystem</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-white shadow-sm rounded-xl px-4 py-2 gap-3 border border-outline-variant/15">
+<span class="material-symbols-outlined text-slate-400">calendar_today</span>
+<span class="text-sm font-medium">Oct 24, 2023 - Oct 31, 2023</span>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Export Report</span>
+</button>
+</div>
+</section>
+<!-- KPI Cards Row -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white p-6 rounded-xl shadow-sm border-b-4 border-primary transition-all hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-fixed rounded-lg">
+<span class="material-symbols-outlined text-primary">timer</span>
+</div>
+<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">+12.5%</span>
+</div>
+<div class="text-3xl font-black text-primary font-lexend">2,842</div>
+<div class="text-sm text-slate-500 font-medium">Active Timers</div>
+<div class="mt-2 text-[11px] text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Powered by Timer the Speedy
+                    </div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border-b-4 border-secondary transition-all hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary-fixed rounded-lg">
+<span class="material-symbols-outlined text-secondary">group</span>
+</div>
+<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">+48</span>
+</div>
+<div class="text-3xl font-black text-primary font-lexend">156</div>
+<div class="text-sm text-slate-500 font-medium">New Users Today</div>
+<div class="mt-2 text-[11px] text-slate-400">Global signups across all regions</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border-b-4 border-tertiary-container transition-all hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary-fixed rounded-lg">
+<span class="material-symbols-outlined text-tertiary">emoji_events</span>
+</div>
+<span class="text-[10px] font-bold text-secondary bg-secondary-fixed px-2 py-1 rounded">HOT</span>
+</div>
+<div class="text-3xl font-black text-primary font-lexend">892</div>
+<div class="text-sm text-slate-500 font-medium">Total Challenges</div>
+<div class="mt-2 text-[11px] text-slate-400">Community &amp; Sponsored events</div>
+</div>
+<div class="bg-white p-6 rounded-xl shadow-sm border-b-4 border-slate-300 transition-all hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-slate-100 rounded-lg">
+<span class="material-symbols-outlined text-slate-600">trending_up</span>
+</div>
+<span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">+5.2%</span>
+</div>
+<div class="text-3xl font-black text-primary font-lexend">$14,205</div>
+<div class="text-sm text-slate-500 font-medium">Monthly Growth</div>
+<div class="mt-2 text-[11px] text-slate-400">Subscription &amp; Tokenized revenue</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Moderation Table -->
+<div class="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-6 flex items-center justify-between">
+<h2 class="text-xl font-bold text-primary">Recent Challenges Moderation</h2>
+<button class="text-sm font-semibold text-secondary flex items-center gap-1 hover:underline">
+                            View All Queue <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low text-[10px] uppercase tracking-widest text-slate-500 font-bold">
+<tr>
+<th class="px-6 py-4">Challenge ID</th>
+<th class="px-6 py-4">Timer Type</th>
+<th class="px-6 py-4">Participants</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Quick Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-sm">
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-primary">#CH-98210</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                            Focus Sprint
+                                        </div>
+</td>
+<td class="px-6 py-5 text-slate-600">12 Users</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full">ACTIVE</span>
+</td>
+<td class="px-6 py-5 text-right space-x-2">
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-secondary transition-colors"><span class="material-symbols-outlined text-lg">flag</span></button>
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-error transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-primary">#CH-98211</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                                            Hyper Blast
+                                        </div>
+</td>
+<td class="px-6 py-5 text-slate-600">4 Users</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 bg-rose-50 text-rose-600 text-[10px] font-bold rounded-full">REPORTED</span>
+</td>
+<td class="px-6 py-5 text-right space-x-2">
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-1.5 bg-secondary/10 text-secondary rounded-lg"><span class="material-symbols-outlined text-lg">gavel</span></button>
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-error transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-5 font-mono text-xs text-primary">#CH-98215</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                                            Deep Work
+                                        </div>
+</td>
+<td class="px-6 py-5 text-slate-600">38 Users</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full">ACTIVE</span>
+</td>
+<td class="px-6 py-5 text-right space-x-2">
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-secondary transition-colors"><span class="material-symbols-outlined text-lg">flag</span></button>
+<button class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-error transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Column: Mascot Usage Chart -->
+<div class="bg-white rounded-xl shadow-sm p-6 flex flex-col">
+<h2 class="text-xl font-bold text-primary mb-6">Active Mascot Usage</h2>
+<div class="flex-1 space-y-5">
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+<span>Speedy</span>
+<span>85%</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+<span>Glo-Up</span>
+<span>62%</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+<span>Tank</span>
+<span>45%</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+<span>Zen Master</span>
+<span>38%</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-indigo-500 rounded-full" style="width: 38%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+<span>Bolt</span>
+<span>30%</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 30%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold text-slate-500 uppercase">
+<span>Shadow</span>
+<span>15%</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-slate-400 rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: System Health -->
+<section class="space-y-4">
+<h2 class="text-xl font-bold text-primary">System Health</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-600">dns</span>
+</div>
+<div class="flex-1">
+<div class="text-xs text-slate-500 font-bold uppercase tracking-wide">Server Load</div>
+<div class="flex items-center gap-2">
+<span class="text-lg font-black text-primary">24%</span>
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+</div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-amber-600">speed</span>
+</div>
+<div class="flex-1">
+<div class="text-xs text-slate-500 font-bold uppercase tracking-wide">DB Latency</div>
+<div class="flex items-center gap-2">
+<span class="text-lg font-black text-primary">140ms</span>
+<div class="w-2 h-2 rounded-full bg-amber-500"></div>
+</div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-emerald-600">bolt</span>
+</div>
+<div class="flex-1">
+<div class="text-xs text-slate-500 font-bold uppercase tracking-wide">API Uptime</div>
+<div class="flex items-center gap-2">
+<span class="text-lg font-black text-primary">99.98%</span>
+<div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="p-8 border-t border-slate-200 mt-auto flex justify-between items-center text-xs text-slate-400 font-medium">
+<div>© 2023 GoTimer.org Internal Controls</div>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="hover:text-primary transition-colors" href="#">Security Logs</a>
+<a class="hover:text-primary transition-colors" href="#">Node Status</a>
+</div>
+</footer>
+</div>
+</body></html>

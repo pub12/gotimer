@@ -49,7 +49,7 @@ export function GifPicker({ on_select, on_close }: GifPickerProps) {
   );
 
   return (
-    <div className="border rounded-lg p-4 bg-card">
+    <div className="rounded-[1rem] p-4 bg-card shadow-[var(--shadow-soft)]">
       <div className="flex items-center justify-between mb-3">
         <h4 className="font-medium text-sm">Search GIFs</h4>
         <Button variant="ghost" size="icon" className="h-7 w-7" onClick={on_close}>
@@ -65,7 +65,7 @@ export function GifPicker({ on_select, on_close }: GifPickerProps) {
             value={query}
             onChange={(e) => set_query(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && search(query)}
-            className="w-full pl-9 pr-3 py-2 text-sm border rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full pl-9 pr-3 py-2 text-sm rounded-[0.75rem] bg-surface-container-low focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
         <Button size="sm" onClick={() => search(query)}>
@@ -86,7 +86,7 @@ export function GifPicker({ on_select, on_close }: GifPickerProps) {
           {results.map((gif) => (
             <button
               key={gif.id}
-              className="rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition-all cursor-pointer bg-transparent border-none p-0"
+              className="rounded-[0.75rem] overflow-hidden hover:ring-2 hover:ring-secondary transition-all cursor-pointer bg-transparent border-none p-0"
               onClick={() => on_select(gif.images.fixed_height.url)}
             >
               <img

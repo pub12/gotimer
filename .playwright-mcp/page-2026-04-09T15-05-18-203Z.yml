@@ -1,0 +1,91 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - button "Go to Home" [ref=e3] [cursor=pointer]:
+      - img "GoTimer logo" [ref=e4]
+      - generic [ref=e5]: GoTimer.org
+    - generic [ref=e6]:
+      - link "Home" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e11]: Home
+      - link "Public Challenges" [ref=e12] [cursor=pointer]:
+        - /url: /public-challenges
+        - img [ref=e13]
+        - generic [ref=e16]: Public Challenges
+  - main [ref=e17]:
+    - heading "Round Timer" [level=1] [ref=e18]
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - button "Full Screen" [ref=e22]:
+          - img [ref=e23]
+        - button "Enable Sound" [ref=e28]:
+          - img [ref=e29]
+      - generic [ref=e33]: Round Timer
+      - button "Add a title..." [ref=e36] [cursor=pointer]:
+        - text: Add a title...
+        - img [ref=e37]
+      - paragraph [ref=e40]: Ready
+      - generic [ref=e41]:
+        - generic [ref=e42]: Total
+        - generic [ref=e43]: 00:00
+      - generic [ref=e44]:
+        - img [ref=e45]
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - generic [ref=e51]: "00"
+            - generic [ref=e52]: Minutes
+          - generic [ref=e53]: ":"
+          - generic [ref=e54]:
+            - generic [ref=e55]: "00"
+            - generic [ref=e56]: Seconds
+      - generic [ref=e57]:
+        - button "Next Round" [ref=e58]:
+          - img [ref=e59]
+          - text: Next Round
+        - button "Start" [ref=e62]:
+          - img [ref=e63]
+          - text: Start
+    - paragraph [ref=e66]: Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.
+  - contentinfo [ref=e67]:
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - heading "Timers" [level=3] [ref=e71]
+          - list [ref=e72]:
+            - listitem [ref=e73]:
+              - link "Countdown Timer" [ref=e74] [cursor=pointer]:
+                - /url: /countdown-setup
+            - listitem [ref=e75]:
+              - link "Chess Clock" [ref=e76] [cursor=pointer]:
+                - /url: /chess-clock-setup
+            - listitem [ref=e77]:
+              - link "Round Timer" [ref=e78] [cursor=pointer]:
+                - /url: /round-timer-setup
+        - generic [ref=e79]:
+          - heading "Features" [level=3] [ref=e80]
+          - list [ref=e81]:
+            - listitem [ref=e82]:
+              - link "Public Challenges" [ref=e83] [cursor=pointer]:
+                - /url: /public-challenges
+            - listitem [ref=e84]:
+              - link "Partners" [ref=e85] [cursor=pointer]:
+                - /url: /partners
+        - generic [ref=e86]:
+          - heading "Legal & Info" [level=3] [ref=e87]
+          - list [ref=e88]:
+            - listitem [ref=e89]:
+              - link "Privacy Policy" [ref=e90] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e91]:
+              - link "Terms of Service" [ref=e92] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e93]:
+              - button "Contact Us" [ref=e94] [cursor=pointer]
+            - listitem [ref=e95]:
+              - link "Sitemap" [ref=e96] [cursor=pointer]:
+                - /url: /sitemap.xml
+      - generic [ref=e97]: © 2026 GoTimer.org
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e103] [cursor=pointer]:
+    - img [ref=e104]
+  - alert [ref=e107]

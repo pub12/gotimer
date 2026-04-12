@@ -26,15 +26,15 @@ type MetricCardProps = {
 
 function MetricCard({ label, value, sub, icon, accent, badge_color }: MetricCardProps) {
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 p-5 relative overflow-hidden`}>
+    <div className={`bg-card rounded-[1rem] shadow-[var(--shadow-soft)] p-5 relative overflow-hidden`}>
       <div className={`absolute top-0 left-0 w-1 h-full ${accent} rounded-l-xl`} />
       <div className="pl-3">
         <div className="flex items-center gap-2 mb-2">
           <span className={`p-2 rounded-lg ${badge_color}`}>{icon}</span>
-          <p className="text-sm text-gray-500">{label}</p>
+          <p className="text-sm text-muted-foreground">{label}</p>
         </div>
-        <p className="text-3xl font-bold text-gray-900">{value}</p>
-        {sub && <p className="text-xs text-gray-400 mt-1">{sub}</p>}
+        <p className="text-3xl font-bold text-foreground">{value}</p>
+        {sub && <p className="text-xs text-muted-foreground mt-1">{sub}</p>}
       </div>
     </div>
   );
@@ -67,11 +67,11 @@ export default function AdminAnalyticsPage() {
 
   return (
     <main className="p-8 max-w-5xl">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">Analytics Dashboard</h1>
-      <p className="text-sm text-gray-500 mb-6">Site metrics and content counts.</p>
+      <h1 className="text-2xl font-headline font-black text-foreground mb-2">Analytics Dashboard</h1>
+      <p className="text-sm text-muted-foreground mb-6">Site metrics and content counts.</p>
 
       {stats_loading ? (
-        <p className="text-gray-500">Loading stats...</p>
+        <p className="text-muted-foreground">Loading stats...</p>
       ) : stats ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <MetricCard
@@ -109,9 +109,9 @@ export default function AdminAnalyticsPage() {
             label="Total Users"
             value="Setup required"
             sub="User analytics not yet available"
-            icon={<Users className="w-4 h-4 text-gray-500" />}
-            accent="bg-gray-300"
-            badge_color="bg-gray-50"
+            icon={<Users className="w-4 h-4 text-muted-foreground" />}
+            accent="bg-muted-foreground"
+            badge_color="bg-surface-container-low"
           />
         </div>
       ) : (
