@@ -73,6 +73,19 @@ async function is_admin(user_id: string): Promise<boolean> {
   }
 }
 
+// Pre-render all published timer pages at build time for performance + SEO
+export async function generateStaticParams() {
+  try {
+    const db = get_db();
+    const pages = db
+      .prepare(`SELECT slug FROM timer_pages WHERE status = 'published'`)
+      .all() as { slug: string }[];
+    return pages.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {

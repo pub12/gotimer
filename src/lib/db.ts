@@ -1,5 +1,6 @@
 import Database from "better-sqlite3";
 import path from "path";
+import { seed_defaults } from "./seed-defaults";
 
 let db: Database.Database | null = null;
 
@@ -11,6 +12,7 @@ export function get_db(): Database.Database {
     db.pragma("foreign_keys = ON");
     init_challenge_tables(db);
     run_migrations(db);
+    seed_defaults(db);
   }
   return db;
 }

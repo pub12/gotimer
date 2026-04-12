@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import TimerWidget from "./timer-widget";
 import FaqAccordion from "./faq-accordion";
@@ -114,15 +114,17 @@ export default function TimerPageTemplate({
             {/* Column 1: Main Timer (60%) */}
             <div className="lg:col-span-6 space-y-8">
               {/* Timer widget */}
-              <TimerWidget
-                timer_type={page.timer_type}
-                config={{
-                  duration: (timer_config.duration as number) ?? undefined,
-                  work_seconds: (timer_config.work_seconds as number) ?? undefined,
-                  rest_seconds: (timer_config.rest_seconds as number) ?? undefined,
-                  rounds: (timer_config.rounds as number) ?? undefined,
-                }}
-              />
+              <Suspense fallback={<div className="h-64 flex items-center justify-center text-muted-foreground">Loading timer...</div>}>
+                <TimerWidget
+                  timer_type={page.timer_type}
+                  config={{
+                    duration: (timer_config.duration as number) ?? undefined,
+                    work_seconds: (timer_config.work_seconds as number) ?? undefined,
+                    rest_seconds: (timer_config.rest_seconds as number) ?? undefined,
+                    rounds: (timer_config.rounds as number) ?? undefined,
+                  }}
+                />
+              </Suspense>
 
               {/* SEO content section — admin-controlled, not user-supplied */}
               {page.intro_html && (
