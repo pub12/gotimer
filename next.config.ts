@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/blog-images/:filename*",
+        destination: "/api/blog-images/:filename*",
+      },
+    ];
+  },
   async redirects() {
     return [
       {
