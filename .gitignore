@@ -24,6 +24,10 @@
 .DS_Store
 *.pem
 
+# Screenshots / design review images (root only)
+/*.png
+!/public/**/*.png
+
 # debug
 npm-debug.log*
 yarn-debug.log*

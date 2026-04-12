@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       const content_type = res.headers.get("content-type")?.split(";")[0]?.trim() ?? "image/png";
       const ext = content_type === "image/jpeg" ? ".jpg" : content_type === "image/webp" ? ".webp" : ".png";
       const filename = `${randomUUID()}${ext}`;
-      const upload_dir = path.join(process.cwd(), "data", "blog-images");
+      const upload_dir = path.join(process.cwd(), "public", "blog-images");
       await mkdir(upload_dir, { recursive: true });
       const buffer = Buffer.from(await res.arrayBuffer());
       await writeFile(path.join(upload_dir, filename), buffer);
