@@ -6,7 +6,7 @@ import path from "path";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const UPLOAD_DIR = path.join(process.cwd(), "public", "blog-images");
+const UPLOAD_DIR = path.join(process.cwd(), "data", "blog-images");
 
 function get_extension(content_type: string): string {
   switch (content_type) {
