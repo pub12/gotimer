@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { hazo_get_auth } from "hazo_auth/server-lib";
 import { get_db } from "@/lib/db";
 import { logAdminAction } from "@/lib/audit-log";
@@ -34,6 +35,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
   logAdminAction(db, auth.user.id, "publish", "blog_post", id, JSON.stringify({ status: post.status }), JSON.stringify({ status: "published" }));
 
+  revalidatePath("/sitemap.xml");
+
   const updated = db.prepare(`SELECT * FROM blog_posts WHERE id = ?`).get(id);
   return NextResponse.json(updated);
 }
@@ -61,6 +64,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   ).run(id);
 
   logAdminAction(db, auth.user.id, "unpublish", "blog_post", id, JSON.stringify({ status: post.status }), JSON.stringify({ status: "draft" }));
+
+  revalidatePath("/sitemap.xml");
 
   const updated = db.prepare(`SELECT * FROM blog_posts WHERE id = ?`).get(id);
   return NextResponse.json(updated);

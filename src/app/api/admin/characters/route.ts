@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { hazo_get_auth } from "hazo_auth/server-lib";
 import { get_db } from "@/lib/db";
 import { randomUUID } from "crypto";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 
 type CharacterRow = {
   id: string;
@@ -47,13 +49,34 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "file_path and character_name are required" }, { status: 400 });
   }
 
+  // If file_path is a remote URL, download and store locally
+  let local_path = file_path;
+  if (typeof file_path === "string" && file_path.startsWith("http")) {
+    try {
+      const res = await fetch(file_path);
+      if (!res.ok) {
+        return NextResponse.json({ error: "Failed to download image from URL" }, { status: 400 });
+      }
+      const content_type = res.headers.get("content-type")?.split(";")[0]?.trim() ?? "image/png";
+      const ext = content_type === "image/jpeg" ? ".jpg" : content_type === "image/webp" ? ".webp" : ".png";
+      const filename = `${randomUUID()}${ext}`;
+      const upload_dir = path.join(process.cwd(), "public", "blog-images");
+      await mkdir(upload_dir, { recursive: true });
+      const buffer = Buffer.from(await res.arrayBuffer());
+      await writeFile(path.join(upload_dir, filename), buffer);
+      local_path = `/blog-images/${filename}`;
+    } catch {
+      return NextResponse.json({ error: "Failed to download and store image" }, { status: 400 });
+    }
+  }
+
   const db = get_db();
   const id = randomUUID();
 
   db.prepare(
     `INSERT INTO character_images (id, file_path, character_name, scene_description, generation_prompt)
      VALUES (?, ?, ?, ?, ?)`
-  ).run(id, file_path, character_name, scene_description ?? "", generation_prompt ?? "");
+  ).run(id, local_path, character_name, scene_description ?? "", generation_prompt ?? "");
 
   return NextResponse.json({ id });
 }

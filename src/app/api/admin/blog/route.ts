@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { hazo_get_auth } from "hazo_auth/server-lib";
 import { get_db } from "@/lib/db";
 import { logAdminAction } from "@/lib/audit-log";
@@ -80,6 +81,8 @@ export async function POST(request: NextRequest) {
   const post = db.prepare(`SELECT * FROM blog_posts WHERE id = ?`).get(id);
 
   logAdminAction(db, auth.user.id, "create", "blog_post", id, null, JSON.stringify({ slug, title, status }));
+
+  revalidatePath("/sitemap.xml");
 
   return NextResponse.json(post, { status: 201 });
 }
