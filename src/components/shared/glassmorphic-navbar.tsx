@@ -21,16 +21,55 @@ export default function GlassmorphicNavbar() {
   const [show_feedback, set_show_feedback] = useState(false);
   const [mobile_open, set_mobile_open] = useState(false);
   const [search_query, set_search_query] = useState("");
-  const [search_open, set_search_open] = useState(false);
+  const [search_results, set_search_results] = useState<{ title: string; url: string; type: string; description?: string }[]>([]);
+  const [search_focused, set_search_focused] = useState(false);
+  const search_timeout = useRef<ReturnType<typeof setTimeout>>(null);
+  const search_ref = useRef<HTMLDivElement>(null);
 
-  function handle_search(e: React.FormEvent) {
+  // Debounced search
+  useEffect(() => {
+    const trimmed = search_query.trim();
+    if (trimmed.length < 2) {
+      set_search_results([]);
+      return;
+    }
+    if (search_timeout.current) clearTimeout(search_timeout.current);
+    search_timeout.current = setTimeout(() => {
+      fetch(`/api/search?q=${encodeURIComponent(trimmed)}`)
+        .then((r) => r.json())
+        .then((data) => set_search_results(data.results ?? []))
+        .catch(() => set_search_results([]));
+    }, 250);
+    return () => { if (search_timeout.current) clearTimeout(search_timeout.current); };
+  }, [search_query]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handle_click(e: MouseEvent) {
+      if (search_ref.current && !search_ref.current.contains(e.target as Node)) {
+        set_search_focused(false);
+      }
+    }
+    document.addEventListener("mousedown", handle_click);
+    return () => document.removeEventListener("mousedown", handle_click);
+  }, []);
+
+  function handle_search_submit(e: React.FormEvent) {
     e.preventDefault();
     const trimmed = search_query.trim();
     if (trimmed) {
       fire_search_event(trimmed);
       router.push(`/blog?q=${encodeURIComponent(trimmed)}`);
-      set_search_open(false);
+      set_search_focused(false);
     }
+  }
+
+  function handle_result_click(url: string) {
+    const trimmed = search_query.trim();
+    if (trimmed) fire_search_event(trimmed);
+    set_search_focused(false);
+    set_search_query("");
+    router.push(url);
   }
 
   // Fire GA sign_up event for new users
@@ -93,35 +132,46 @@ export default function GlassmorphicNavbar() {
         </Link>
 
         <div className="flex items-center gap-1">
-          {/* Search */}
-          {search_open ? (
-            <form onSubmit={handle_search} className="flex items-center gap-1">
+          {/* Search bar */}
+          <div ref={search_ref} className="relative">
+            <form onSubmit={handle_search_submit}>
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
               <input
-                autoFocus
                 type="text"
                 value={search_query}
                 onChange={(e) => set_search_query(e.target.value)}
-                placeholder="Search articles..."
-                className="w-40 lg:w-52 px-3 py-1.5 rounded-full bg-surface-container-low text-foreground placeholder:text-muted-foreground text-xs font-medium border border-surface-container-high focus:border-secondary/50 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all duration-200"
+                onFocus={() => set_search_focused(true)}
+                placeholder="Search timers & articles..."
+                className="w-44 lg:w-56 pl-8 pr-3 py-1.5 rounded-full bg-surface-container-low text-foreground placeholder:text-muted-foreground text-xs font-medium border border-surface-container-high focus:border-secondary/50 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all duration-200"
               />
-              <button
-                type="button"
-                onClick={() => { set_search_open(false); set_search_query(""); }}
-                className={nav_link_class + " bg-transparent border-none cursor-pointer"}
-                aria-label="Close search"
-              >
-                <X className="size-4" />
-              </button>
             </form>
-          ) : (
-            <button
-              onClick={() => set_search_open(true)}
-              className={nav_link_class + " bg-transparent border-none cursor-pointer"}
-              aria-label="Search blog"
-            >
-              <Search className="size-4" />
-            </button>
-          )}
+            {search_focused && search_results.length > 0 && (
+              <div className="absolute top-full left-0 mt-2 w-80 max-h-96 overflow-y-auto bg-surface rounded-xl border border-surface-container-high shadow-[var(--shadow-soft-lg)] z-50">
+                {search_results.map((r) => (
+                  <button
+                    key={r.url}
+                    onClick={() => handle_result_click(r.url)}
+                    className="w-full text-left px-4 py-3 hover:bg-surface-container-low transition-colors cursor-pointer bg-transparent border-none first:rounded-t-xl last:rounded-b-xl"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground bg-surface-container-low px-1.5 py-0.5 rounded shrink-0">
+                        {r.type === "blog" ? "Article" : r.type === "timer" ? "Timer" : "Page"}
+                      </span>
+                      <span className="text-sm font-semibold text-foreground truncate">{r.title}</span>
+                    </div>
+                    {r.description && (
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{r.description}</p>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+            {search_focused && search_query.trim().length >= 2 && search_results.length === 0 && (
+              <div className="absolute top-full left-0 mt-2 w-80 bg-surface rounded-xl border border-surface-container-high shadow-[var(--shadow-soft-lg)] z-50 px-4 py-6 text-center">
+                <p className="text-sm text-muted-foreground">No results found</p>
+              </div>
+            )}
+          </div>
 
           {!is_loading && authenticated && (
             <Link href="/studio" className={nav_link_class}>
@@ -238,7 +288,7 @@ export default function GlassmorphicNavbar() {
                   type="text"
                   value={search_query}
                   onChange={(e) => set_search_query(e.target.value)}
-                  placeholder="Search articles..."
+                  placeholder="Search timers & articles..."
                   className="w-full pl-9 pr-3 py-2.5 rounded-full bg-surface-container-low text-foreground placeholder:text-muted-foreground text-sm font-medium border border-surface-container-high focus:border-secondary/50 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all duration-200"
                 />
               </div>
