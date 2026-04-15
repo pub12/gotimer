@@ -4,11 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, MessageSquare, Globe, Home, Shield, BookOpen, Timer, Menu, X } from "lucide-react";
+import { Trophy, MessageSquare, Globe, Shield, BookOpen, Timer, Menu, X, Search } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
-import { check_new_user_sign_up } from "@/lib/ga-events";
+import { check_new_user_sign_up, fire_search_event } from "@/lib/ga-events";
 import { Button } from "@/components/ui/button";
 
 const REDIRECT_KEY = "redirect_after_login";
@@ -20,6 +20,18 @@ export default function GlassmorphicNavbar() {
   const has_redirected = useRef(false);
   const [show_feedback, set_show_feedback] = useState(false);
   const [mobile_open, set_mobile_open] = useState(false);
+  const [search_query, set_search_query] = useState("");
+  const [search_open, set_search_open] = useState(false);
+
+  function handle_search(e: React.FormEvent) {
+    e.preventDefault();
+    const trimmed = search_query.trim();
+    if (trimmed) {
+      fire_search_event(trimmed);
+      router.push(`/blog?q=${encodeURIComponent(trimmed)}`);
+      set_search_open(false);
+    }
+  }
 
   // Fire GA sign_up event for new users
   useEffect(() => {
@@ -81,18 +93,36 @@ export default function GlassmorphicNavbar() {
         </Link>
 
         <div className="flex items-center gap-1">
-          <Link href="/" className={nav_link_class}>
-            <Home className="size-4" />
-            <span>Home</span>
-          </Link>
-          <Link href="/public-challenges" className={nav_link_class}>
-            <Globe className="size-4" />
-            <span>Public Challenges</span>
-          </Link>
-          <Link href="/blog" className={nav_link_class}>
-            <BookOpen className="size-4" />
-            <span>Blog</span>
-          </Link>
+          {/* Search */}
+          {search_open ? (
+            <form onSubmit={handle_search} className="flex items-center gap-1">
+              <input
+                autoFocus
+                type="text"
+                value={search_query}
+                onChange={(e) => set_search_query(e.target.value)}
+                placeholder="Search articles..."
+                className="w-40 lg:w-52 px-3 py-1.5 rounded-full bg-surface-container-low text-foreground placeholder:text-muted-foreground text-xs font-medium border border-surface-container-high focus:border-secondary/50 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all duration-200"
+              />
+              <button
+                type="button"
+                onClick={() => { set_search_open(false); set_search_query(""); }}
+                className={nav_link_class + " bg-transparent border-none cursor-pointer"}
+                aria-label="Close search"
+              >
+                <X className="size-4" />
+              </button>
+            </form>
+          ) : (
+            <button
+              onClick={() => set_search_open(true)}
+              className={nav_link_class + " bg-transparent border-none cursor-pointer"}
+              aria-label="Search blog"
+            >
+              <Search className="size-4" />
+            </button>
+          )}
+
           {!is_loading && authenticated && (
             <Link href="/studio" className={nav_link_class}>
               <Timer className="size-4" />
@@ -105,12 +135,14 @@ export default function GlassmorphicNavbar() {
               <span>My Challenges</span>
             </Link>
           )}
-          {!is_loading && authenticated && permissions?.includes("admin_view_all_games") && (
-            <Link href="/admin" className={nav_link_class}>
-              <Shield className="size-4" />
-              <span>Admin</span>
-            </Link>
-          )}
+          <Link href="/public-challenges" className={nav_link_class}>
+            <Globe className="size-4" />
+            <span>Public Challenges</span>
+          </Link>
+          <Link href="/blog" className={nav_link_class}>
+            <BookOpen className="size-4" />
+            <span>Blog</span>
+          </Link>
           {!is_loading && authenticated && (
             <button
               onClick={() => set_show_feedback(true)}
@@ -120,6 +152,12 @@ export default function GlassmorphicNavbar() {
               <MessageSquare className="size-4" />
               <span>Feedback</span>
             </button>
+          )}
+          {!is_loading && authenticated && permissions?.includes("admin_view_all_games") && (
+            <Link href="/admin" className={nav_link_class}>
+              <Shield className="size-4" />
+              <span>Admin</span>
+            </Link>
           )}
 
           {!is_loading && (
@@ -189,9 +227,32 @@ export default function GlassmorphicNavbar() {
             onClick={() => set_mobile_open(false)}
           />
           <div className="md:hidden fixed top-14 right-0 z-50 w-72 max-h-[calc(100vh-3.5rem)] overflow-y-auto bg-surface rounded-bl-2xl shadow-[var(--shadow-soft-lg)] p-4 flex flex-col gap-1">
-            <Link href="/" className={mobile_link_class}>
-              <Home className="size-5" /> Home
-            </Link>
+            {/* Mobile search */}
+            <form
+              onSubmit={(e) => { e.preventDefault(); const t = search_query.trim(); if (t) { fire_search_event(t); router.push(`/blog?q=${encodeURIComponent(t)}`); set_mobile_open(false); } }}
+              className="px-2 pb-2"
+            >
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+                <input
+                  type="text"
+                  value={search_query}
+                  onChange={(e) => set_search_query(e.target.value)}
+                  placeholder="Search articles..."
+                  className="w-full pl-9 pr-3 py-2.5 rounded-full bg-surface-container-low text-foreground placeholder:text-muted-foreground text-sm font-medium border border-surface-container-high focus:border-secondary/50 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all duration-200"
+                />
+              </div>
+            </form>
+            {!is_loading && authenticated && (
+              <Link href="/studio" className={mobile_link_class}>
+                <Timer className="size-5" /> My Studio
+              </Link>
+            )}
+            {!is_loading && authenticated && (
+              <Link href="/challenges" className={mobile_link_class}>
+                <Trophy className="size-5" /> My Challenges
+              </Link>
+            )}
             <Link href="/public-challenges" className={mobile_link_class}>
               <Globe className="size-5" /> Public Challenges
             </Link>
@@ -200,23 +261,17 @@ export default function GlassmorphicNavbar() {
             </Link>
             {!is_loading && authenticated && (
               <>
-                <Link href="/studio" className={mobile_link_class}>
-                  <Timer className="size-5" /> My Studio
-                </Link>
-                <Link href="/challenges" className={mobile_link_class}>
-                  <Trophy className="size-5" /> My Challenges
-                </Link>
-                {permissions?.includes("admin_view_all_games") && (
-                  <Link href="/admin" className={mobile_link_class}>
-                    <Shield className="size-5" /> Admin
-                  </Link>
-                )}
                 <button
                   onClick={() => { set_mobile_open(false); set_show_feedback(true); }}
                   className={mobile_link_class + " bg-transparent border-none cursor-pointer w-full text-left"}
                 >
                   <MessageSquare className="size-5" /> Feedback
                 </button>
+                {permissions?.includes("admin_view_all_games") && (
+                  <Link href="/admin" className={mobile_link_class}>
+                    <Shield className="size-5" /> Admin
+                  </Link>
+                )}
               </>
             )}
             <div className="border-t border-surface-container-high my-2" />

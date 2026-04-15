@@ -6,8 +6,6 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import { ChevronRight, Clock, Tag } from "lucide-react";
-import { BlogSearch } from "@/components/blog/blog-search";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -162,11 +160,6 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <p className="text-primary-foreground/50 text-lg mt-4 max-w-lg">
                 Guides, strategies, and insights on productivity, timing, and getting more done.
               </p>
-              <div className="mt-6">
-                <Suspense>
-                  <BlogSearch />
-                </Suspense>
-              </div>
             </div>
             <Image
               src="/mascots/drake-timer.png"
