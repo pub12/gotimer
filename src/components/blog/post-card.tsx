@@ -39,13 +39,13 @@ export function PostCard({ title, slug, excerpt, date, category_name, character_
               backgroundSize: "20px 20px",
             }}
           />
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center p-4">
             <Image
               src={character_image || "/mascots/prof-studying.png"}
               alt={character_name || "Blog post"}
-              width={120}
-              height={120}
-              className="w-24 h-24 object-contain drop-shadow-md opacity-80"
+              width={400}
+              height={225}
+              className="max-w-full max-h-full object-contain drop-shadow-md rounded-md"
             />
           </div>
           {category_name && (

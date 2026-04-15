@@ -166,13 +166,13 @@ export default async function BlogPage({ searchParams }: PageProps) {
                           backgroundSize: "24px 24px",
                         }}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center p-6">
                         <Image
                           src={featured_post.character_image || "/mascots/prof-studying.png"}
                           alt={featured_post.character_name || "Blog post character"}
-                          width={280}
-                          height={280}
-                          className="w-48 h-48 lg:w-64 lg:h-64 object-contain drop-shadow-lg"
+                          width={600}
+                          height={400}
+                          className="max-w-full max-h-full object-contain drop-shadow-lg rounded-lg"
                         />
                       </div>
                       {/* Featured label */}
