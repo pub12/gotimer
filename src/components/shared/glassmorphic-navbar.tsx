@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, MessageSquare, Globe, Shield, BookOpen, Timer, Menu, X, Search } from "lucide-react";
+import { Trophy, MessageSquare, Globe, Shield, BookOpen, Timer, Menu, X, Search, FileText, Layers } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
@@ -145,29 +145,67 @@ export default function GlassmorphicNavbar() {
                 className="w-44 lg:w-56 pl-8 pr-3 py-1.5 rounded-full bg-surface-container-low text-foreground placeholder:text-muted-foreground text-xs font-medium border border-surface-container-high focus:border-secondary/50 focus:outline-none focus:ring-1 focus:ring-secondary/30 transition-all duration-200"
               />
             </form>
-            {search_focused && search_results.length > 0 && (
-              <div className="absolute top-full left-0 mt-2 w-80 max-h-96 overflow-y-auto bg-surface rounded-xl border border-surface-container-high shadow-[var(--shadow-soft-lg)] z-50">
-                {search_results.map((r) => (
-                  <button
-                    key={r.url}
-                    onClick={() => handle_result_click(r.url)}
-                    className="w-full text-left px-4 py-3 hover:bg-surface-container-low transition-colors cursor-pointer bg-transparent border-none first:rounded-t-xl last:rounded-b-xl"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground bg-surface-container-low px-1.5 py-0.5 rounded shrink-0">
-                        {r.type === "blog" ? "Article" : r.type === "timer" ? "Timer" : "Page"}
-                      </span>
-                      <span className="text-sm font-semibold text-foreground truncate">{r.title}</span>
+            {search_focused && search_results.length > 0 && (() => {
+              const timers = search_results.filter((r) => r.type === "timer" || r.type === "page");
+              const articles = search_results.filter((r) => r.type === "blog");
+              return (
+                <div className="absolute top-full right-0 mt-2 w-[28rem] max-h-[480px] overflow-y-auto bg-surface rounded-2xl border border-surface-container-high shadow-[var(--shadow-soft-lg)] z-50 p-4">
+                  {timers.length > 0 && (
+                    <div className="mb-3">
+                      <div className="flex items-center gap-2 mb-2 px-1">
+                        <Timer className="size-4 text-secondary" />
+                        <span className="text-xs font-headline font-bold uppercase tracking-wider text-muted-foreground">Timers</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {timers.map((r) => (
+                          <button
+                            key={r.url}
+                            onClick={() => handle_result_click(r.url)}
+                            className="flex items-start gap-3 bg-surface-container-low rounded-xl p-3 hover:scale-[1.02] transition-all duration-200 cursor-pointer border-none text-left"
+                          >
+                            <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center">
+                              {r.type === "page" ? <Layers className="size-4" /> : <Timer className="size-4" />}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-foreground truncate">{r.title}</p>
+                              {r.description && <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{r.description}</p>}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                    {r.description && (
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{r.description}</p>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
+                  )}
+                  {articles.length > 0 && (
+                    <div>
+                      {timers.length > 0 && <div className="border-t border-surface-container-high my-3" />}
+                      <div className="flex items-center gap-2 mb-2 px-1">
+                        <FileText className="size-4 text-secondary" />
+                        <span className="text-xs font-headline font-bold uppercase tracking-wider text-muted-foreground">Articles</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        {articles.map((r) => (
+                          <button
+                            key={r.url}
+                            onClick={() => handle_result_click(r.url)}
+                            className="flex items-start gap-3 bg-surface-container-low rounded-xl p-3 hover:scale-[1.02] transition-all duration-200 cursor-pointer border-none text-left"
+                          >
+                            <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center">
+                              <BookOpen className="size-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <p className="text-sm font-semibold text-foreground truncate">{r.title}</p>
+                              {r.description && <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{r.description}</p>}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
             {search_focused && search_query.trim().length >= 2 && search_results.length === 0 && (
-              <div className="absolute top-full left-0 mt-2 w-80 bg-surface rounded-xl border border-surface-container-high shadow-[var(--shadow-soft-lg)] z-50 px-4 py-6 text-center">
+              <div className="absolute top-full right-0 mt-2 w-72 bg-surface rounded-2xl border border-surface-container-high shadow-[var(--shadow-soft-lg)] z-50 px-4 py-6 text-center">
                 <p className="text-sm text-muted-foreground">No results found</p>
               </div>
             )}
