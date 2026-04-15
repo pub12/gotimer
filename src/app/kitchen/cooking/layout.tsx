@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Cooking Timer — Kitchen Countdown with Presets | GoTimer",
+  title: "Free Cooking Timer — Kitchen Countdown with Presets",
   description:
     "Free online cooking timer with quick presets for common cooking times. Set 5, 10, 15, 20, 30, 45, or 60 minute countdowns. Audio alerts and full-screen display. No app needed.",
   alternates: {
     canonical: "/kitchen/cooking",
   },
   openGraph: {
-    title: "Free Cooking Timer — Kitchen Countdown with Presets | GoTimer",
+    title: "Free Cooking Timer — Kitchen Countdown with Presets",
     description:
       "Free online cooking timer with quick presets for common kitchen tasks. Audio alerts and full-screen display.",
     url: "https://gotimer.org/kitchen/cooking",
   },
   twitter: {
     card: "summary",
-    title: "Cooking Timer | GoTimer",
+    title: "Cooking Timer",
     description:
       "Free cooking timer with quick presets for 5 to 60 minutes. Audio alerts so you never overcook.",
   },

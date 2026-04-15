@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Intermittent Fasting Timer — 16:8, 18:6, 20:4, OMAD Tracker | GoTimer",
+  title: "Free Intermittent Fasting Timer — 16:8, 18:6, 20:4, OMAD Tracker",
   description:
     "Free online intermittent fasting timer and tracker. Support for 16:8, 18:6, 20:4, and OMAD protocols. Track your fasting window with audio alerts. No app download needed.",
   alternates: {
     canonical: "/wellness/fasting",
   },
   openGraph: {
-    title: "Free Intermittent Fasting Timer — 16:8, 18:6, 20:4, OMAD Tracker | GoTimer",
+    title: "Free Intermittent Fasting Timer — 16:8, 18:6, 20:4, OMAD Tracker",
     description:
       "Free online intermittent fasting timer with preset protocols. Track your fasting window with audio alerts and visual countdown.",
     url: "https://gotimer.org/wellness/fasting",
   },
   twitter: {
     card: "summary",
-    title: "Intermittent Fasting Timer | GoTimer",
+    title: "Intermittent Fasting Timer",
     description:
       "Free fasting timer with 16:8, 18:6, 20:4, and OMAD presets. Track your fasting window online.",
   },

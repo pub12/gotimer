@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Cyanotype Timer — UV Exposure Timer for Alternative Process Printing | GoTimer",
+  title: "Free Cyanotype Timer — UV Exposure Timer for Alternative Process Printing",
   description:
     "Free online cyanotype UV exposure timer. Time your cyanotype, Van Dyke brown, and other alternative photographic processes with precision. Adjustable duration for varying UV conditions.",
   alternates: {
     canonical: "/photography/cyanotype",
   },
   openGraph: {
-    title: "Free Cyanotype Timer — UV Exposure Timer for Alternative Process Printing | GoTimer",
+    title: "Free Cyanotype Timer — UV Exposure Timer for Alternative Process Printing",
     description:
       "Free cyanotype UV exposure timer for alternative photographic processes. Adjustable duration for sunlight and UV lamp exposures.",
     url: "https://gotimer.org/photography/cyanotype",
   },
   twitter: {
     card: "summary",
-    title: "Cyanotype Timer | GoTimer",
+    title: "Cyanotype Timer",
     description:
       "Free UV exposure timer for cyanotype and alternative process printing with adjustable duration.",
   },

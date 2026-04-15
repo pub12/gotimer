@@ -9,9 +9,11 @@ interface PostCardProps {
   date: string | null;
   category_name: string | null;
   category_colour: string | null;
+  character_image?: string | null;
+  character_name?: string | null;
 }
 
-export function PostCard({ title, slug, excerpt, date, category_name }: PostCardProps) {
+export function PostCard({ title, slug, excerpt, date, category_name, character_image, character_name }: PostCardProps) {
   const formatted_date = date
     ? new Date(date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
     : null;
@@ -39,8 +41,8 @@ export function PostCard({ title, slug, excerpt, date, category_name }: PostCard
           />
           <div className="absolute inset-0 flex items-center justify-center">
             <Image
-              src="/mascots/prof-studying.png"
-              alt="Blog post"
+              src={character_image || "/mascots/prof-studying.png"}
+              alt={character_name || "Blog post"}
               width={120}
               height={120}
               className="w-24 h-24 object-contain drop-shadow-md opacity-80"

@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Public Game Challenges - GoTimer",
+  title: "Public Game Challenges",
   description:
     "Browse public board game challenges. See scores, game history, and competitive matchups between players. Track your favorite rivalries.",
   alternates: {
     canonical: "/public-challenges",
   },
   openGraph: {
-    title: "Public Game Challenges - GoTimer",
+    title: "Public Game Challenges",
     description:
       "Browse public board game challenges. See scores, game history, and competitive matchups.",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Public Game Challenges - GoTimer",
+    title: "Public Game Challenges",
     description:
       "Browse public board game challenges. See scores, game history, and competitive matchups.",
     images: ["/fight.jpg"],

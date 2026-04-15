@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Rest Timer — Countdown Between Sets for Strength Training | GoTimer",
+  title: "Free Rest Timer — Countdown Between Sets for Strength Training",
   description:
     "Free online rest timer for gym workouts. Time your rest periods between sets with preset durations for hypertrophy, strength, and power training. Audio alerts and full-screen display.",
   alternates: {
     canonical: "/fitness/rest-timer",
   },
   openGraph: {
-    title: "Free Rest Timer — Countdown Between Sets for Strength Training | GoTimer",
+    title: "Free Rest Timer — Countdown Between Sets for Strength Training",
     description:
       "Free online rest timer for timing recovery between sets. Preset durations for hypertrophy, strength, and power goals with audio alerts.",
     url: "https://gotimer.org/fitness/rest-timer",
   },
   twitter: {
     card: "summary",
-    title: "Rest Timer | GoTimer",
+    title: "Rest Timer",
     description:
       "Free online rest timer for gym workouts. Time your recovery between sets with audio cues for strength, hypertrophy, and power training.",
   },

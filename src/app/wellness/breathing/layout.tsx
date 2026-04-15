@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Breathing Exercise Timer — Box Breathing & 4-7-8 Technique | GoTimer",
+  title: "Free Breathing Exercise Timer — Box Breathing & 4-7-8 Technique",
   description:
     "Free online breathing exercise timer for box breathing, 4-7-8, and other controlled breathing techniques. Reduce stress, improve focus, and fall asleep faster. No app download needed.",
   alternates: {
     canonical: "/wellness/breathing",
   },
   openGraph: {
-    title: "Free Breathing Exercise Timer — Box Breathing & 4-7-8 Technique | GoTimer",
+    title: "Free Breathing Exercise Timer — Box Breathing & 4-7-8 Technique",
     description:
       "Free online breathing exercise timer for box breathing, 4-7-8, and other controlled breathing techniques. Reduce stress, improve focus, and fall asleep faster.",
     url: "https://gotimer.org/wellness/breathing",
   },
   twitter: {
     card: "summary",
-    title: "Breathing Exercise Timer | GoTimer",
+    title: "Breathing Exercise Timer",
     description:
       "Free breathing exercise timer with guided intervals for box breathing, 4-7-8, and deep breathing techniques.",
   },

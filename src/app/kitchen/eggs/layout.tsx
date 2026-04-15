@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Egg Timer — Soft, Medium & Hard Boiled Presets | GoTimer",
+  title: "Free Egg Timer — Soft, Medium & Hard Boiled Presets",
   description:
     "Free online egg timer with presets for soft boiled (6 min), medium boiled (8 min), and hard boiled (10 min) eggs. Audio alerts for perfect eggs every time. No app needed.",
   alternates: {
     canonical: "/kitchen/eggs",
   },
   openGraph: {
-    title: "Free Egg Timer — Soft, Medium & Hard Boiled Presets | GoTimer",
+    title: "Free Egg Timer — Soft, Medium & Hard Boiled Presets",
     description:
       "Free online egg timer with presets for soft, medium, and hard boiled eggs. Audio alerts for perfect results.",
     url: "https://gotimer.org/kitchen/eggs",
   },
   twitter: {
     card: "summary",
-    title: "Egg Timer | GoTimer",
+    title: "Egg Timer",
     description:
       "Free egg boiling timer with presets for soft, medium, and hard boiled eggs. Perfect results every time.",
   },

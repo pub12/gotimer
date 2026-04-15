@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Study Timer — Pomodoro & Focus Session Countdown | GoTimer",
+  title: "Free Study Timer — Pomodoro & Focus Session Countdown",
   description:
     "Free online study timer for Pomodoro-style focus sessions. Set custom study and break intervals, track deep work sessions, and boost productivity. No app download needed.",
   alternates: {
     canonical: "/productivity/study",
   },
   openGraph: {
-    title: "Free Study Timer — Pomodoro & Focus Session Countdown | GoTimer",
+    title: "Free Study Timer — Pomodoro & Focus Session Countdown",
     description:
       "Free online study timer for Pomodoro-style focus sessions. Set custom intervals and track deep work sessions.",
     url: "https://gotimer.org/productivity/study",
   },
   twitter: {
     card: "summary",
-    title: "Study Timer | GoTimer",
+    title: "Study Timer",
     description:
       "Free study session timer with customizable focus intervals for Pomodoro technique and deep work.",
   },

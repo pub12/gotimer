@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Bread Proofing Timer — Dough Rise Countdown | GoTimer",
+  title: "Free Bread Proofing Timer — Dough Rise Countdown",
   description:
     "Free online bread proofing timer for tracking dough rise times. Supports first rise, second rise, sourdough, and cold fermentation. Audio alerts when proofing is complete. No app needed.",
   alternates: {
     canonical: "/kitchen/bread-proofing",
   },
   openGraph: {
-    title: "Free Bread Proofing Timer — Dough Rise Countdown | GoTimer",
+    title: "Free Bread Proofing Timer — Dough Rise Countdown",
     description:
       "Free online bread proofing timer for tracking dough rise times. Supports all yeast types and fermentation methods.",
     url: "https://gotimer.org/kitchen/bread-proofing",
   },
   twitter: {
     card: "summary",
-    title: "Bread Proofing Timer | GoTimer",
+    title: "Bread Proofing Timer",
     description:
       "Free dough proofing timer for bread bakers. Track first rise, second rise, and cold fermentation.",
   },

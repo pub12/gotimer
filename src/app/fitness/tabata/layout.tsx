@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Tabata Timer — 20/10 Interval Training Protocol | GoTimer",
+  title: "Free Tabata Timer — 20/10 Interval Training Protocol",
   description:
     "Free online Tabata timer with the classic 20-second work, 10-second rest protocol for 8 rounds. Customizable intervals, audio cues, and full-screen display. No download required.",
   alternates: {
     canonical: "/fitness/tabata",
   },
   openGraph: {
-    title: "Free Tabata Timer — 20/10 Interval Training Protocol | GoTimer",
+    title: "Free Tabata Timer — 20/10 Interval Training Protocol",
     description:
       "Free online Tabata timer with the classic 20-second work, 10-second rest protocol. Customizable rounds and intervals with audio alerts.",
     url: "https://gotimer.org/fitness/tabata",
   },
   twitter: {
     card: "summary",
-    title: "Tabata Timer | GoTimer",
+    title: "Tabata Timer",
     description:
       "Free online Tabata timer — 20s work, 10s rest, 8 rounds. Customizable intervals with audio cues for high-intensity training.",
   },

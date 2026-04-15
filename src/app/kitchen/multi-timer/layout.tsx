@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Multi-Timer — Run Multiple Kitchen Timers at Once | GoTimer",
+  title: "Free Multi-Timer — Run Multiple Kitchen Timers at Once",
   description:
     "Free online multi-timer for running multiple countdowns simultaneously. Perfect for Thanksgiving dinner, multi-course meals, and meal prep. Name, edit, and track each timer independently. No app needed.",
   alternates: {
     canonical: "/kitchen/multi-timer",
   },
   openGraph: {
-    title: "Free Multi-Timer — Run Multiple Kitchen Timers at Once | GoTimer",
+    title: "Free Multi-Timer — Run Multiple Kitchen Timers at Once",
     description:
       "Free online multi-timer for running multiple countdowns simultaneously. Perfect for complex meals and meal prep.",
     url: "https://gotimer.org/kitchen/multi-timer",
   },
   twitter: {
     card: "summary",
-    title: "Multi-Timer | GoTimer",
+    title: "Multi-Timer",
     description:
       "Free multi-timer for running multiple countdowns at once. Perfect for cooking multiple dishes simultaneously.",
   },

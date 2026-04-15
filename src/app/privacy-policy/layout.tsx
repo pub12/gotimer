@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - GoTimer",
+  title: "Privacy Policy",
   description:
     "GoTimer privacy policy. Learn how we collect, use, and protect your data.",
   alternates: {

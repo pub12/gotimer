@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Enlarger Timer — F-Stop Printing & Test Strips for Darkroom | GoTimer",
+  title: "Free Enlarger Timer — F-Stop Printing & Test Strips for Darkroom",
   description:
     "Free online enlarger timer for darkroom printing. Supports simple exposure, f-stop based timing, and sequential test strips with dry-down compensation. No app needed.",
   alternates: {
     canonical: "/photography/enlarger-timer",
   },
   openGraph: {
-    title: "Free Enlarger Timer — F-Stop Printing & Test Strips for Darkroom | GoTimer",
+    title: "Free Enlarger Timer — F-Stop Printing & Test Strips for Darkroom",
     description:
       "Free online enlarger timer with f-stop printing, test strip sequencing, and dry-down compensation for darkroom photographers.",
     url: "https://gotimer.org/photography/enlarger-timer",
   },
   twitter: {
     card: "summary",
-    title: "Enlarger Timer | GoTimer",
+    title: "Enlarger Timer",
     description:
       "Free darkroom enlarger timer with f-stop timing, test strips, and dry-down compensation.",
   },

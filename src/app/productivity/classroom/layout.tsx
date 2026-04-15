@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Classroom Timer — Full-Screen Display for Teachers | GoTimer",
+  title: "Free Classroom Timer — Full-Screen Display for Teachers",
   description:
     "Free online classroom timer with large full-screen display. Perfect for activity transitions, group work, presentations, and exams. No app or install needed.",
   alternates: {
     canonical: "/productivity/classroom",
   },
   openGraph: {
-    title: "Free Classroom Timer — Full-Screen Display for Teachers | GoTimer",
+    title: "Free Classroom Timer — Full-Screen Display for Teachers",
     description:
       "Free online classroom timer with large full-screen display for activity transitions, group work, and exams.",
     url: "https://gotimer.org/productivity/classroom",
   },
   twitter: {
     card: "summary",
-    title: "Classroom Timer | GoTimer",
+    title: "Classroom Timer",
     description:
       "Free full-screen classroom timer for teachers. Manage transitions, group work, and exam timing.",
   },

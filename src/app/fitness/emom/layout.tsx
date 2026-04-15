@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free EMOM Timer — Every Minute On the Minute Workout | GoTimer",
+  title: "Free EMOM Timer — Every Minute On the Minute Workout",
   description:
     "Free online EMOM timer for CrossFit and functional fitness. Set custom intervals and rounds, track your Every Minute On the Minute workouts with audio cues. No app needed.",
   alternates: {
     canonical: "/fitness/emom",
   },
   openGraph: {
-    title: "Free EMOM Timer — Every Minute On the Minute Workout | GoTimer",
+    title: "Free EMOM Timer — Every Minute On the Minute Workout",
     description:
       "Free online EMOM timer for CrossFit and functional fitness. Set custom intervals and rounds, track your Every Minute On the Minute workouts with audio cues.",
     url: "https://gotimer.org/fitness/emom",
   },
   twitter: {
     card: "summary",
-    title: "EMOM Timer | GoTimer",
+    title: "EMOM Timer",
     description:
       "Free online EMOM timer with custom intervals and audio alerts for CrossFit and functional fitness workouts.",
   },

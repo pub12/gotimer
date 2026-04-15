@@ -121,8 +121,41 @@ export default async function BlogPostPage({ params }: PageProps) {
         })
       : null;
 
+  // nosec: JSON-LD built from structured DB fields (title, dates, slug), not user HTML
+  const article_json_ld = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.meta_description || undefined,
+    datePublished: post.publish_date || undefined,
+    dateModified: post.updated_at || post.publish_date || undefined,
+    author: {
+      "@type": "Organization",
+      name: "GoTimer",
+      url: "https://gotimer.org",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "GoTimer",
+      url: "https://gotimer.org",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://gotimer.org/gotimer_logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://gotimer.org/blog/${slug}`,
+    },
+  });
+
   return (
     <>
+      {/* nosec: article_json_ld built from DB fields (title, dates), safe to inject */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: article_json_ld }}
+      />
       {faq_json_ld && (
         <script
           type="application/ld+json"

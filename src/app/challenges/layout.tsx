@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My Challenges - GoTimer",
+  title: "My Challenges",
   description:
     "View and manage your board game challenges. Track scores, add game results, and compete with friends on GoTimer.",
   alternates: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     follow: false,
   },
   openGraph: {
-    title: "My Challenges - GoTimer",
+    title: "My Challenges",
     description:
       "View and manage your board game challenges. Track scores and compete with friends.",
   },

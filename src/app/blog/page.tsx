@@ -24,6 +24,8 @@ interface BlogPost {
   category_name: string | null;
   category_slug: string | null;
   category_colour: string | null;
+  character_image: string | null;
+  character_name: string | null;
 }
 
 interface BlogCategory {
@@ -55,9 +57,11 @@ export default async function BlogPage({ searchParams }: PageProps) {
     posts = db
       .prepare(
         `SELECT bp.id, bp.slug, bp.title, bp.content, bp.publish_date,
-                bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour
+                bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour,
+                ci.file_path as character_image, ci.character_name as character_name
          FROM blog_posts bp
          LEFT JOIN blog_categories bc ON bp.category_id = bc.id
+         LEFT JOIN character_images ci ON bp.character_id = ci.id
          WHERE bp.status = 'published' AND bc.slug = ?
          ORDER BY bp.publish_date DESC
          LIMIT ? OFFSET ?`
@@ -76,9 +80,11 @@ export default async function BlogPage({ searchParams }: PageProps) {
     posts = db
       .prepare(
         `SELECT bp.id, bp.slug, bp.title, bp.content, bp.publish_date,
-                bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour
+                bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour,
+                ci.file_path as character_image, ci.character_name as character_name
          FROM blog_posts bp
          LEFT JOIN blog_categories bc ON bp.category_id = bc.id
+         LEFT JOIN character_images ci ON bp.character_id = ci.id
          WHERE bp.status = 'published'
          ORDER BY bp.publish_date DESC
          LIMIT ? OFFSET ?`
@@ -162,8 +168,8 @@ export default async function BlogPage({ searchParams }: PageProps) {
                       />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <Image
-                          src="/mascots/prof-studying.png"
-                          alt="Prof the Scholar reading"
+                          src={featured_post.character_image || "/mascots/prof-studying.png"}
+                          alt={featured_post.character_name || "Blog post character"}
                           width={280}
                           height={280}
                           className="w-48 h-48 lg:w-64 lg:h-64 object-contain drop-shadow-lg"
@@ -245,6 +251,8 @@ export default async function BlogPage({ searchParams }: PageProps) {
                       date={post.publish_date}
                       category_name={post.category_name}
                       category_colour={post.category_colour}
+                      character_image={post.character_image}
+                      character_name={post.character_name}
                     />
                   ))}
                 </div>

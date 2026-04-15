@@ -112,7 +112,9 @@ export async function generateMetadata({
   }
 
   const base = "https://gotimer.org";
-  const title = page.meta_title || page.title;
+  // Strip " | GoTimer" suffix if present — layout template already appends it
+  const raw_title = page.meta_title || page.title;
+  const title = raw_title.replace(/\s*[\|–—-]\s*GoTimer$/i, "");
   const content_override = QUICK_TIMER_CONTENT[slug];
   const description = content_override?.meta_description || page.meta_description || undefined;
 

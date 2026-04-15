@@ -221,7 +221,7 @@ export default function HomePage() {
       {/* 7. FAQ Section */}
       <section className="w-full py-12 md:py-16 px-4 bg-surface">
         <div className="max-w-3xl mx-auto">
-          <FaqAccordion items={FAQ_ITEMS} title="Frequently Asked Questions" />
+          <FaqAccordion items={FAQ_ITEMS} title="Frequently Asked Questions" skipJsonLd />
         </div>
       </section>
 

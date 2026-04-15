@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Stretching Timer — Hold Timer for Flexibility Training | GoTimer",
+  title: "Free Stretching Timer — Hold Timer for Flexibility Training",
   description:
     "Free online stretching timer with customizable hold durations. Perfect for static stretches, yoga poses, and mobility work. Audio alerts signal when to switch. No app needed.",
   alternates: {
     canonical: "/fitness/stretching",
   },
   openGraph: {
-    title: "Free Stretching Timer — Hold Timer for Flexibility Training | GoTimer",
+    title: "Free Stretching Timer — Hold Timer for Flexibility Training",
     description:
       "Free online stretching timer with adjustable hold durations for static stretches, yoga, and mobility routines. Audio cues and full-screen display.",
     url: "https://gotimer.org/fitness/stretching",
   },
   twitter: {
     card: "summary",
-    title: "Stretching Timer | GoTimer",
+    title: "Stretching Timer",
     description:
       "Free online stretching hold timer with customizable durations and audio alerts for flexibility and mobility work.",
   },

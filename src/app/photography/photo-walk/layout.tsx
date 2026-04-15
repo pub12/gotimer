@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Photo Walk Timer — Timed Photography Challenges & Sprint Shooting | GoTimer",
+  title: "Free Photo Walk Timer — Timed Photography Challenges & Sprint Shooting",
   description:
     "Free online photo walk timer for timed photography challenges. Set shooting and review intervals to push your creativity with structured photo sprints. No app download needed.",
   alternates: {
     canonical: "/photography/photo-walk",
   },
   openGraph: {
-    title: "Free Photo Walk Timer — Timed Photography Challenges & Sprint Shooting | GoTimer",
+    title: "Free Photo Walk Timer — Timed Photography Challenges & Sprint Shooting",
     description:
       "Free photo walk timer for timed photography challenges. Shoot-and-review intervals to structure creative photo walks and sprint sessions.",
     url: "https://gotimer.org/photography/photo-walk",
   },
   twitter: {
     card: "summary",
-    title: "Photo Walk Timer | GoTimer",
+    title: "Photo Walk Timer",
     description:
       "Free timed photography challenge timer with shoot/review intervals for creative photo walks.",
   },

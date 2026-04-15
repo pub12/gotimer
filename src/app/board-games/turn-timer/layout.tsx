@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Board Game Turn Timer — Multi-Player Countdown | GoTimer",
+  title: "Free Board Game Turn Timer — Multi-Player Countdown",
   description:
     "Free online turn timer for 2-8 players. Per-player countdown keeps board game nights moving. Customizable names, time limits, and audio alerts. No app download needed.",
   alternates: {
     canonical: "/board-games/turn-timer",
   },
   openGraph: {
-    title: "Free Board Game Turn Timer — Multi-Player Countdown | GoTimer",
+    title: "Free Board Game Turn Timer — Multi-Player Countdown",
     description:
       "Free online turn timer for 2-8 players. Per-player countdown keeps board game nights moving. Customizable names, time limits, and audio alerts.",
     url: "https://gotimer.org/board-games/turn-timer",
   },
   twitter: {
     card: "summary",
-    title: "Board Game Turn Timer | GoTimer",
+    title: "Board Game Turn Timer",
     description:
       "Free online turn timer for 2-8 players with customizable names and per-player countdowns for board game nights.",
   },

@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Sleep Timer — Wind-Down Countdown for Better Rest | GoTimer",
+  title: "Free Sleep Timer — Wind-Down Countdown for Better Rest",
   description:
     "Free online sleep countdown timer to build a consistent wind-down routine. Set your bedtime countdown, reduce screen time, and improve sleep quality. No app needed.",
   alternates: {
     canonical: "/wellness/sleep",
   },
   openGraph: {
-    title: "Free Sleep Timer — Wind-Down Countdown for Better Rest | GoTimer",
+    title: "Free Sleep Timer — Wind-Down Countdown for Better Rest",
     description:
       "Free online sleep countdown timer to build a consistent wind-down routine. Set your bedtime countdown and improve sleep quality.",
     url: "https://gotimer.org/wellness/sleep",
   },
   twitter: {
     card: "summary",
-    title: "Sleep Timer | GoTimer",
+    title: "Sleep Timer",
     description:
       "Free sleep countdown timer for building a wind-down routine and improving sleep hygiene.",
   },

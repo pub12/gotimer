@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Film Development Timer — B&W, C-41 & E-6 Process Timing | GoTimer",
+  title: "Free Film Development Timer — B&W, C-41 & E-6 Process Timing",
   description:
     "Free online film development timer with multi-step sequencing for B&W, C-41, and E-6 processes. Built-in agitation reminders, push/pull compensation, and temperature adjustments. No app download required.",
   alternates: {
     canonical: "/photography/film-development",
   },
   openGraph: {
-    title: "Free Film Development Timer — B&W, C-41 & E-6 Process Timing | GoTimer",
+    title: "Free Film Development Timer — B&W, C-41 & E-6 Process Timing",
     description:
       "Free online film development timer with multi-step sequencing for B&W, C-41, and E-6 processes. Agitation reminders, push/pull compensation, and temperature adjustments.",
     url: "https://gotimer.org/photography/film-development",
   },
   twitter: {
     card: "summary",
-    title: "Film Development Timer | GoTimer",
+    title: "Film Development Timer",
     description:
       "Multi-step film development timer for B&W, C-41, and E-6 with agitation alerts and temperature compensation.",
   },

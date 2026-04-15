@@ -4,33 +4,59 @@ import { get_db } from "@/lib/db";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://gotimer.org";
 
-  const now = new Date();
+  // Use a fixed date for static routes — new Date() changes on every render and
+  // causes Google to treat lastmod as unreliable
+  const staticDate = new Date("2026-04-15");
 
   const static_routes: MetadataRoute.Sitemap = [
-    { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
-    { url: `${base}/countdown-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/countdown`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/chess-clock-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/chess-clock`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/round-timer-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/round-timer`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/`, lastModified: staticDate, changeFrequency: "weekly", priority: 1.0 },
+    { url: `${base}/countdown-setup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/countdown`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/chess-clock-setup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/chess-clock`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/round-timer-setup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/round-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    // Blog
+    { url: `${base}/blog`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
     // Category landing pages
-    { url: `${base}/board-games`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/photography`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/fitness`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/wellness`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/productivity`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/kitchen`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    // Photography tools
-    { url: `${base}/photography/film-development`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/photography/long-exposure-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/photography/stand-development`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/board-games`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/photography`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/fitness`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/wellness`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/productivity`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/kitchen`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    // Board games sub-pages
+    { url: `${base}/board-games/turn-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    // Fitness sub-pages
+    { url: `${base}/fitness/emom`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/fitness/tabata`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/fitness/stretching`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/fitness/rest-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    // Wellness sub-pages
+    { url: `${base}/wellness/breathing`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/wellness/sleep`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/wellness/fasting`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    // Productivity sub-pages
+    { url: `${base}/productivity/study`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/productivity/classroom`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    // Kitchen sub-pages
+    { url: `${base}/kitchen/cooking`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/kitchen/eggs`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/kitchen/bread-proofing`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/kitchen/multi-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    // Photography sub-pages
+    { url: `${base}/photography/film-development`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/photography/long-exposure-calculator`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/photography/stand-development`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/photography/cyanotype`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/photography/enlarger-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/photography/photo-walk`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
     // Studio
-    { url: `${base}/studio`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/public-challenges`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
-    { url: `${base}/partners`, lastModified: now, changeFrequency: "weekly", priority: 0.4 },
-    { url: `${base}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${base}/terms-of-service`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/studio`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${base}/public-challenges`, lastModified: staticDate, changeFrequency: "daily", priority: 0.8 },
+    { url: `${base}/partners`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.4 },
+    { url: `${base}/privacy-policy`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/terms-of-service`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // Add public challenge URLs from database

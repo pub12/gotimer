@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Stand Development Timer — Rodinal & Highly Dilute Developer Timing | GoTimer",
+  title: "Free Stand Development Timer — Rodinal & Highly Dilute Developer Timing",
   description:
     "Free online stand development timer for film photography. Ambient countdown for Rodinal 1:100, HC-110, and other highly dilute developers with optional midpoint agitation reminders.",
   alternates: {
     canonical: "/photography/stand-development",
   },
   openGraph: {
-    title: "Free Stand Development Timer — Rodinal & Highly Dilute Developer Timing | GoTimer",
+    title: "Free Stand Development Timer — Rodinal & Highly Dilute Developer Timing",
     description:
       "Free stand development timer for Rodinal 1:100 and highly dilute developers. Ambient countdown with midpoint agitation reminders.",
     url: "https://gotimer.org/photography/stand-development",
   },
   twitter: {
     card: "summary",
-    title: "Stand Development Timer | GoTimer",
+    title: "Stand Development Timer",
     description:
       "Free ambient timer for stand and semi-stand film development with midpoint agitation alerts.",
   },

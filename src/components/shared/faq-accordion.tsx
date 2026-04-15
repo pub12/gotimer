@@ -9,6 +9,7 @@ interface FaqItem {
 interface FaqAccordionProps {
   items: FaqItem[];
   title?: string;
+  skipJsonLd?: boolean;
 }
 
 /**
@@ -16,7 +17,7 @@ interface FaqAccordionProps {
  * Content is admin-controlled (from the admin timer page editor) and not user-supplied,
  * so dangerouslySetInnerHTML is safe here - same pattern used in [slug]/page.tsx.
  */
-export default function FaqAccordion({ items, title = "Frequently Asked Questions" }: FaqAccordionProps) {
+export default function FaqAccordion({ items, title = "Frequently Asked Questions", skipJsonLd = false }: FaqAccordionProps) {
   if (items.length === 0) return null;
 
   const faq_jsonld = {
@@ -56,10 +57,13 @@ export default function FaqAccordion({ items, title = "Frequently Asked Question
         </div>
       </section>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faq_jsonld) }}
-      />
+      {/* nosec: faq_jsonld built from admin-controlled FAQ items, safe to inject */}
+      {!skipJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faq_jsonld) }}
+        />
+      )}
     </>
   );
 }

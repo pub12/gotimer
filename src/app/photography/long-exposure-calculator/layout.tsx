@@ -1,21 +1,21 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Long Exposure Calculator — Reciprocity Failure Compensation | GoTimer",
+  title: "Free Long Exposure Calculator — Reciprocity Failure Compensation",
   description:
     "Free online reciprocity failure calculator for long exposure film photography. Select your film stock, enter the metered exposure, and get the corrected time. Supports ND filters and 30+ film stocks.",
   alternates: {
     canonical: "/photography/long-exposure-calculator",
   },
   openGraph: {
-    title: "Free Long Exposure Calculator — Reciprocity Failure Compensation | GoTimer",
+    title: "Free Long Exposure Calculator — Reciprocity Failure Compensation",
     description:
       "Reciprocity failure calculator for long exposure film photography. Supports 30+ film stocks and ND filter compensation with integrated countdown timer.",
     url: "https://gotimer.org/photography/long-exposure-calculator",
   },
   twitter: {
     card: "summary",
-    title: "Long Exposure Calculator | GoTimer",
+    title: "Long Exposure Calculator",
     description:
       "Free reciprocity failure calculator with ND filter support and integrated countdown timer for film photography.",
   },

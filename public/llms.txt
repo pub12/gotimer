@@ -3,6 +3,7 @@
 > Free online timers for board games, productivity, workouts, studying, and more.
 
 Last updated: 2026-04-09
+Full documentation: https://gotimer.org/llms-full.txt
 
 ## What is GoTimer?
 

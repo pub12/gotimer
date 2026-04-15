@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service - GoTimer",
+  title: "Terms of Service",
   description:
     "GoTimer terms of service. Read the terms governing your use of GoTimer.org.",
   alternates: {

@@ -2,21 +2,21 @@ import { Metadata } from "next";
 import Breadcrumb from "@/components/breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Free Countdown Timer for Board Games - GoTimer",
+  title: "Free Countdown Timer for Board Games",
   description:
     "Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, ADHD focus sessions, and Pomodoro technique. Free, no download, works on mobile.",
   alternates: {
     canonical: "/countdown-setup",
   },
   openGraph: {
-    title: "Free Countdown Timer for Board Games - GoTimer",
+    title: "Free Countdown Timer for Board Games",
     description:
       "Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, and focus sessions. Free, no download.",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Countdown Timer for Board Games - GoTimer",
+    title: "Free Countdown Timer for Board Games",
     description:
       "Set a countdown timer from 1 second to 60 minutes. Perfect for board game turns, trivia rounds, and focus sessions. Free, no download.",
     images: ["/fight.jpg"],
