@@ -34,6 +34,42 @@ export default function Footer() {
             </div>
 
             <div>
+              <h3 className="font-headline text-xs font-black uppercase tracking-wider text-primary-foreground/60 mb-3">Timer Categories</h3>
+              <ul className="flex flex-col gap-2">
+                <li>
+                  <Link href="/board-games" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Board Games
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/photography" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Photography
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/fitness" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Fitness
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/wellness" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Wellness
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/productivity" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Productivity
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/kitchen" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Kitchen
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
               <h3 className="font-headline text-xs font-black uppercase tracking-wider text-primary-foreground/60 mb-3">Features</h3>
               <ul className="flex flex-col gap-2">
                 <li>

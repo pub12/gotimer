@@ -1,10 +1,10 @@
 import React from "react";
-import { Timer, Swords, Users, type LucideIcon } from "lucide-react";
+import { LayoutGrid, Timer, UserX, type LucideIcon } from "lucide-react";
 
 const STATS: { icon: LucideIcon; value: string; label: string }[] = [
-  { icon: Timer, value: "12,400+", label: "Timers Started" },
-  { icon: Swords, value: "850+", label: "Active Challenges" },
-  { icon: Users, value: "2,100+", label: "Users Competing" },
+  { icon: LayoutGrid, value: "6", label: "Timer Categories" },
+  { icon: Timer, value: "28+", label: "Free Timers" },
+  { icon: UserX, value: "0", label: "Sign-ups Required" },
 ];
 
 export default function SocialProof() {

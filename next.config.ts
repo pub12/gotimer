@@ -66,6 +66,14 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, s-maxage=86400, stale-while-revalidate=604800" },
         ],
       },
+      // Allow embedding for /embed routes (override X-Frame-Options SAMEORIGIN)
+      {
+        source: "/:path*/embed",
+        headers: [
+          { key: "X-Frame-Options", value: "ALLOWALL" },
+          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+        ],
+      },
     ];
   },
 };

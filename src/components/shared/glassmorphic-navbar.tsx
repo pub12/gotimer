@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, MessageSquare, Globe, Home, Shield, BookOpen } from "lucide-react";
+import { Trophy, MessageSquare, Globe, Home, Shield, BookOpen, Timer, Menu, X } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
@@ -19,6 +19,7 @@ export default function GlassmorphicNavbar() {
   const { authenticated, loading: is_loading, permissions } = use_auth_status();
   const has_redirected = useRef(false);
   const [show_feedback, set_show_feedback] = useState(false);
+  const [mobile_open, set_mobile_open] = useState(false);
 
   // Fire GA sign_up event for new users
   useEffect(() => {
@@ -49,15 +50,24 @@ export default function GlassmorphicNavbar() {
     }
   }, [pathname, router]);
 
+  // Close mobile nav on route change
+  useEffect(() => {
+    set_mobile_open(false);
+  }, [pathname]);
+
   const nav_link_class =
     "font-headline font-black text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground px-3 py-2 rounded-[0.75rem] hover:bg-surface-container-low transition-all duration-200 no-underline flex items-center gap-1.5";
 
+  const mobile_link_class =
+    "flex items-center gap-3 px-4 py-3 text-foreground font-headline font-semibold text-sm no-underline hover:bg-surface-container-low rounded-[0.75rem] transition-colors";
+
   return (
     <>
+      {/* Desktop nav */}
       <nav className="glass-nav hidden md:flex w-full fixed top-0 left-0 z-50 items-center justify-between px-6 py-3 backdrop-blur-[16px] bg-[rgba(248,249,255,0.72)] shadow-[var(--shadow-soft)]">
-        <button
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 text-xl font-headline font-black text-foreground bg-transparent border-none cursor-pointer focus:outline-none shrink-0"
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-xl font-headline font-black text-foreground no-underline shrink-0"
           aria-label="Go to Home"
         >
           <Image
@@ -68,7 +78,7 @@ export default function GlassmorphicNavbar() {
             className="w-9 h-9"
           />
           <span>GoTimer.org</span>
-        </button>
+        </Link>
 
         <div className="flex items-center gap-1">
           <Link href="/" className={nav_link_class}>
@@ -83,6 +93,12 @@ export default function GlassmorphicNavbar() {
             <BookOpen className="size-4" />
             <span>Blog</span>
           </Link>
+          {!is_loading && authenticated && (
+            <Link href="/studio" className={nav_link_class}>
+              <Timer className="size-4" />
+              <span>My Studio</span>
+            </Link>
+          )}
           {!is_loading && authenticated && (
             <Link href="/challenges" className={nav_link_class}>
               <Trophy className="size-4" />
@@ -139,6 +155,85 @@ export default function GlassmorphicNavbar() {
           )}
         </div>
       </nav>
+
+      {/* Mobile nav — top bar + slide-out drawer */}
+      <nav className="md:hidden fixed top-0 left-0 w-full z-50 flex items-center justify-between px-4 py-3 backdrop-blur-[16px] bg-[rgba(248,249,255,0.72)] shadow-[var(--shadow-soft)]">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-lg font-headline font-black text-foreground no-underline"
+          aria-label="Go to Home"
+        >
+          <Image
+            src="/gotimer_logo.png"
+            alt="GoTimer logo"
+            width={32}
+            height={32}
+            className="w-8 h-8"
+          />
+          <span>GoTimer</span>
+        </Link>
+        <button
+          onClick={() => set_mobile_open(!mobile_open)}
+          className="p-2 rounded-[0.75rem] hover:bg-surface-container-low transition-colors cursor-pointer bg-transparent border-none"
+          aria-label={mobile_open ? "Close menu" : "Open menu"}
+        >
+          {mobile_open ? <X className="size-6 text-foreground" /> : <Menu className="size-6 text-foreground" />}
+        </button>
+      </nav>
+
+      {/* Mobile drawer overlay */}
+      {mobile_open && (
+        <>
+          <div
+            className="md:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+            onClick={() => set_mobile_open(false)}
+          />
+          <div className="md:hidden fixed top-14 right-0 z-50 w-72 max-h-[calc(100vh-3.5rem)] overflow-y-auto bg-surface rounded-bl-2xl shadow-[var(--shadow-soft-lg)] p-4 flex flex-col gap-1">
+            <Link href="/" className={mobile_link_class}>
+              <Home className="size-5" /> Home
+            </Link>
+            <Link href="/public-challenges" className={mobile_link_class}>
+              <Globe className="size-5" /> Public Challenges
+            </Link>
+            <Link href="/blog" className={mobile_link_class}>
+              <BookOpen className="size-5" /> Blog
+            </Link>
+            {!is_loading && authenticated && (
+              <>
+                <Link href="/studio" className={mobile_link_class}>
+                  <Timer className="size-5" /> My Studio
+                </Link>
+                <Link href="/challenges" className={mobile_link_class}>
+                  <Trophy className="size-5" /> My Challenges
+                </Link>
+                {permissions?.includes("admin_view_all_games") && (
+                  <Link href="/admin" className={mobile_link_class}>
+                    <Shield className="size-5" /> Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => { set_mobile_open(false); set_show_feedback(true); }}
+                  className={mobile_link_class + " bg-transparent border-none cursor-pointer w-full text-left"}
+                >
+                  <MessageSquare className="size-5" /> Feedback
+                </button>
+              </>
+            )}
+            <div className="border-t border-surface-container-high my-2" />
+            {!is_loading && (
+              authenticated ? (
+                <Link href="/hazo_auth/my_settings" className={mobile_link_class}>
+                  Settings
+                </Link>
+              ) : (
+                <Button variant="secondary" className="w-full" asChild>
+                  <Link href="/hazo_auth/login">Login</Link>
+                </Button>
+              )
+            )}
+          </div>
+        </>
+      )}
 
       {show_feedback && (
         <FeedbackDialog on_close={() => set_show_feedback(false)} />

@@ -10,6 +10,7 @@ type FeedbackDialogProps = {
 };
 
 export function FeedbackDialog({ on_close }: FeedbackDialogProps) {
+  const [sender_email, set_sender_email] = useState("");
   const [subject, set_subject] = useState("");
   const [message, set_message] = useState("");
   const [sending, set_sending] = useState(false);
@@ -23,8 +24,13 @@ export function FeedbackDialog({ on_close }: FeedbackDialogProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          sender_email: sender_email.trim(),
           subject: subject.trim(),
           message: message.trim(),
+          page_url: window.location.href,
+          browser: navigator.userAgent,
+          platform: navigator.platform,
+          referrer: document.referrer || "",
         }),
       });
 
@@ -58,6 +64,20 @@ export function FeedbackDialog({ on_close }: FeedbackDialogProps) {
           </p>
 
           <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-1.5 block">
+                Your Email
+              </label>
+              <input
+                type="email"
+                value={sender_email}
+                onChange={(e) => set_sender_email(e.target.value)}
+                placeholder="you@example.com (optional)"
+                maxLength={200}
+                className="w-full p-3 border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
+
             <div>
               <label className="text-sm font-medium mb-1.5 block">
                 Subject

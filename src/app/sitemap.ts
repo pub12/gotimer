@@ -14,6 +14,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/chess-clock`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/round-timer-setup`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/round-timer`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    // Category landing pages
+    { url: `${base}/board-games`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/photography`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/fitness`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/wellness`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/productivity`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/kitchen`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    // Photography tools
+    { url: `${base}/photography/film-development`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/photography/long-exposure-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/photography/stand-development`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    // Studio
+    { url: `${base}/studio`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/public-challenges`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${base}/partners`, lastModified: now, changeFrequency: "weekly", priority: 0.4 },
     { url: `${base}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },

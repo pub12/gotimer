@@ -1,175 +1,120 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback, Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { RotateCcw, Pause, Play } from "lucide-react";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
-import TimerShell from "@/components/shared/timer-shell";
+import { TimerPage } from "@/components/timer/timer-page";
+import { TimerSeoContent } from "@/components/timer/timer-seo-content";
+import { countdownStrategy } from "@/lib/timer-strategies/countdown";
+import { DurationInput } from "@/components/shared/timer-shell";
 
-// SVG ring constants
-const RING_SIZE = 280;
-const STROKE_WIDTH = 12;
-const RADIUS = 134;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+const COUNTDOWN_FAQ = [
+  {
+    question: "How do I set a custom duration on the countdown timer?",
+    answer:
+      "Use the duration input below the timer display. You can type a number of seconds directly or use the preset buttons. The timer accepts any value from 1 second up to 60 minutes (3,600 seconds).",
+  },
+  {
+    question: "Does the countdown timer work on mobile phones?",
+    answer:
+      "Yes. GoTimer&apos;s countdown runs entirely in your browser and is fully responsive. It works on iPhones, Android devices, tablets, and desktops — no app install required. Audio alerts play through your device speaker.",
+  },
+  {
+    question: "Will the timer alert me when it reaches zero?",
+    answer:
+      "The countdown plays <strong>audio beeps during the final 10 seconds</strong> and a distinct completion tone at zero. Make sure your device volume is turned up and your browser allows audio playback.",
+  },
+  {
+    question: "Can I use this as a Pomodoro timer?",
+    answer:
+      "Absolutely. Set the countdown to 25 minutes (1,500 seconds) for a standard Pomodoro work session, then reset to 5 minutes for the break. For a dedicated focus tool, try our <a href='/productivity/study'>Study Timer</a> which automates work/break cycles.",
+  },
+  {
+    question: "What is the difference between a countdown timer and a stopwatch?",
+    answer:
+      "A countdown timer starts at a set duration and counts <strong>down to zero</strong>, alerting you when time expires. A stopwatch counts <strong>up from zero</strong> indefinitely. Use a countdown when you need a deadline (cooking, board games, presentations) and a stopwatch when you want to measure elapsed time. Our <a href='/round-timer'>Round Timer</a> functions as a count-up timer with lap tracking.",
+  },
+];
 
-function ProgressRing({ progress, color }: { progress: number; color: string }) {
-  const dash_offset = CIRCUMFERENCE * (1 - progress);
-  return (
-    <svg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="w-full h-full -rotate-90">
-      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
-        stroke="var(--surface-container-high)" strokeWidth={STROKE_WIDTH} />
-      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
-        stroke={color} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-        strokeDasharray={CIRCUMFERENCE} strokeDashoffset={dash_offset}
-        className="ring-progress-transition" />
-    </svg>
-  );
-}
-
-function TimeDisplay({ seconds, large }: { seconds: number; large?: boolean }) {
-  const m = Math.floor(seconds / 60).toString().padStart(2, "0");
-  const s = (seconds % 60).toString().padStart(2, "0");
-  const digit = large
-    ? "text-7xl sm:text-8xl md:text-9xl font-headline font-black text-foreground"
-    : "text-4xl sm:text-5xl md:text-7xl font-headline font-black text-foreground";
-  const colon = large
-    ? "text-7xl sm:text-8xl md:text-9xl font-headline font-black text-foreground mb-6 sm:mb-8"
-    : "text-4xl sm:text-5xl md:text-7xl font-headline font-black text-foreground mb-4 sm:mb-5";
-  const label = large
-    ? "text-xs sm:text-sm uppercase tracking-wider text-muted-foreground mt-2"
-    : "text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground mt-1";
-
-  return (
-    <div className={`flex items-baseline ${large ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-      <div className="flex flex-col items-center">
-        <span className={digit}>{m}</span>
-        <span className={label}>Minutes</span>
-      </div>
-      <span className={colon}>:</span>
-      <div className="flex flex-col items-center">
-        <span className={digit}>{s}</span>
-        <span className={label}>Seconds</span>
-      </div>
-    </div>
-  );
-}
-
-const RING_NORMAL = "relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center";
-const RING_FULLSCREEN = "relative w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem] md:w-[34rem] md:h-[34rem] flex items-center justify-center";
+const RELATED_TIMERS = [
+  { name: "Chess Clock", href: "/chess-clock", description: "Two-player clock with individual time banks for competitive play" },
+  { name: "Round Timer", href: "/round-timer", description: "Count-up timer with round tracking for tournaments and sessions" },
+  { name: "Turn Timer", href: "/board-games/turn-timer", description: "Multi-player countdown for board game turns (2-8 players)" },
+  { name: "Cooking Timer", href: "/kitchen/cooking", description: "Kitchen countdown with audio alerts for recipes and meal prep" },
+  { name: "Study Timer", href: "/productivity/study", description: "Pomodoro-style focus timer for deep work and study sessions" },
+  { name: "Tabata Timer", href: "/fitness/tabata", description: "Classic 20s work / 10s rest high-intensity interval protocol" },
+];
 
 function CountdownPageContent() {
   const search_params = useSearchParams();
-  const initial_time = Number(search_params.get("time")) || Number(search_params.get("duration")) || 60;
-
+  const initial_time =
+    Number(search_params.get("time")) || Number(search_params.get("duration")) || 60;
   const [user_duration, set_user_duration] = useState(initial_time);
-  const [remaining, set_remaining] = useState(initial_time);
-  const [running, set_running] = useState(false);
-  const [audio_enabled, set_audio_enabled] = useState(false);
-  const audio_context_ref = useRef<AudioContext | null>(null);
-  const prev_remaining = useRef(remaining);
-
-  // Reset when duration changes
-  useEffect(() => {
-    set_remaining(user_duration);
-    set_running(false);
-  }, [user_duration]);
-
-  const toggle_audio = () => {
-    if (!audio_enabled) {
-      try {
-        if (!audio_context_ref.current) {
-          audio_context_ref.current = new (
-            window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
-          )();
-        }
-        set_audio_enabled(true);
-      } catch { /* Audio not supported */ }
-    } else {
-      set_audio_enabled(false);
-    }
-  };
-
-  const play_beep = useCallback((duration = 0.15, frequency = 880) => {
-    if (!audio_enabled || !audio_context_ref.current) return;
-    try {
-      const ctx = audio_context_ref.current;
-      if (ctx.state === "suspended") ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine"; osc.frequency.value = frequency; gain.gain.value = 0.2;
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(); osc.stop(ctx.currentTime + duration);
-    } catch { /* Ignore */ }
-  }, [audio_enabled]);
-
-  // Countdown effect
-  useEffect(() => {
-    if (!running || remaining <= 0) return;
-    const interval = setInterval(() => set_remaining((p) => (p > 0 ? p - 1 : 0)), 1000);
-    return () => clearInterval(interval);
-  }, [running, remaining]);
-
-  // Audio alerts
-  useEffect(() => {
-    if (running && remaining > 0 && remaining <= 10 && prev_remaining.current !== remaining) play_beep();
-    if (running && remaining === 0 && prev_remaining.current !== 0) play_beep(1.2, 1200);
-    prev_remaining.current = remaining;
-  }, [remaining, running, play_beep]);
-
-  const progress = user_duration > 0 ? remaining / user_duration : 0;
-  const status_text = remaining === 0 ? "Time's up!" : running ? "Counting down..." : "Ready";
-
-  const btn_cls = (fs: boolean) =>
-    `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
-  const reset_cls = (fs: boolean) =>
-    `flex items-center justify-center gap-2 bg-surface-container-low text-foreground hover:bg-surface-container-high rounded-2xl ${fs ? "py-4 sm:py-5 px-6 text-lg" : "py-3 sm:py-4 px-5 text-base"} font-semibold transition-colors disabled:opacity-40`;
 
   return (
-    <>
-      <Navbar />
-      <main className="min-h-screen flex flex-col bg-surface pt-14 pb-4 px-3 w-full md:pt-20 md:px-4 md:items-center">
-        <h1 className="sr-only">Countdown Timer</h1>
-        <div className="mt-4 mb-8">
-          <TimerShell
-            timer_label="Countdown Timer"
-            status_text={status_text}
-            audio_enabled={audio_enabled}
-            on_toggle_audio={toggle_audio}
-            duration={{ value: user_duration, onChange: set_user_duration }}
-            defaults={{ duration: 60 }}
-            remaining={remaining}
-            running={running}
-            controls={({ is_fullscreen: fs }) => (
-              <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
-                <button onClick={() => set_running(!running)} className={btn_cls(fs)}>
-                  {running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {remaining < user_duration ? "Resume" : "Start"}</>}
-                </button>
-                <button onClick={() => { set_remaining(user_duration); set_running(false); }} disabled={remaining === user_duration && !running} className={reset_cls(fs)}>
-                  <RotateCcw className="w-5 h-5" /> Reset
-                </button>
-              </div>
-            )}
-          >
-            {({ is_fullscreen: fs }) => (
-              <div className={RING_NORMAL}>
-                <ProgressRing progress={progress} color="var(--secondary)" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <TimeDisplay seconds={remaining} large={false} />
-                </div>
-              </div>
-            )}
-          </TimerShell>
-        </div>
-
-        <section className="w-full max-w-md mx-auto px-1 text-center">
-          <p className="text-xs text-muted-foreground mb-2">
-            Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions.
+    <TimerPage
+      key={user_duration}
+      strategy={countdownStrategy}
+      config={{ duration: user_duration }}
+      label="Countdown Timer"
+      description="Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions."
+      below={
+        <DurationInput value={user_duration} onChange={set_user_duration} />
+      }
+      seo_content={
+        <TimerSeoContent
+          timer_name="Countdown Timer"
+          category_name="Board Games"
+          category_slug="board-games"
+          faq={COUNTDOWN_FAQ}
+          related_timers={RELATED_TIMERS}
+        >
+          <h2>What Is a Countdown Timer?</h2>
+          <p>
+            A countdown timer starts at a duration you choose and ticks down to zero, then
+            alerts you with an audio signal. It is the most versatile timer format — useful
+            anywhere you need a fixed deadline: board game turns, cooking, presentations,
+            classroom activities, meditation, or focused work sessions.
           </p>
-        </section>
-      </main>
-      <Footer />
-    </>
+          <p>
+            This free online countdown timer runs in any modern browser. Set your duration,
+            press start, and the timer handles the rest — including audible beeps during the
+            final ten seconds so you can stay focused on the task at hand.
+          </p>
+
+          <h2>Popular Use Cases for a Countdown Timer</h2>
+          <ul>
+            <li><strong>Board game turns</strong> — Set 30-60 seconds per turn to prevent analysis paralysis in games like Catan, Ticket to Ride, or Codenames. For multi-player rotation, try our dedicated <a href="/board-games/turn-timer">Turn Timer</a>.</li>
+            <li><strong>Cooking and baking</strong> — Time pasta, steep tea, or track oven roasts without fumbling with a phone app. Need multiple timers? Check out the <a href="/kitchen/cooking">Cooking Timer</a>.</li>
+            <li><strong>Study and focus sessions</strong> — Use 25-minute countdowns for Pomodoro technique. Our <a href="/productivity/study">Study Timer</a> automates the full work/break cycle.</li>
+            <li><strong>Presentations and public speaking</strong> — Keep talks on schedule with a visible countdown on your laptop or second screen.</li>
+            <li><strong>Fitness rest periods</strong> — Count down 60-90 seconds between sets. For structured intervals, explore our <a href="/fitness/tabata">Tabata Timer</a> or <a href="/fitness/emom">EMOM Timer</a>.</li>
+            <li><strong>Classroom and meeting timeboxing</strong> — Give groups fixed brainstorming or discussion windows to keep sessions productive.</li>
+          </ul>
+
+          <h2>How to Use This Countdown Timer</h2>
+          <ol>
+            <li><strong>Set your duration</strong> — Use the input below the display to enter seconds, or pick a common preset.</li>
+            <li><strong>Press Start</strong> — The countdown begins immediately. The ring display shows remaining time at a glance.</li>
+            <li><strong>Listen for alerts</strong> — Audio beeps play during the last 10 seconds, with a distinct tone at zero.</li>
+            <li><strong>Pause or reset</strong> — Tap Pause to freeze the clock, or Reset to return to your original duration.</li>
+          </ol>
+
+          <h2>Countdown Timer vs. Other Timer Types</h2>
+          <p>
+            A simple countdown is perfect when you need one fixed deadline. If your situation is
+            more specific, a specialised timer may serve you better. A{" "}
+            <a href="/chess-clock">chess clock</a> manages two competing time banks for head-to-head
+            games. A <a href="/round-timer">round timer</a> counts up and tracks multiple rounds
+            with lap history. An interval timer like <a href="/fitness/tabata">Tabata</a> alternates
+            between work and rest phases automatically.
+          </p>
+          <p>
+            For most one-off timing needs — a quick egg timer, a board game turn limit, a
+            presentation countdown — this simple countdown timer is the fastest way to get started.
+          </p>
+        </TimerSeoContent>
+      }
+    />
   );
 }
 

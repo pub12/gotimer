@@ -11,14 +11,21 @@ import LeaderboardTeaser from "../components/homepage/leaderboard-teaser";
 import SocialProof from "../components/homepage/social-proof";
 import FaqAccordion from "../components/shared/faq-accordion";
 import { Button } from "../components/ui/button";
-import { Timer, Play, Trophy, BookOpen, ArrowRight } from "lucide-react";
-import { get_db } from "../lib/db";
+import { Timer, Play, Palette, BookOpen, ArrowRight } from "lucide-react";
 
 // Static FAQ structured data for SEO - no user input, safe to serialize
 const faqJsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is GoTimer free to use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, GoTimer is completely free. All 28+ timers — including Countdown, Chess Clock, Round Timer, HIIT, Pomodoro, and more — work without an account. Creating challenges and tracking scores requires a free account.",
+      },
+    },
     {
       "@type": "Question",
       name: "What is a chess clock for board games?",
@@ -29,34 +36,26 @@ const faqJsonLd = JSON.stringify({
     },
     {
       "@type": "Question",
-      name: "How do I time board game turns?",
+      name: "What timers do you have for workouts?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "For two-player games, use GoTimer's Chess Clock — set a time limit per player and tap to switch turns. For group games, use the Countdown Timer to give each player a fixed amount of time per turn. For tracking total game rounds, use the Round Timer.",
+        text: "GoTimer has a full suite of fitness timers: HIIT Timer for high-intensity intervals, Tabata Timer for 20/10 protocols, EMOM Timer for every-minute-on-the-minute workouts, a Stretching Timer for hold-based routines, and a Rest Timer for tracking recovery between sets.",
       },
     },
     {
       "@type": "Question",
-      name: "Can I track game scores with friends?",
+      name: "Can I use GoTimer for cooking?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes! GoTimer's challenge system lets you create ongoing rivalries with friends. Create a challenge for any game, invite your opponent, and log results after each game. You'll see a running score, game history, and visual charts tracking your rivalry over time.",
+        text: "Yes! GoTimer includes a Cooking Timer with common presets (5, 10, 15, 20, 30, 45, and 60 minutes), an Egg Timer for perfect soft, medium, or hard-boiled eggs, a Bread Proofing Timer for long rises, and a Multi-Timer that lets you run several independent timers at once.",
       },
     },
     {
       "@type": "Question",
-      name: "What board games need a timer?",
+      name: "Do you have photography and darkroom timers?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Any game benefits from a timer when turns take too long! Chess and Scrabble traditionally use time limits. Heavy strategy games like Twilight Imperium and Terraforming Mars benefit from round timers to keep the game on schedule. Party games like Codenames and trivia games often need countdown timers for timed rounds.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is GoTimer free to use?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, GoTimer is completely free. All three timers (Countdown, Chess Clock, and Round Timer) work without an account. Creating challenges and tracking scores requires a free account.",
+        text: "Yes! GoTimer offers specialized photography timers including a Film Development Timer for B&W, C-41, and E-6 processes with push/pull and temperature compensation, a Long Exposure Calculator for reciprocity failure correction, a Stand Development Timer, an Enlarger Timer with F-stop timing, and a Cyanotype UV exposure timer.",
       },
     },
     {
@@ -72,7 +71,7 @@ const faqJsonLd = JSON.stringify({
       name: "Can I use GoTimer for ADHD focus sessions?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes! GoTimer's countdown timer is great for ADHD focus and Pomodoro-style work sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the round timer to track multiple focus blocks and see how long you stayed on task.",
+        text: "Yes! GoTimer's Pomodoro Timer and Study Timer are great for ADHD focus sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the round timer to track multiple focus blocks throughout the day.",
       },
     },
   ],
@@ -80,29 +79,29 @@ const faqJsonLd = JSON.stringify({
 
 const FAQ_ITEMS = [
   {
-    question: "What is a chess clock for board games?",
-    answer:
-      "A chess clock is a two-player timer where each player has their own countdown. After making a move, you tap the clock to switch to your opponent&apos;s timer. This ensures both players have equal time and keeps the game moving. While traditionally used for chess, chess clocks work great for Scrabble, Go, and any turn-based game.",
-  },
-  {
-    question: "How do I time board game turns?",
-    answer:
-      "For two-player games, use GoTimer&apos;s Chess Clock &mdash; set a time limit per player and tap to switch turns. For group games, use the Countdown Timer to give each player a fixed amount of time per turn. For tracking total game rounds, use the Round Timer.",
-  },
-  {
-    question: "Can I track game scores with friends?",
-    answer:
-      "Yes! GoTimer&apos;s challenge system lets you create ongoing rivalries with friends. Create a challenge for any game, invite your opponent, and log results after each game. You&apos;ll see a running score, game history, and visual charts tracking your rivalry over time.",
-  },
-  {
-    question: "What board games need a timer?",
-    answer:
-      "Any game benefits from a timer when turns take too long! Chess and Scrabble traditionally use time limits. Heavy strategy games like Twilight Imperium and Terraforming Mars benefit from round timers to keep the game on schedule. Party games like Codenames and trivia games often need countdown timers for timed rounds.",
-  },
-  {
     question: "Is GoTimer free to use?",
     answer:
-      "Yes, GoTimer is completely free. All three timers (Countdown, Chess Clock, and Round Timer) work without an account. Creating challenges and tracking scores requires a free account.",
+      'Yes, GoTimer is completely free. All 28+ timers &mdash; including <a href="/countdown-setup" class="text-secondary underline">Countdown</a>, <a href="/chess-clock-setup" class="text-secondary underline">Chess Clock</a>, <a href="/round-timer-setup" class="text-secondary underline">Round Timer</a>, <a href="/fitness/hiit" class="text-secondary underline">HIIT</a>, <a href="/pomodoro-timer" class="text-secondary underline">Pomodoro</a>, and more &mdash; work without an account. Creating challenges and tracking scores requires a free account.',
+  },
+  {
+    question: "What is a chess clock for board games?",
+    answer:
+      'A <a href="/chess-clock-setup" class="text-secondary underline">chess clock</a> is a two-player timer where each player has their own countdown. After making a move, you tap the clock to switch to your opponent&apos;s timer. This ensures both players have equal time and keeps the game moving. While traditionally used for chess, chess clocks work great for Scrabble, Go, and any turn-based game. For group games, try the <a href="/board-games/turn-timer" class="text-secondary underline">Turn Timer</a>.',
+  },
+  {
+    question: "What timers do you have for workouts?",
+    answer:
+      'GoTimer has a full suite of <a href="/fitness" class="text-secondary underline">fitness timers</a>: <a href="/fitness/hiit" class="text-secondary underline">HIIT Timer</a> for high-intensity intervals, <a href="/fitness/tabata" class="text-secondary underline">Tabata Timer</a> for 20/10 protocols, <a href="/fitness/emom" class="text-secondary underline">EMOM Timer</a> for every-minute-on-the-minute workouts, a <a href="/fitness/stretching" class="text-secondary underline">Stretching Timer</a> for hold-based routines, and a <a href="/fitness/rest-timer" class="text-secondary underline">Rest Timer</a> for tracking recovery between sets.',
+  },
+  {
+    question: "Can I use GoTimer for cooking?",
+    answer:
+      'Yes! GoTimer includes a <a href="/kitchen/cooking" class="text-secondary underline">Cooking Timer</a> with common presets, an <a href="/kitchen/eggs" class="text-secondary underline">Egg Timer</a> for perfect soft, medium, or hard-boiled eggs, a <a href="/kitchen/bread-proofing" class="text-secondary underline">Bread Proofing Timer</a> for long rises, and a <a href="/kitchen/multi-timer" class="text-secondary underline">Multi-Timer</a> that lets you run several independent timers at once.',
+  },
+  {
+    question: "Do you have photography and darkroom timers?",
+    answer:
+      'Yes! GoTimer offers specialized <a href="/photography" class="text-secondary underline">photography timers</a> including a <a href="/photography/film-development" class="text-secondary underline">Film Development Timer</a> for B&amp;W, C-41, and E-6 processes with push/pull and temperature compensation, a <a href="/photography/long-exposure-calculator" class="text-secondary underline">Long Exposure Calculator</a> for reciprocity failure correction, a <a href="/photography/stand-development" class="text-secondary underline">Stand Development Timer</a>, an <a href="/photography/enlarger-timer" class="text-secondary underline">Enlarger Timer</a> with F-stop timing, and a <a href="/photography/cyanotype" class="text-secondary underline">Cyanotype</a> UV exposure timer.',
   },
   {
     question: "Does GoTimer work on mobile phones?",
@@ -112,7 +111,7 @@ const FAQ_ITEMS = [
   {
     question: "Can I use GoTimer for ADHD focus sessions?",
     answer:
-      "Yes! GoTimer&apos;s countdown timer is great for ADHD focus and Pomodoro-style work sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the round timer to track multiple focus blocks and see how long you stayed on task.",
+      'Yes! GoTimer&apos;s <a href="/pomodoro-timer" class="text-secondary underline">Pomodoro Timer</a> and <a href="/productivity/study" class="text-secondary underline">Study Timer</a> are great for ADHD focus sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the <a href="/round-timer-setup" class="text-secondary underline">Round Timer</a> to track multiple focus blocks throughout the day.',
   },
 ];
 
@@ -130,28 +129,14 @@ const HOW_IT_WORKS_STEPS = [
     description: "Hit start and go. No sign-up needed. Works on any device, any browser.",
   },
   {
-    icon: Trophy,
+    icon: Palette,
     step: "3",
-    title: "Add a Leaderboard",
-    description: "Create challenges, invite friends, and track who wins over time.",
+    title: "Customize It",
+    description: "Go fullscreen, pick a theme, set alerts, and share your timer with a link.",
   },
 ];
 
-function get_published_timer_pages(): { slug: string; title: string; timer_type: string }[] {
-  try {
-    const db = get_db();
-    return db
-      .prepare(
-        `SELECT slug, title, timer_type FROM timer_pages WHERE status = 'published' ORDER BY published_at DESC`
-      )
-      .all() as { slug: string; title: string; timer_type: string }[];
-  } catch {
-    return [];
-  }
-}
-
 export default function HomePage() {
-  const published_pages = get_published_timer_pages();
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-surface">
@@ -171,15 +156,9 @@ export default function HomePage() {
       </div>
 
       {/* 2. Timer Category Grid */}
-      <CategoryGrid published_pages={published_pages} />
+      <CategoryGrid />
 
-      {/* 3. Leaderboard Teaser */}
-      <LeaderboardTeaser />
-
-      {/* 4. Social Proof Strip */}
-      <SocialProof />
-
-      {/* 5. How It Works */}
+      {/* 3. How It Works */}
       <section className="w-full py-12 md:py-16 px-4 bg-surface">
         <div className="max-w-4xl mx-auto">
           <h2 className="font-headline font-black text-2xl md:text-4xl text-center text-foreground mb-3">
@@ -194,7 +173,7 @@ export default function HomePage() {
               return (
                 <div
                   key={item.step}
-                  className="flex flex-col items-center text-center bg-surface-container-low rounded-[1rem] p-6 shadow-[var(--shadow-soft)] hover:scale-105 transition-all duration-200 ease-out"
+                  className="flex flex-col items-center text-center bg-surface-container-low rounded-[1rem] p-6 shadow-[var(--shadow-soft)] hover:scale-[1.02] transition-all duration-200 ease-out"
                 >
                   <div className="w-16 h-16 rounded-full bg-secondary/10 text-secondary flex items-center justify-center mb-4">
                     <Icon className="w-7 h-7" />
@@ -210,6 +189,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 4. Social Proof Strip */}
+      <SocialProof />
+
+      {/* 5. Leaderboard Teaser */}
+      <LeaderboardTeaser />
 
       {/* 6. Blog / Latest Guides */}
       <section className="w-full py-12 md:py-16 px-4 bg-surface-container-low">
@@ -238,16 +223,6 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto">
           <FaqAccordion items={FAQ_ITEMS} title="Frequently Asked Questions" />
         </div>
-      </section>
-
-      {/* Contact */}
-      <section className="w-full py-8 px-4 bg-surface text-center">
-        <p className="text-muted-foreground">
-          For support or feature requests, contact{" "}
-          <a href="mailto:pubs@hazoservices.com" className="text-secondary underline">
-            pubs@hazoservices.com
-          </a>
-        </p>
       </section>
 
       {/* 8. Footer */}

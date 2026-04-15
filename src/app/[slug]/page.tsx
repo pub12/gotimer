@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { get_db } from "@/lib/db";
 import { get_server_auth_user } from "hazo_auth/server-lib";
 import TimerPageTemplate from "@/components/timer-page/timer-page-template";
+import { QUICK_TIMER_CONTENT } from "@/lib/quick-timer-content";
 
 // Route segments that must NOT be caught by this dynamic route
 const RESERVED_SLUGS = new Set([
@@ -24,6 +25,14 @@ const RESERVED_SLUGS = new Set([
   "leaderboard",
   "board-games",
   "developers",
+  // Category pages
+  "photography",
+  "fitness",
+  "wellness",
+  "productivity",
+  "kitchen",
+  // Studio
+  "studio",
 ]);
 
 type TimerPage = {
@@ -104,7 +113,8 @@ export async function generateMetadata({
 
   const base = "https://gotimer.org";
   const title = page.meta_title || page.title;
-  const description = page.meta_description || undefined;
+  const content_override = QUICK_TIMER_CONTENT[slug];
+  const description = content_override?.meta_description || page.meta_description || undefined;
 
   return {
     title,
@@ -175,9 +185,20 @@ export default async function TimerPageRoute({
     // ignore
   }
 
+  // Merge static SEO content overrides for quick timer pages (no DB migration needed)
+  const content_override = QUICK_TIMER_CONTENT[slug];
+  const merged_page = content_override
+    ? {
+        ...page,
+        intro_html: page.intro_html || content_override.intro_html,
+        faq_json: page.faq_json === "[]" ? content_override.faq_json : page.faq_json,
+        meta_description: content_override.meta_description || page.meta_description,
+      }
+    : page;
+
   return (
     <TimerPageTemplate
-      page={page}
+      page={merged_page}
       related_pages={related_pages}
       is_draft={show_draft_banner}
     />
