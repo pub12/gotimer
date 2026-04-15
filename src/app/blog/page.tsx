@@ -6,6 +6,8 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import { ChevronRight, Clock, Tag } from "lucide-react";
+import { BlogSearch } from "@/components/blog/blog-search";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -36,11 +38,11 @@ interface BlogCategory {
 }
 
 interface PageProps {
-  searchParams: Promise<{ category?: string; page?: string }>;
+  searchParams: Promise<{ category?: string; page?: string; q?: string }>;
 }
 
 export default async function BlogPage({ searchParams }: PageProps) {
-  const { category, page: page_param } = await searchParams;
+  const { category, page: page_param, q: search_query } = await searchParams;
   const current_page = Math.max(1, parseInt(page_param ?? "1", 10));
   const offset = (current_page - 1) * POSTS_PER_PAGE;
 
@@ -52,8 +54,32 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
   let posts: BlogPost[];
   let total_count: number;
+  const trimmed_query = search_query?.trim() || "";
 
-  if (category) {
+  if (trimmed_query) {
+    const like_pattern = `%${trimmed_query}%`;
+    posts = db
+      .prepare(
+        `SELECT bp.id, bp.slug, bp.title, bp.content, bp.publish_date,
+                bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour,
+                ci.file_path as character_image, ci.character_name as character_name
+         FROM blog_posts bp
+         LEFT JOIN blog_categories bc ON bp.category_id = bc.id
+         LEFT JOIN character_images ci ON bp.character_id = ci.id
+         WHERE bp.status = 'published' AND (bp.title LIKE ? OR bp.content LIKE ?)
+         ORDER BY bp.publish_date DESC
+         LIMIT ? OFFSET ?`
+      )
+      .all(like_pattern, like_pattern, POSTS_PER_PAGE, offset) as BlogPost[];
+
+    const count_row = db
+      .prepare(
+        `SELECT COUNT(*) as count FROM blog_posts
+         WHERE status = 'published' AND (title LIKE ? OR content LIKE ?)`
+      )
+      .get(like_pattern, like_pattern) as { count: number };
+    total_count = count_row.count;
+  } else if (category) {
     posts = db
       .prepare(
         `SELECT bp.id, bp.slug, bp.title, bp.content, bp.publish_date,
@@ -98,7 +124,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
   }
 
   const total_pages = Math.ceil(total_count / POSTS_PER_PAGE);
-  const featured_post = !category && current_page === 1 && posts.length > 0 ? posts[0] : null;
+  const featured_post = !category && !trimmed_query && current_page === 1 && posts.length > 0 ? posts[0] : null;
   const grid_posts = featured_post ? posts.slice(1) : posts;
 
   const featured_read_time = featured_post ? Math.max(3, Math.ceil((featured_post.content?.length ?? 0) / 1000)) : 0;
@@ -136,6 +162,11 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <p className="text-primary-foreground/50 text-lg mt-4 max-w-lg">
                 Guides, strategies, and insights on productivity, timing, and getting more done.
               </p>
+              <div className="mt-6">
+                <Suspense>
+                  <BlogSearch />
+                </Suspense>
+              </div>
             </div>
             <Image
               src="/mascots/drake-timer.png"
@@ -225,7 +256,11 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-1 h-6 bg-secondary rounded-full" />
                 <h3 className="text-xl font-black text-foreground font-headline">
-                  {category ? `Filtered: ${category}` : "Latest Articles"}
+                  {trimmed_query
+                    ? `Results for "${trimmed_query}" (${total_count})`
+                    : category
+                      ? `Filtered: ${category}`
+                      : "Latest Articles"}
                 </h3>
               </div>
 
@@ -238,7 +273,11 @@ export default async function BlogPage({ searchParams }: PageProps) {
                     height={160}
                     className="w-32 h-32 object-contain mx-auto mb-4"
                   />
-                  <p className="text-muted-foreground text-lg">No articles yet. Check back soon.</p>
+                  <p className="text-muted-foreground text-lg">
+                    {trimmed_query
+                      ? `No articles found for "${trimmed_query}". Try a different search.`
+                      : "No articles yet. Check back soon."}
+                  </p>
                 </div>
               ) : grid_posts.length === 0 ? null : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

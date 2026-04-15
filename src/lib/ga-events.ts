@@ -16,6 +16,13 @@ export function fire_sign_up_event(method: "email" | "google") {
   }
 }
 
+export function fire_search_event(search_term: string) {
+  if (typeof window === "undefined") return;
+  if (window.gtag) {
+    window.gtag("event", "search", { search_term });
+  }
+}
+
 /**
  * Check if this user ID has been seen before. If not, fire sign_up event.
  * Call this after authentication is confirmed.
