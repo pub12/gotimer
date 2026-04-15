@@ -46,9 +46,20 @@ const jsonLd = {
   ],
 };
 
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://gotimer.org" },
+    { "@type": "ListItem", position: 2, name: "Board Games", item: "https://gotimer.org/board-games" },
+    { "@type": "ListItem", position: 3, name: "Countdown Timer", item: "https://gotimer.org/countdown" },
+  ],
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   // JSON-LD is a static object we control - safe to serialize
   const jsonLdString = JSON.stringify(jsonLd);
+  const breadcrumbLdString = JSON.stringify(breadcrumbLd);
 
   return (
     <>
@@ -56,6 +67,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         type="application/ld+json"
         // skipcq: JS-0440
         dangerouslySetInnerHTML={{ __html: jsonLdString }}
+      />
+      <script
+        type="application/ld+json"
+        // skipcq: JS-0440
+        dangerouslySetInnerHTML={{ __html: breadcrumbLdString }}
       />
       {children}
     </>

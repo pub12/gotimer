@@ -6,6 +6,7 @@ import Image from "next/image";
 import {
   Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Link2, Check, Palette, Zap,
 } from "lucide-react";
+import { SaveTimerButton } from "@/components/studio/save-timer-button";
 
 const MAX_DURATION = 86400; // 24 hours
 
@@ -357,6 +358,15 @@ export default function TimerShell({
               {link_copied ? <Check className={`w-4 h-4`} /> : <Link2 className={`${btn_text} w-4 h-4`} />}
             </button>
           )}
+          {/* Save to Studio */}
+          <SaveTimerButton
+            timer_type={timer_label.toLowerCase().replace(/\s+/g, "-")}
+            title={user_title || timer_label}
+            config={{
+              ...(duration ? { duration: duration.value } : {}),
+              ...(interval ? { work: interval.work, rest: interval.rest, rounds: interval.rounds } : {}),
+            }}
+          />
         </div>
       </div>
     );
@@ -433,26 +443,26 @@ export default function TimerShell({
         {/* Duration / Interval controls */}
         {duration && <DurationInput value={duration.value} onChange={duration.onChange} />}
         {interval && (
-          <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-            <label className="flex items-center gap-2 text-muted-foreground">
+          <div className="flex items-center justify-center gap-4 text-sm">
+            <label className="flex items-center gap-2 text-muted-foreground whitespace-nowrap">
               Work
               <input type="number" min={5} max={600} value={interval.work}
                 onChange={(e) => interval.on_work_change(Math.max(5, Number(e.target.value)))}
-                className="w-16 text-center bg-surface-container-high rounded-[0.5rem] px-2 py-1 text-foreground font-medium outline-none focus:ring-2 focus:ring-secondary/30"
+                className="w-16 text-center bg-surface-container-high rounded-[0.5rem] px-2 py-1.5 text-foreground font-medium outline-none focus:ring-2 focus:ring-secondary/30"
               /><span>s</span>
             </label>
-            <label className="flex items-center gap-2 text-muted-foreground">
+            <label className="flex items-center gap-2 text-muted-foreground whitespace-nowrap">
               Rest
               <input type="number" min={0} max={300} value={interval.rest}
                 onChange={(e) => interval.on_rest_change(Math.max(0, Number(e.target.value)))}
-                className="w-16 text-center bg-surface-container-high rounded-[0.5rem] px-2 py-1 text-foreground font-medium outline-none focus:ring-2 focus:ring-secondary/30"
+                className="w-16 text-center bg-surface-container-high rounded-[0.5rem] px-2 py-1.5 text-foreground font-medium outline-none focus:ring-2 focus:ring-secondary/30"
               /><span>s</span>
             </label>
-            <label className="flex items-center gap-2 text-muted-foreground">
+            <label className="flex items-center gap-2 text-muted-foreground whitespace-nowrap">
               Rounds
               <input type="number" min={1} max={99} value={interval.rounds}
                 onChange={(e) => interval.on_rounds_change(Math.max(1, Number(e.target.value)))}
-                className="w-16 text-center bg-surface-container-high rounded-[0.5rem] px-2 py-1 text-foreground font-medium outline-none focus:ring-2 focus:ring-secondary/30"
+                className="w-16 text-center bg-surface-container-high rounded-[0.5rem] px-2 py-1.5 text-foreground font-medium outline-none focus:ring-2 focus:ring-secondary/30"
               />
             </label>
           </div>

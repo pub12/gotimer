@@ -215,6 +215,73 @@ const migrations: Migration[] = [
   { version: 21, sql: `CREATE INDEX IF NOT EXISTS idx_timer_pages_slug ON timer_pages (slug)` },
   { version: 22, sql: `CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON blog_posts (slug)` },
   { version: 23, sql: `CREATE INDEX IF NOT EXISTS idx_timer_sessions_user_id ON timer_sessions (user_id)` },
+  // Phase 1: Category slug on timer pages
+  { version: 24, sql: `ALTER TABLE timer_pages ADD COLUMN category_slug TEXT NOT NULL DEFAULT ''` },
+  { version: 25, sql: `CREATE INDEX IF NOT EXISTS idx_timer_pages_category ON timer_pages (category_slug)` },
+  // Phase 2: My Timer Studio
+  { version: 26, sql: `
+    CREATE TABLE IF NOT EXISTS studio_categories (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      icon TEXT NOT NULL DEFAULT '📁',
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_studio_categories_user ON studio_categories (user_id);
+  ` },
+  { version: 27, sql: `
+    CREATE TABLE IF NOT EXISTS saved_timers (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      category_id TEXT REFERENCES studio_categories(id) ON DELETE SET NULL,
+      type TEXT NOT NULL,
+      title TEXT NOT NULL,
+      icon TEXT NOT NULL DEFAULT '⏱️',
+      accent_color TEXT NOT NULL DEFAULT '#E8613C',
+      theme TEXT NOT NULL DEFAULT '',
+      config_json TEXT NOT NULL DEFAULT '{}',
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_saved_timers_user ON saved_timers (user_id);
+  ` },
+  { version: 28, sql: `
+    CREATE TABLE IF NOT EXISTS push_subscriptions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT,
+      endpoint TEXT NOT NULL,
+      p256dh TEXT NOT NULL,
+      auth TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  ` },
+  { version: 29, sql: `
+    CREATE TABLE IF NOT EXISTS telegram_links (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      telegram_chat_id TEXT NOT NULL,
+      telegram_username TEXT,
+      link_code TEXT UNIQUE,
+      linked_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  ` },
+  { version: 30, sql: `
+    CREATE TABLE IF NOT EXISTS notification_preferences (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      timer_id TEXT,
+      channel TEXT NOT NULL DEFAULT 'push',
+      notify_before_completion INTEGER NOT NULL DEFAULT 120,
+      notify_on_step_change INTEGER NOT NULL DEFAULT 0,
+      notify_on_agitation INTEGER NOT NULL DEFAULT 0,
+      notify_on_complete INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  ` },
 ];
 
 function run_migrations(db: Database.Database) {

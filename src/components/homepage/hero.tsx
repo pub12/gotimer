@@ -14,12 +14,18 @@ const SUB_HEADLINES = [
   "Board game showdown? Set.",
   "HIIT workout? Go.",
   "Study session? Start.",
+  "Meditation timer? Breathe.",
+  "Cooking countdown? Ready.",
+  "Film development? Timed.",
 ];
 
 const QUICK_PICKS = [
   { label: "25 min Pomodoro", seconds: 1500, href: "/pomodoro-timer" },
   { label: "20 min HIIT", seconds: 1200, href: "/hiit-timer" },
   { label: "Board Games", seconds: null, href: "/board-games" },
+  { label: "Meditation", seconds: null, href: "/wellness/breathing" },
+  { label: "Cooking", seconds: null, href: "/kitchen/cooking" },
+  { label: "Film Dev", seconds: null, href: "/photography/film-development" },
   { label: "Custom", seconds: null, href: "/countdown-setup" },
 ];
 
@@ -49,7 +55,7 @@ export default function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       set_sub_index((i) => (i + 1) % SUB_HEADLINES.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -217,7 +223,7 @@ export default function Hero() {
             <button
               key={pick.label}
               onClick={() => handle_quick_pick(pick)}
-              className="px-5 py-2.5 rounded-full bg-secondary/10 text-secondary hover:bg-secondary hover:text-secondary-foreground text-sm font-medium transition-all duration-200 ease-out hover:scale-105 cursor-pointer"
+              className="px-5 py-2.5 rounded-full bg-secondary/10 text-secondary hover:bg-secondary hover:text-secondary-foreground text-sm font-medium transition-all duration-200 ease-out hover:scale-[1.02] cursor-pointer"
             >
               {pick.label}
             </button>

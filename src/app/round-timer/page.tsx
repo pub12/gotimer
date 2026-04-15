@@ -1,107 +1,72 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback, Suspense } from "react";
+import React, { Suspense } from "react";
 import { RotateCcw, Pause, Play } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import TimerShell from "@/components/shared/timer-shell";
+import { TimerProvider, useTimer } from "@/components/timer/timer-provider";
+import { TimerShellV2 } from "@/components/timer/timer-shell-v2";
+import { TimerDisplay, format_time } from "@/components/timer/timer-display";
+import { TimerSeoContent } from "@/components/timer/timer-seo-content";
+import { roundTimerStrategy } from "@/lib/timer-strategies/round-timer";
 
-// SVG ring constants
-const RING_SIZE = 280;
-const STROKE_WIDTH = 12;
-const RADIUS = 134;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+const ROUND_TIMER_FAQ = [
+  {
+    question: "What is a round timer used for?",
+    answer:
+      "A round timer counts up from zero and lets you mark individual rounds (or laps). It tracks <strong>total elapsed time</strong> and the duration of each round separately. Common uses include boxing rounds, MMA training, debate speeches, board game tournament phases, and presentation timeboxing.",
+  },
+  {
+    question: "How is a round timer different from an interval timer?",
+    answer:
+      "An interval timer (like <a href='/fitness/tabata'>Tabata</a> or <a href='/fitness/emom'>EMOM</a>) automates fixed work/rest periods with automatic transitions. A round timer gives you <strong>manual control</strong> — you decide when each round ends by pressing \"Next Round.\" This makes it ideal for activities with variable-length rounds.",
+  },
+  {
+    question: "Can I use this for boxing or MMA rounds?",
+    answer:
+      "Yes. Press Start to begin round one, then tap \"Next Round\" when the bell would ring. The timer records each round&apos;s duration so you can review your pacing afterward. Standard boxing rounds are 3 minutes; MMA rounds are 5 minutes. You manage the transitions manually for maximum flexibility.",
+  },
+  {
+    question: "Does the round timer save my round history?",
+    answer:
+      "Round durations are displayed in a scrollable list below the main timer during your session. The history persists as long as the page is open. Refreshing the page resets the timer and clears round history.",
+  },
+  {
+    question: "What is the difference between a round timer and a chess clock?",
+    answer:
+      "A <a href='/chess-clock'>chess clock</a> counts <strong>down</strong> from a set duration and tracks two competing players. A round timer counts <strong>up</strong> indefinitely and tracks sequential rounds for a single user or group. Use a chess clock for head-to-head competition and a round timer for tracking phases or laps.",
+  },
+];
 
-function ProgressRing({ progress, color }: { progress: number; color: string }) {
-  const dash_offset = CIRCUMFERENCE * (1 - progress);
-  return (
-    <svg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} className="w-full h-full -rotate-90">
-      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
-        stroke="var(--surface-container-high)" strokeWidth={STROKE_WIDTH} />
-      <circle cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RADIUS} fill="none"
-        stroke={color} strokeWidth={STROKE_WIDTH} strokeLinecap="round"
-        strokeDasharray={CIRCUMFERENCE} strokeDashoffset={dash_offset}
-        className="ring-progress-transition" />
-    </svg>
-  );
-}
+const RELATED_TIMERS = [
+  { name: "Chess Clock", href: "/chess-clock", description: "Two-player countdown clock for head-to-head competition" },
+  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown with audio alerts for any timed deadline" },
+  { name: "Turn Timer", href: "/board-games/turn-timer", description: "Multi-player per-turn countdown for board games (2-8 players)" },
+  { name: "Tabata Timer", href: "/fitness/tabata", description: "Classic 20s work / 10s rest interval protocol for HIIT" },
+  { name: "EMOM Timer", href: "/fitness/emom", description: "Every Minute On the Minute intervals for CrossFit workouts" },
+];
 
-const RING_NORMAL = "relative w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 flex items-center justify-center";
-const RING_FULLSCREEN = "relative w-[22rem] h-[22rem] sm:w-[28rem] sm:h-[28rem] md:w-[34rem] md:h-[34rem] flex items-center justify-center";
+function RoundTimerInner() {
+  const { machine, fullscreen } = useTimer();
+  const { status, display, start, pause, resume, action } = machine;
+  const is_fs = fullscreen.is_fullscreen;
 
-function format_time(secs: number) {
-  const h = Math.floor(secs / 3600);
-  const m = Math.floor((secs % 3600) / 60);
-  const s = secs % 60;
-  if (h > 0) return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-}
+  const previous_rounds = (display.extra?.previous_rounds || []) as number[];
 
-function RoundTimerContent() {
-  const [total_time, set_total_time] = useState(0);
-  const [round_time, set_round_time] = useState(0);
-  const [running, set_running] = useState(false);
-  const [audio_enabled, set_audio_enabled] = useState(false);
-  const [previous_round_times, set_previous_round_times] = useState<number[]>([]);
-  const audio_context_ref = useRef<AudioContext | null>(null);
+  const btn_cls = `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${
+    is_fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"
+  } font-semibold transition-colors`;
+  const outline_cls = `flex-1 flex items-center justify-center gap-2 bg-surface-container-low text-foreground hover:bg-surface-container-high rounded-2xl ${
+    is_fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"
+  } font-semibold transition-colors`;
 
-  const toggle_audio = () => {
-    if (!audio_enabled) {
-      try {
-        if (!audio_context_ref.current) {
-          audio_context_ref.current = new (
-            window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
-          )();
-        }
-        set_audio_enabled(true);
-      } catch { /* Audio not supported */ }
-    } else {
-      set_audio_enabled(false);
+  const handle_toggle = () => {
+    switch (status) {
+      case "idle": start(); break;
+      case "running": pause(); break;
+      case "paused": resume(); break;
     }
   };
-
-  const play_beep = useCallback((duration = 0.15, frequency = 880) => {
-    if (!audio_enabled || !audio_context_ref.current) return;
-    try {
-      const ctx = audio_context_ref.current;
-      if (ctx.state === "suspended") ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine"; osc.frequency.value = frequency; gain.gain.value = 0.2;
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(); osc.stop(ctx.currentTime + duration);
-    } catch { /* Ignore */ }
-  }, [audio_enabled]);
-
-  useEffect(() => {
-    if (!running) return;
-    const interval = setInterval(() => {
-      set_total_time((p) => p + 1);
-      set_round_time((p) => p + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [running]);
-
-  // Beep every minute
-  useEffect(() => {
-    if (running && round_time > 0 && round_time % 60 === 0) play_beep(0.3, 660);
-  }, [round_time, running, play_beep]);
-
-  const handle_round_reset = () => {
-    if (round_time > 0) set_previous_round_times((prev) => [...prev, round_time]);
-    set_round_time(0);
-  };
-
-  const ring_progress = (round_time % 60) / 60;
-  const minutes = Math.floor(round_time / 60).toString().padStart(2, "0");
-  const seconds = (round_time % 60).toString().padStart(2, "0");
-  const round_number = previous_round_times.length + 1;
-  const status_text = running ? `Round ${round_number} in progress` : total_time > 0 ? "Paused" : "Ready";
-
-  const btn_cls = (fs: boolean) =>
-    `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
-  const outline_cls = (fs: boolean) =>
-    `flex-1 flex items-center justify-center gap-2 bg-surface-container-low text-foreground hover:bg-surface-container-high rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`;
 
   return (
     <>
@@ -109,52 +74,53 @@ function RoundTimerContent() {
       <main className="min-h-screen flex flex-col bg-surface pt-14 pb-4 px-3 w-full md:pt-20 md:px-4 md:items-center">
         <h1 className="sr-only">Round Timer</h1>
         <div className="mt-4 mb-8">
-          <TimerShell
-            timer_label="Round Timer"
-            status_text={status_text}
-            audio_enabled={audio_enabled}
-            on_toggle_audio={toggle_audio}
-            controls={({ is_fullscreen: fs }) => (
+          <TimerShellV2
+            label="Round Timer"
+            controls={
               <div className="flex flex-col gap-3 w-full max-w-sm">
-                <button onClick={handle_round_reset} className={btn_cls(fs)}>
+                <button onClick={handle_toggle} className={btn_cls}>
+                  {status === "running" ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {status !== "idle" ? "Resume" : "Start"}</>}
+                </button>
+                <button onClick={() => action("next_round")} className={outline_cls}>
                   <RotateCcw className="w-5 h-5" /> Next Round
                 </button>
-                <button onClick={() => set_running(!running)} className={outline_cls(fs)}>
-                  {running ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {total_time > 0 ? "Resume" : "Start"}</>}
-                </button>
               </div>
-            )}
+            }
+            timer_type="round-timer"
+            running={status === "running"}
           >
-            {({ is_fullscreen: fs }) => (
-              <>
-                {/* Total time */}
+            <>
+              {/* Total time */}
+              {display.secondary_time !== undefined && display.secondary_time > 0 && (
                 <div className="flex items-center gap-2 text-sm font-mono text-muted-foreground">
                   <span className="text-xs uppercase tracking-wide font-headline font-bold">Total</span>
-                  <span className="font-semibold">{format_time(total_time)}</span>
+                  <span className="font-semibold">{format_time(display.secondary_time)}</span>
                 </div>
+              )}
 
-                <div className={RING_NORMAL}>
-                  <ProgressRing progress={ring_progress} color="var(--secondary)" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className={`flex items-baseline ${fs ? "gap-3" : "gap-1.5"}`}>
-                      <div className="flex flex-col items-center">
-                        <span className={`${fs ? "text-7xl sm:text-8xl" : "text-4xl sm:text-5xl md:text-7xl"} font-headline font-black text-foreground`}>{minutes}</span>
-                        <span className={`${fs ? "text-sm" : "text-[10px] sm:text-xs"} uppercase tracking-wider text-muted-foreground mt-1`}>Minutes</span>
+              <TimerDisplay
+                time={display.primary_time}
+                progress={display.progress}
+                variant="ring"
+                color="var(--secondary)"
+                sub_label={display.phase_label}
+              />
+
+              {/* Round history */}
+              {previous_rounds.length > 0 && (
+                is_fs ? (
+                  <div className="flex flex-wrap items-center justify-center gap-2 max-w-lg">
+                    {previous_rounds.map((time, i) => (
+                      <div key={i} className="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-low rounded-full text-xs">
+                        <span className="font-headline font-bold text-foreground">R{i + 1}</span>
+                        <span className="font-mono font-semibold text-foreground">{format_time(time)}</span>
                       </div>
-                      <span className={`${fs ? "text-7xl sm:text-8xl mb-8" : "text-4xl sm:text-5xl md:text-7xl mb-4 sm:mb-5"} font-headline font-black text-foreground`}>:</span>
-                      <div className="flex flex-col items-center">
-                        <span className={`${fs ? "text-7xl sm:text-8xl" : "text-4xl sm:text-5xl md:text-7xl"} font-headline font-black text-foreground`}>{seconds}</span>
-                        <span className={`${fs ? "text-sm" : "text-[10px] sm:text-xs"} uppercase tracking-wider text-muted-foreground mt-1`}>Seconds</span>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                </div>
-
-                {/* Round history */}
-                {!fs && previous_round_times.length > 0 && (
+                ) : (
                   <div className="w-full max-h-24 md:max-h-48 overflow-y-auto">
                     <div className="flex flex-col gap-1.5">
-                      {previous_round_times.map((time, i) => (
+                      {previous_rounds.map((time, i) => (
                         <div key={i} className="flex justify-between items-center py-2 px-3 bg-surface-container-low rounded-xl">
                           <span className="text-xs md:text-sm font-headline font-bold text-foreground">Round {i + 1}</span>
                           <span className="text-xs md:text-sm font-mono font-semibold text-foreground">{format_time(time)}</span>
@@ -162,10 +128,10 @@ function RoundTimerContent() {
                       ))}
                     </div>
                   </div>
-                )}
-              </>
-            )}
-          </TimerShell>
+                )
+              )}
+            </>
+          </TimerShellV2>
         </div>
 
         <section className="w-full max-w-md mx-auto px-1 text-center">
@@ -173,9 +139,75 @@ function RoundTimerContent() {
             Free online turn timer and round tracker. Ideal for board game tournaments, strategy games, and timeboxing sessions.
           </p>
         </section>
+
+        <TimerSeoContent
+          timer_name="Round Timer"
+          category_name="Board Games"
+          category_slug="board-games"
+          faq={ROUND_TIMER_FAQ}
+          related_timers={RELATED_TIMERS}
+        >
+          <h2>What Is a Round Timer?</h2>
+          <p>
+            A round timer is a count-up clock that tracks total elapsed time while letting you
+            mark individual rounds or laps. Unlike a <a href="/countdown">countdown timer</a> that
+            ticks toward zero, a round timer runs indefinitely — you control when each round ends
+            by tapping &quot;Next Round.&quot; The timer records every round&apos;s duration so you can
+            review pacing, identify slow phases, and improve consistency over time.
+          </p>
+          <p>
+            This free online round timer works in any browser. Press start, mark rounds as you go,
+            and review the full history in the scrollable lap list below the display. No download,
+            no account, no ads.
+          </p>
+
+          <h2>When to Use a Round Timer</h2>
+          <p>
+            A round timer excels whenever activity is divided into phases of variable length:
+          </p>
+          <ul>
+            <li><strong>Boxing and MMA training</strong> — Track 3-minute boxing rounds or 5-minute MMA rounds with manual bell control. Review round-by-round duration to monitor fatigue.</li>
+            <li><strong>Debate and speech practice</strong> — Time opening statements, rebuttals, and closing arguments separately while tracking the total session length.</li>
+            <li><strong>Board game tournaments</strong> — Track how long each phase or game round takes in Twilight Imperium, Root, Gloomhaven, or other round-structured games.</li>
+            <li><strong>Presentation rehearsal</strong> — Mark each slide transition as a &quot;round&quot; to identify sections that run long and need trimming.</li>
+            <li><strong>Meeting facilitation</strong> — Timebox agenda items and record how long each topic actually took versus the planned allocation.</li>
+            <li><strong>Running and swimming laps</strong> — Use as a digital lap timer to track split times during training sessions.</li>
+          </ul>
+
+          <h2>How to Use This Round Timer</h2>
+          <ol>
+            <li><strong>Press Start</strong> — The timer begins counting up from zero. Round 1 is now active.</li>
+            <li><strong>Tap &quot;Next Round&quot;</strong> — Ends the current round and starts the next one. The completed round&apos;s time is saved to the history list.</li>
+            <li><strong>Pause when needed</strong> — Hit Pause to freeze both the round and total clocks. Resume picks up exactly where you left off.</li>
+            <li><strong>Review your rounds</strong> — Scroll through the round history below the timer to compare durations and spot inconsistencies.</li>
+          </ol>
+
+          <h2>Round Timer vs. Interval Timer</h2>
+          <p>
+            The key difference is <strong>control</strong>. An interval timer like{" "}
+            <a href="/fitness/tabata">Tabata</a> or <a href="/fitness/emom">EMOM</a> prescribes
+            fixed work and rest periods — the timer switches phases automatically. A round timer
+            puts you in charge: rounds can be any length, and you decide when to advance. This
+            makes it better for activities where round duration varies naturally, like sparring
+            sessions, game turns, or free-form practice.
+          </p>
+          <p>
+            If you need fixed intervals with automatic transitions, use our Tabata or EMOM timers.
+            If you need flexible round tracking with manual control, this round timer is the right
+            choice.
+          </p>
+        </TimerSeoContent>
       </main>
       <Footer />
     </>
+  );
+}
+
+function RoundTimerContent() {
+  return (
+    <TimerProvider strategy={roundTimerStrategy} config={{}}>
+      <RoundTimerInner />
+    </TimerProvider>
   );
 }
 

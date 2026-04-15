@@ -5,7 +5,7 @@ import { PostCard } from "@/components/blog/post-card";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Image from "next/image";
-import { ChevronRight, Mail, Clock, Tag } from "lucide-react";
+import { ChevronRight, Clock, Tag } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -277,30 +277,6 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
             {/* Sidebar */}
             <aside className="lg:col-span-4 space-y-6">
-              {/* Newsletter CTA */}
-              <div className="relative overflow-hidden bg-primary text-primary-foreground rounded-2xl p-7">
-                <div className="absolute -right-8 -top-8 w-32 h-32 bg-secondary/10 rotate-12 rounded-2xl" />
-                <div className="relative">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Mail className="size-4 text-secondary" />
-                    <h4 className="font-headline font-bold text-sm uppercase tracking-wider">Never Miss a Tick</h4>
-                  </div>
-                  <p className="text-primary-foreground/60 text-sm mb-5 leading-relaxed">
-                    Weekly insights on productivity, timing strategies, and getting more done.
-                  </p>
-                  <div className="flex gap-2">
-                    <input
-                      type="email"
-                      placeholder="your@email.com"
-                      className="flex-1 bg-primary-foreground/10 rounded-lg px-3 py-2.5 text-sm text-primary-foreground placeholder:text-primary-foreground/30 border border-primary-foreground/10 focus:border-secondary/50 focus:outline-none transition-colors"
-                    />
-                    <button className="bg-secondary text-secondary-foreground px-4 py-2.5 rounded-lg font-bold text-sm hover:brightness-110 transition-all shrink-0 cursor-pointer">
-                      Join
-                    </button>
-                  </div>
-                </div>
-              </div>
-
               {/* Categories */}
               {categories.length > 0 && (
                 <div className="bg-surface-container-low rounded-2xl p-6 border border-surface-container-high">

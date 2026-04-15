@@ -412,13 +412,17 @@
   transition: stroke-dashoffset 1s linear;
 }
 
-/* Fullscreen timer flash animation for final seconds */
+/* Fullscreen timer flash animation — bright white lightning flash */
 @keyframes timer-flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0% { box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); }
+  5% { box-shadow: inset 0 0 200px 200px rgba(255, 255, 255, 0.95); }
+  15% { box-shadow: inset 0 0 80px 80px rgba(255, 255, 255, 0.15); }
+  25% { box-shadow: inset 0 0 150px 150px rgba(255, 255, 255, 0.7); }
+  40% { box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); }
+  100% { box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 .animate-timer-flash {
-  animation: timer-flash 0.5s ease-in-out infinite;
+  animation: timer-flash 1s ease-out infinite;
 }
 
 /* Smooth transition for horizontal progress bar fill */

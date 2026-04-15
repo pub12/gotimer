@@ -1,106 +1,81 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, ChangeEvent, Suspense } from "react";
+import React, { Suspense, useState, ChangeEvent } from "react";
 import { useSearchParams } from "next/navigation";
-import { Pause, Play } from "lucide-react";
+import { Pause, Play, Pencil } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import TimerShell from "@/components/shared/timer-shell";
+import { TimerProvider, useTimer } from "@/components/timer/timer-provider";
+import { TimerShellV2 } from "@/components/timer/timer-shell-v2";
+import { TimerSeoContent } from "@/components/timer/timer-seo-content";
+import { chessClockStrategy } from "@/lib/timer-strategies/chess-clock";
+import type { ChessClockPlayer } from "@/lib/timer-strategies/chess-clock";
+import { DurationInput } from "@/components/shared/timer-shell";
+import { format_time } from "@/components/timer/timer-display";
 
-function ChessClockPageContent() {
-  const search_params = useSearchParams();
-  const initial_time = Number(search_params.get("time")) || Number(search_params.get("duration")) || 300;
+const CHESS_CLOCK_FAQ = [
+  {
+    question: "What are the standard chess time controls?",
+    answer:
+      "Chess time controls are grouped into four categories: <strong>Bullet</strong> (1-2 minutes per player), <strong>Blitz</strong> (3-5 minutes), <strong>Rapid</strong> (10-30 minutes), and <strong>Classical</strong> (60+ minutes). Online platforms like Chess.com and Lichess commonly offer 1+0, 3+0, 3+2, 5+0, 10+0, and 15+10 formats.",
+  },
+  {
+    question: "How does a chess clock work?",
+    answer:
+      "Each player has an independent countdown. When it is your turn, your clock ticks down. After making your move, you tap the clock (or tap your side of the screen) to stop your timer and start your opponent&apos;s. If your time reaches zero, you lose on time — unless your opponent has insufficient material to checkmate.",
+  },
+  {
+    question: "Can I use this chess clock for games other than chess?",
+    answer:
+      "Yes. A two-player clock works for any head-to-head game with alternating turns: <strong>Scrabble, Go (Baduk/Weiqi), Backgammon, Othello/Reversi, Hive, and Onitama</strong>. Set the duration to match your game — 10 minutes for Scrabble, 30-60 minutes for Go.",
+  },
+  {
+    question: "What is the difference between a chess clock and a turn timer?",
+    answer:
+      "A chess clock gives each player a <strong>total time bank</strong> that depletes across all their turns — spend too long on one move and you have less later. A <a href='/board-games/turn-timer'>turn timer</a> resets every turn, giving equal time per move. Chess clocks reward time management; turn timers enforce equal pacing.",
+  },
+  {
+    question: "Is a digital chess clock better than a physical one?",
+    answer:
+      "Digital clocks (like this one) are free, always available on your phone, and require zero setup. Physical clocks offer tactile satisfaction and are required at official FIDE tournaments. For casual games, online play, and game nights, a browser-based clock is more practical and just as accurate.",
+  },
+];
 
-  const [user_duration, set_user_duration] = useState(initial_time);
-  const [player_times, set_player_times] = useState([initial_time, initial_time]);
-  const [active_player, set_active_player] = useState(0);
-  const [paused, set_paused] = useState(true);
-  const [player_names, set_player_names] = useState(["Player 1", "Player 2"]);
-  const [audio_enabled, set_audio_enabled] = useState(false);
-  const audio_context_ref = useRef<AudioContext | null>(null);
-  const zero_beeped = useRef([false, false]);
+const RELATED_TIMERS = [
+  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown with audio alerts for any timed activity" },
+  { name: "Round Timer", href: "/round-timer", description: "Track rounds and total elapsed time for tournaments" },
+  { name: "Turn Timer", href: "/board-games/turn-timer", description: "Multi-player per-turn countdown for 2-8 board game players" },
+  { name: "Study Timer", href: "/productivity/study", description: "Pomodoro-style focus timer for deep work and study sessions" },
+];
 
-  // Reset when duration changes
-  useEffect(() => {
-    set_player_times([user_duration, user_duration]);
-    set_paused(true);
-    set_active_player(0);
-    zero_beeped.current = [false, false];
-  }, [user_duration]);
+function ChessClockInner({ user_duration, set_user_duration }: { user_duration: number; set_user_duration: (v: number) => void }) {
+  const { machine, fullscreen } = useTimer();
+  const { status, display, start, pause, resume, action } = machine;
+  const is_fs = fullscreen.is_fullscreen;
 
-  const toggle_audio = () => {
-    if (!audio_enabled) {
-      try {
-        if (!audio_context_ref.current) {
-          audio_context_ref.current = new (
-            window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext })?.webkitAudioContext
-          )();
-        }
-        set_audio_enabled(true);
-      } catch { /* Audio not supported */ }
-    } else {
-      set_audio_enabled(false);
+  const players = (display.extra?.players || []) as ChessClockPlayer[];
+  const active_player = (display.extra?.active_player ?? 0) as number;
+  const duration = (display.extra?.duration ?? user_duration) as number;
+
+  const handle_player_press = (clicked_player: number) => {
+    if (status !== "running") return;
+    if (clicked_player !== active_player) return;
+    // Clicking active player switches to other
+    action("switch_player");
+  };
+
+  const btn_cls = `flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${
+    is_fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"
+  } font-semibold transition-colors`;
+
+  const handle_primary = () => {
+    switch (status) {
+      case "idle": start(); break;
+      case "running": pause(); break;
+      case "paused": resume(); break;
+      case "complete": machine.reset(); break;
     }
   };
-
-  const play_beep = useCallback((duration = 0.15, frequency = 880) => {
-    if (!audio_enabled || !audio_context_ref.current) return;
-    try {
-      const ctx = audio_context_ref.current;
-      if (ctx.state === "suspended") ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine"; osc.frequency.value = frequency; gain.gain.value = 0.2;
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(); osc.stop(ctx.currentTime + duration);
-    } catch { /* Ignore */ }
-  }, [audio_enabled]);
-
-  // Audio alerts
-  useEffect(() => {
-    if (paused) return;
-    player_times.forEach((time, idx) => {
-      if (time === 0 && !zero_beeped.current[idx]) {
-        if (active_player === idx) play_beep(2, 1400);
-        zero_beeped.current[idx] = true;
-      }
-      if (time > 0) {
-        zero_beeped.current[idx] = false;
-        if (time <= 10 && time > 0 && active_player === idx) play_beep(0.15, 1000);
-      }
-    });
-  }, [player_times, paused, active_player, play_beep]);
-
-  // Countdown effect
-  useEffect(() => {
-    if (paused) return;
-    if (player_times[active_player] <= 0) return;
-    const interval = setInterval(() => {
-      set_player_times((times) => {
-        const new_times = [...times];
-        if (new_times[active_player] > 0) new_times[active_player] -= 1;
-        return new_times;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [active_player, paused, player_times]);
-
-  const format_time = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  };
-
-  const handle_player_press = (player: number) => {
-    if (paused) return;
-    if (active_player !== player && player_times[active_player] > 0) {
-      set_active_player(player);
-    }
-  };
-
-  const status_text = paused
-    ? (player_times[0] === user_duration && player_times[1] === user_duration ? "Ready" : "Paused")
-    : `${player_names[active_player]}'s turn`;
 
   return (
     <>
@@ -108,84 +83,82 @@ function ChessClockPageContent() {
       <main className="min-h-screen flex flex-col bg-surface pt-14 pb-4 px-3 w-full md:pt-20 md:px-4 md:items-center">
         <h1 className="sr-only">Chess Clock</h1>
         <div className="mt-4 mb-8">
-          <TimerShell
-            timer_label="Chess Clock"
-            status_text={status_text}
-            audio_enabled={audio_enabled}
-            on_toggle_audio={toggle_audio}
-            duration={{ value: user_duration, onChange: set_user_duration }}
-            defaults={{ duration: 300 }}
-            controls={({ is_fullscreen: fs }) => (
-              <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
-                <button
-                  onClick={() => set_paused(!paused)}
-                  className={`flex-1 flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-2xl ${fs ? "py-4 sm:py-5 text-lg" : "py-3 sm:py-4 text-base"} font-semibold transition-colors`}
-                >
-                  {paused ? <><Play className="w-5 h-5" /> Start</> : <><Pause className="w-5 h-5" /> Pause</>}
+          <TimerShellV2
+            label="Chess Clock"
+            controls={
+              <div className={`flex gap-3 ${is_fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>
+                <button onClick={handle_primary} className={btn_cls}>
+                  {status === "running" ? <><Pause className="w-5 h-5" /> Pause</> : <><Play className="w-5 h-5" /> {status === "paused" ? "Resume" : "Start"}</>}
                 </button>
               </div>
-            )}
+            }
+            timer_type="chess-clock"
+            remaining={players[active_player]?.time}
+            running={status === "running"}
+            below={
+              <DurationInput value={user_duration} onChange={set_user_duration} />
+            }
           >
-            {({ is_fullscreen: fs }) => (
-              <div className={`flex flex-col gap-3 md:gap-4 w-full ${fs ? "max-w-xl" : ""}`}>
-                {[0, 1].map((player) => {
-                  const is_active = active_player === player && !paused;
-                  const progress = user_duration > 0 ? player_times[player] / user_duration : 0;
+            <div className={`flex flex-col gap-3 md:gap-4 w-full ${is_fs ? "max-w-xl" : ""}`}>
+              {players.map((player, idx) => {
+                const is_active = active_player === idx && status === "running";
+                const progress = duration > 0 ? player.time / duration : 0;
 
-                  return (
-                    <button
-                      key={player}
-                      onClick={() => handle_player_press(player === 0 ? 1 : 0)}
-                      disabled={player_times[player] === 0 || paused}
-                      className={`w-full flex flex-col gap-3 rounded-2xl p-4 md:p-5 transition-all duration-300 cursor-pointer disabled:cursor-not-allowed ${
-                        is_active
-                          ? "ring-2 ring-secondary bg-secondary/5"
-                          : "bg-surface-container-low"
-                      } ${player_times[player] === 0 ? "opacity-50" : ""}`}
-                    >
-                      <div className="flex items-center justify-between w-full">
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handle_player_press(idx)}
+                    disabled={player.time === 0}
+                    className={`w-full flex flex-col gap-3 rounded-2xl p-4 md:p-5 transition-all duration-300 cursor-pointer disabled:cursor-not-allowed ${
+                      is_active ? "ring-2 ring-secondary bg-secondary/5 shadow-lg" : "bg-surface-container-low hover:bg-surface-container-high hover:shadow-md"
+                    } ${player.time === 0 ? "opacity-50" : ""}`}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span className="flex items-center gap-1.5">
                         <input
                           type="text"
-                          value={player_names[player]}
+                          value={player.name}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             e.stopPropagation();
-                            const new_names = [...player_names];
-                            new_names[player] = e.target.value;
-                            set_player_names(new_names);
+                            action("set_player_name", { player: idx, name: e.target.value });
                           }}
                           onClick={(e) => e.stopPropagation()}
                           className={`text-sm md:text-base font-headline font-bold bg-transparent outline-none max-w-[8rem] transition-colors duration-200 border-b border-dashed border-transparent hover:border-surface-container-highest focus:border-secondary ${
                             is_active ? "text-secondary" : "text-foreground"
                           }`}
-                          aria-label={`Edit name for Player ${player + 1}`}
+                          aria-label={`Edit name for Player ${idx + 1}`}
                         />
-                        <span className={`text-xs font-headline font-bold uppercase tracking-wider transition-colors duration-300 ${
-                          is_active ? "text-secondary" : "text-muted-foreground"
-                        }`}>
-                          {is_active ? "Your Move" : "Waiting"}
-                        </span>
-                      </div>
-
-                      <div className={`${fs ? "text-5xl md:text-6xl" : "text-4xl md:text-5xl"} font-headline font-black text-foreground text-center`}>
-                        {format_time(player_times[player])}
-                      </div>
-
-                      <div className="w-full h-3 md:h-4 bg-surface-container-high rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full bar-progress-transition ${
-                            is_active
-                              ? "bg-gradient-to-r from-secondary to-secondary/70"
-                              : "bg-gradient-to-r from-surface-container-highest to-surface-container-high"
-                          }`}
-                          style={{ width: `${progress * 100}%` }}
-                        />
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </TimerShell>
+                        <Pencil className={`w-3 h-3 opacity-40 ${is_active ? "text-secondary" : "text-muted-foreground"}`} />
+                      </span>
+                      <span className={`text-xs font-headline font-bold uppercase tracking-wider transition-colors duration-300 ${
+                        is_active ? "text-secondary" : "text-muted-foreground"
+                      }`}>
+                        {is_active ? "Your Move" : "Waiting"}
+                      </span>
+                    </div>
+                    <div className={`${is_fs ? "text-5xl md:text-6xl" : "text-4xl md:text-5xl"} font-headline font-black text-foreground text-center`}>
+                      {format_time(player.time)}
+                    </div>
+                    <div className="w-full h-3 md:h-4 bg-surface-container-high rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full bar-progress-transition ${
+                          is_active
+                            ? "bg-gradient-to-r from-secondary to-secondary/70"
+                            : "bg-gradient-to-r from-surface-container-highest to-surface-container-high"
+                        }`}
+                        style={{ width: `${progress * 100}%` }}
+                      />
+                    </div>
+                    {is_active && (
+                      <span className="text-[10px] uppercase tracking-widest text-secondary/60 font-bold animate-pulse">
+                        Tap to switch
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </TimerShellV2>
         </div>
 
         <section className="w-full max-w-md mx-auto px-1 text-center">
@@ -193,9 +166,85 @@ function ChessClockPageContent() {
             Free online chess clock for two players. Perfect for chess, Scrabble, Go, and turn-based board games.
           </p>
         </section>
+
+        <TimerSeoContent
+          timer_name="Chess Clock"
+          category_name="Board Games"
+          category_slug="board-games"
+          faq={CHESS_CLOCK_FAQ}
+          related_timers={RELATED_TIMERS}
+        >
+          <h2>What Is a Chess Clock?</h2>
+          <p>
+            A chess clock is a dual-timer device that tracks each player&apos;s remaining time
+            independently. When you finish your move, you press the clock to pause your countdown
+            and start your opponent&apos;s. The game ends when a player runs out of time — or
+            delivers checkmate first. Originally mechanical, modern chess clocks are digital and
+            this browser-based version gives you the same functionality for free on any device.
+          </p>
+          <p>
+            This free online chess clock features two independent countdowns, tap-to-switch
+            controls, editable player names, and configurable duration. It works on phones,
+            tablets, and desktops with no download or account required.
+          </p>
+
+          <h2>Chess Time Controls Explained</h2>
+          <p>
+            Time controls define the pace and style of a chess game. The four main categories are:
+          </p>
+          <ul>
+            <li><strong>Bullet (1-2 min)</strong> — Pure speed. Premoves and pattern recognition dominate. Set this clock to 60 or 120 seconds.</li>
+            <li><strong>Blitz (3-5 min)</strong> — The most popular format online. Fast enough to be exciting, slow enough for tactics. Use 180-300 seconds.</li>
+            <li><strong>Rapid (10-30 min)</strong> — Allows deeper calculation and strategic planning. Tournament rapid is typically 15+10 (15 minutes with 10-second increment).</li>
+            <li><strong>Classical (60+ min)</strong> — Serious tournament play. FIDE standard is 90 minutes for 40 moves, then 30 minutes for the rest of the game.</li>
+          </ul>
+          <p>
+            For casual play and game nights, 5-minute blitz or 10-minute rapid are the most popular
+            starting points. Adjust the duration input to match your preferred control.
+          </p>
+
+          <h2>Using a Chess Clock for Other Board Games</h2>
+          <p>
+            Any two-player game with alternating turns benefits from a chess clock. Here are
+            popular pairings:
+          </p>
+          <ul>
+            <li><strong>Scrabble</strong> — Tournament Scrabble uses 25 minutes per player. A clock prevents one player from stalling while the other waits.</li>
+            <li><strong>Go (Baduk/Weiqi)</strong> — Professional Go uses clocks with byo-yomi periods. For casual play, set 30-60 minutes per side.</li>
+            <li><strong>Backgammon</strong> — Speed backgammon with 5-minute clocks adds urgency to doubling decisions.</li>
+            <li><strong>Othello/Reversi</strong> — Competitive Othello typically uses 30 minutes per player.</li>
+            <li><strong>Abstract strategy games</strong> — Hive, Onitama, Santorini, and Quoridor all play well with timed turns.</li>
+          </ul>
+          <p>
+            For games with more than two players, switch to our <a href="/board-games/turn-timer">Turn Timer</a> which
+            supports up to 8 players with per-turn countdowns.
+          </p>
+
+          <h2>Digital vs. Physical Chess Clocks</h2>
+          <p>
+            Physical chess clocks — like the DGT 3000 or Chronos GX — are required at official FIDE
+            and USCF tournaments. They provide tactile feedback and are visible to tournament
+            directors at a distance. However, for casual games, club play, online coaching, and
+            game nights, a browser-based clock is more practical: it is free, always available on
+            your phone, and requires zero setup. This timer uses precise JavaScript intervals to
+            deliver accurate timing within milliseconds.
+          </p>
+        </TimerSeoContent>
       </main>
       <Footer />
     </>
+  );
+}
+
+function ChessClockPageContent() {
+  const search_params = useSearchParams();
+  const initial_time = Number(search_params.get("time")) || Number(search_params.get("duration")) || 300;
+  const [user_duration, set_user_duration] = useState(initial_time);
+
+  return (
+    <TimerProvider strategy={chessClockStrategy} config={{ duration: user_duration }}>
+      <ChessClockInner user_duration={user_duration} set_user_duration={set_user_duration} />
+    </TimerProvider>
   );
 }
 

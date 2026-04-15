@@ -1,97 +1,100 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Clock,
-  Flame,
-  Brain,
-  Wind,
-  CookingPot,
-  BookOpen,
-  GraduationCap,
-  Dice5,
-  Focus,
-  Presentation,
-  Timer,
-  Egg,
-  Utensils,
-  Moon,
-  Bed,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Timer, Clock } from "lucide-react";
+import { SITE_CATEGORIES, type SiteCategory, type TimerEntry } from "@/lib/site-categories";
 
-// Map timer page slugs to icons and short descriptions
-const SLUG_META: Record<string, { icon: LucideIcon; description: string }> = {
-  "pomodoro-timer": { icon: Clock, description: "25-minute focus sessions with breaks" },
-  "hiit-timer": { icon: Flame, description: "Interval training with work and rest periods" },
-  "meditation-timer": { icon: Brain, description: "Guided mindfulness with gentle alerts" },
-  "breathing-timer": { icon: Wind, description: "Box breathing and relaxation exercises" },
-  "cooking-timer": { icon: CookingPot, description: "Kitchen timers for recipes and baking" },
-  "study-timer": { icon: BookOpen, description: "Timed study blocks with progress tracking" },
-  "classroom-timer": { icon: GraduationCap, description: "Activity timers for teachers and students" },
-  "adhd-focus-timer": { icon: Focus, description: "Low-distraction timers for deep work" },
-  "presentation-timer": { icon: Presentation, description: "Keep talks and meetings on schedule" },
-  "egg-timer": { icon: Egg, description: "Perfect eggs every time with precision timing" },
-  "fasting-timer": { icon: Utensils, description: "Track intermittent fasting windows" },
-  "sleep-timer": { icon: Moon, description: "Wind-down timers for better sleep" },
-  "5-minute-timer": { icon: Timer, description: "Quick 5-minute countdown" },
-  "10-minute-timer": { icon: Timer, description: "10-minute countdown timer" },
-  "15-minute-timer": { icon: Timer, description: "15-minute countdown timer" },
-  "20-minute-timer": { icon: Timer, description: "20-minute countdown timer" },
-  "25-minute-timer": { icon: Timer, description: "25-minute countdown timer" },
-  "30-minute-timer": { icon: Timer, description: "30-minute countdown timer" },
-  "45-minute-timer": { icon: Timer, description: "45-minute countdown timer" },
-  "60-minute-timer": { icon: Timer, description: "60-minute countdown timer" },
-};
-
-// Static entries that aren't timer pages (always shown)
-const STATIC_ENTRIES = [
-  {
-    icon: Dice5,
-    title: "Board Games",
-    description: "Turn timers and chess clocks for game night",
-    href: "/board-games",
-  },
+// Duration timers that stay at root level
+const QUICK_TIMERS = [
+  { label: "5 min", href: "/5-minute-timer" },
+  { label: "10 min", href: "/10-minute-timer" },
+  { label: "15 min", href: "/15-minute-timer" },
+  { label: "20 min", href: "/20-minute-timer" },
+  { label: "25 min", href: "/25-minute-timer" },
+  { label: "30 min", href: "/30-minute-timer" },
+  { label: "45 min", href: "/45-minute-timer" },
+  { label: "60 min", href: "/60-minute-timer" },
 ];
 
-// Display title: strip "Free" prefix and "Online" suffix, or use as-is
-function display_title(title: string, slug: string): string {
-  // Use slug-derived short name for cleaner display
-  const short = slug
-    .replace(/-/g, " ")
-    .replace(/\btimer\b/i, "")
-    .trim()
-    .replace(/^\w/, (c) => c.toUpperCase());
-  // For duration timers, keep the number format
-  if (/^\d+/.test(slug)) {
-    return slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  }
-  return short || title;
+// Map timer slugs to existing routes (only for timers with non-standard paths)
+const TIMER_ROUTE_MAP: Record<string, string> = {
+  "countdown": "/countdown",
+  "chess-clock": "/chess-clock",
+  "round-timer": "/round-timer",
+  "pomodoro": "/pomodoro-timer",
+  "hiit": "/hiit-timer",
+  "meditation": "/meditation-timer",
+  "adhd-focus": "/adhd-focus-timer",
+  "presentation": "/presentation-timer",
+};
+
+function TimerCard({ timer, category_slug }: { timer: TimerEntry; category_slug: string }) {
+  const href = TIMER_ROUTE_MAP[timer.slug] || `/${category_slug}/${timer.slug}`;
+  return (
+    <Link
+      href={href}
+      className="group flex items-start gap-4 bg-surface-container-low rounded-[1rem] p-5 shadow-[var(--shadow-soft)] hover:scale-[1.02] transition-all duration-200 ease-out no-underline"
+    >
+      <div className="flex-shrink-0 w-11 h-11 rounded-[0.75rem] bg-secondary/10 text-secondary flex items-center justify-center group-hover:bg-secondary group-hover:text-secondary-foreground transition-colors">
+        <Timer className="w-5 h-5" />
+      </div>
+      <div>
+        <h3 className="font-headline font-semibold text-foreground group-hover:text-secondary transition-colors">
+          {timer.name}
+        </h3>
+        <p className="text-sm text-muted-foreground mt-0.5">{timer.description}</p>
+      </div>
+    </Link>
+  );
 }
 
-export default function CategoryGrid({
-  published_pages = [],
-}: {
-  published_pages?: { slug: string; title: string; timer_type: string }[];
-}) {
-  // Build dynamic entries from published pages
-  const dynamic_entries = published_pages.map((page) => {
-    const meta = SLUG_META[page.slug];
-    return {
-      icon: meta?.icon || Timer,
-      title: display_title(page.title, page.slug),
-      description: meta?.description || page.title,
-      href: `/${page.slug}`,
-    };
-  });
+function CategoryGroup({ category }: { category: SiteCategory }) {
+  // Show only featured timers (max 3)
+  const featured = category.timers.filter((t) =>
+    category.featured_timers.includes(t.slug),
+  );
 
-  // Combine: dynamic published pages first, then static entries
-  const all_entries = [...dynamic_entries, ...STATIC_ENTRIES];
+  return (
+    <div className="mb-12 md:mb-16">
+      {/* Group header — both name and "View all" are clickable */}
+      <div className="flex items-center justify-between mb-5">
+        <Link
+          href={`/${category.slug}`}
+          className="flex items-center gap-2 no-underline hover:opacity-80 transition-opacity"
+        >
+          {(() => { const Icon = category.icon; return <Icon className="w-5 h-5 text-secondary" />; })()}
+          <h3 className="font-headline font-black text-lg md:text-xl text-foreground">
+            {category.name}
+          </h3>
+        </Link>
+        <Link
+          href={`/${category.slug}`}
+          className="inline-flex items-center gap-1 text-sm font-semibold text-secondary hover:text-secondary/80 transition-colors no-underline"
+        >
+          View all <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
 
+      {/* Timer cards (3 per group) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+        {featured.map((timer) => (
+          <TimerCard
+            key={timer.slug}
+            timer={timer}
+            category_slug={category.slug}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function CategoryGrid() {
   return (
     <section className="w-full py-12 md:py-16 px-4 bg-surface">
       <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col items-center mb-10">
+        {/* Section header */}
+        <div className="flex flex-col items-center mb-12">
           <Image
             src="/mascots/drake-timer.png"
             alt="Drake the Explorer holding a stopwatch"
@@ -106,28 +109,35 @@ export default function CategoryGrid({
             Pick your activity. We handle the rest.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-          {all_entries.map((cat) => {
-            const Icon = cat.icon;
-            return (
+
+        {/* Quick Timers — pill row with background panel and clock icons */}
+        <div className="mb-12 md:mb-16 bg-surface-container-low rounded-[1.25rem] p-6 md:p-8 shadow-[var(--shadow-soft)]">
+          <div className="flex items-center gap-2 mb-5">
+            <div className="w-9 h-9 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
+              <Clock className="w-4.5 h-4.5" />
+            </div>
+            <h3 className="font-headline font-black text-lg md:text-xl text-foreground">
+              Quick Timers
+            </h3>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {QUICK_TIMERS.map((qt) => (
               <Link
-                key={cat.href}
-                href={cat.href}
-                className="group flex items-start gap-4 bg-surface-container-low rounded-[1rem] p-5 shadow-[var(--shadow-soft)] hover:scale-105 transition-all duration-200 ease-out no-underline"
+                key={qt.href}
+                href={qt.href}
+                className="inline-flex items-center gap-2 px-5 py-3 bg-card rounded-xl text-base md:text-lg font-semibold text-foreground hover:bg-secondary hover:text-secondary-foreground transition-colors no-underline shadow-sm border border-surface-container-high"
               >
-                <div className="flex-shrink-0 w-11 h-11 rounded-[0.75rem] bg-secondary/10 text-secondary flex items-center justify-center group-hover:bg-secondary group-hover:text-secondary-foreground transition-colors">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-headline font-semibold text-foreground group-hover:text-secondary transition-colors">
-                    {cat.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-0.5">{cat.description}</p>
-                </div>
+                <Timer className="w-4 h-4 opacity-50" />
+                {qt.label}
               </Link>
-            );
-          })}
+            ))}
+          </div>
         </div>
+
+        {/* Category groups */}
+        {SITE_CATEGORIES.map((category) => (
+          <CategoryGroup key={category.slug} category={category} />
+        ))}
       </div>
     </section>
   );
