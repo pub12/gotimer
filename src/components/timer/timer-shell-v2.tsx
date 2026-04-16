@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   Volume2, VolumeX, Maximize, Minimize, Pencil,
-  Link2, Check, Palette, Zap, Settings,
+  Link2, Check, Palette, Zap, Settings, Share2,
 } from "lucide-react";
 import { useTimer } from "./timer-provider";
 import { SaveTimerButton } from "@/components/studio/save-timer-button";
+import { ShareDialog } from "./share-dialog";
 
 // ---- Theme presets (same as original TimerShell) ----
 const THEME_PRESETS = [
@@ -50,6 +51,8 @@ interface TimerShellV2Props {
   on_configure?: () => void;
   /** Force the fullscreen layout without actually being in fullscreen mode. Used for preview panels. */
   force_fullscreen?: boolean;
+  /** Initial title to pre-populate the editable title field */
+  initial_title?: string;
 }
 
 export function TimerShellV2({
@@ -64,12 +67,13 @@ export function TimerShellV2({
   running,
   on_configure,
   force_fullscreen,
+  initial_title,
 }: TimerShellV2Props) {
   const { audio, fullscreen } = useTimer();
   const { is_fullscreen: native_fullscreen, ref, toggle: toggle_fullscreen } = fullscreen;
   const is_fullscreen = native_fullscreen || !!force_fullscreen;
 
-  const [user_title, set_user_title] = useState("");
+  const [user_title, set_user_title] = useState(initial_title || "");
   const [editing_title, set_editing_title] = useState(false);
   const [link_copied, set_link_copied] = useState(false);
   const [fs_scale, set_fs_scale] = useState(100);
@@ -77,6 +81,7 @@ export function TimerShellV2({
   const [show_color_picker, set_show_color_picker] = useState(false);
   const [flash_at, set_flash_at] = useState(5);
   const [show_flash_config, set_show_flash_config] = useState(false);
+  const [show_share, set_show_share] = useState(false);
 
   const active_theme = get_theme(theme_id);
 
@@ -334,13 +339,12 @@ export function TimerShellV2({
           <Maximize className={`${btn_text} w-4 h-4`} />
         </button>
         <button
-          onClick={copy_share_link}
-          className={`rounded-full p-1.5 flex items-center justify-center transition-colors ${
-            link_copied ? "bg-emerald-100 text-emerald-700" : btn_bg
-          }`}
-          aria-label={link_copied ? "Link copied" : "Copy shareable link"}
+          onClick={() => set_show_share(true)}
+          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${btn_bg} ${btn_text} hover:text-foreground`}
+          aria-label="Share live timer"
         >
-          {link_copied ? <Check className="w-4 h-4" /> : <Link2 className={`${btn_text} w-4 h-4`} />}
+          <Share2 className="w-3.5 h-3.5" />
+          Share
         </button>
         {/* Save to Studio */}
         {timer_type && (
@@ -362,6 +366,16 @@ export function TimerShellV2({
           </button>
         )}
       </div>
+
+      {/* Share dialog */}
+      <ShareDialog
+        open={show_share}
+        on_close={() => set_show_share(false)}
+        timer_path={typeof window !== "undefined" ? window.location.pathname : "/"}
+        timer_type={timer_type || label.toLowerCase().replace(/\s+/g, "-")}
+        config={timer_config || {}}
+        label={user_title || label}
+      />
     </div>
   );
 }

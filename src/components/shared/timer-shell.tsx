@@ -4,9 +4,10 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 import {
-  Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Link2, Check, Palette, Zap,
+  Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Link2, Check, Palette, Zap, Share2,
 } from "lucide-react";
 import { SaveTimerButton } from "@/components/studio/save-timer-button";
+import { ShareDialog } from "@/components/timer/share-dialog";
 
 const MAX_DURATION = 86400; // 24 hours
 
@@ -177,6 +178,7 @@ export default function TimerShell({
   const [show_color_picker, set_show_color_picker] = useState(false);
   const [flash_at, set_flash_at] = useState(initial_flash);
   const [show_flash_config, set_show_flash_config] = useState(false);
+  const [show_share, set_show_share] = useState(false);
   const fullscreen_ref = useRef<HTMLDivElement>(null);
 
   const active_theme = get_theme(theme_id);
@@ -347,17 +349,14 @@ export default function TimerShell({
           >
             <Maximize className={`${btn_text} w-4 h-4`} />
           </button>
-          {has_customization && (
-            <button
-              onClick={copy_share_link}
-              className={`rounded-full p-1.5 flex items-center justify-center transition-colors ${
-                link_copied ? "bg-emerald-100 text-emerald-700" : btn_bg
-              }`}
-              aria-label={link_copied ? "Link copied" : "Copy shareable link"}
-            >
-              {link_copied ? <Check className={`w-4 h-4`} /> : <Link2 className={`${btn_text} w-4 h-4`} />}
-            </button>
-          )}
+          <button
+            onClick={() => set_show_share(true)}
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${btn_bg} ${btn_text} hover:text-foreground`}
+            aria-label="Share live timer"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+            Share
+          </button>
           {/* Save to Studio */}
           <SaveTimerButton
             timer_type={timer_label.toLowerCase().replace(/\s+/g, "-")}
@@ -368,6 +367,19 @@ export default function TimerShell({
             }}
           />
         </div>
+
+        {/* Share dialog */}
+        <ShareDialog
+          open={show_share}
+          on_close={() => set_show_share(false)}
+          timer_path={pathname}
+          timer_type={timer_label.toLowerCase().replace(/\s+/g, "-")}
+          config={{
+            ...(duration ? { duration: duration.value } : {}),
+            ...(interval ? { work: interval.work, rest: interval.rest, rounds: interval.rounds } : {}),
+          }}
+          label={user_title || timer_label}
+        />
       </div>
     );
   }
