@@ -132,6 +132,134 @@ export default function DevelopersPage() {
         </div>
 
         <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">
+          <h2 className="text-xl font-semibold mb-2">Blog Management API</h2>
+          <p className="text-gray-600 mb-4">
+            Programmatic blog management for AI content pipelines. All blog endpoints require a{" "}
+            <code className="bg-gray-100 px-1 rounded text-sm font-mono">BLOG_API_KEY</code> Bearer token.
+          </p>
+
+          <div className="space-y-4">
+            <div className="border-l-4 border-blue-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  GET
+                </span>
+                <code className="text-sm font-mono">/api/blog/manage</code>
+                <span className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 px-1 rounded">
+                  API key required
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                List all blog posts (including drafts) with full fields. Use{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">?fields=minimal</code> for a lightweight response
+                without content.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-blue-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  GET
+                </span>
+                <code className="text-sm font-mono">/api/blog/manage/:slug</code>
+                <span className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 px-1 rounded">
+                  API key required
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Fetch a single post by slug with all fields including parsed{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">faq_json</code>. Returns 404 if not found.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-green-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  POST
+                </span>
+                <code className="text-sm font-mono">/api/blog/manage</code>
+                <span className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 px-1 rounded">
+                  API key required
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Create or full-update (upsert) a blog post by slug. Required:{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">slug</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">title</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">content</code>. Also accepts:{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">category_id</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">category_name</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">meta_title</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">meta_description</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">character_id</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">faq_json</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">status</code>.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-yellow-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  PATCH
+                </span>
+                <code className="text-sm font-mono">/api/blog/manage</code>
+                <span className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 px-1 rounded">
+                  API key required
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Partial update — only fields present in the request body are changed. Requires{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">slug</code> as lookup key. Accepts any combination of:{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">title</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">content</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">category_id</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">meta_title</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">meta_description</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">character_id</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">faq_json</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">status</code>.
+                Untouched fields are preserved. Returns 404 if slug not found, 400 if no fields provided.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-blue-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  GET
+                </span>
+                <code className="text-sm font-mono">/api/blog/characters</code>
+                <span className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 px-1 rounded">
+                  API key required
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                List all available mascot characters with IDs, names, and image paths for use in{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">character_id</code> assignment.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-green-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  POST
+                </span>
+                <code className="text-sm font-mono">/api/blog/images</code>
+                <span className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 px-1 rounded">
+                  API key required
+                </span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Upload a blog image by URL. Body:{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">image_url</code> (required),{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">filename</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">alt</code>.
+                Max 5MB. Accepts PNG, JPEG, WebP. Returns the stored image path.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">
           <h2 className="text-xl font-semibold mb-3">Response Format</h2>
           <p className="text-gray-600 mb-3">All API responses follow a consistent format:</p>
           <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono">
@@ -172,7 +300,7 @@ console.log(data.challenges);`}
           </pre>
 
           <h3 className="font-medium text-gray-800 mb-2">Create a challenge (JavaScript)</h3>
-          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono">
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
             {`const res = await fetch("${BASE_URL}/challenges", {
   method: "POST",
   headers: {
@@ -187,6 +315,34 @@ console.log(data.challenges);`}
 });
 const { data } = await res.json();
 console.log(data.challenge);`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mt-6 mb-2">List all blog posts (curl)</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+            {`curl https://gotimer.org/api/blog/manage \\
+  -H "Authorization: Bearer \$BLOG_API_KEY"`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">Get a single blog post (curl)</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+            {`curl https://gotimer.org/api/blog/manage/pomodoro-technique-guide \\
+  -H "Authorization: Bearer \$BLOG_API_KEY"`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">Partial update — change only character (curl)</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+            {`curl -X PATCH https://gotimer.org/api/blog/manage \\
+  -H "Authorization: Bearer \$BLOG_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"slug":"pomodoro-technique-guide","character_id":"96bfe1fe-..."}'`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">Upload a blog image (curl)</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono">
+            {`curl -X POST https://gotimer.org/api/blog/images \\
+  -H "Authorization: Bearer \$BLOG_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"image_url":"https://example.com/image.png","filename":"hero.png","alt":"Blog hero image"}'`}
           </pre>
         </div>
 
