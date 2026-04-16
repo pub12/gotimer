@@ -40,6 +40,9 @@ export default function ChallengesPage() {
       return;
     }
 
+    // Link any pending invitations for this user (handles new signups)
+    fetch("/api/challenges/pending-invitations", { method: "POST" }).catch(() => {});
+
     fetch("/api/challenges")
       .then((res) => res.json())
       .then(async (data) => {
