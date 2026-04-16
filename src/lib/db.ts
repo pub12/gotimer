@@ -282,6 +282,8 @@ const migrations: Migration[] = [
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   ` },
+  { version: 31, sql: `ALTER TABLE challenge_invitations ADD COLUMN invited_email TEXT` },
+  { version: 32, sql: `ALTER TABLE challenge_invitations ADD COLUMN invited_user_id TEXT` },
 ];
 
 function run_migrations(db: Database.Database) {
