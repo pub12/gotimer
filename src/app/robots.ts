@@ -6,27 +6,27 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/api", "/hazo_auth"],
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
       },
       {
         userAgent: "GPTBot",
         allow: "/",
-        disallow: ["/admin", "/api", "/hazo_auth"],
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
       },
       {
         userAgent: "ClaudeBot",
         allow: "/",
-        disallow: ["/admin", "/api", "/hazo_auth"],
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
       },
       {
         userAgent: "PerplexityBot",
         allow: "/",
-        disallow: ["/admin", "/api", "/hazo_auth"],
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
       },
       {
         userAgent: "Googlebot",
         allow: "/",
-        disallow: ["/admin", "/api", "/hazo_auth"],
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
       },
     ],
     sitemap: "https://gotimer.org/sitemap.xml",

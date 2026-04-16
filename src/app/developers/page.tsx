@@ -8,6 +8,10 @@ export function generateMetadata(): Metadata {
     title: "Developer API — GoTimer",
     description:
       "Integrate GoTimer into your apps and AI assistants with the public REST API. Manage timer challenges, leaderboards, and more programmatically.",
+    robots: {
+      index: false,
+      follow: false,
+    },
     openGraph: {
       title: "GoTimer Developer API",
       description:
