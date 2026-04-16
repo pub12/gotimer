@@ -43,8 +43,8 @@ export function TimerProvider({ strategy, config, children }: TimerProviderProps
   const audio = useAudio();
   const fullscreen = useFullscreen();
 
-  // Keep screen awake while timer is running
-  useWakeLock(machine.status === "running");
+  // Keep screen awake while timer is running or in fullscreen mode
+  useWakeLock(machine.status === "running" || fullscreen.is_fullscreen);
 
   // Fire audio for warnings
   const fired_warnings = useRef(new Set<string>());

@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Go to Home" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - img "GoTimer logo" [ref=e4]
+      - generic [ref=e5]: GoTimer.org
+    - generic [ref=e6]:
+      - generic [ref=e8]:
+        - img
+        - textbox "Search timers & articles..." [ref=e9]
+      - link "Public Challenges" [ref=e10] [cursor=pointer]:
+        - /url: /public-challenges
+        - img [ref=e11]
+        - generic [ref=e14]: Public Challenges
+      - link "Blog" [ref=e15] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e16]
+        - generic [ref=e18]: Blog
+      - link "Login" [ref=e19] [cursor=pointer]:
+        - /url: /hazo_auth/login
+  - main [ref=e20]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - paragraph [ref=e27]: GoTimer Blog
+        - heading "The Time Dimension" [level=1] [ref=e28]:
+          - text: The Time
+          - text: Dimension
+        - paragraph [ref=e29]: Guides, strategies, and insights on productivity, timing, and getting more done.
+      - img "Drake the Explorer with a stopwatch" [ref=e30]
+    - generic [ref=e31]:
+      - 'link "Blog post character Featured Productivity 13 min read The Complete Guide to the Pomodoro Technique You''ve probably heard of the Pomodoro Technique. Maybe you''ve tried it. Maybe you bounced off it after a day because \"25 minutes felt too short\" or \"the breaks ruined your flow.\" Here''s the thing: most Pomodoro guides a Read the full guide" [ref=e33] [cursor=pointer]':
+        - /url: /blog/the-complete-guide-to-the-pomodoro-technique
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - img "Blog post character" [ref=e39]
+            - generic [ref=e40]: Featured
+          - generic [ref=e41]:
+            - generic [ref=e42]:
+              - generic [ref=e43]: Productivity
+              - generic [ref=e44]: 13 min read
+            - heading "The Complete Guide to the Pomodoro Technique" [level=2] [ref=e45]
+            - paragraph [ref=e46]: "You've probably heard of the Pomodoro Technique. Maybe you've tried it. Maybe you bounced off it after a day because \"25 minutes felt too short\" or \"the breaks ruined your flow.\" Here's the thing: most Pomodoro guides a"
+            - generic [ref=e48]:
+              - text: Read the full guide
+              - img [ref=e49]
+      - generic [ref=e51]:
+        - heading "Latest Articles" [level=3] [ref=e55]
+        - complementary [ref=e56]:
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - img [ref=e59]
+              - heading "Topics" [level=4] [ref=e62]
+            - generic [ref=e63]:
+              - link "All" [ref=e64] [cursor=pointer]:
+                - /url: /blog
+              - link "Productivity" [ref=e65] [cursor=pointer]:
+                - /url: /blog?category=productivity
+  - contentinfo [ref=e66]:
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - heading "Timers" [level=3] [ref=e70]
+          - list [ref=e71]:
+            - listitem [ref=e72]:
+              - link "Countdown Timer" [ref=e73] [cursor=pointer]:
+                - /url: /countdown-setup
+            - listitem [ref=e74]:
+              - link "Chess Clock" [ref=e75] [cursor=pointer]:
+                - /url: /chess-clock-setup
+            - listitem [ref=e76]:
+              - link "Round Timer" [ref=e77] [cursor=pointer]:
+                - /url: /round-timer-setup
+        - generic [ref=e78]:
+          - heading "Timer Categories" [level=3] [ref=e79]
+          - list [ref=e80]:
+            - listitem [ref=e81]:
+              - link "Board Games" [ref=e82] [cursor=pointer]:
+                - /url: /board-games
+            - listitem [ref=e83]:
+              - link "Photography" [ref=e84] [cursor=pointer]:
+                - /url: /photography
+            - listitem [ref=e85]:
+              - link "Fitness" [ref=e86] [cursor=pointer]:
+                - /url: /fitness
+            - listitem [ref=e87]:
+              - link "Wellness" [ref=e88] [cursor=pointer]:
+                - /url: /wellness
+            - listitem [ref=e89]:
+              - link "Productivity" [ref=e90] [cursor=pointer]:
+                - /url: /productivity
+            - listitem [ref=e91]:
+              - link "Kitchen" [ref=e92] [cursor=pointer]:
+                - /url: /kitchen
+        - generic [ref=e93]:
+          - heading "Features" [level=3] [ref=e94]
+          - list [ref=e95]:
+            - listitem [ref=e96]:
+              - link "Public Challenges" [ref=e97] [cursor=pointer]:
+                - /url: /public-challenges
+            - listitem [ref=e98]:
+              - link "Partners" [ref=e99] [cursor=pointer]:
+                - /url: /partners
+            - listitem [ref=e100]:
+              - link "Blog" [ref=e101] [cursor=pointer]:
+                - /url: /blog
+            - listitem [ref=e102]:
+              - link "Leaderboard" [ref=e103] [cursor=pointer]:
+                - /url: /leaderboard
+        - generic [ref=e104]:
+          - heading "Legal & Info" [level=3] [ref=e105]
+          - list [ref=e106]:
+            - listitem [ref=e107]:
+              - link "Privacy Policy" [ref=e108] [cursor=pointer]:
+                - /url: /privacy-policy
+            - listitem [ref=e109]:
+              - link "Terms of Service" [ref=e110] [cursor=pointer]:
+                - /url: /terms-of-service
+            - listitem [ref=e111]:
+              - button "Contact Us" [ref=e112] [cursor=pointer]
+            - listitem [ref=e113]:
+              - link "Sitemap" [ref=e114] [cursor=pointer]:
+                - /url: /sitemap.xml
+      - generic [ref=e115]: © 2026 GoTimer.org
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e121] [cursor=pointer]:
+    - img [ref=e122]
+  - alert [ref=e125]

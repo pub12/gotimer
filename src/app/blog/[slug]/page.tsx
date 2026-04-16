@@ -6,6 +6,7 @@ import { get_db } from "@/lib/db";
 import { mdxComponents } from "@/components/mdx";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import Image from "next/image";
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
 
 interface BlogPost {
@@ -21,6 +22,8 @@ interface BlogPost {
   category_id: string | null;
   category_name: string | null;
   category_colour: string | null;
+  character_image: string | null;
+  character_name: string | null;
   status: string;
 }
 
@@ -39,10 +42,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const post = db
     .prepare(
-      `SELECT bp.title, bp.meta_title, bp.meta_description, bp.publish_date, bp.status
-       FROM blog_posts bp WHERE bp.slug = ?`
+      `SELECT bp.title, bp.meta_title, bp.meta_description, bp.publish_date, bp.status,
+              ci.file_path as character_image
+       FROM blog_posts bp
+       LEFT JOIN character_images ci ON bp.character_id = ci.id
+       WHERE bp.slug = ?`
     )
-    .get(slug) as Pick<BlogPost, "title" | "meta_title" | "meta_description" | "publish_date" | "status"> | undefined;
+    .get(slug) as (Pick<BlogPost, "title" | "meta_title" | "meta_description" | "publish_date" | "status"> & { character_image: string | null }) | undefined;
 
   if (!post || post.status !== "published") {
     return { title: "Not Found" };
@@ -71,9 +77,11 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const post = db
     .prepare(
-      `SELECT bp.*, bc.name as category_name, bc.colour as category_colour
+      `SELECT bp.*, bc.name as category_name, bc.colour as category_colour,
+              ci.file_path as character_image, ci.character_name as character_name
        FROM blog_posts bp
        LEFT JOIN blog_categories bc ON bp.category_id = bc.id
+       LEFT JOIN character_images ci ON bp.character_id = ci.id
        WHERE bp.slug = ?`
     )
     .get(slug) as BlogPost | undefined;
@@ -185,28 +193,42 @@ export default async function BlogPostPage({ params }: PageProps) {
               Back to all articles
             </Link>
 
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              {post.category_name && (
-                <span className="inline-flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">
-                  <Tag className="size-3" />
-                  {post.category_name}
-                </span>
-              )}
-              {formatted_date && (
-                <span className="inline-flex items-center gap-1.5 text-primary-foreground/50 text-sm">
-                  <Calendar className="size-3.5" />
-                  <time dateTime={post.publish_date ?? undefined}>{formatted_date}</time>
-                </span>
-              )}
-              <span className="inline-flex items-center gap-1.5 text-primary-foreground/50 text-sm">
-                <Clock className="size-3.5" />
-                {read_time} min read
-              </span>
-            </div>
+            <div className="flex items-end gap-8">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-4 mb-6">
+                  {post.category_name && (
+                    <span className="inline-flex items-center gap-1.5 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-xs font-bold font-headline uppercase tracking-wider">
+                      <Tag className="size-3" />
+                      {post.category_name}
+                    </span>
+                  )}
+                  {formatted_date && (
+                    <span className="inline-flex items-center gap-1.5 text-primary-foreground/50 text-sm">
+                      <Calendar className="size-3.5" />
+                      <time dateTime={post.publish_date ?? undefined}>{formatted_date}</time>
+                    </span>
+                  )}
+                  <span className="inline-flex items-center gap-1.5 text-primary-foreground/50 text-sm">
+                    <Clock className="size-3.5" />
+                    {read_time} min read
+                  </span>
+                </div>
 
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-primary-foreground leading-[1.1] tracking-tight font-headline max-w-3xl">
-              {post.title}
-            </h1>
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-primary-foreground leading-[1.1] tracking-tight font-headline max-w-3xl">
+                  {post.title}
+                </h1>
+              </div>
+
+              <div className="hidden md:block shrink-0">
+                <Image
+                  src={post.character_image || "/mascots/prof-studying.png"}
+                  alt={post.character_name || "GoTimer mascot"}
+                  width={180}
+                  height={180}
+                  className="w-36 lg:w-44 h-36 lg:h-44 object-contain drop-shadow-lg"
+                />
+              </div>
+            </div>
           </div>
         </header>
 
