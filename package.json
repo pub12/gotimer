@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "blogs:push": "bash scripts/sync-blogs-export.sh",
+    "blogs:pull": "bash scripts/sync-blogs-import.sh"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

@@ -42,6 +42,9 @@ yarn-error.log*
 /data/*.sqlite
 /data/
 
+# Allow blog sync data (exported from production)
+!/data/blog-sync/
+
 # Profile picture uploads
 /public/profile_pictures/uploads/
 
