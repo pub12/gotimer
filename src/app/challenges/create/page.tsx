@@ -7,7 +7,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { use_auth_status } from "hazo_auth/client";
 import { GifPicker } from "@/components/challenges/gif-picker";
-import { ArrowLeft, Image, X, ChevronDown, Plus } from "lucide-react";
+import { ArrowLeft, Image, X, ChevronDown, Plus, Mail, UserCheck } from "lucide-react";
 
 const VALID_FORMATS = ["head-to-head", "group", "solo"] as const;
 type ChallengeFormat = (typeof VALID_FORMATS)[number];
@@ -36,6 +36,12 @@ function CreateChallengeForm() {
   const [format, set_format] = useState<ChallengeFormat>("head-to-head");
   const [timer_type, set_timer_type] = useState<string>("");
   const [join_code, set_join_code] = useState<string | null>(null);
+  const [opponent_emails, set_opponent_emails] = useState<
+    { email: string; exists: boolean; name: string | null; profilePic: string | null }[]
+  >([]);
+  const [opponent_input, set_opponent_input] = useState("");
+  const [opponent_error, set_opponent_error] = useState<string | null>(null);
+  const [looking_up, set_looking_up] = useState(false);
 
   useEffect(() => {
     const qp_timer_type = search_params.get("timer_type");
@@ -69,6 +75,46 @@ function CreateChallengeForm() {
     }
   }, [authenticated]);
 
+  const add_opponent = async () => {
+    const email = opponent_input.trim().toLowerCase();
+    set_opponent_error(null);
+
+    if (!email || !email.includes("@")) {
+      set_opponent_error("Enter a valid email address");
+      return;
+    }
+
+    if (opponent_emails.some((o) => o.email === email)) {
+      set_opponent_error("This email is already added");
+      return;
+    }
+
+    set_looking_up(true);
+    try {
+      const res = await fetch(`/api/users/lookup?email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+
+      set_opponent_emails((prev) => [
+        ...prev,
+        {
+          email,
+          exists: data.exists || false,
+          name: data.name || null,
+          profilePic: data.profilePic || null,
+        },
+      ]);
+      set_opponent_input("");
+    } catch {
+      set_opponent_error("Failed to look up email");
+    } finally {
+      set_looking_up(false);
+    }
+  };
+
+  const remove_opponent = (email: string) => {
+    set_opponent_emails((prev) => prev.filter((o) => o.email !== email));
+  };
+
   const handle_create = async () => {
     if (!name.trim()) return;
     set_saving(true);
@@ -95,8 +141,17 @@ function CreateChallengeForm() {
           set_join_code(challenge.join_code);
         }
 
-        // Generate invite link (for head-to-head / non-group)
-        if (format !== "group") {
+        // Send email invitations for each opponent
+        for (const opponent of opponent_emails) {
+          fetch(`/api/challenges/${challenge.id}/invite-by-email`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: opponent.email }),
+          }).catch(() => {});
+        }
+
+        // Generate invite link (for head-to-head / non-group) if no opponents added
+        if (format !== "group" && opponent_emails.length === 0) {
           const invite_res = await fetch(
             `/api/challenges/${challenge.id}/invite`,
             { method: "POST" }
@@ -326,6 +381,89 @@ function CreateChallengeForm() {
                 </p>
               </div>
 
+              {format !== "solo" && (
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    {format === "head-to-head" ? "Opponent" : "Opponents"} (optional)
+                  </label>
+
+                  {/* Added opponents as chips */}
+                  {opponent_emails.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {opponent_emails.map((o) => (
+                        <div
+                          key={o.email}
+                          className="flex items-center gap-2 bg-muted rounded-full pl-3 pr-1 py-1 text-sm"
+                        >
+                          {o.exists ? (
+                            <>
+                              {o.profilePic && (
+                                <img
+                                  src={o.profilePic}
+                                  alt=""
+                                  className="w-5 h-5 rounded-full"
+                                />
+                              )}
+                              <UserCheck className="w-3.5 h-3.5 text-green-600" />
+                              <span>{o.name}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Mail className="w-3.5 h-3.5 text-muted-foreground" />
+                              <span>{o.email}</span>
+                              <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
+                                invite
+                              </span>
+                            </>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => remove_opponent(o.email)}
+                            className="ml-1 p-1 rounded-full hover:bg-background/60 cursor-pointer border-none bg-transparent"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Email input — hidden if head-to-head and already have one */}
+                  {!(format === "head-to-head" && opponent_emails.length >= 1) && (
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        value={opponent_input}
+                        onChange={(e) => {
+                          set_opponent_input(e.target.value);
+                          set_opponent_error(null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            add_opponent();
+                          }
+                        }}
+                        placeholder="Enter email address"
+                        className="flex-1 p-3 border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={add_opponent}
+                        disabled={looking_up}
+                      >
+                        {looking_up ? "..." : "Add"}
+                      </Button>
+                    </div>
+                  )}
+
+                  {opponent_error && (
+                    <p className="text-sm text-destructive mt-1">{opponent_error}</p>
+                  )}
+                </div>
+              )}
+
               {timer_type && (
                 <div className="text-sm text-muted-foreground bg-muted px-3 py-2 rounded-lg">
                   Timer type: <span className="font-medium capitalize">{timer_type.replace(/-/g, " ")}</span>
@@ -355,6 +493,13 @@ function CreateChallengeForm() {
           <div className="bg-card rounded-[1rem] p-6 shadow-[var(--shadow-soft)] text-center">
             <div className="text-4xl mb-4">🎉</div>
             <h2 className="text-2xl font-bold mb-2">Challenge Created!</h2>
+            {opponent_emails.length > 0 && (
+              <p className="text-sm text-muted-foreground mb-4">
+                {opponent_emails.length === 1
+                  ? "Invitation sent to your opponent!"
+                  : `Invitations sent to ${opponent_emails.length} opponents!`}
+              </p>
+            )}
 
             {join_code ? (
               <>
