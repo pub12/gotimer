@@ -59,7 +59,7 @@ export default function GlassmorphicNavbar() {
     const trimmed = search_query.trim();
     if (trimmed) {
       fire_search_event(trimmed);
-      router.push(`/blog?q=${encodeURIComponent(trimmed)}`);
+      router.push(`/search?q=${encodeURIComponent(trimmed)}`);
       set_search_focused(false);
     }
   }
