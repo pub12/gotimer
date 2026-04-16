@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAudio, useFullscreen, useWakeLock } from "@/hooks/timer";
 import { useTimerStateMachine } from "@/hooks/timer/use-timer-state-machine";
 import type { TimerMachine } from "@/hooks/timer/use-timer-state-machine";
@@ -39,7 +40,13 @@ interface TimerProviderProps {
 }
 
 export function TimerProvider({ strategy, config, children }: TimerProviderProps) {
-  const machine = useTimerStateMachine(strategy, config);
+  const search_params = useSearchParams();
+  const started_str = search_params.get("started");
+  const initial_elapsed = started_str
+    ? Math.max(0, Math.floor((Date.now() - new Date(started_str).getTime()) / 1000))
+    : undefined;
+
+  const machine = useTimerStateMachine(strategy, config, { initial_elapsed });
   const audio = useAudio();
   const fullscreen = useFullscreen();
 

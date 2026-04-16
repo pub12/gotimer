@@ -81,12 +81,22 @@ function TimeDisplay({ seconds }: { seconds: number; large?: boolean }) {
 }
 
 // ---- Countdown Timer ----
-function useCountdownTimer(duration: number, play_beep: (dur?: number, freq?: number) => void) {
+function useCountdownTimer(duration: number, play_beep: (dur?: number, freq?: number) => void, initial_elapsed?: number) {
   const [remaining, set_remaining] = useState(duration);
   const [running, set_running] = useState(false);
   const prev_remaining = useRef(remaining);
+  const has_fast_forwarded = useRef(false);
 
-  useEffect(() => { set_remaining(duration); set_running(false); }, [duration]);
+  useEffect(() => { set_remaining(duration); set_running(false); has_fast_forwarded.current = false; }, [duration]);
+
+  // Fast-forward for shared timer URLs (client-only)
+  useEffect(() => {
+    if (!initial_elapsed || initial_elapsed <= 0 || has_fast_forwarded.current) return;
+    has_fast_forwarded.current = true;
+    const new_remaining = Math.max(0, duration - initial_elapsed);
+    set_remaining(new_remaining);
+    if (new_remaining > 0) set_running(true);
+  }, [initial_elapsed, duration]);
 
   useEffect(() => {
     if (!running || remaining <= 0) return;
@@ -110,9 +120,18 @@ function useCountdownTimer(duration: number, play_beep: (dur?: number, freq?: nu
 }
 
 // ---- Stopwatch Timer ----
-function useStopwatchTimer() {
+function useStopwatchTimer(initial_elapsed?: number) {
   const [elapsed, set_elapsed] = useState(0);
   const [running, set_running] = useState(false);
+  const has_fast_forwarded_sw = useRef(false);
+
+  // Fast-forward for shared timer URLs (client-only)
+  useEffect(() => {
+    if (!initial_elapsed || initial_elapsed <= 0 || has_fast_forwarded_sw.current) return;
+    has_fast_forwarded_sw.current = true;
+    set_elapsed(initial_elapsed);
+    set_running(true);
+  }, [initial_elapsed]);
 
   useEffect(() => {
     if (!running) return;
@@ -128,13 +147,43 @@ function useStopwatchTimer() {
 }
 
 // ---- Interval Timer ----
-function useIntervalTimer(work_seconds: number, rest_seconds: number, rounds: number, play_beep: (dur?: number, freq?: number) => void) {
+function compute_interval_state(work_seconds: number, rest_seconds: number, rounds: number, elapsed: number) {
+  const cycle = work_seconds + rest_seconds;
+  const total_time = cycle * rounds - rest_seconds; // last round has no rest
+  if (elapsed >= total_time) return { phase: "work" as const, round: rounds, remaining: 0, finished: true };
+
+  let t = elapsed;
+  for (let r = 1; r <= rounds; r++) {
+    if (t < work_seconds) return { phase: "work" as const, round: r, remaining: work_seconds - t, finished: false };
+    t -= work_seconds;
+    if (r < rounds) {
+      if (t < rest_seconds) return { phase: "rest" as const, round: r, remaining: rest_seconds - t, finished: false };
+      t -= rest_seconds;
+    }
+  }
+  return { phase: "work" as const, round: rounds, remaining: 0, finished: true };
+}
+
+function useIntervalTimer(work_seconds: number, rest_seconds: number, rounds: number, play_beep: (dur?: number, freq?: number) => void, initial_elapsed?: number) {
   const [phase, set_phase] = useState<"work" | "rest">("work");
   const [current_round, set_current_round] = useState(1);
   const [remaining, set_remaining] = useState(work_seconds);
   const [running, set_running] = useState(false);
   const [finished, set_finished] = useState(false);
   const prev_remaining = useRef(remaining);
+  const has_fast_forwarded_iv = useRef(false);
+
+  // Fast-forward for shared timer URLs (client-only)
+  useEffect(() => {
+    if (!initial_elapsed || initial_elapsed <= 0 || has_fast_forwarded_iv.current) return;
+    has_fast_forwarded_iv.current = true;
+    const init = compute_interval_state(work_seconds, rest_seconds, rounds, initial_elapsed);
+    set_phase(init.phase);
+    set_current_round(init.round);
+    set_remaining(init.remaining);
+    set_finished(init.finished);
+    if (!init.finished) set_running(true);
+  }, [initial_elapsed, work_seconds, rest_seconds, rounds]);
 
   function reset_all() {
     set_phase("work"); set_current_round(1); set_remaining(work_seconds); set_running(false); set_finished(false);
@@ -188,6 +237,12 @@ export default function TimerWidget({ timer_type, config }: TimerWidgetProps) {
   const initial_rest = Number(search_params.get("rest")) || config.rest_seconds || 10;
   const initial_rounds = Number(search_params.get("rounds")) || config.rounds || 8;
 
+  // Shared timer: compute elapsed from "started" param
+  const started_str = search_params.get("started");
+  const initial_elapsed = started_str
+    ? Math.max(0, Math.floor((Date.now() - new Date(started_str).getTime()) / 1000))
+    : undefined;
+
   const [user_duration, set_user_duration] = useState(initial_duration);
   const [user_work, set_user_work] = useState(initial_work);
   const [user_rest, set_user_rest] = useState(initial_rest);
@@ -222,9 +277,9 @@ export default function TimerWidget({ timer_type, config }: TimerWidgetProps) {
   }, [audio_enabled]);
 
   // Timer hooks
-  const countdown = useCountdownTimer(user_duration, play_beep);
-  const stopwatch = useStopwatchTimer();
-  const interval = useIntervalTimer(user_work, user_rest, user_rounds, play_beep);
+  const countdown = useCountdownTimer(user_duration, play_beep, initial_elapsed);
+  const stopwatch = useStopwatchTimer(initial_elapsed);
+  const interval = useIntervalTimer(user_work, user_rest, user_rounds, play_beep, initial_elapsed);
 
   const timer_label = timer_type === "interval" ? "Interval Timer" : timer_type === "stopwatch" ? "Stopwatch" : "Countdown Timer";
 
