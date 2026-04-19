@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { get_db } from "@/lib/db";
+import { STRATEGIES, PRESETS, CATEGORIES } from "@/lib/timer-registry";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://gotimer.org";
@@ -8,56 +9,64 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // causes Google to treat lastmod as unreliable
   const staticDate = new Date("2026-04-15");
 
+  // Non-timer static routes
   const static_routes: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: staticDate, changeFrequency: "weekly", priority: 1.0 },
-    { url: `${base}/countdown-setup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/countdown`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/chess-clock-setup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/chess-clock`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/round-timer-setup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/round-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    // Blog
     { url: `${base}/blog`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.8 },
-    // Category landing pages
-    { url: `${base}/board-games`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/photography`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/fitness`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/wellness`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/productivity`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/kitchen`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
-    // Board games sub-pages
-    { url: `${base}/board-games/turn-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    // Fitness sub-pages
-    { url: `${base}/fitness/emom`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/fitness/tabata`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/fitness/stretching`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/fitness/rest-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    // Wellness sub-pages
-    { url: `${base}/wellness/breathing`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/wellness/sleep`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/wellness/fasting`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    // Productivity sub-pages
-    { url: `${base}/productivity/study`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/productivity/classroom`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    // Kitchen sub-pages
-    { url: `${base}/kitchen/cooking`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/kitchen/eggs`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/kitchen/bread-proofing`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/kitchen/multi-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    // Photography sub-pages
-    { url: `${base}/photography/film-development`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/photography/long-exposure-calculator`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/photography/stand-development`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/photography/cyanotype`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/photography/enlarger-timer`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/photography/photo-walk`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
-    // Studio
     { url: `${base}/studio`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/public-challenges`, lastModified: staticDate, changeFrequency: "daily", priority: 0.8 },
     { url: `${base}/partners`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.4 },
     { url: `${base}/privacy-policy`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/terms-of-service`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
   ];
+
+  // Strategy routes (timer pages + setup pages), deduplicated
+  const seen_urls = new Set<string>();
+  const strategy_routes: MetadataRoute.Sitemap = [];
+
+  for (const s of Object.values(STRATEGIES)) {
+    const url = `${base}${s.route}`;
+    if (!seen_urls.has(url)) {
+      seen_urls.add(url);
+      strategy_routes.push({
+        url,
+        lastModified: staticDate,
+        changeFrequency: "monthly",
+        priority: s.sitemapPriority,
+      });
+    }
+    if (s.setupRoute) {
+      const setup_url = `${base}${s.setupRoute}`;
+      if (!seen_urls.has(setup_url)) {
+        seen_urls.add(setup_url);
+        strategy_routes.push({
+          url: setup_url,
+          lastModified: staticDate,
+          changeFrequency: "monthly",
+          priority: s.sitemapPriority,
+        });
+      }
+    }
+  }
+
+  // Category landing pages
+  const category_routes: MetadataRoute.Sitemap = Object.values(CATEGORIES).map((c) => ({
+    url: `${base}/${c.slug}`,
+    lastModified: staticDate,
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
+
+  // Preset sub-pages (skip presets whose route is a top-level strategy route)
+  const strategy_route_set = new Set(Object.values(STRATEGIES).map((s) => s.route));
+  const preset_routes: MetadataRoute.Sitemap = Object.values(PRESETS)
+    .filter((p) => !strategy_route_set.has(p.route))
+    .map((p) => ({
+      url: `${base}${p.route}`,
+      lastModified: staticDate,
+      changeFrequency: "monthly" as const,
+      priority: p.sitemapPriority,
+    }));
 
   // Add public challenge URLs from database
   let challenge_routes: MetadataRoute.Sitemap = [];
@@ -113,5 +122,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If DB is unavailable, skip blog routes
   }
 
-  return [...static_routes, ...challenge_routes, ...timer_page_routes, ...blog_routes];
+  return [
+    ...static_routes,
+    ...strategy_routes,
+    ...category_routes,
+    ...preset_routes,
+    ...challenge_routes,
+    ...timer_page_routes,
+    ...blog_routes,
+  ];
 }
