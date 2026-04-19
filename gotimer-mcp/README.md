@@ -1,72 +1,119 @@
 # GoTimer MCP Server
 
-An MCP (Model Context Protocol) server for GoTimer. Lets AI assistants like Claude manage timer challenges, view leaderboards, and more.
+An MCP (Model Context Protocol) server for [GoTimer](https://gotimer.org). Create, share, and embed countdown timers, Pomodoro sessions, chess clocks, and interval timers from any AI assistant.
 
-## Tools
+## Quick Start
 
-| Tool | Description | Auth Required |
-|------|-------------|---------------|
-| `list_timer_types` | Returns all available timer types | No |
-| `list_public_challenges` | Lists public challenges with scores | No |
-| `get_leaderboard` | Gets leaderboard for a specific challenge | No |
-| `create_challenge` | Creates a new challenge | Yes (API key) |
-| `join_challenge` | Joins a group challenge with a join code | Yes (API key) |
+### Option 1: npx (recommended)
 
-## Setup
+Add to your Claude Desktop config:
 
-### 1. Install dependencies
+```json
+{
+  "mcpServers": {
+    "gotimer": {
+      "command": "npx",
+      "args": ["-y", "gotimer-mcp"]
+    }
+  }
+}
+```
+
+### Option 2: Local install
 
 ```bash
 cd gotimer-mcp
 npm install
 ```
 
-### 2. Get an API key
-
-Log in to GoTimer as an admin, then go to the admin panel and generate an API key under API Keys.
-
-### 3. Configure Claude Desktop
-
-Add the server to your Claude Desktop config file:
-
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-
 ```json
 {
   "mcpServers": {
     "gotimer": {
       "command": "node",
-      "args": ["/absolute/path/to/gotimer-mcp/index.js"],
-      "env": {
-        "GOTIMER_API_KEY": "gtmr_your_api_key_here",
-        "GOTIMER_API_URL": "https://gotimer.org/api/v1"
-      }
+      "args": ["/path/to/gotimer-mcp/index.js"]
     }
   }
 }
 ```
 
-Replace `/absolute/path/to/gotimer-mcp` with the actual path to the `gotimer-mcp` directory.
+## Tools
 
-### 4. Restart Claude Desktop
+### Timer Tools
 
-After saving the config, restart Claude Desktop. You should see the GoTimer tools available.
+| Tool | Description | Auth |
+|------|-------------|------|
+| `create_timer` | Create a live, shareable countdown timer | No |
+| `create_pomodoro` | Create a Pomodoro focus session (25/5 default) | No |
+| `get_timer_url` | Get a URL to a pre-configured timer page | No |
+| `get_embed_code` | Generate HTML embed code for any timer | No |
+| `list_timer_types` | List all available timer types (strategies) | No |
+| `list_timer_presets` | List pre-configured presets (Pomodoro, HIIT, etc.) by category | No |
+
+### Challenge Tools
+
+| Tool | Description | Auth |
+|------|-------------|------|
+| `list_public_challenges` | List public timer challenges | No |
+| `get_leaderboard` | Get challenge leaderboard & scores | No |
+| `create_challenge` | Create a new timer challenge | API key |
+| `join_challenge` | Join a challenge with a join code | API key |
+
+## Examples
+
+### Create a 5-minute countdown
+```
+create_timer({ type: "countdown", duration: 300, label: "Quick Break" })
+→ https://gotimer.org/countdown?type=countdown&started=...&duration=300&label=Quick+Break
+```
+
+### Start a Pomodoro session
+```
+create_pomodoro({ work_minutes: 25, break_minutes: 5, rounds: 4 })
+→ https://gotimer.org/countdown?type=interval&started=...&work=1500&rest=300&rounds=4
+```
+
+### List fitness timer presets
+```
+list_timer_presets({ category: "fitness" })
+→ [{ id: "hiit", name: "HIIT Timer", strategy: "interval", ... }, ...]
+```
+
+### Create a timer using a preset name
+```
+create_timer({ type: "pomodoro" })
+→ https://gotimer.org/countdown?type=interval&started=...&work=1500&rest=300&rounds=4
+```
+
+### Generate embed code
+```
+get_embed_code({ type: "countdown", duration: 600, theme: "dark", size: "compact" })
+→ <iframe src="https://gotimer.org/embed/countdown?..." ...></iframe>
+```
 
 ## Environment Variables
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `GOTIMER_API_KEY` | For write operations | — | Your GoTimer API key |
-| `GOTIMER_API_URL` | No | `https://gotimer.org/api/v1` | API base URL (useful for local dev) |
+| `GOTIMER_API_KEY` | For challenges | — | API key for write operations |
+| `GOTIMER_API_URL` | No | `https://gotimer.org/api/v1` | API base URL |
 
-## Local Development
+## How Shared Timers Work
 
-To point at a local GoTimer instance:
+When you create a timer, the URL encodes the start time and duration. Anyone opening the URL sees the same synchronized countdown — no server polling needed. Timers expire after 24 hours.
 
-```json
-"env": {
-  "GOTIMER_API_KEY": "gtmr_your_key",
-  "GOTIMER_API_URL": "http://localhost:3000/api/v1"
-}
-```
+## Widget Embedding
+
+Use `get_embed_code` to generate iframe HTML for any website. Widgets are customizable:
+- **Theme**: light, dark, or auto
+- **Size**: compact (300x250), standard (480x400), large (640x500)
+- **Controls**: full, minimal, or none
+
+See the [Embed Documentation](https://gotimer.org/developers/embeds) for details.
+
+## MCP Registries
+
+GoTimer MCP is available on:
+- [Official MCP Registry](https://registry.modelcontextprotocol.io)
+- [Smithery](https://smithery.ai)
+- [Glama](https://glama.ai/mcp/servers)
