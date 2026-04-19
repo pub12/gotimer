@@ -18,6 +18,7 @@ import {
   Bot,
   Settings,
   ClipboardList,
+  Activity,
   Menu,
   X,
   LogOut,
@@ -53,6 +54,7 @@ const NAV_GROUPS: { items: NavItem[] }[] = [
       { label: "AI", href: "/admin/ai", icon: <Bot className="w-4 h-4" /> },
       { label: "Settings", href: "/admin/settings", icon: <Settings className="w-4 h-4" /> },
       { label: "Audit Log", href: "/admin/audit-log", icon: <ClipboardList className="w-4 h-4" /> },
+      { label: "Timer Health", href: "/admin/timer-health", icon: <Activity className="w-4 h-4" /> },
     ],
   },
 ];
