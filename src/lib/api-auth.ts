@@ -9,7 +9,7 @@ type ApiKeyRecord = {
 
 export async function validateApiKey(
   request: NextRequest
-): Promise<{ valid: boolean; key_name?: string }> {
+): Promise<{ valid: boolean; key_name?: string; user_id?: string }> {
   // Check Authorization header (Bearer token) or X-API-Key header
   const auth_header = request.headers.get("Authorization");
   const x_api_key = request.headers.get("X-API-Key");
@@ -41,6 +41,15 @@ export async function validateApiKey(
     const matched = api_keys.find((k) => k.key === provided_key);
     if (matched) {
       return { valid: true, key_name: matched.name };
+    }
+
+    // Check user keys (api_keys table)
+    const user_key = db
+      .prepare(`SELECT name, user_id FROM api_keys WHERE key = ?`)
+      .get(provided_key) as { name: string; user_id: string } | undefined;
+
+    if (user_key) {
+      return { valid: true, key_name: user_key.name, user_id: user_key.user_id };
     }
 
     return { valid: false };
