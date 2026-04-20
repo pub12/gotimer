@@ -1,7 +1,7 @@
 export async function register() {
   if (
     process.env.NODE_ENV === "development" &&
-    typeof globalThis.EdgeRuntime === "undefined"
+    process.env.NEXT_RUNTIME === "nodejs"
   ) {
     const path = await import("path");
     const { STRATEGY_REGISTRY } = await import("./lib/timer-strategies");
