@@ -284,6 +284,18 @@ const migrations: Migration[] = [
   ` },
   { version: 31, sql: `ALTER TABLE challenge_invitations ADD COLUMN invited_email TEXT` },
   { version: 32, sql: `ALTER TABLE challenge_invitations ADD COLUMN invited_user_id TEXT` },
+  { version: 33, sql: `ALTER TABLE blog_posts ADD COLUMN featured_image TEXT` },
+  { version: 34, sql: `
+    CREATE TABLE IF NOT EXISTS api_keys (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      key TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
+    CREATE INDEX IF NOT EXISTS idx_api_keys_key ON api_keys(key);
+  ` },
 ];
 
 function run_migrations(db: Database.Database) {
