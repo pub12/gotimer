@@ -1,232 +1,457 @@
 # GoTimer.org — Full Documentation
 
-> Free online board game timers and competitive challenge tracking for tabletop gaming.
+> GoTimer is a free, browser-based timer platform for board games, fitness, photography, wellness, productivity, and cooking. No app download, no signup required — works in any modern browser at https://gotimer.org.
 
 Website: https://gotimer.org
-Category: Web Application / Game Tool
+Category: Web Application / Timer Platform
 Price: Free (no ads)
 Platform: Any modern web browser (mobile, tablet, desktop)
 Account Required: No (timers work without login; challenges require a free account)
+Last updated: 2026-04-20
 
 ---
 
 ## Overview
 
-GoTimer is a free, mobile-friendly web application designed for board game players. It provides three configurable game timers and a competitive challenge tracking system. GoTimer works entirely in the browser with no app download required.
+GoTimer is a free, browser-based timer platform for board games, fitness, photography, wellness, productivity, and cooking. No app download, no signup required — works in any modern browser at https://gotimer.org.
 
-GoTimer is ideal for:
-- Board game nights where turns need time limits
-- Chess, Scrabble, and Go players who need a digital clock
-- Tournament organizers tracking round times
-- Friends who want to track competitive game records over time
-- People with ADHD who benefit from timed focus sessions and Pomodoro technique
-- Students using timed study blocks to stay on task
-- Anyone needing a simple, distraction-free countdown timer
+GoTimer offers 10 timer strategies, 28 specialized presets across 6 categories, and a challenge tracking system for competitive play.
 
 ---
 
-## Timers
+## Timer Strategies (10)
 
-### 1. Countdown Timer
+### Countdown Timer (`countdown`)
 
-**URL:** https://gotimer.org/countdown-setup
-**Purpose:** A simple countdown timer with configurable duration.
+A simple countdown timer that counts down from a set duration.
 
-**Features:**
-- Duration range: 1 second to 60 minutes
-- Preset quick-select buttons: 10s, 15s, 30s, 60s
-- Slider for precise duration selection
-- Full-screen display during countdown
-- Audio beep alerts during the last 10 seconds
-- Long tone when timer reaches zero
-- Pause and resume functionality
-- Sound toggle on/off
+- Route: https://gotimer.org/countdown
+- Setup: https://gotimer.org/countdown-setup
+- Embed: https://gotimer.org/countdown/embed
+- Supported params: duration, alert_at
+- Default config:
+    {
+      "duration": 300
+    }
 
-**How to use:**
-1. Visit https://gotimer.org/countdown-setup
-2. Select a preset time or use the slider to set a custom duration
-3. Press "Start" to begin the countdown
-4. The timer displays full-screen with large, readable numbers
-5. Audio alerts play in the final 10 seconds
-6. Press pause to temporarily stop, or reset to start over
+### Chess Clock (`chess-clock`)
 
-**Best for:** Board game turn limits, trivia rounds, ADHD focus sessions, Pomodoro technique, speed puzzles, cooking timers, workout intervals, presentations, classroom activities, study sessions.
+A two-player chess clock where each player has their own time bank.
+
+- Route: https://gotimer.org/chess-clock
+- Setup: https://gotimer.org/chess-clock-setup
+- Embed: https://gotimer.org/chess-clock/embed
+- Supported params: duration_per_player, increment
+- Default config:
+    {
+      "duration_per_player": 600,
+      "increment": 0
+    }
+
+### Round Timer (`round-timer`)
+
+A round-based timer for sports and combat games with work and rest periods.
+
+- Route: https://gotimer.org/round-timer
+- Setup: https://gotimer.org/round-timer-setup
+- Embed: https://gotimer.org/round-timer/embed
+- Supported params: round_duration, rest_duration, rounds
+- Default config:
+    {
+      "round_duration": 180,
+      "rest_duration": 60,
+      "rounds": 3
+    }
+
+### Interval Timer (`interval`)
+
+A work/rest interval timer, perfect for Pomodoro technique, HIIT workouts, and timed study sessions.
+
+- Route: https://gotimer.org/countdown
+- Supported params: work, rest, rounds
+- Default config:
+    {
+      "work": 1500,
+      "rest": 300,
+      "rounds": 4
+    }
+
+### Multi-Step Timer (`multi-step`)
+
+A sequential timer that runs through multiple named steps, each with its own duration.
+
+- Route: https://gotimer.org/countdown
+- Supported params: steps
+- Default config:
+    {
+      "steps": [
+        {
+          "name": "Step 1",
+          "duration": 60
+        },
+        {
+          "name": "Step 2",
+          "duration": 60
+        }
+      ]
+    }
+
+### Ambient Timer (`ambient`)
+
+A long-form ambient timer that counts up or down with optional interval notifications.
+
+- Route: https://gotimer.org/countdown
+- Supported params: duration, interval
+- Default config:
+    {
+      "duration": 3600,
+      "interval": 600
+    }
+
+### Calculator Timer (`calculator-timer`)
+
+A timer that computes durations based on input values (e.g., reciprocity correction for film photography).
+
+- Route: https://gotimer.org/countdown
+- Supported params: metered_time, mode
+- Default config:
+    {
+      "metered_time": 1,
+      "mode": "reciprocity"
+    }
+
+### Multi-Timer (`multi-timer`)
+
+Run multiple independent countdown timers simultaneously.
+
+- Route: https://gotimer.org/countdown
+- Supported params: timers
+- Default config:
+    {
+      "timers": [
+        {
+          "name": "Timer 1",
+          "duration": 300
+        },
+        {
+          "name": "Timer 2",
+          "duration": 600
+        }
+      ]
+    }
+
+### Turn Timer (`turn-timer`)
+
+Per-player turn countdown for 2-8 players in board games and group activities.
+
+- Route: https://gotimer.org/countdown
+- Supported params: players, time_per_turn
+- Default config:
+    {
+      "players": 2,
+      "time_per_turn": 60
+    }
+
+### Enlarger Timer (`enlarger`)
+
+F-stop timing and test strip mode for darkroom printing.
+
+- Route: https://gotimer.org/countdown
+- Supported params: base_time, mode, strips, stop_increment
+- Default config:
+    {
+      "base_time": 10,
+      "mode": "f-stop"
+    }
 
 ---
 
-### 2. Chess Clock
+## Categories (6)
 
-**URL:** https://gotimer.org/chess-clock-setup
-**Purpose:** A two-player timer where each player has their own countdown.
+### 🎲 Board Games
 
-**Features:**
-- Independent countdown for each player
-- Duration range: 10 seconds to 60 minutes per player
-- Preset quick-select buttons: 2m, 5m, 10m, 20m, 30m, 60m
-- Tap-to-switch turn mechanic
-- Visual indication of active player
-- Audio alerts: beep every 30 seconds, every second in last 10 seconds
-- Long tone when a player's time expires
-- Pause both clocks simultaneously
+Keep game night moving with free, mobile-friendly timers. No app download, no signup — just pick a timer and play.
 
-**How to use:**
-1. Visit https://gotimer.org/chess-clock-setup
-2. Select time per player using presets or the slider
-3. Press "Start" — Player 1's clock begins counting down
-4. After making a move, the active player taps their side to switch to the opponent's clock
-5. Play continues until one player's time runs out or the game ends
-6. Use the pause button to stop both clocks (for breaks, disputes, etc.)
+- URL: https://gotimer.org/board-games
+- Presets (4):
+  - **Countdown Timer** (`board-countdown`): Set a time limit for turns or rounds — defaults: `{"duration":120}`
+  - **Chess Clock** (`board-chess-clock`): Two-player time control for competitive games — defaults: `{"duration_per_player":600,"increment":0}`
+  - **Round Timer** (`board-round-timer`): Track rounds and total game time — defaults: `{"round_duration":180,"rest_duration":60,"rounds":3}`
+  - **Turn Timer** (`board-turn-timer`): Per-player turn countdown for 2-8 players — defaults: `{"players":4,"time_per_turn":60}`
 
-**Best for:** Chess, Scrabble, Go, Blokus, Patchwork, any two-player turn-based game requiring time limits.
+- FAQ:
+  **Q: What is a chess clock for board games?**
+  A: A chess clock is a two-player timer where each player has their own countdown. After making a move, you tap the clock to switch to your opponent’s timer.
 
----
+  **Q: How do I time board game turns?**
+  A: For two-player games, use the Chess Clock. For group games, use the Countdown Timer. For tracking rounds, use the Round Timer.
 
-### 3. Round Timer
+  **Q: Can I track game scores with friends?**
+  A: Yes! GoTimer’s challenge system lets you create ongoing rivalries, invite friends, and track wins over time.
 
-**URL:** https://gotimer.org/round-timer-setup
-**Purpose:** A count-up timer that tracks total elapsed time and individual round durations.
+### 🎞️ Photography
 
-**Features:**
-- Count-up (stopwatch) mode
-- Total elapsed time display
-- Current round time display
-- Round reset: logs current round and starts a new one
-- Round history list showing all previous round durations
-- Total timer continues running across rounds
-- Useful for analyzing game pacing
+Film development timers, reciprocity calculators, and darkroom tools. Free, browser-based, safelight-safe.
 
-**How to use:**
-1. Visit https://gotimer.org/round-timer-setup
-2. Press "Start" to begin tracking time
-3. Both total time and current round time start counting up
-4. When a round ends, press "Round Reset" to log the round duration
-5. A new round begins immediately; total time keeps running
-6. View all previous round times in the history list
-7. Use the data to analyze game pacing and set expectations for future games
+- URL: https://gotimer.org/photography
+- Presets (6):
+  - **Film Development Timer** (`film-development`): Multi-step sequential timer for B&W, C-41, and E-6 processes — defaults: `{"steps":[{"name":"Developer","duration":480},{"name":"Stop Bath","duration":60},{"name":"Fixer","duration":300},{"name":"Wash","duration":300}]}`
+  - **Long Exposure Calculator** (`long-exposure-calculator`): Reciprocity failure correction for film photography — defaults: `{"metered_time":1,"mode":"reciprocity"}`
+  - **Stand Development Timer** (`stand-development`): Long-form ambient timer for stand and semi-stand development — defaults: `{"duration":3600,"interval":1800}`
+  - **Enlarger Timer** (`enlarger-timer`): F-stop timing and test strip mode for darkroom printing — defaults: `{"base_time":10,"mode":"f-stop"}`
+  - **Cyanotype Timer** (`cyanotype`): UV exposure timer for alternative processes — defaults: `{"duration":900}`
+  - **Photo Walk Timer** (`photo-walk`): Timed photo challenges and sprint sessions — defaults: `{"work":900,"rest":120,"rounds":4}`
 
-**Best for:** Twilight Imperium, Terraforming Mars, Gloomhaven, tournament play, strategy game sessions, Pomodoro focus tracking, any activity where tracking round/session duration helps with pacing.
+### 🏋️ Fitness
 
----
+Interval training, Tabata, HIIT, stretching, and rest timers for every workout style. Free, no app needed.
 
-## Challenge Tracking System
+- URL: https://gotimer.org/fitness
+- Presets (5):
+  - **HIIT Timer** (`hiit`): Configurable high-intensity interval training — defaults: `{"work":40,"rest":20,"rounds":8}`
+  - **Tabata Timer** (`tabata`): Classic 20/10 protocol — 8 rounds, 4 minutes — defaults: `{"work":20,"rest":10,"rounds":8}`
+  - **Stretching Timer** (`stretching`): Hold timer with exercise sequences — defaults: `{"work":30,"rest":10,"rounds":10}`
+  - **EMOM Timer** (`emom`): Every Minute On the Minute workout timer — defaults: `{"work":60,"rest":0,"rounds":10}`
+  - **Rest Timer** (`rest-timer`): Quick countdown between sets — defaults: `{"duration":90}`
 
-**URL:** https://gotimer.org/challenges/ (requires login)
-**Public Challenges:** https://gotimer.org/public-challenges
+### 🧘 Wellness
 
-### What are Challenges?
+Meditation, breathing exercises, sleep timers, and fasting trackers for your daily wellbeing routine.
 
-Challenges are ongoing competitive matchups between two players for a specific board game. They track game results over time, creating a rivalry record.
+- URL: https://gotimer.org/wellness
+- Presets (4):
+  - **Meditation Timer** (`meditation`): Guided mindfulness with interval bells — defaults: `{"duration":600,"interval":300}`
+  - **Breathing Timer** (`breathing`): Box breathing, 4-7-8, and Wim Hof exercises — defaults: `{"work":4,"rest":4,"rounds":10}`
+  - **Sleep Timer** (`sleep`): Gentle countdown for wind-down routines — defaults: `{"duration":1800}`
+  - **Fasting Timer** (`fasting`): Track intermittent fasting windows — defaults: `{"duration":57600}`
 
-### Features:
-- Create a challenge for any board game
-- Invite an opponent via shareable link
-- Log game results: win, loss, or draw
-- Running score tally (wins per player)
-- Game history with dates and results
-- Visual charts showing win/loss trends over time
-- GIF reactions: add GIF images to game results to celebrate or commiserate
-- Public/private toggle: make challenges visible to the community or keep them private
-- Challenge status: active, completed, or pending
+### 🎯 Productivity
 
-### How Challenges Work:
-1. Sign in to GoTimer (free account)
-2. Create a new challenge: pick a game, name the challenge, invite your opponent
-3. Your opponent accepts the challenge via a shared link
-4. After each real-world game, log the result in GoTimer
-5. View your running score, history, and charts
-6. Optionally make the challenge public for others to follow
+Pomodoro, study sessions, ADHD focus timers, classroom activities, and presentation timing. Get more done.
 
-### Public Challenges:
-Public challenges are visible at https://gotimer.org/public-challenges. Anyone can browse active matchups, see scores, game counts, and player names. Each challenge has its own shareable page with full game history.
+- URL: https://gotimer.org/productivity
+- Presets (5):
+  - **Pomodoro Timer** (`pomodoro`): 25-minute focus sessions with 5-minute breaks — defaults: `{"work":1500,"rest":300,"rounds":4}`
+  - **Study Timer** (`study`): Timed study blocks with break reminders — defaults: `{"work":2700,"rest":600,"rounds":3}`
+  - **ADHD Focus Timer** (`adhd-focus`): Low-distraction timer with shorter intervals — defaults: `{"work":900,"rest":300,"rounds":4}`
+  - **Classroom Timer** (`classroom`): Large display activity timers for teachers — defaults: `{"duration":600}`
+  - **Presentation Timer** (`presentation`): Keep talks and meetings on schedule — defaults: `{"duration":900}`
+
+### 🍳 Kitchen
+
+Cooking timers, egg timers, and multi-timer support for when you’re juggling multiple dishes. Precision for every chef.
+
+- URL: https://gotimer.org/kitchen
+- Presets (4):
+  - **Cooking Timer** (`cooking`): General cooking timer with preset durations — defaults: `{"duration":600}`
+  - **Egg Timer** (`eggs`): Perfect soft, medium, and hard boiled eggs every time — defaults: `{"duration":420}`
+  - **Multi-Timer** (`kitchen-multi-timer`): Run multiple simultaneous timers for different dishes — defaults: `{"timers":[{"name":"Main Dish","duration":1800},{"name":"Side","duration":900}]}`
+  - **Bread Proofing Timer** (`bread-proofing`): Long-form rise timer with temperature notes — defaults: `{"duration":3600,"interval":1800}`
 
 ---
 
-## Supported Games
+## API Reference
 
-GoTimer works with any board game, card game, or tabletop game. Games commonly used with GoTimer include:
+Base URL: https://gotimer.org/api/v1
 
-- **Strategy:** Chess, Go, Scrabble, Blokus, Azul, Patchwork
-- **Heavy Strategy:** Twilight Imperium, Terraforming Mars, Gloomhaven, Pandemic, Spirit Island
-- **Euro Games:** Catan, Ticket to Ride, 7 Wonders, Wingspan, Dominion, Agricola
-- **Party Games:** Codenames, trivia games, word games
-- **Card Games:** Any competitive card game with timed turns
-- **Tournament Play:** Any game format requiring round timing
+### GET /timers
+
+List all timer strategies with names, descriptions, and default configs.
+
+```bash
+curl https://gotimer.org/api/v1/timers
+```
+
+### GET /timer-presets
+
+List all presets. Optionally filter by category.
+
+```bash
+curl https://gotimer.org/api/v1/timer-presets
+curl "https://gotimer.org/api/v1/timer-presets?category=fitness"
+```
+
+### GET /timer-url
+
+Generate a shareable timer URL. The timer starts immediately.
+
+```bash
+curl "https://gotimer.org/api/v1/timer-url?type=countdown&duration=300"
+curl "https://gotimer.org/api/v1/timer-url?type=pomodoro"
+curl "https://gotimer.org/api/v1/timer-url?type=hiit&work=40&rest=20&rounds=8"
+```
+
+### GET /timer-url/embed
+
+Generate embeddable timer HTML and URL.
+
+```bash
+curl "https://gotimer.org/api/v1/timer-url/embed?type=countdown&duration=300&theme=dark&size=standard"
+```
+
+### GET /challenges
+
+List all public challenges with scores.
+
+```bash
+curl https://gotimer.org/api/v1/challenges
+```
+
+### GET /challenges/:id
+
+Get challenge details, leaderboard, and game history.
+
+```bash
+curl https://gotimer.org/api/v1/challenges/CHALLENGE_UUID
+```
+
+### POST /challenges
+
+Create a new challenge. Requires API key.
+
+```bash
+curl -X POST https://gotimer.org/api/v1/challenges \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Chess Rivalry", "format": "head-to-head", "timer_type": "chess-clock"}'
+```
+
+### POST /challenges/:id/join
+
+Join a group challenge with a join code. Requires API key.
+
+```bash
+curl -X POST https://gotimer.org/api/v1/challenges/CHALLENGE_UUID/join \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"join_code": "TIMER-1234"}'
+```
 
 ---
 
-## Technical Details
+## MCP Server (gotimer-mcp)
 
-- **Framework:** Next.js (React)
-- **Hosting:** https://gotimer.org
-- **PWA:** Progressive Web App support (installable on mobile)
-- **Audio:** Web Audio API for timer alerts
-- **Sharing:** OG images and Twitter cards for social media previews
-- **Accessibility:** Semantic HTML, large touch targets for mobile, keyboard navigable
+GoTimer provides a Model Context Protocol server for AI assistants like Claude.
+
+### Installation
+
+```json
+{
+  "mcpServers": {
+    "gotimer": {
+      "command": "npx",
+      "args": ["-y", "gotimer-mcp"],
+      "env": {
+        "GOTIMER_API_KEY": "your-api-key"
+      }
+    }
+  }
+}
+```
+
+### Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| GOTIMER_API_KEY | API key for authenticated endpoints (create/join challenges) | For write ops |
+| GOTIMER_API_URL | Override API base URL (default: https://gotimer.org/api/v1) | No |
+
+### Tools (10)
+
+| Tool | Description |
+|------|-------------|
+| list_timer_types | Returns all available timer strategies |
+| list_timer_presets | Lists pre-configured presets, optionally filtered by category |
+| list_public_challenges | Lists all public challenges with scores |
+| get_leaderboard | Gets leaderboard and game history for a challenge |
+| create_challenge | Creates a new challenge (requires API key) |
+| join_challenge | Joins a group challenge with a join code (requires API key) |
+| create_timer | Creates a live timer and returns a shareable URL |
+| create_pomodoro | Convenience wrapper for Pomodoro focus timers |
+| get_timer_url | Returns a pre-filled setup page URL (timer does not auto-start) |
+| get_embed_code | Generates HTML embed code for a timer widget |
 
 ---
 
-## Comparison with Alternatives
+## Embedding Timers
 
-| Feature | GoTimer | Physical Chess Clock | Phone Timer App |
-|---------|---------|---------------------|-----------------|
-| Price | Free | $15-50 | Free-$5 |
-| Chess Clock | Yes | Yes | Some |
-| Round Timer | Yes | No | Rare |
-| Countdown | Yes | No | Yes |
-| Challenge Tracking | Yes | No | No |
-| Score History | Yes | No | No |
-| Works on Any Device | Yes (browser) | No (physical) | Single device |
-| No Download | Yes | N/A | No |
-| Multiplayer Tracking | Yes | No | No |
+Embed GoTimer widgets on any website with an iframe.
+
+### Example
+
+```html
+<iframe src="https://gotimer.org/embed/countdown?duration=300"
+  width="480" height="400" frameborder="0"
+  allow="autoplay" loading="lazy"
+  style="border-radius: 8px;"></iframe>
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| type | string | Strategy or preset ID (e.g. countdown, pomodoro, hiit) |
+| duration | number | Duration in seconds |
+| theme | string | light, dark, or auto (default: auto) |
+| size | string | compact, standard, or large (default: standard) |
+| controls | string | full, minimal, or none (default: full) |
+| autostart | boolean | Whether timer starts automatically (default: false) |
+| label | string | Optional label displayed on the timer |
+
+### Size Dimensions
+
+| Size | Width | Height |
+|------|-------|--------|
+| compact | 300px | 250px |
+| standard | 480px | 400px |
+| large | 640px | 500px |
+
+---
+
+## Who Is GoTimer For?
+
+- **🎲 Board Games**: Keep game night moving with free, mobile-friendly timers. No app download, no signup — just pick a timer and play.
+- **🎞️ Photography**: Film development timers, reciprocity calculators, and darkroom tools. Free, browser-based, safelight-safe.
+- **🏋️ Fitness**: Interval training, Tabata, HIIT, stretching, and rest timers for every workout style. Free, no app needed.
+- **🧘 Wellness**: Meditation, breathing exercises, sleep timers, and fasting trackers for your daily wellbeing routine.
+- **🎯 Productivity**: Pomodoro, study sessions, ADHD focus timers, classroom activities, and presentation timing. Get more done.
+- **🍳 Kitchen**: Cooking timers, egg timers, and multi-timer support for when you’re juggling multiple dishes. Precision for every chef.
+- Anyone needing a simple, distraction-free timer in the browser
 
 ---
 
 ## Pages
 
-| Page | URL | Description |
-|------|-----|-------------|
-| Home | https://gotimer.org | Landing page with timer selection, features, FAQ |
-| Countdown Setup | https://gotimer.org/countdown-setup | Configure countdown timer duration |
-| Countdown Timer | https://gotimer.org/countdown | Active countdown display |
-| Chess Clock Setup | https://gotimer.org/chess-clock-setup | Configure chess clock time per player |
-| Chess Clock | https://gotimer.org/chess-clock | Active chess clock display |
-| Round Timer Setup | https://gotimer.org/round-timer-setup | Round timer launch page |
-| Round Timer | https://gotimer.org/round-timer | Active round timer with history |
-| Public Challenges | https://gotimer.org/public-challenges | Browse all public challenges |
-| Challenge Detail | https://gotimer.org/public-challenges/[id] | Individual challenge page |
-| Privacy Policy | https://gotimer.org/privacy-policy | Privacy policy |
-| Terms of Service | https://gotimer.org/terms-of-service | Terms of service |
-
----
-
-## Frequently Asked Questions
-
-**Q: What is a chess clock for board games?**
-A: A chess clock is a two-player timer where each player has their own countdown. After making a move, you tap the clock to switch to your opponent's timer. This ensures both players have equal time and keeps the game moving. While traditionally used for chess, chess clocks work great for Scrabble, Go, and any turn-based game.
-
-**Q: How do I time board game turns?**
-A: For two-player games, use GoTimer's Chess Clock — set a time limit per player and tap to switch turns. For group games, use the Countdown Timer to give each player a fixed amount of time per turn. For tracking total game rounds, use the Round Timer.
-
-**Q: Can I track game scores with friends?**
-A: Yes! GoTimer's challenge system lets you create ongoing rivalries with friends. Create a challenge for any game, invite your opponent, and log results after each game. You'll see a running score, game history, and visual charts tracking your rivalry over time.
-
-**Q: What board games need a timer?**
-A: Any game benefits from a timer when turns take too long! Chess and Scrabble traditionally use time limits. Heavy strategy games like Twilight Imperium and Terraforming Mars benefit from round timers to keep the game on schedule. Party games like Codenames and trivia games often need countdown timers for timed rounds.
-
-**Q: Is GoTimer free to use?**
-A: Yes, GoTimer is completely free with no ads. All three timers (Countdown, Chess Clock, and Round Timer) work without an account. Creating challenges and tracking scores requires a free account.
-
-**Q: Does GoTimer work on mobile phones?**
-A: Yes, GoTimer is designed to be mobile-friendly. It works in any modern web browser on phones, tablets, and desktop computers. No app download is needed — just visit gotimer.org in your browser. GoTimer can also be installed as a Progressive Web App.
-
-**Q: Can I use GoTimer for ADHD focus sessions?**
-A: Yes! GoTimer's countdown timer is great for ADHD focus and Pomodoro-style work sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the round timer to track multiple focus blocks and see how long you stayed on task.
-
-**Q: Can I use GoTimer for tournaments?**
-A: Yes. The Round Timer is specifically designed for tournament play, tracking total elapsed time and individual round durations. Combined with the challenge system, you can track match results across a tournament.
-
-**Q: How do public challenges work?**
-A: When creating a challenge, you can toggle it to "public." Public challenges appear on the Public Challenges page where anyone can see the matchup, scores, and game history. This is great for showcasing rivalries or running community tournaments.
+| Page | URL |
+|------|-----|
+| Home | https://gotimer.org |
+| Countdown Timer Setup | https://gotimer.org/countdown-setup |
+| Countdown Timer | https://gotimer.org/countdown |
+| Countdown Timer Embed | https://gotimer.org/countdown/embed |
+| Chess Clock Setup | https://gotimer.org/chess-clock-setup |
+| Chess Clock | https://gotimer.org/chess-clock |
+| Chess Clock Embed | https://gotimer.org/chess-clock/embed |
+| Round Timer Setup | https://gotimer.org/round-timer-setup |
+| Round Timer | https://gotimer.org/round-timer |
+| Round Timer Embed | https://gotimer.org/round-timer/embed |
+| Interval Timer | https://gotimer.org/countdown |
+| Multi-Step Timer | https://gotimer.org/countdown |
+| Ambient Timer | https://gotimer.org/countdown |
+| Calculator Timer | https://gotimer.org/countdown |
+| Multi-Timer | https://gotimer.org/countdown |
+| Turn Timer | https://gotimer.org/countdown |
+| Enlarger Timer | https://gotimer.org/countdown |
+| 🎲 Board Games | https://gotimer.org/board-games |
+| 🎞️ Photography | https://gotimer.org/photography |
+| 🏋️ Fitness | https://gotimer.org/fitness |
+| 🧘 Wellness | https://gotimer.org/wellness |
+| 🎯 Productivity | https://gotimer.org/productivity |
+| 🍳 Kitchen | https://gotimer.org/kitchen |
+| Developer Docs | https://gotimer.org/developers |
+| Public Challenges | https://gotimer.org/public-challenges |
+| Privacy Policy | https://gotimer.org/privacy-policy |
+| Terms of Service | https://gotimer.org/terms-of-service |
+| Sitemap | https://gotimer.org/sitemap.xml |
 
 ---
 

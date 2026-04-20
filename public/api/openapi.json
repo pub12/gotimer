@@ -2,11 +2,12 @@
   "openapi": "3.0.3",
   "info": {
     "title": "GoTimer API",
-    "description": "Public REST API for GoTimer — manage timer challenges, leaderboards, and more.",
-    "version": "1.0.0",
+    "description": "Public REST API for GoTimer — 10 timer strategies, 28 presets across 6 categories. Manage timers, presets, embeds, and challenges.",
+    "version": "2.0.0",
     "contact": {
       "name": "GoTimer",
-      "url": "https://gotimer.org/developers"
+      "url": "https://gotimer.org/developers",
+      "email": "pubs@hazoservices.com"
     },
     "license": {
       "name": "MIT"
@@ -33,43 +34,149 @@
       }
     },
     "schemas": {
-      "TimerType": {
+      "TimerStrategy": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "example": "countdown" },
-          "name": { "type": "string", "example": "Countdown Timer" },
-          "description": { "type": "string" },
-          "default_config": { "type": "object" }
+          "id": {
+            "type": "string",
+            "enum": [
+              "countdown",
+              "chess-clock",
+              "round-timer",
+              "interval",
+              "multi-step",
+              "ambient",
+              "calculator-timer",
+              "multi-timer",
+              "turn-timer",
+              "enlarger"
+            ],
+            "example": "countdown"
+          },
+          "name": {
+            "type": "string",
+            "example": "Countdown Timer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "default_config": {
+            "type": "object"
+          }
+        }
+      },
+      "TimerPreset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "pomodoro"
+          },
+          "name": {
+            "type": "string",
+            "example": "Pomodoro Timer"
+          },
+          "description": {
+            "type": "string"
+          },
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "countdown",
+              "chess-clock",
+              "round-timer",
+              "interval",
+              "multi-step",
+              "ambient",
+              "calculator-timer",
+              "multi-timer",
+              "turn-timer",
+              "enlarger"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "board-games",
+              "photography",
+              "fitness",
+              "wellness",
+              "productivity",
+              "kitchen"
+            ]
+          },
+          "default_config": {
+            "type": "object"
+          }
         }
       },
       "Challenge": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "name": { "type": "string" },
-          "format": { "type": "string", "enum": ["head-to-head", "group", "solo"] },
-          "timer_type": { "type": "string", "nullable": true },
-          "status": { "type": "string", "enum": ["active", "completed", "archived"] },
-          "is_public": { "type": "integer", "enum": [0, 1] },
-          "join_code": { "type": "string", "nullable": true },
-          "created_at": { "type": "string", "format": "date-time" },
-          "updated_at": { "type": "string", "format": "date-time" }
-        }
-      },
-      "LeaderboardEntry": {
-        "type": "object",
-        "properties": {
-          "user_id": { "type": "string" },
-          "role": { "type": "string" },
-          "score": { "type": "integer" }
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "head-to-head",
+              "group",
+              "solo"
+            ]
+          },
+          "timer_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "completed",
+              "archived"
+            ]
+          },
+          "is_public": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "join_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "ApiResponse": {
         "type": "object",
         "properties": {
-          "status": { "type": "string", "enum": ["ok", "error"] },
-          "data": { "type": "object" },
-          "error": { "type": "string" }
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "error"
+            ]
+          },
+          "data": {
+            "type": "object"
+          },
+          "error": {
+            "type": "string"
+          }
         }
       }
     }
@@ -77,25 +184,32 @@
   "paths": {
     "/timers": {
       "get": {
-        "summary": "List timer types",
-        "description": "Returns all available timer types with names, descriptions, and default configurations. No authentication required.",
-        "operationId": "listTimerTypes",
-        "tags": ["Timers"],
+        "summary": "List timer strategies",
+        "description": "Returns all 10 timer strategies with names, descriptions, and default configurations. No authentication required.",
+        "operationId": "listTimerStrategies",
+        "tags": [
+          "Timers"
+        ],
         "responses": {
           "200": {
-            "description": "List of timer types",
+            "description": "List of timer strategies",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": { "type": "string", "example": "ok" },
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
                     "data": {
                       "type": "object",
                       "properties": {
                         "timer_types": {
                           "type": "array",
-                          "items": { "$ref": "#/components/schemas/TimerType" }
+                          "items": {
+                            "$ref": "#/components/schemas/TimerStrategy"
+                          }
                         }
                       }
                     }
@@ -107,12 +221,337 @@
         }
       }
     },
+    "/timer-presets": {
+      "get": {
+        "summary": "List timer presets",
+        "description": "Returns all 28 timer presets. Optionally filter by category. No authentication required.",
+        "operationId": "listTimerPresets",
+        "tags": [
+          "Timers"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "board-games",
+                "photography",
+                "fitness",
+                "wellness",
+                "productivity",
+                "kitchen"
+              ]
+            },
+            "description": "Filter by category. Valid values: board-games, photography, fitness, wellness, productivity, kitchen"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of timer presets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "presets": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/TimerPreset"
+                          }
+                        },
+                        "categories": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid category parameter"
+          }
+        }
+      }
+    },
+    "/timer-url": {
+      "get": {
+        "summary": "Generate a shareable timer URL",
+        "description": "Creates a live timer URL that starts immediately. Accepts strategy IDs or preset IDs with optional parameter overrides. No authentication required.",
+        "operationId": "getTimerUrl",
+        "tags": [
+          "Timers"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Strategy ID (e.g. countdown, chess-clock) or preset ID (e.g. pomodoro, hiit)."
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Duration in seconds."
+          },
+          {
+            "name": "label",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional label displayed on the timer."
+          },
+          {
+            "name": "work",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Work period in seconds (interval strategy)."
+          },
+          {
+            "name": "rest",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Rest period in seconds (interval strategy)."
+          },
+          {
+            "name": "rounds",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Number of rounds (interval strategy)."
+          },
+          {
+            "name": "started",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Start timestamp. Defaults to now."
+          },
+          {
+            "name": "embed",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "If true, returns embed URL instead of regular URL."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Timer URL generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "embed_url": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "timer_type": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid parameters"
+          }
+        }
+      }
+    },
+    "/timer-url/embed": {
+      "get": {
+        "summary": "Generate embeddable timer HTML",
+        "description": "Returns an iframe HTML snippet and embed URL for a timer widget. Supports theme, size, and control customization. No authentication required.",
+        "operationId": "getTimerEmbed",
+        "tags": [
+          "Timers"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Strategy ID or preset ID."
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Duration in seconds."
+          },
+          {
+            "name": "theme",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "light",
+                "dark",
+                "auto"
+              ],
+              "default": "auto"
+            },
+            "description": "Widget theme."
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "compact",
+                "standard",
+                "large"
+              ],
+              "default": "standard"
+            },
+            "description": "Widget size (compact: 300x250, standard: 480x400, large: 640x500)."
+          },
+          {
+            "name": "controls",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "full",
+                "minimal",
+                "none"
+              ],
+              "default": "full"
+            },
+            "description": "Control buttons to show."
+          },
+          {
+            "name": "autostart",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Whether timer starts automatically."
+          },
+          {
+            "name": "label",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional label displayed on the timer."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Embed code generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "html": {
+                          "type": "string"
+                        },
+                        "timer_type": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid parameters"
+          }
+        }
+      }
+    },
     "/challenges": {
       "get": {
         "summary": "List public challenges",
         "description": "Returns all public challenges with scores. No authentication required.",
         "operationId": "listChallenges",
-        "tags": ["Challenges"],
+        "tags": [
+          "Challenges"
+        ],
         "responses": {
           "200": {
             "description": "List of public challenges",
@@ -121,13 +560,18 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": { "type": "string", "example": "ok" },
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
                     "data": {
                       "type": "object",
                       "properties": {
                         "challenges": {
                           "type": "array",
-                          "items": { "$ref": "#/components/schemas/Challenge" }
+                          "items": {
+                            "$ref": "#/components/schemas/Challenge"
+                          }
                         }
                       }
                     }
@@ -142,10 +586,16 @@
         "summary": "Create a challenge",
         "description": "Creates a new challenge. Requires API key authentication.",
         "operationId": "createChallenge",
-        "tags": ["Challenges"],
+        "tags": [
+          "Challenges"
+        ],
         "security": [
-          { "BearerAuth": [] },
-          { "ApiKeyHeader": [] }
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
         ],
         "requestBody": {
           "required": true,
@@ -153,7 +603,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name"],
+                "required": [
+                  "name"
+                ],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -162,12 +614,20 @@
                   },
                   "format": {
                     "type": "string",
-                    "enum": ["head-to-head", "group", "solo"],
+                    "enum": [
+                      "head-to-head",
+                      "group",
+                      "solo"
+                    ],
                     "default": "head-to-head"
                   },
                   "timer_type": {
                     "type": "string",
-                    "enum": ["countdown", "chess-clock", "round-timer"],
+                    "enum": [
+                      "countdown",
+                      "chess-clock",
+                      "round-timer"
+                    ],
                     "nullable": true
                   },
                   "is_public": {
@@ -187,11 +647,16 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": { "type": "string", "example": "ok" },
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
                     "data": {
                       "type": "object",
                       "properties": {
-                        "challenge": { "$ref": "#/components/schemas/Challenge" }
+                        "challenge": {
+                          "$ref": "#/components/schemas/Challenge"
+                        }
                       }
                     }
                   }
@@ -199,8 +664,12 @@
               }
             }
           },
-          "400": { "description": "Invalid request body" },
-          "401": { "description": "Missing or invalid API key" }
+          "400": {
+            "description": "Invalid request body"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          }
         }
       }
     },
@@ -209,13 +678,18 @@
         "summary": "Get challenge details",
         "description": "Returns challenge details including leaderboard and game history. Only works for public challenges.",
         "operationId": "getChallenge",
-        "tags": ["Challenges"],
+        "tags": [
+          "Challenges"
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string", "format": "uuid" },
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
             "description": "Challenge ID"
           }
         ],
@@ -227,17 +701,31 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "status": { "type": "string", "example": "ok" },
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
                     "data": {
                       "type": "object",
                       "properties": {
-                        "challenge": { "$ref": "#/components/schemas/Challenge" },
+                        "challenge": {
+                          "$ref": "#/components/schemas/Challenge"
+                        },
                         "leaderboard": {
                           "type": "array",
-                          "items": { "$ref": "#/components/schemas/LeaderboardEntry" }
+                          "items": {
+                            "type": "object"
+                          }
                         },
-                        "games": { "type": "array", "items": { "type": "object" } },
-                        "draws": { "type": "integer" }
+                        "games": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "draws": {
+                          "type": "integer"
+                        }
                       }
                     }
                   }
@@ -245,8 +733,12 @@
               }
             }
           },
-          "403": { "description": "Challenge is private" },
-          "404": { "description": "Challenge not found" }
+          "403": {
+            "description": "Challenge is private"
+          },
+          "404": {
+            "description": "Challenge not found"
+          }
         }
       }
     },
@@ -255,17 +747,26 @@
         "summary": "Join a challenge",
         "description": "Join a group challenge using its join code. Requires API key authentication.",
         "operationId": "joinChallenge",
-        "tags": ["Challenges"],
+        "tags": [
+          "Challenges"
+        ],
         "security": [
-          { "BearerAuth": [] },
-          { "ApiKeyHeader": [] }
+          {
+            "BearerAuth": []
+          },
+          {
+            "ApiKeyHeader": []
+          }
         ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "string", "format": "uuid" },
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
             "description": "Challenge ID"
           }
         ],
@@ -275,7 +776,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["join_code"],
+                "required": [
+                  "join_code"
+                ],
                 "properties": {
                   "join_code": {
                     "type": "string",
@@ -288,12 +791,24 @@
           }
         },
         "responses": {
-          "201": { "description": "Joined challenge successfully" },
-          "200": { "description": "Already a participant" },
-          "400": { "description": "Challenge does not support join codes or invalid request" },
-          "401": { "description": "Missing or invalid API key" },
-          "403": { "description": "Invalid join code" },
-          "404": { "description": "Challenge not found" }
+          "200": {
+            "description": "Already a participant"
+          },
+          "201": {
+            "description": "Joined challenge successfully"
+          },
+          "400": {
+            "description": "Challenge does not support join codes or invalid request"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "description": "Invalid join code"
+          },
+          "404": {
+            "description": "Challenge not found"
+          }
         }
       }
     }
@@ -301,7 +816,7 @@
   "tags": [
     {
       "name": "Timers",
-      "description": "Timer type information"
+      "description": "Timer strategies, presets, URLs, and embeds"
     },
     {
       "name": "Challenges",
