@@ -63,6 +63,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Generated documentation (rebuilt from timer registry at build time)
+public/llms.txt
+public/llms-full.txt
+public/api/openapi.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
