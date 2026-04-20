@@ -19,7 +19,24 @@ async function api_request(path, options = {}) {
     headers["Authorization"] = `Bearer ${API_KEY}`;
   }
 
-  const res = await fetch(url, { ...options, headers: { ...headers, ...options.headers } });
+  let res;
+  try {
+    res = await fetch(url, { ...options, headers: { ...headers, ...options.headers } });
+  } catch (err) {
+    throw new Error(`Failed to connect to ${url}: ${err.message}. Is the server running? Set GOTIMER_API_URL to point to your local dev server (e.g. http://localhost:3000/api/v1).`);
+  }
+
+  const content_type = res.headers.get("content-type") || "";
+  if (!content_type.includes("application/json")) {
+    const body_preview = (await res.text()).slice(0, 200);
+    throw new Error(
+      `Expected JSON from ${url} but got ${content_type} (HTTP ${res.status}). ` +
+      `Response: ${body_preview}... ` +
+      `If using production, this endpoint may not be deployed yet. ` +
+      `Set GOTIMER_API_URL=http://localhost:3000/api/v1 to use your local dev server.`
+    );
+  }
+
   const json = await res.json();
 
   if (!res.ok || json.status === "error") {
