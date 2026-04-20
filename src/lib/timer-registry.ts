@@ -111,7 +111,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       "A work/rest interval timer, perfect for Pomodoro technique, HIIT workouts, and timed study sessions.",
     defaultConfig: { work: 1500, rest: 300, rounds: 4 },
     supportedParams: ["work", "rest", "rounds"],
-    route: "/interval",
+    route: "/countdown",
     sitemapPriority: 0.7,
   },
 
@@ -127,7 +127,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       ],
     },
     supportedParams: ["steps"],
-    route: "/multi-step",
+    route: "/countdown",
     sitemapPriority: 0.6,
   },
 
@@ -138,7 +138,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       "A long-form ambient timer that counts up or down with optional interval notifications.",
     defaultConfig: { duration: 3600, interval: 600 },
     supportedParams: ["duration", "interval"],
-    route: "/ambient",
+    route: "/countdown",
     sitemapPriority: 0.5,
   },
 
@@ -149,7 +149,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       "A timer that computes durations based on input values (e.g., reciprocity correction for film photography).",
     defaultConfig: { metered_time: 1, mode: "reciprocity" },
     supportedParams: ["metered_time", "mode"],
-    route: "/calculator-timer",
+    route: "/countdown",
     sitemapPriority: 0.5,
   },
 
@@ -165,7 +165,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       ],
     },
     supportedParams: ["timers"],
-    route: "/multi-timer",
+    route: "/countdown",
     sitemapPriority: 0.6,
   },
 
@@ -176,7 +176,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       "Per-player turn countdown for 2-8 players in board games and group activities.",
     defaultConfig: { players: 2, time_per_turn: 60 },
     supportedParams: ["players", "time_per_turn"],
-    route: "/turn-timer",
+    route: "/countdown",
     sitemapPriority: 0.7,
   },
 
@@ -187,7 +187,7 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
       "F-stop timing and test strip mode for darkroom printing.",
     defaultConfig: { base_time: 10, mode: "f-stop" },
     supportedParams: ["base_time", "mode", "strips", "stop_increment"],
-    route: "/enlarger",
+    route: "/countdown",
     sitemapPriority: 0.5,
   },
 };

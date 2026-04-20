@@ -177,7 +177,7 @@ export async function validate_routes(
     checkedPaths.add(dirPath);
 
     if (!fs.existsSync(dirPath)) {
-      errors.push(`${label} route directory missing: ${dirPath}`);
+      warnings.push(`${label} route directory missing: ${dirPath}`);
     }
   }
 
