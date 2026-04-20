@@ -228,8 +228,8 @@ export const PRESETS: Record<string, PresetDefinition> = {
     route: "/board-games/round-timer",
     sitemapPriority: 0.7,
   },
-  "turn-timer": {
-    id: "turn-timer",
+  "board-turn-timer": {
+    id: "board-turn-timer",
     name: "Turn Timer",
     description: "Per-player turn countdown for 2-8 players",
     strategy: "turn-timer",
