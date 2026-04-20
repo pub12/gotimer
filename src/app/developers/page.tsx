@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { STRATEGIES, PRESETS, REGISTRY_CATEGORY_SLUGS } from "@/lib/timer-registry";
 
 export function generateMetadata(): Metadata {
   return {
@@ -36,6 +37,20 @@ export default function DevelopersPage() {
         </p>
 
         <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">
+          <h2 className="text-xl font-semibold mb-2">Embed Widgets</h2>
+          <p className="text-gray-600 mb-3">
+            Add free, customizable timer widgets to any website with a simple iframe embed.
+            Countdown, chess clock, Pomodoro, and interval timers available.
+          </p>
+          <Link
+            href="/developers/embeds"
+            className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+          >
+            View Embed Documentation
+          </Link>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">
           <h2 className="text-xl font-semibold mb-2">Getting Started</h2>
           <p className="text-gray-600 mb-3">
             Some endpoints are public and require no authentication. To create challenges or join
@@ -67,7 +82,21 @@ export default function DevelopersPage() {
                 <span className="text-xs text-gray-500">public</span>
               </div>
               <p className="text-sm text-gray-600">
-                List all available timer types with default configurations.
+                List all {Object.keys(STRATEGIES).length} timer strategies with default configurations.
+              </p>
+            </div>
+
+            <div className="border-l-4 border-blue-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded font-mono">
+                  GET
+                </span>
+                <code className="text-sm font-mono">/api/v1/timer-presets</code>
+                <span className="text-xs text-gray-500">public</span>
+              </div>
+              <p className="text-sm text-gray-600">
+                List all {Object.keys(PRESETS).length} timer presets. Optional{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">category</code> filter ({REGISTRY_CATEGORY_SLUGS.join(", ")}).
               </p>
             </div>
 
@@ -126,6 +155,34 @@ export default function DevelopersPage() {
               <p className="text-sm text-gray-600">
                 Join a group challenge using its join code. Body:{" "}
                 <code className="text-xs bg-gray-100 px-1 rounded">join_code</code>
+              </p>
+            </div>
+
+            <div className="border-l-4 border-blue-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded font-mono">GET</span>
+                <code className="text-sm font-mono">/api/v1/timer-url</code>
+                <span className="text-xs text-gray-500">public</span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Generate a shareable timer URL. Accepts strategy IDs or preset IDs (e.g. pomodoro, hiit).
+                Params: <code className="text-xs bg-gray-100 px-1 rounded">type</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">duration</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">label</code>
+              </p>
+            </div>
+
+            <div className="border-l-4 border-blue-500 pl-4">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded font-mono">GET</span>
+                <code className="text-sm font-mono">/api/v1/timer-url/embed</code>
+                <span className="text-xs text-gray-500">public</span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Generate embed HTML code. Params: <code className="text-xs bg-gray-100 px-1 rounded">type</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">duration</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">theme</code>,{" "}
+                <code className="text-xs bg-gray-100 px-1 rounded">size</code>
               </p>
             </div>
           </div>
@@ -315,6 +372,16 @@ console.log(data.challenges);`}
 });
 const { data } = await res.json();
 console.log(data.challenge);`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mt-6 mb-2">List fitness presets (curl)</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+            {`curl "${BASE_URL}/timer-presets?category=fitness"`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">Create a Pomodoro timer URL (curl)</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+            {`curl "${BASE_URL}/timer-url?type=pomodoro"`}
           </pre>
 
           <h3 className="font-medium text-gray-800 mt-6 mb-2">List all blog posts (curl)</h3>
