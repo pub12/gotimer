@@ -7,6 +7,7 @@ import { Play, Pause, Minus, Plus, RotateCcw, Volume2, VolumeX, Maximize, Pencil
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { Button } from "@/components/ui/button";
 import TimerShell from "@/components/shared/timer-shell";
+import { decode_live_timer } from "@/lib/timer-url-encoder";
 
 
 const SUB_HEADLINES = [
@@ -37,19 +38,47 @@ function format_time(total_seconds: number): string {
 
 export default function Hero() {
   const router = useRouter();
+
+  // Capture URL params during render (before any child effects can replaceState the URL)
+  const initial_search = useRef<string | null>(null);
+  if (initial_search.current === null && typeof window !== "undefined") {
+    initial_search.current = window.location.search;
+  }
+
   const [duration, set_duration] = useState(300); // 5 minutes default
   const [remaining, set_remaining] = useState(300);
   const [running, set_running] = useState(false);
+  const [started_at, set_started_at] = useState<Date | null>(null);
   const [sub_index, set_sub_index] = useState(0);
   const [audio_enabled, set_audio_enabled] = useState(false);
   const audio_ctx_ref = useRef<AudioContext | null>(null);
   const prev_remaining = useRef(remaining);
 
-  // Reset when duration changes
+  // Detect shared timer URL on client only.
+  // Reads from initial_search ref captured before TimerShell's build_params effect
+  // can replace the URL and strip the shared params.
   useEffect(() => {
-    set_remaining(duration);
+    const params = new URLSearchParams(initial_search.current || "");
+    if (!params.get("started")) return;
+    const shared = decode_live_timer(params);
+    if (!shared || shared.is_expired) return;
+    const dur = Number(shared.config.duration) || 300;
+    const rem = Math.max(0, dur - shared.elapsed_seconds);
+    if (rem <= 0) return;
+    set_duration(dur);
+    set_remaining(rem);
+    set_running(true);
+    set_started_at(shared.started);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // When the user changes duration (via +/- buttons in TimerShell), reset the timer
+  const handle_duration_change = useCallback((new_dur: number) => {
+    set_duration(new_dur);
+    set_remaining(new_dur);
     set_running(false);
-  }, [duration]);
+    set_started_at(null);
+  }, []);
 
   // Rotate sub-headlines
   useEffect(() => {
@@ -122,6 +151,12 @@ export default function Hero() {
   const handle_start = () => {
     if (remaining === 0) {
       set_remaining(duration);
+      // Restarting from zero — new start time
+      set_started_at(new Date());
+    } else if (!running) {
+      // Starting or resuming — calculate the effective start time
+      // so elapsed = duration - remaining stays correct
+      set_started_at(new Date(Date.now() - (duration - remaining) * 1000));
     }
     set_running(!running);
   };
@@ -129,6 +164,7 @@ export default function Hero() {
   const handle_reset = () => {
     set_running(false);
     set_remaining(duration);
+    set_started_at(null);
   };
 
   const handle_quick_pick = (pick: (typeof QUICK_PICKS)[0]) => {
@@ -136,6 +172,7 @@ export default function Hero() {
       set_duration(pick.seconds);
       set_remaining(pick.seconds);
       set_running(false);
+      set_started_at(null);
     } else {
       router.push(pick.href);
     }
@@ -181,10 +218,11 @@ export default function Hero() {
             status_text={status_text}
             audio_enabled={audio_enabled}
             on_toggle_audio={toggle_audio}
-            duration={{ value: duration, onChange: set_duration }}
+            duration={{ value: duration, onChange: handle_duration_change }}
             defaults={{ duration: 300 }}
             remaining={remaining}
             running={running}
+            started_at={started_at}
             dark
             controls={({ is_fullscreen: fs }) => (
               <div className={`flex gap-3 ${fs ? "w-full max-w-lg" : "w-full max-w-sm"}`}>

@@ -8,10 +8,15 @@ export function encode_live_timer(params: {
   type: string;
   started: Date;
   config: Record<string, unknown>;
+  label?: string;
 }): string {
   const search = new URLSearchParams();
   search.set("type", params.type);
   search.set("started", params.started.toISOString());
+
+  if (params.label) {
+    search.set("label", params.label);
+  }
 
   // Encode config as individual params for readability
   for (const [key, value] of Object.entries(params.config)) {
@@ -31,6 +36,7 @@ export function decode_live_timer(
   config: Record<string, unknown>;
   elapsed_seconds: number;
   is_expired: boolean;
+  label: string | null;
 } | null {
   const type = searchParams.get("type");
   const started_str = searchParams.get("started");
@@ -46,7 +52,7 @@ export function decode_live_timer(
 
   // Build config from remaining params
   const config: Record<string, unknown> = {};
-  const reserved_keys = new Set(["type", "started"]);
+  const reserved_keys = new Set(["type", "started", "label"]);
 
   searchParams.forEach((value, key) => {
     if (!reserved_keys.has(key)) {
@@ -70,11 +76,20 @@ export function decode_live_timer(
   // Consider expired if elapsed > 24 hours (86400 seconds)
   const is_expired = elapsed_seconds > 86400;
 
+  const label = searchParams.get("label");
+
   return {
     type,
     started,
     config,
     elapsed_seconds: Math.max(0, elapsed_seconds),
     is_expired,
+    label,
   };
+}
+
+/** Compute remaining seconds for a timer that started at `started` with `duration_seconds` total */
+export function compute_remaining(duration_seconds: number, started: Date): number {
+  const elapsed = Math.floor((Date.now() - started.getTime()) / 1000);
+  return Math.max(0, duration_seconds - elapsed);
 }

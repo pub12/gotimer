@@ -1,7 +1,9 @@
-import path from "path";
-
 export async function register() {
-  if (process.env.NODE_ENV === "development") {
+  if (
+    process.env.NODE_ENV === "development" &&
+    typeof globalThis.EdgeRuntime === "undefined"
+  ) {
+    const path = await import("path");
     const { STRATEGY_REGISTRY } = await import("./lib/timer-strategies");
     const { run_dev_validation } = await import("./lib/timer-registry-validator");
 

@@ -66,47 +66,15 @@ const jsonLd = {
   },
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "How long should a chess clock round be?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Standard chess uses 5-10 minutes per player for blitz, 15-30 minutes for rapid, and 60+ minutes for classical. For board games like Scrabble or Go, 10-20 minutes per player is common. GoTimer lets you set any duration from 10 seconds to 60 minutes per player.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I use a chess clock for Scrabble?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes! Chess clocks are widely used in competitive Scrabble. Tournament Scrabble typically uses 25 minutes per player. GoTimer's chess clock works perfectly - set the time, tap to switch after each word placement, and the clock tracks remaining time for both players.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What board games use a chess clock?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Beyond chess, many two-player games benefit from a chess clock: Scrabble, Go, Blokus, Hive, Patchwork, 7 Wonders Duel, and Star Realms. Any turn-based game where you want to limit thinking time can use a chess clock to keep the game competitive and on schedule.",
-      },
-    },
-  ],
-};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // All JSON-LD data is hardcoded at module level with no user input - safe to serialize
   const jsonLdString = JSON.stringify(jsonLd);
   const breadcrumbJsonLdString = JSON.stringify(breadcrumbJsonLd);
-  const faqJsonLdString = JSON.stringify(faqJsonLd);
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: breadcrumbJsonLdString }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqJsonLdString }} />
       <div className="w-full max-w-2xl mx-auto pt-12 md:pt-20 px-4">
         <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Chess Clock Setup" }]} />
       </div>

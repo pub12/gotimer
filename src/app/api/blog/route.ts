@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   if (category) {
     rows = db
       .prepare(
-        `SELECT bp.*, ci.id AS char_id, ci.file_path AS char_file_path, ci.character_name AS char_name
+        `SELECT bp.*, ci.id AS char_id, COALESCE(bp.featured_image, ci.file_path) AS char_file_path, ci.character_name AS char_name
          FROM blog_posts bp
          JOIN blog_categories bc ON bp.category_id = bc.id
          LEFT JOIN character_images ci ON bp.character_id = ci.id
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   } else {
     rows = db
       .prepare(
-        `SELECT bp.*, ci.id AS char_id, ci.file_path AS char_file_path, ci.character_name AS char_name
+        `SELECT bp.*, ci.id AS char_id, COALESCE(bp.featured_image, ci.file_path) AS char_file_path, ci.character_name AS char_name
          FROM blog_posts bp
          LEFT JOIN character_images ci ON bp.character_id = ci.id
          WHERE bp.status = 'published'

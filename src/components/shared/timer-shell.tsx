@@ -4,7 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 import {
-  Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Link2, Check, Palette, Zap, Share2,
+  Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Palette, Zap, Share2,
 } from "lucide-react";
 import { SaveTimerButton } from "@/components/studio/save-timer-button";
 import { ShareDialog } from "@/components/timer/share-dialog";
@@ -145,6 +145,8 @@ export interface TimerShellProps {
   remaining?: number;
   /** Whether the timer is actively running */
   running?: boolean;
+  /** UTC start time of the running timer — passed to ShareDialog for live sharing */
+  started_at?: Date | null;
 }
 
 export default function TimerShell({
@@ -161,18 +163,18 @@ export default function TimerShell({
   dark,
   remaining,
   running,
+  started_at,
 }: TimerShellProps) {
   const search_params = useSearchParams();
   const pathname = usePathname();
 
-  const initial_title = search_params.get("title") || "";
+  const initial_title = search_params.get("title") || search_params.get("label") || "";
   const initial_scale = Math.max(50, Math.min(200, Number(search_params.get("size")) || 100));
   const initial_theme = search_params.get("theme") || "";
   const initial_flash = Math.max(0, Math.min(60, Number(search_params.get("flash")) || 5));
   const [user_title, set_user_title] = useState(initial_title);
   const [editing_title, set_editing_title] = useState(false);
   const [is_fullscreen, set_is_fullscreen] = useState(false);
-  const [link_copied, set_link_copied] = useState(false);
   const [fs_scale, set_fs_scale] = useState(initial_scale);
   const [theme_id, set_theme_id] = useState(initial_theme);
   const [show_color_picker, set_show_color_picker] = useState(false);
@@ -204,23 +206,11 @@ export default function TimerShell({
     return params;
   }, [user_title, duration, interval, fs_scale, theme_id, flash_at, extra_params, defaults]);
 
-  const build_share_url = useCallback(() => {
-    const qs = build_params().toString();
-    return `${window.location.origin}${pathname}${qs ? `?${qs}` : ""}`;
-  }, [build_params, pathname]);
-
   // Update URL silently
   useEffect(() => {
     const qs = build_params().toString();
     window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`);
   }, [build_params, pathname]);
-
-  const copy_share_link = useCallback(() => {
-    navigator.clipboard.writeText(build_share_url()).then(() => {
-      set_link_copied(true);
-      setTimeout(() => set_link_copied(false), 2000);
-    }).catch(() => {});
-  }, [build_share_url]);
 
   // Fullscreen
   const toggle_fullscreen = useCallback(() => {
@@ -243,19 +233,6 @@ export default function TimerShell({
     document.addEventListener("keydown", on_keydown);
     return () => document.removeEventListener("keydown", on_keydown);
   }, [is_fullscreen]);
-
-  // Check if any settings are customized
-  const has_customization = !!(
-    user_title ||
-    theme_id ||
-    fs_scale !== 100 ||
-    (duration && defaults?.duration && duration.value !== defaults.duration) ||
-    (interval && defaults && (
-      interval.work !== (defaults.work ?? 30) ||
-      interval.rest !== (defaults.rest ?? 10) ||
-      interval.rounds !== (defaults.rounds ?? 8)
-    ))
-  );
 
   const btn_bg = dark
     ? "bg-white/10 hover:bg-white/20"
@@ -379,6 +356,8 @@ export default function TimerShell({
             ...(interval ? { work: interval.work, rest: interval.rest, rounds: interval.rounds } : {}),
           }}
           label={user_title || timer_label}
+          started_at={started_at}
+          running={running}
         />
       </div>
     );
@@ -496,15 +475,11 @@ export default function TimerShell({
         <div className="flex items-center gap-4">
           {/* Share button */}
           <button
-            onClick={copy_share_link}
-            className={`inline-flex items-center gap-2 text-xs font-medium rounded-full px-4 py-1.5 transition-all duration-200 ${
-              link_copied
-                ? "bg-emerald-100 text-emerald-700"
-                : "bg-surface-container-high text-muted-foreground hover:text-foreground hover:bg-surface-container-highest"
-            }`}
+            onClick={() => set_show_share(true)}
+            className="inline-flex items-center gap-2 text-xs font-medium rounded-full px-4 py-1.5 transition-all duration-200 bg-surface-container-high text-muted-foreground hover:text-foreground hover:bg-surface-container-highest"
           >
-            {link_copied ? <Check className="w-3.5 h-3.5" /> : <Link2 className="w-3.5 h-3.5" />}
-            {link_copied ? "Copied!" : "Share"}
+            <Share2 className="w-3.5 h-3.5" />
+            Share
           </button>
 
           {/* Flash config */}
@@ -588,6 +563,19 @@ export default function TimerShell({
           </div>
         </div>
       </div>
+
+      {/* Share dialog (also available in fullscreen) */}
+      <ShareDialog
+        open={show_share}
+        on_close={() => set_show_share(false)}
+        timer_path={pathname}
+        timer_type={timer_label.toLowerCase().replace(/\s+/g, "-")}
+        config={{
+          ...(duration ? { duration: duration.value } : {}),
+          ...(interval ? { work: interval.work, rest: interval.rest, rounds: interval.rounds } : {}),
+        }}
+        label={user_title || timer_label}
+      />
     </div>
   );
 }

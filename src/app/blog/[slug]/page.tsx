@@ -78,7 +78,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const post = db
     .prepare(
       `SELECT bp.*, bc.name as category_name, bc.colour as category_colour,
-              ci.file_path as character_image, ci.character_name as character_name
+              COALESCE(bp.featured_image, ci.file_path) as character_image, ci.character_name as character_name
        FROM blog_posts bp
        LEFT JOIN blog_categories bc ON bp.category_id = bc.id
        LEFT JOIN character_images ci ON bp.character_id = ci.id
@@ -111,23 +111,6 @@ export default async function BlogPostPage({ params }: PageProps) {
     : null;
 
   const read_time = Math.max(3, Math.ceil((post.content?.length ?? 0) / 1000));
-
-  // nosec: JSON-LD built from structured DB fields, not raw user HTML
-  const faq_json_ld =
-    faq_items.length > 0
-      ? JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faq_items.map((item) => ({
-            "@type": "Question",
-            name: item.question,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: item.answer,
-            },
-          })),
-        })
-      : null;
 
   // nosec: JSON-LD built from structured DB fields (title, dates, slug), not user HTML
   const article_json_ld = JSON.stringify({
@@ -164,12 +147,6 @@ export default async function BlogPostPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: article_json_ld }}
       />
-      {faq_json_ld && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: faq_json_ld }}
-        />
-      )}
       <Navbar />
       <main className="min-h-screen bg-surface pt-20">
         {/* Hero header */}

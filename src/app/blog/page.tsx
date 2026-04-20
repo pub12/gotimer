@@ -58,7 +58,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
       .prepare(
         `SELECT bp.id, bp.slug, bp.title, bp.content, bp.publish_date,
                 bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour,
-                ci.file_path as character_image, ci.character_name as character_name
+                COALESCE(bp.featured_image, ci.file_path) as character_image, ci.character_name as character_name
          FROM blog_posts bp
          LEFT JOIN blog_categories bc ON bp.category_id = bc.id
          LEFT JOIN character_images ci ON bp.character_id = ci.id
@@ -81,7 +81,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
       .prepare(
         `SELECT bp.id, bp.slug, bp.title, bp.content, bp.publish_date,
                 bp.category_id, bc.name as category_name, bc.slug as category_slug, bc.colour as category_colour,
-                ci.file_path as character_image, ci.character_name as character_name
+                COALESCE(bp.featured_image, ci.file_path) as character_image, ci.character_name as character_name
          FROM blog_posts bp
          LEFT JOIN blog_categories bc ON bp.category_id = bc.id
          LEFT JOIN character_images ci ON bp.character_id = ci.id

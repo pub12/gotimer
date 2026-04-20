@@ -11,20 +11,35 @@ interface ShareDialogProps {
   timer_path: string;
   timer_type: string;
   config: Record<string, unknown>;
+  label?: string;
+  /** UTC start time of the running timer — when set, the shared link auto-starts */
+  started_at?: Date | null;
+  /** Whether the timer is currently running */
+  running?: boolean;
 }
 
-export function ShareDialog({ open, on_close, timer_path, timer_type, config }: ShareDialogProps) {
+export function ShareDialog({ open, on_close, timer_path, timer_type, config, label, started_at, running }: ShareDialogProps) {
   const [copied, set_copied] = useState(false);
 
   const share_url = useMemo(() => {
     if (typeof window === "undefined") return "";
+    const is_live = !!(running && started_at);
     const encoded = encode_live_timer({
       type: timer_type,
-      started: new Date(),
+      started: is_live ? started_at : new Date(),
       config,
+      label,
     });
-    return `${window.location.origin}${timer_path}?${encoded}`;
-  }, [timer_path, timer_type, config]);
+    // When not running, omit the started param — recipient gets a fresh timer
+    const url = `${window.location.origin}${timer_path}?${encoded}`;
+    if (!is_live) {
+      const u = new URL(url);
+      u.searchParams.delete("started");
+      u.searchParams.delete("type");
+      return u.toString();
+    }
+    return url;
+  }, [timer_path, timer_type, config, label, started_at, running]);
 
   const copy_link = useCallback(async () => {
     try {

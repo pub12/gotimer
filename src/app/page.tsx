@@ -13,69 +13,6 @@ import FaqAccordion from "../components/shared/faq-accordion";
 import { Button } from "../components/ui/button";
 import { Timer, Play, Palette, BookOpen, ArrowRight } from "lucide-react";
 
-// Static FAQ structured data for SEO - no user input, safe to serialize
-const faqJsonLd = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "Is GoTimer free to use?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, GoTimer is completely free. All 28+ timers — including Countdown, Chess Clock, Round Timer, HIIT, Pomodoro, and more — work without an account. Creating challenges and tracking scores requires a free account.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is a chess clock for board games?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A chess clock is a two-player timer where each player has their own countdown. After making a move, you tap the clock to switch to your opponent's timer. This ensures both players have equal time and keeps the game moving. While traditionally used for chess, chess clocks work great for Scrabble, Go, and any turn-based game.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What timers do you have for workouts?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "GoTimer has a full suite of fitness timers: HIIT Timer for high-intensity intervals, Tabata Timer for 20/10 protocols, EMOM Timer for every-minute-on-the-minute workouts, a Stretching Timer for hold-based routines, and a Rest Timer for tracking recovery between sets.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I use GoTimer for cooking?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes! GoTimer includes a Cooking Timer with common presets (5, 10, 15, 20, 30, 45, and 60 minutes), an Egg Timer for perfect soft, medium, or hard-boiled eggs, a Bread Proofing Timer for long rises, and a Multi-Timer that lets you run several independent timers at once.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Do you have photography and darkroom timers?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes! GoTimer offers specialized photography timers including a Film Development Timer for B&W, C-41, and E-6 processes with push/pull and temperature compensation, a Long Exposure Calculator for reciprocity failure correction, a Stand Development Timer, an Enlarger Timer with F-stop timing, and a Cyanotype UV exposure timer.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Does GoTimer work on mobile phones?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, GoTimer is designed to be mobile-friendly. It works in any modern web browser on phones, tablets, and desktop computers. No app download is needed — just visit gotimer.org in your browser.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I use GoTimer for ADHD focus sessions?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes! GoTimer's Pomodoro Timer and Study Timer are great for ADHD focus sessions. Set a 25-minute focus block, and the audio alerts help you stay aware of time without constantly checking the clock. The full-screen display and simple interface minimize distractions. Use the round timer to track multiple focus blocks throughout the day.",
-      },
-    },
-  ],
-});
 
 const FAQ_ITEMS = [
   {
@@ -140,11 +77,6 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center bg-surface">
-      {/* Static JSON-LD structured data for SEO — no user input, safe to inject */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: faqJsonLd }}
-      />
       <Header />
       <Navbar />
 
@@ -221,7 +153,7 @@ export default function HomePage() {
       {/* 7. FAQ Section */}
       <section className="w-full py-12 md:py-16 px-4 bg-surface">
         <div className="max-w-3xl mx-auto">
-          <FaqAccordion items={FAQ_ITEMS} title="Frequently Asked Questions" skipJsonLd />
+          <FaqAccordion items={FAQ_ITEMS} title="Frequently Asked Questions" />
         </div>
       </section>
 

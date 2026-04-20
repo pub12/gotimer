@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
     meta_title,
     meta_description,
     character_id,
+    featured_image,
     faq_json,
     status: requested_status,
   } = body;
@@ -99,7 +100,7 @@ export async function POST(request: NextRequest) {
     db.prepare(`
       UPDATE blog_posts
       SET title = ?, content = ?, category_id = ?, meta_title = ?, meta_description = ?,
-          character_id = ?, faq_json = ?, status = ?, publish_date = COALESCE(?, publish_date), updated_at = ?
+          character_id = ?, featured_image = ?, faq_json = ?, status = ?, publish_date = COALESCE(?, publish_date), updated_at = ?
       WHERE id = ?
     `).run(
       title,
@@ -108,6 +109,7 @@ export async function POST(request: NextRequest) {
       meta_title ?? "",
       meta_description ?? "",
       character_id ?? null,
+      featured_image ?? null,
       faq_value,
       status,
       publish_date,
@@ -118,8 +120,8 @@ export async function POST(request: NextRequest) {
     // Create new post
     post_id = crypto.randomUUID();
     db.prepare(`
-      INSERT INTO blog_posts (id, slug, title, content, category_id, meta_title, meta_description, character_id, faq_json, status, publish_date, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO blog_posts (id, slug, title, content, category_id, meta_title, meta_description, character_id, featured_image, faq_json, status, publish_date, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       post_id,
       slug,
@@ -129,6 +131,7 @@ export async function POST(request: NextRequest) {
       meta_title ?? "",
       meta_description ?? "",
       character_id ?? null,
+      featured_image ?? null,
       faq_value,
       status,
       publish_date,
@@ -177,7 +180,7 @@ export async function PATCH(request: NextRequest) {
   // Build dynamic update from only the fields present in the request body
   const allowed_fields = [
     "title", "content", "category_id", "meta_title", "meta_description",
-    "character_id", "faq_json", "status",
+    "character_id", "featured_image", "faq_json", "status",
   ];
 
   const updates: Record<string, unknown> = {};

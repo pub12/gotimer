@@ -6,6 +6,7 @@ import { TimerPage } from "@/components/timer/timer-page";
 import { TimerSeoContent } from "@/components/timer/timer-seo-content";
 import { countdownStrategy } from "@/lib/timer-strategies/countdown";
 import { DurationInput } from "@/components/shared/timer-shell";
+import { decode_live_timer } from "@/lib/timer-url-encoder";
 
 const COUNTDOWN_FAQ = [
   {
@@ -46,8 +47,18 @@ const RELATED_TIMERS = [
 
 function CountdownPageContent() {
   const search_params = useSearchParams();
-  const initial_time =
-    Number(search_params.get("time")) || Number(search_params.get("duration")) || 60;
+
+  // Detect shared timer URL (has "started" param)
+  const shared = search_params.get("started")
+    ? decode_live_timer(new URLSearchParams(search_params.toString()))
+    : null;
+
+  const initial_time = shared
+    ? Math.max(0, (Number(shared.config.duration) || 60) - shared.elapsed_seconds)
+    : Number(search_params.get("time")) || Number(search_params.get("duration")) || 60;
+
+  const shared_label = shared?.label || undefined;
+
   const [user_duration, set_user_duration] = useState(initial_time);
 
   return (
@@ -56,6 +67,7 @@ function CountdownPageContent() {
       strategy={countdownStrategy}
       config={{ duration: user_duration }}
       label="Countdown Timer"
+      initial_title={shared_label}
       description="Free online countdown timer with audio alerts. Great for board game turns, trivia rounds, and focus sessions."
       below={
         <DurationInput value={user_duration} onChange={set_user_duration} />

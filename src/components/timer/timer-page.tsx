@@ -27,6 +27,8 @@ interface TimerPageProps {
   on_configure?: () => void;
   /** SEO content rendered below timer controls */
   seo_content?: React.ReactNode;
+  /** Initial title to pre-populate the editable title field */
+  initial_title?: string;
 }
 
 function TimerPageInner({
@@ -40,6 +42,7 @@ function TimerPageInner({
   dark,
   on_configure,
   seo_content,
+  initial_title,
 }: Omit<TimerPageProps, "strategy" | "config">) {
   const { machine } = useTimer();
   const { display, status } = machine;
@@ -57,6 +60,7 @@ function TimerPageInner({
             remaining={display.primary_time}
             running={status === "running"}
             on_configure={on_configure}
+            initial_title={initial_title}
             controls={
               <TimerControls
                 show_skip={show_skip}

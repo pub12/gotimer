@@ -47,6 +47,8 @@ interface TimerShellV2Props {
   remaining?: number;
   /** Whether the timer is actively running */
   running?: boolean;
+  /** UTC start time of the running timer — passed to ShareDialog for live sharing */
+  started_at?: Date | null;
   /** Callback to return to the configuration/setup screen. When provided, a settings icon is shown. */
   on_configure?: () => void;
   /** Force the fullscreen layout without actually being in fullscreen mode. Used for preview panels. */
@@ -65,6 +67,7 @@ export function TimerShellV2({
   dark,
   remaining,
   running,
+  started_at,
   on_configure,
   force_fullscreen,
   initial_title,
@@ -375,6 +378,8 @@ export function TimerShellV2({
         timer_type={timer_type || label.toLowerCase().replace(/\s+/g, "-")}
         config={timer_config || {}}
         label={user_title || label}
+        started_at={started_at}
+        running={running}
       />
     </div>
   );
