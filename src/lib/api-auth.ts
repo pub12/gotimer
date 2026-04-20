@@ -28,19 +28,17 @@ export async function validateApiKey(
 
   try {
     const db = get_db();
+    // Check admin keys (settings table)
     const row = db
       .prepare(`SELECT value FROM settings WHERE key = 'api_keys'`)
       .get() as { value: string } | undefined;
 
-    if (!row) {
-      return { valid: false };
-    }
-
-    const api_keys: ApiKeyRecord[] = JSON.parse(row.value);
-
-    const matched = api_keys.find((k) => k.key === provided_key);
-    if (matched) {
-      return { valid: true, key_name: matched.name };
+    if (row) {
+      const api_keys: ApiKeyRecord[] = JSON.parse(row.value);
+      const matched = api_keys.find((k) => k.key === provided_key);
+      if (matched) {
+        return { valid: true, key_name: matched.name };
+      }
     }
 
     // Check user keys (api_keys table)
