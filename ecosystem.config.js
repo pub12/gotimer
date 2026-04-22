@@ -28,6 +28,7 @@ module.exports = {
       NODE_ENV: "production",
       ...dotenv,
       PORT: dotenv.PORT || 3000,
+      NEXTAUTH_URL: "https://gotimer.org",
     }
   }],
 
