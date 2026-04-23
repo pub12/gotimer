@@ -4,42 +4,16 @@ import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { TimerEmbed } from "@/components/timer/timer-embed";
 import { roundTimerStrategy } from "@/lib/timer-strategies/round-timer";
+import { parse_embed_params, apply_started_offset } from "@/lib/embed/params";
 
 function RoundTimerEmbedContent() {
-  const params = useSearchParams();
-  const controls = (params.get("controls") || "full") as "full" | "minimal" | "none";
-  const branding = (params.get("branding") || "full") as "full" | "minimal";
-  const label = params.get("label") || "Round Timer";
-  const started_str = params.get("started");
+  const search_params = useSearchParams();
+  const had_label = search_params.has("label");
+  const params = parse_embed_params(search_params, "round-timer");
+  if (!had_label) params.label = "Round Timer";
+  const config = apply_started_offset(params.config, params.started);
 
-  const config: Record<string, unknown> = {};
-  const round_duration = params.get("round_duration");
-  const rest_duration = params.get("rest_duration");
-  const rounds = params.get("rounds");
-
-  if (round_duration) config.round_duration = Number(round_duration);
-  if (rest_duration) config.rest_duration = Number(rest_duration);
-  if (rounds) config.rounds = Number(rounds);
-
-  if (started_str) {
-    const started = new Date(started_str);
-    if (!isNaN(started.getTime())) {
-      const elapsed = Math.floor((Date.now() - started.getTime()) / 1000);
-      if (typeof config.round_duration === "number") {
-        config.round_duration = Math.max(0, config.round_duration - elapsed);
-      }
-    }
-  }
-
-  return (
-    <TimerEmbed
-      strategy={roundTimerStrategy}
-      config={config}
-      label={label}
-      controls={controls}
-      branding={branding}
-    />
-  );
+  return <TimerEmbed strategy={roundTimerStrategy} config={config} params={params} />;
 }
 
 export default function RoundTimerEmbedPage() {
