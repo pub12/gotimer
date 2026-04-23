@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/partners`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.4 },
     { url: `${base}/privacy-policy`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/terms-of-service`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/docs/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
   ];
 
   // Strategy routes (timer pages + setup pages), deduplicated
