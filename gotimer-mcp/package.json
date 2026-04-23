@@ -1,6 +1,6 @@
 {
   "name": "gotimer-mcp",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "MCP server for GoTimer — create, share, and embed countdown timers, Pomodoro sessions, chess clocks, and more via AI assistants",
   "main": "index.js",
   "type": "module",

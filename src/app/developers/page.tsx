@@ -10,8 +10,8 @@ export function generateMetadata(): Metadata {
     description:
       "Integrate GoTimer into your apps and AI assistants with the public REST API. Manage timer challenges, leaderboards, and more programmatically.",
     robots: {
-      index: false,
-      follow: false,
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: "GoTimer Developer API",
@@ -48,6 +48,139 @@ export default function DevelopersPage() {
           >
             View Embed Documentation
           </Link>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">
+          <h2 className="text-xl font-semibold mb-2">MCP Server for AI Assistants</h2>
+          <p className="text-gray-600 mb-3">
+            Connect GoTimer to any AI assistant that supports the{" "}
+            <a href="https://modelcontextprotocol.io" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              Model Context Protocol (MCP)
+            </a>. Create timers, browse presets, manage challenges, and generate embed code — all through natural language.
+          </p>
+          <p className="text-gray-600 mb-3">
+            Install via npm:{" "}
+            <code className="bg-gray-100 px-2 py-0.5 rounded text-sm font-mono">npx -y gotimer-mcp</code>
+          </p>
+
+          <h3 className="font-medium text-gray-800 mt-4 mb-2">Claude Desktop</h3>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+{`{
+  "mcpServers": {
+    "gotimer": {
+      "command": "npx",
+      "args": ["-y", "gotimer-mcp"]
+    }
+  }
+}`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">Cursor</h3>
+          <p className="text-gray-600 mb-2 text-sm">
+            Open <strong>Settings &gt; MCP Servers &gt; Add Server</strong> and enter:
+          </p>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+{`{
+  "gotimer": {
+    "command": "npx",
+    "args": ["-y", "gotimer-mcp"]
+  }
+}`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">Windsurf</h3>
+          <p className="text-gray-600 mb-2 text-sm">
+            Add to <code className="bg-gray-100 px-1 rounded text-xs font-mono">~/.codeium/windsurf/mcp_config.json</code>:
+          </p>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+{`{
+  "mcpServers": {
+    "gotimer": {
+      "command": "npx",
+      "args": ["-y", "gotimer-mcp"]
+    }
+  }
+}`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-2">VS Code (Copilot)</h3>
+          <p className="text-gray-600 mb-2 text-sm">
+            Add to your workspace <code className="bg-gray-100 px-1 rounded text-xs font-mono">.vscode/mcp.json</code>:
+          </p>
+          <pre className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm overflow-x-auto font-mono mb-4">
+{`{
+  "servers": {
+    "gotimer": {
+      "command": "npx",
+      "args": ["-y", "gotimer-mcp"]
+    }
+  }
+}`}
+          </pre>
+
+          <h3 className="font-medium text-gray-800 mb-3">Available MCP Tools</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-2 pr-3 font-medium text-gray-700">Tool</th>
+                  <th className="text-left py-2 pr-3 font-medium text-gray-700">Description</th>
+                  <th className="text-left py-2 font-medium text-gray-700">Auth</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600">
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">create_timer</td><td className="py-1.5 pr-3">Create a live, shareable countdown timer</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">create_pomodoro</td><td className="py-1.5 pr-3">Create a Pomodoro focus session</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">get_timer_url</td><td className="py-1.5 pr-3">Get a URL to a pre-configured timer</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">get_embed_code</td><td className="py-1.5 pr-3">Generate HTML embed code</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">list_timer_types</td><td className="py-1.5 pr-3">List all timer strategies</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">list_timer_presets</td><td className="py-1.5 pr-3">List presets by category</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">list_public_challenges</td><td className="py-1.5 pr-3">List public timer challenges</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">get_leaderboard</td><td className="py-1.5 pr-3">Get challenge leaderboard</td><td className="py-1.5">No</td></tr>
+                <tr className="border-b border-gray-100"><td className="py-1.5 pr-3 font-mono text-xs">create_challenge</td><td className="py-1.5 pr-3">Create a new challenge</td><td className="py-1.5">API key</td></tr>
+                <tr><td className="py-1.5 pr-3 font-mono text-xs">join_challenge</td><td className="py-1.5 pr-3">Join a challenge with a code</td><td className="py-1.5">API key</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-gray-500 text-sm mt-4">
+            npm: <a href="https://www.npmjs.com/package/gotimer-mcp" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">gotimer-mcp</a>
+            {" | "}
+            <a href="https://github.com/punkpeye/awesome-mcp-servers" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Awesome MCP Servers</a>
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">
+          <h2 className="text-xl font-semibold mb-2">AI Discoverability</h2>
+          <p className="text-gray-600 mb-3">
+            GoTimer provides machine-readable documentation for AI crawlers and LLMs following the{" "}
+            <a href="https://llmstxt.org" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              llms.txt standard
+            </a>.
+          </p>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-2">
+              <code className="bg-gray-100 px-2 py-0.5 rounded font-mono text-xs">llms.txt</code>
+              <a href="/llms.txt" className="text-blue-600 hover:underline" target="_blank" rel="noopener">
+                gotimer.org/llms.txt
+              </a>
+              <span className="text-gray-500">— concise overview</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <code className="bg-gray-100 px-2 py-0.5 rounded font-mono text-xs">llms-full.txt</code>
+              <a href="/llms-full.txt" className="text-blue-600 hover:underline" target="_blank" rel="noopener">
+                gotimer.org/llms-full.txt
+              </a>
+              <span className="text-gray-500">— full documentation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <code className="bg-gray-100 px-2 py-0.5 rounded font-mono text-xs">OpenAPI</code>
+              <a href="/api/openapi.json" className="text-blue-600 hover:underline" target="_blank" rel="noopener">
+                gotimer.org/api/openapi.json
+              </a>
+              <span className="text-gray-500">— OpenAPI 3.0 spec</span>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white rounded-xl p-5 shadow-sm border mb-6">

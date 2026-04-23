@@ -1,6 +1,8 @@
 #!/usr/bin/env node
+import { createServer } from "node:http";
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
@@ -201,186 +203,262 @@ const TOOLS = [
   },
 ];
 
-const server = new Server(
-  { name: "gotimer-mcp", version: "2.0.0" },
-  { capabilities: { tools: {} } }
-);
+function createMCPServer() {
+  const server = new Server(
+    { name: "gotimer-mcp", version: "2.1.0" },
+    { capabilities: { tools: {} } }
+  );
 
-server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return { tools: TOOLS };
-});
+  server.setRequestHandler(ListToolsRequestSchema, async () => {
+    return { tools: TOOLS };
+  });
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name, arguments: args } = request.params;
 
-  try {
-    let result;
+    try {
+      let result;
 
-    switch (name) {
-      case "list_timer_types": {
-        const data = await api_request("/timers");
-        result = data.timer_types || data;
-        break;
+      switch (name) {
+        case "list_timer_types": {
+          const data = await api_request("/timers");
+          result = data.timer_types || data;
+          break;
+        }
+
+        case "list_timer_presets": {
+          const category = args.category;
+          const params = category ? `?category=${encodeURIComponent(category)}` : "";
+          const data = await api_request(`/timer-presets${params}`);
+          result = data;
+          break;
+        }
+
+        case "list_public_challenges": {
+          const data = await api_request("/challenges");
+          result = data.challenges || data;
+          break;
+        }
+
+        case "get_leaderboard": {
+          const { challenge_id } = args;
+          if (!challenge_id) throw new Error("challenge_id is required");
+          const data = await api_request(`/challenges/${challenge_id}`);
+          result = {
+            challenge: data.challenge,
+            leaderboard: data.leaderboard,
+            draws: data.draws,
+            total_games: (data.games || []).length,
+          };
+          break;
+        }
+
+        case "create_challenge": {
+          const { name: challenge_name, format, timer_type, is_public } = args;
+          if (!challenge_name) throw new Error("name is required");
+
+          const body = { name: challenge_name };
+          if (format) body.format = format;
+          if (timer_type) body.timer_type = timer_type;
+          if (is_public !== undefined) body.is_public = is_public;
+
+          const data = await api_request("/challenges", {
+            method: "POST",
+            body: JSON.stringify(body),
+          });
+          result = data.challenge || data;
+          break;
+        }
+
+        case "join_challenge": {
+          const { challenge_id, join_code } = args;
+          if (!challenge_id) throw new Error("challenge_id is required");
+          if (!join_code) throw new Error("join_code is required");
+
+          const data = await api_request(`/challenges/${challenge_id}/join`, {
+            method: "POST",
+            body: JSON.stringify({ join_code }),
+          });
+          result = data;
+          break;
+        }
+
+        case "create_timer": {
+          const { type: timer_type, duration, label, work, rest, rounds } = args;
+          if (!timer_type) throw new Error("type is required");
+          const params = new URLSearchParams({ type: timer_type });
+          if (duration) params.set("duration", String(duration));
+          if (label) params.set("label", label);
+          if (work) params.set("work", String(work));
+          if (rest) params.set("rest", String(rest));
+          if (rounds) params.set("rounds", String(rounds));
+          const data = await api_request(`/timer-url?${params.toString()}`);
+          result = {
+            url: data.url,
+            embed_url: data.embed_url,
+            expires_at: data.expires_at,
+            timer_type: data.timer_type,
+            message: `Timer created! Share this link: ${data.url}`,
+          };
+          break;
+        }
+
+        case "create_pomodoro": {
+          const work_secs = (args.work_minutes || 25) * 60;
+          const break_secs = (args.break_minutes || 5) * 60;
+          const pomo_rounds = args.rounds || 4;
+          const params = new URLSearchParams({
+            type: "interval",
+            work: String(work_secs),
+            rest: String(break_secs),
+            rounds: String(pomo_rounds),
+          });
+          if (args.label) params.set("label", args.label);
+          const data = await api_request(`/timer-url?${params.toString()}`);
+          result = {
+            url: data.url,
+            embed_url: data.embed_url,
+            expires_at: data.expires_at,
+            message: `Pomodoro timer created! ${args.work_minutes || 25}m work / ${args.break_minutes || 5}m break × ${pomo_rounds} rounds. Share: ${data.url}`,
+          };
+          break;
+        }
+
+        case "get_timer_url": {
+          const { type: timer_type, duration, label } = args;
+          if (!timer_type) throw new Error("type is required");
+          const type_paths = { countdown: "/countdown", "chess-clock": "/chess-clock", "round-timer": "/round-timer", interval: "/countdown" };
+          const path = type_paths[timer_type] || "/countdown";
+          const params = new URLSearchParams();
+          if (duration) params.set("duration", String(duration));
+          if (label) params.set("label", label);
+          const base = API_BASE.replace("/api/v1", "");
+          const qs = params.toString();
+          const url = `${base}${path}${qs ? `?${qs}` : ""}`;
+          result = {
+            url,
+            message: `Timer page URL: ${url}`,
+          };
+          break;
+        }
+
+        case "get_embed_code": {
+          const { type: timer_type, duration, theme, size, controls, autostart } = args;
+          if (!timer_type) throw new Error("type is required");
+          const params = new URLSearchParams({ type: timer_type });
+          if (duration) params.set("duration", String(duration));
+          if (theme) params.set("theme", theme);
+          if (size) params.set("size", size);
+          if (controls) params.set("controls", controls);
+          if (autostart) params.set("autostart", "true");
+          const data = await api_request(`/timer-url/embed?${params.toString()}`);
+          result = {
+            html: data.html,
+            url: data.url,
+            message: "Embed code generated. Paste the HTML into any webpage.",
+          };
+          break;
+        }
+
+        default:
+          throw new Error(`Unknown tool: ${name}`);
       }
 
-      case "list_timer_presets": {
-        const category = args.category;
-        const params = category ? `?category=${encodeURIComponent(category)}` : "";
-        const data = await api_request(`/timer-presets${params}`);
-        result = data;
-        break;
-      }
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error: ${error.message}`,
+          },
+        ],
+        isError: true,
+      };
+    }
+  });
 
-      case "list_public_challenges": {
-        const data = await api_request("/challenges");
-        result = data.challenges || data;
-        break;
-      }
+  return server;
+}
 
-      case "get_leaderboard": {
-        const { challenge_id } = args;
-        if (!challenge_id) throw new Error("challenge_id is required");
-        const data = await api_request(`/challenges/${challenge_id}`);
-        result = {
-          challenge: data.challenge,
-          leaderboard: data.leaderboard,
-          draws: data.draws,
-          total_games: (data.games || []).length,
-        };
-        break;
-      }
+// --- Transport selection ---
+// HTTP/SSE mode: --http flag or PORT env var
+// Otherwise: stdio (default for Claude Desktop, Cursor, etc.)
 
-      case "create_challenge": {
-        const { name: challenge_name, format, timer_type, is_public } = args;
-        if (!challenge_name) throw new Error("name is required");
+const useHttp = process.argv.includes("--http") || process.env.PORT;
 
-        const body = { name: challenge_name };
-        if (format) body.format = format;
-        if (timer_type) body.timer_type = timer_type;
-        if (is_public !== undefined) body.is_public = is_public;
+if (useHttp) {
+  const PORT = parseInt(process.env.PORT || "3001", 10);
+  const sessions = new Map();
 
-        const data = await api_request("/challenges", {
-          method: "POST",
-          body: JSON.stringify(body),
-        });
-        result = data.challenge || data;
-        break;
-      }
+  const httpServer = createServer(async (req, res) => {
+    // CORS headers for remote clients
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-      case "join_challenge": {
-        const { challenge_id, join_code } = args;
-        if (!challenge_id) throw new Error("challenge_id is required");
-        if (!join_code) throw new Error("join_code is required");
-
-        const data = await api_request(`/challenges/${challenge_id}/join`, {
-          method: "POST",
-          body: JSON.stringify({ join_code }),
-        });
-        result = data;
-        break;
-      }
-
-      case "create_timer": {
-        const { type: timer_type, duration, label, work, rest, rounds } = args;
-        if (!timer_type) throw new Error("type is required");
-        const params = new URLSearchParams({ type: timer_type });
-        if (duration) params.set("duration", String(duration));
-        if (label) params.set("label", label);
-        if (work) params.set("work", String(work));
-        if (rest) params.set("rest", String(rest));
-        if (rounds) params.set("rounds", String(rounds));
-        const data = await api_request(`/timer-url?${params.toString()}`);
-        result = {
-          url: data.url,
-          embed_url: data.embed_url,
-          expires_at: data.expires_at,
-          timer_type: data.timer_type,
-          message: `Timer created! Share this link: ${data.url}`,
-        };
-        break;
-      }
-
-      case "create_pomodoro": {
-        const work_secs = (args.work_minutes || 25) * 60;
-        const break_secs = (args.break_minutes || 5) * 60;
-        const pomo_rounds = args.rounds || 4;
-        const params = new URLSearchParams({
-          type: "interval",
-          work: String(work_secs),
-          rest: String(break_secs),
-          rounds: String(pomo_rounds),
-        });
-        if (args.label) params.set("label", args.label);
-        const data = await api_request(`/timer-url?${params.toString()}`);
-        result = {
-          url: data.url,
-          embed_url: data.embed_url,
-          expires_at: data.expires_at,
-          message: `Pomodoro timer created! ${args.work_minutes || 25}m work / ${args.break_minutes || 5}m break × ${pomo_rounds} rounds. Share: ${data.url}`,
-        };
-        break;
-      }
-
-      case "get_timer_url": {
-        const { type: timer_type, duration, label } = args;
-        if (!timer_type) throw new Error("type is required");
-        const type_paths = { countdown: "/countdown", "chess-clock": "/chess-clock", "round-timer": "/round-timer", interval: "/countdown" };
-        const path = type_paths[timer_type] || "/countdown";
-        const params = new URLSearchParams();
-        if (duration) params.set("duration", String(duration));
-        if (label) params.set("label", label);
-        const base = API_BASE.replace("/api/v1", "");
-        const qs = params.toString();
-        const url = `${base}${path}${qs ? `?${qs}` : ""}`;
-        result = {
-          url,
-          message: `Timer page URL: ${url}`,
-        };
-        break;
-      }
-
-      case "get_embed_code": {
-        const { type: timer_type, duration, theme, size, controls, autostart } = args;
-        if (!timer_type) throw new Error("type is required");
-        const params = new URLSearchParams({ type: timer_type });
-        if (duration) params.set("duration", String(duration));
-        if (theme) params.set("theme", theme);
-        if (size) params.set("size", size);
-        if (controls) params.set("controls", controls);
-        if (autostart) params.set("autostart", "true");
-        const data = await api_request(`/timer-url/embed?${params.toString()}`);
-        result = {
-          html: data.html,
-          url: data.url,
-          message: "Embed code generated. Paste the HTML into any webpage.",
-        };
-        break;
-      }
-
-      default:
-        throw new Error(`Unknown tool: ${name}`);
+    if (req.method === "OPTIONS") {
+      res.writeHead(204).end();
+      return;
     }
 
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-    };
-  } catch (error) {
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Error: ${error.message}`,
-        },
-      ],
-      isError: true,
-    };
-  }
-});
+    const url = new URL(req.url, `http://localhost:${PORT}`);
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
+    // Health check
+    if (url.pathname === "/health") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ status: "ok", name: "gotimer-mcp", version: "2.1.0" }));
+      return;
+    }
+
+    // SSE endpoint — client GETs to establish the event stream
+    if (req.method === "GET" && url.pathname === "/sse") {
+      const server = createMCPServer();
+      const transport = new SSEServerTransport("/messages", res);
+      sessions.set(transport.sessionId, { server, transport });
+
+      transport.onclose = () => {
+        sessions.delete(transport.sessionId);
+      };
+
+      await server.connect(transport);
+      return;
+    }
+
+    // Message endpoint — client POSTs JSON-RPC messages here
+    if (req.method === "POST" && url.pathname === "/messages") {
+      const sessionId = url.searchParams.get("sessionId");
+      const session = sessions.get(sessionId);
+
+      if (!session) {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Session not found. Connect to /sse first." }));
+        return;
+      }
+
+      await session.transport.handlePostMessage(req, res);
+      return;
+    }
+
+    // Fallback
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ error: "Not found. Use GET /sse to connect or GET /health to check status." }));
+  });
+
+  httpServer.listen(PORT, () => {
+    console.error(`gotimer-mcp HTTP/SSE server listening on port ${PORT}`);
+    console.error(`  SSE endpoint: http://localhost:${PORT}/sse`);
+    console.error(`  Health check: http://localhost:${PORT}/health`);
+  });
+} else {
+  const server = createMCPServer();
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+}
