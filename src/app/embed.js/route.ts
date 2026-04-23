@@ -4,7 +4,7 @@ const SCRIPT = `(function(){
   var handler = function(e){
     if (!e.data || e.data.source !== 'gotimer') return;
     if (e.data.type !== 'resize') return;
-    var frames = document.querySelectorAll('iframe[src*="gotimer.org/embed/"]');
+    var frames = document.getElementsByTagName('iframe');
     for (var i=0; i<frames.length; i++){
       var f = frames[i];
       if (f.contentWindow === e.source){
