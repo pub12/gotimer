@@ -272,6 +272,111 @@ async function executeTool(name: string, args: any) {
   }
 }
 
+// --- Prompt templates ---
+
+const PROMPTS = [
+  {
+    name: "start_pomodoro",
+    description: "Start a Pomodoro focus session with shareable timer URL.",
+    arguments: [
+      { name: "work_minutes", description: "Work period in minutes (default 25).", required: false },
+      { name: "break_minutes", description: "Break period in minutes (default 5).", required: false },
+      { name: "rounds", description: "Number of rounds (default 4).", required: false },
+      { name: "label", description: "Optional label for the session.", required: false },
+    ],
+  },
+  {
+    name: "plan_hiit_workout",
+    description: "Create a HIIT interval workout timer.",
+    arguments: [
+      { name: "work_seconds", description: "Work period in seconds (default 30).", required: false },
+      { name: "rest_seconds", description: "Rest period in seconds (default 30).", required: false },
+      { name: "rounds", description: "Number of rounds (default 8).", required: false },
+    ],
+  },
+  {
+    name: "start_meditation",
+    description: "Start a quiet meditation countdown timer.",
+    arguments: [
+      { name: "minutes", description: "Session length in minutes (default 10).", required: false },
+    ],
+  },
+  {
+    name: "setup_film_developing",
+    description: "Set up a film development timer for a chosen process (C-41, B&W, E-6, etc.).",
+    arguments: [
+      { name: "process", description: "Film process name (e.g. 'C-41', 'B&W', 'E-6').", required: true },
+      { name: "temperature_c", description: "Optional development temperature in Celsius.", required: false },
+    ],
+  },
+  {
+    name: "start_presentation_timer",
+    description: "Create a presentation countdown timer with a topic label.",
+    arguments: [
+      { name: "total_minutes", description: "Total presentation length in minutes.", required: true },
+      { name: "topic", description: "Optional presentation topic, used as label.", required: false },
+    ],
+  },
+];
+
+function num(v: unknown, fallback: number): number {
+  const n = typeof v === "string" ? parseFloat(v) : (v as number);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function buildPrompt(name: string, args: Record<string, unknown>) {
+  switch (name) {
+    case "start_pomodoro": {
+      const work = num(args.work_minutes, 25);
+      const brk = num(args.break_minutes, 5);
+      const rounds = num(args.rounds, 4);
+      const label = args.label ? ` Label it "${args.label}".` : "";
+      return {
+        description: `Pomodoro: ${rounds} rounds of ${work}m work / ${brk}m break`,
+        text: `Create a Pomodoro timer with ${rounds} rounds of ${work} minutes work and ${brk} minutes break by calling the create_pomodoro tool with work_minutes=${work}, break_minutes=${brk}, rounds=${rounds}.${label} After it's created, share the timer URL and briefly explain how the cycle works.`,
+      };
+    }
+    case "plan_hiit_workout": {
+      const work = num(args.work_seconds, 30);
+      const rest = num(args.rest_seconds, 30);
+      const rounds = num(args.rounds, 8);
+      return {
+        description: `HIIT: ${rounds} rounds of ${work}s work / ${rest}s rest`,
+        text: `Create a HIIT interval timer by calling create_timer with type="interval", work=${work}, rest=${rest}, rounds=${rounds}. Share the resulting URL and suggest a quick warm-up before starting.`,
+      };
+    }
+    case "start_meditation": {
+      const minutes = num(args.minutes, 10);
+      const seconds = Math.round(minutes * 60);
+      return {
+        description: `Meditation: ${minutes} minutes`,
+        text: `Create a ${minutes}-minute meditation timer by calling create_timer with type="countdown", duration=${seconds}, label="Meditation". Share the URL and offer a one-line breathing cue to begin.`,
+      };
+    }
+    case "setup_film_developing": {
+      const process = String(args.process || "").trim();
+      if (!process) throw new Error("process is required");
+      const temp = args.temperature_c ? ` Target temperature is ${args.temperature_c}°C.` : "";
+      return {
+        description: `Film development: ${process}`,
+        text: `Help set up a film development timer for the ${process} process.${temp} First, call list_timer_presets with category="photography" to find a matching preset. If a relevant preset exists, use create_timer with that preset id; otherwise create a sensible countdown for the ${process} standard time. Share the URL and remind the user about the standard agitation pattern for ${process}.`,
+      };
+    }
+    case "start_presentation_timer": {
+      const minutes = num(args.total_minutes, 0);
+      if (minutes <= 0) throw new Error("total_minutes must be a positive number");
+      const seconds = Math.round(minutes * 60);
+      const topic = args.topic ? String(args.topic) : "Presentation";
+      return {
+        description: `Presentation: ${minutes}m on "${topic}"`,
+        text: `Create a presentation countdown timer by calling create_timer with type="countdown", duration=${seconds}, label="${topic}". Share the URL and suggest pacing milestones (e.g. when to be at the midpoint and when to wrap up).`,
+      };
+    }
+    default:
+      throw new Error(`Unknown prompt: ${name}`);
+  }
+}
+
 // --- JSON-RPC message handler ---
 
 interface JSONRPCRequest {
@@ -302,7 +407,7 @@ export async function handleJSONRPCMessage(message: JSONRPCRequest): Promise<JSO
           id,
           result: {
             protocolVersion: "2024-11-05",
-            capabilities: { tools: {} },
+            capabilities: { tools: {}, prompts: {}, resources: {} },
             serverInfo: { name: "gotimer-mcp", version: "2.1.0" },
           },
         };
@@ -313,6 +418,28 @@ export async function handleJSONRPCMessage(message: JSONRPCRequest): Promise<JSO
           jsonrpc: "2.0",
           id,
           result: { tools: TOOLS },
+        };
+      }
+
+      case "resources/list": {
+        return { jsonrpc: "2.0", id, result: { resources: [] } };
+      }
+
+      case "prompts/list": {
+        return { jsonrpc: "2.0", id, result: { prompts: PROMPTS } };
+      }
+
+      case "prompts/get": {
+        const promptName = params?.name as string;
+        const promptArgs = (params?.arguments || {}) as Record<string, unknown>;
+        const { description, text } = buildPrompt(promptName, promptArgs);
+        return {
+          jsonrpc: "2.0",
+          id,
+          result: {
+            description,
+            messages: [{ role: "user", content: { type: "text", text } }],
+          },
         };
       }
 
