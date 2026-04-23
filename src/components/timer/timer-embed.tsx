@@ -75,6 +75,19 @@ function EmbedInner({
     fire_embed_view(params.type, params.theme, params.branding);
   }, [params.type, params.theme, params.branding]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.parent === window) return; // not iframed
+    const emit = () => {
+      const height = document.documentElement.scrollHeight;
+      window.parent.postMessage({ source: "gotimer", type: "resize", height }, "*");
+    };
+    emit();
+    const observer = new ResizeObserver(emit);
+    observer.observe(document.documentElement);
+    return () => observer.disconnect();
+  }, []);
+
   const size_class = params.size ? SIZE_CLASSES[params.size] : "max-w-sm";
   const accent_style: React.CSSProperties = params.accent
     ? ({ ["--gotimer-accent"]: params.accent } as React.CSSProperties)
