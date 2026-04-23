@@ -37,12 +37,9 @@ yarn-error.log*
 # env files
 .env*
 
-# SQLite database
-/data/*.db
-/data/*.sqlite
+# SQLite database & runtime data
 /data/
-
-# Allow blog sync data (exported from production)
+!/data/blog-images/
 !/data/blog-sync/
 
 # Profile picture uploads
