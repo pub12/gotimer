@@ -32,7 +32,7 @@
     "better-sqlite3": "^12.6.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "hazo_auth": "^5.1.36",
+    "hazo_auth": "^5.1.37",
     "hazo_config": "^2.0.0",
     "hazo_connect": "^2.4.4",
     "hazo_logs": "^1.0.10",
