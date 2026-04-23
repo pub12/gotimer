@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 const SECRET_ENV = "GOTIMER_PRO_TOKEN_SECRET";
 const DEFAULT_TTL_SECONDS = 60 * 60 * 24 * 365; // 1 year
+const HMAC_B64URL_LEN = 43; // b64url(sha256) is always 43 chars
 
 function b64url(input: Buffer | string): string {
   const buf = typeof input === "string" ? Buffer.from(input, "utf8") : input;
@@ -46,20 +47,37 @@ export function verify_pro_token(token: string): VerifyResult {
   const [payload, sig] = parts;
   if (!payload || !sig) return { valid: false, reason: "malformed" };
 
-  const expected_sig = sign(payload);
-  const a = Buffer.from(sig);
-  const b = Buffer.from(expected_sig);
-  if (a.length !== b.length || !timingSafeEqual(a, b)) {
+  // Issue 1: length-based pre-check on constant (not secret-dependent)
+  if (sig.length !== HMAC_B64URL_LEN) {
     return { valid: false, reason: "signature_mismatch" };
   }
 
-  let parsed: { u?: string; e?: number };
+  // Issue 2: missing secret throws — catch and return clean result
+  let expected_sig: string;
+  try {
+    expected_sig = sign(payload);
+  } catch {
+    return { valid: false, reason: "malformed" };
+  }
+  const a = Buffer.from(sig);
+  const b = Buffer.from(expected_sig);
+  if (!timingSafeEqual(a, b)) {
+    return { valid: false, reason: "signature_mismatch" };
+  }
+
+  let parsed: { u?: unknown; e?: unknown };
   try {
     parsed = JSON.parse(b64url_decode(payload).toString("utf8"));
   } catch {
     return { valid: false, reason: "malformed" };
   }
-  if (!parsed.u || !parsed.e) return { valid: false, reason: "malformed" };
+  // Issue 3: validate types strictly before use
+  if (
+    typeof parsed.u !== "string" || !parsed.u ||
+    typeof parsed.e !== "number" || !Number.isFinite(parsed.e)
+  ) {
+    return { valid: false, reason: "malformed" };
+  }
   if (parsed.e < Math.floor(Date.now() / 1000)) return { valid: false, reason: "expired" };
 
   return { valid: true, user_id: parsed.u };
