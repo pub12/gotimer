@@ -43,3 +43,20 @@ export function check_new_user_sign_up(user_id: string, method: "email" | "googl
     window.gtag("event", "sign_up", { method });
   }
 }
+
+export function fire_watermark_click(embed_type: string, variant: string) {
+  if (typeof window === "undefined") return;
+  if (!window.gtag) return;
+  window.gtag("event", "watermark_click", { embed_type, variant });
+}
+
+export function fire_embed_view(embed_type: string, theme: string, branding: string) {
+  if (typeof window === "undefined") return;
+  if (!window.gtag) return;
+
+  const key = `ga_embed_view_${embed_type}`;
+  if (sessionStorage.getItem(key)) return;
+  sessionStorage.setItem(key, "1");
+
+  window.gtag("event", "embed_view", { embed_type, theme, branding });
+}
