@@ -395,6 +395,15 @@
   font-size: 0.9em;
 }
 
+/* Inline-code styling must not bleed into the CodeBlock panel */
+.blog-article-content pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
 .blog-article-content strong {
   color: var(--on-surface, #041534);
   font-weight: 700;

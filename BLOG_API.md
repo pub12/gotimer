@@ -314,3 +314,18 @@ curl -X POST /api/blog/manage \
 - `<YouTube id="dQw4w9WgXcQ" title="Video title" start={30} />` — YouTube embed
 - `<Callout type="info|warning|tip">Text</Callout>` — Alert/callout box
 - `<TimerEmbed />` — Embedded GoTimer widget
+- `<CodeBlock language="html">...</CodeBlock>` — Styled code panel with language label and one-click copy button (see below)
+
+### Code Blocks
+
+Standard markdown triple-backtick fences are rendered as a styled code panel automatically — no MDX component needed. The panel includes a language label (from the fence hint) and a "Copy" button that briefly flips to "Copied ✓".
+
+````md
+```html
+<iframe src="https://gotimer.org/embed/pomodoro" width="400" height="500"></iframe>
+```
+````
+
+- The fence language (e.g. ```` ```html ````, ```` ```bash ````, ```` ```json ````) appears as a label in the top-left of the panel. Omit it and the label is simply blank.
+- Long lines scroll horizontally — code is never wrapped.
+- For explicit control inside MDX content, use `<CodeBlock language="html">...</CodeBlock>` directly. This is rarely needed since fences upgrade automatically.
