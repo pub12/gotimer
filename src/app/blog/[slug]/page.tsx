@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import { get_db } from "@/lib/db";
 import { mdxComponents } from "@/components/mdx";
 import Navbar from "@/components/navbar";
@@ -212,7 +213,11 @@ export default async function BlogPostPage({ params }: PageProps) {
         {/* Article body */}
         <div className="max-w-4xl mx-auto px-6 md:px-8">
           <article className="blog-article-content py-12 md:py-16">
-            <MDXRemote source={post.content} components={mdxComponents} />
+            <MDXRemote
+              source={post.content}
+              components={mdxComponents}
+              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+            />
           </article>
         </div>
 

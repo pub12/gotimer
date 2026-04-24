@@ -329,3 +329,26 @@ Standard markdown triple-backtick fences are rendered as a styled code panel aut
 - The fence language (e.g. ```` ```html ````, ```` ```bash ````, ```` ```json ````) appears as a label in the top-left of the panel. Omit it and the label is simply blank.
 - Long lines scroll horizontally — code is never wrapped.
 - For explicit control inside MDX content, use `<CodeBlock language="html">...</CodeBlock>` directly. This is rarely needed since fences upgrade automatically.
+
+### Inline Code
+
+Single-backtick text renders as an inline code pill — monospace, tinted background, small rounded corners, non-wrapping. Use it for parameter names, short values, filenames, or any technical term that should stand out from prose.
+
+```md
+Set `theme=dark` and `duration=300` in the embed URL to customise the widget.
+```
+
+Works inside paragraphs, list items, headings, callouts, and table cells.
+
+### Tables
+
+GitHub Flavoured Markdown pipe tables are supported and render as a styled `<table>` (bordered container, bold header row, horizontal scroll on narrow screens).
+
+```md
+| Param      | Type   | Default | Description                |
+| ---------- | ------ | ------- | -------------------------- |
+| `theme`    | string | `light` | Widget theme               |
+| `duration` | number | `300`   | Countdown duration seconds |
+```
+
+No MDX component needed — the table syntax upgrades automatically.
