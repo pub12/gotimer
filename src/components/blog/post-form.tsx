@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { MarkdownEditor } from "./markdown-editor";
 
 interface FaqItem {
   question: string;
@@ -140,7 +141,7 @@ export function PostForm({ initial, post_id }: PostFormProps) {
   }
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="space-y-6">
       {error && (
         <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-700">
           {error}
@@ -195,13 +196,7 @@ export function PostForm({ initial, post_id }: PostFormProps) {
       {/* Content */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Content (MDX)</label>
-        <textarea
-          value={content}
-          onChange={(e) => set_content(e.target.value)}
-          rows={20}
-          className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-gray-400 resize-y"
-          placeholder="Write your post content in MDX format..."
-        />
+        <MarkdownEditor value={content} on_change={set_content} />
       </div>
 
       {/* Meta Title */}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hazo_get_auth } from "hazo_auth/server-lib";
 import { randomUUID } from "crypto";
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile, mkdir, access } from "fs/promises";
 import path from "path";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"];
@@ -17,13 +17,49 @@ function get_extension(content_type: string): string {
   }
 }
 
-async function save_image(buffer: Buffer, content_type: string): Promise<string> {
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/\.(png|jpe?g|webp)$/i, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+async function file_exists(filepath: string): Promise<boolean> {
+  try {
+    await access(filepath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function resolve_filename(basename: string, ext: string): Promise<string> {
+  let filename = `${basename}${ext}`;
+  let suffix = 2;
+  while (await file_exists(path.join(UPLOAD_DIR, filename))) {
+    filename = `${basename}-${suffix}${ext}`;
+    suffix += 1;
+  }
+  return filename;
+}
+
+async function save_image(
+  buffer: Buffer,
+  content_type: string,
+  friendly_name: string | null
+): Promise<{ path: string; filename: string }> {
   await mkdir(UPLOAD_DIR, { recursive: true });
   const ext = get_extension(content_type);
-  const filename = `${randomUUID()}${ext}`;
+  const basename = friendly_name ? slugify(friendly_name) : "";
+  const filename = basename
+    ? await resolve_filename(basename, ext)
+    : `${randomUUID()}${ext}`;
   const filepath = path.join(UPLOAD_DIR, filename);
   await writeFile(filepath, buffer);
-  return `/blog-images/${filename}`;
+  return { path: `/blog-images/${filename}`, filename };
 }
 
 export async function POST(request: NextRequest) {
@@ -67,14 +103,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Image exceeds 5MB limit" }, { status: 400 });
     }
 
-    const image_path = await save_image(buffer, remote_type);
-    return NextResponse.json({ path: image_path }, { status: 201 });
+    const saved = await save_image(buffer, remote_type, null);
+    return NextResponse.json(saved, { status: 201 });
   }
 
   // Multipart form data — direct file upload
   if (content_type.includes("multipart/form-data")) {
     const form_data = await request.formData();
     const file = form_data.get("file");
+    const name_raw = form_data.get("name");
+    const friendly_name =
+      typeof name_raw === "string" && name_raw.trim() ? name_raw.trim() : null;
 
     if (!file || !(file instanceof File)) {
       return NextResponse.json({ error: "file field required" }, { status: 400 });
@@ -94,8 +133,16 @@ export async function POST(request: NextRequest) {
     const array_buffer = await file.arrayBuffer();
     const buffer = Buffer.from(array_buffer);
 
-    const image_path = await save_image(buffer, file.type);
-    return NextResponse.json({ path: image_path }, { status: 201 });
+    // If friendly_name is present but slugifies to empty, reject rather than silently falling back to UUID.
+    if (friendly_name !== null && !friendly_name.replace(/[^a-z0-9]/gi, "")) {
+      return NextResponse.json(
+        { error: "Name must contain at least one letter or digit" },
+        { status: 400 }
+      );
+    }
+
+    const saved = await save_image(buffer, file.type, friendly_name);
+    return NextResponse.json(saved, { status: 201 });
   }
 
   return NextResponse.json({ error: "Unsupported content type" }, { status: 400 });

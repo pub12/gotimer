@@ -12,6 +12,7 @@ import {
   FileText,
   Timer,
   BookOpen,
+  Image as ImageIcon,
   Search,
   BarChart2,
   Smile,
@@ -45,6 +46,7 @@ const NAV_GROUPS: { items: NavItem[] }[] = [
       { label: "Page Publishing", href: "/admin/page-publishing", icon: <FileText className="w-4 h-4" /> },
       { label: "Timer Pages", href: "/admin/timer-pages", icon: <Timer className="w-4 h-4" /> },
       { label: "Blog", href: "/admin/blog", icon: <BookOpen className="w-4 h-4" /> },
+      { label: "Blog Media", href: "/admin/blog/media", icon: <ImageIcon className="w-4 h-4" /> },
     ],
   },
   {

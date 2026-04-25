@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["better-sqlite3", "sql.js"],
+  allowedDevOrigins: ["192.168.50.34"],
   images: {
     remotePatterns: [
       {
