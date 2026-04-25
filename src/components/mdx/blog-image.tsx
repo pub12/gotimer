@@ -31,8 +31,8 @@ export function BlogImage({ src, alt, caption, width = 800, height = 450 }: Blog
           alt={alt}
           width={width}
           height={height}
-          className="max-w-full h-auto rounded-xl mx-auto"
-          style={{ width: Math.min(width, 280) }}
+          className="max-w-full h-auto rounded-xl mx-auto block"
+          style={{ width }}
           onError={() => set_errored(true)}
         />
       )}
