@@ -189,15 +189,44 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
                       Tied {winner_result.score}–{winner_result.score}
                     </p>
                     {challenge.closed_at && (
-                      <p className="text-xs text-muted-foreground mt-0.5">This challenge is closed</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        This challenge was closed{" "}
+                        {(() => {
+                          const normalized = challenge.closed_at!.includes("T")
+                            ? challenge.closed_at!
+                            : challenge.closed_at!.replace(" ", "T") + "Z";
+                          const diff = Date.now() - new Date(normalized).getTime();
+                          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                          if (days === 0) return "today";
+                          if (days === 1) return "yesterday";
+                          return `${days} days ago`;
+                        })()}
+                      </p>
                     )}
                   </div>
                 </>
               )}
-              {(!winner_result || winner_result.kind === "no_result") && (
-                <p className="text-muted-foreground text-sm font-semibold">
-                  This challenge is closed — no games were played
-                </p>
+              {winner_result?.kind === "no_result" && (
+                <div>
+                  <p className="text-muted-foreground text-sm font-semibold">
+                    Closed — no result
+                  </p>
+                  {challenge.closed_at && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      This challenge was closed{" "}
+                      {(() => {
+                        const normalized = challenge.closed_at!.includes("T")
+                          ? challenge.closed_at!
+                          : challenge.closed_at!.replace(" ", "T") + "Z";
+                        const diff = Date.now() - new Date(normalized).getTime();
+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        if (days === 0) return "today";
+                        if (days === 1) return "yesterday";
+                        return `${days} days ago`;
+                      })()}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>
