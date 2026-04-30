@@ -49,7 +49,6 @@ export function ChallengeCard({
   const is_closed = status === "completed";
   const is_winning = my_wins > opponent_wins;
   const is_tied = my_wins === opponent_wins;
-
   const winner_result = is_closed
     ? compute_winner([
         { name: player_names?.[0] || "You", score: my_wins },
@@ -62,7 +61,7 @@ export function ChallengeCard({
       <Link href={`/challenges/${id}`} className="no-underline block">
         <Card
           className={`hover:shadow-lg transition-shadow cursor-pointer ${
-            is_closed ? "border-l-4 border-l-accent" : ""
+            is_closed ? "border-l-4 border-l-accent bg-accent/[0.03]" : ""
           }`}
         >
           <CardHeader className="pb-2">
@@ -97,36 +96,48 @@ export function ChallengeCard({
           </CardHeader>
           <CardContent>
             {is_closed ? (
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
                   {winner_result?.kind === "win" && (
-                    <>
+                    <div className="flex items-center gap-1.5 mb-0.5">
                       <Trophy className="w-4 h-4 text-accent flex-shrink-0" />
-                      <span className="text-accent font-semibold text-sm">
-                        {winner_result.winner_name} won{" "}
-                        {winner_result.winner_score}–{winner_result.loser_score}
+                      <span className="text-accent font-headline font-bold text-sm truncate">
+                        {winner_result.winner_name} won
                       </span>
-                    </>
+                    </div>
                   )}
                   {winner_result?.kind === "tie" && (
-                    <>
+                    <div className="flex items-center gap-1.5 mb-0.5">
                       <Scale className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                      <span className="text-muted-foreground font-semibold text-sm">
-                        Tied {winner_result.score}–{winner_result.score}
-                      </span>
-                    </>
+                      <span className="text-muted-foreground font-headline font-bold text-sm">Draw</span>
+                    </div>
                   )}
-                  {(!winner_result || winner_result.kind === "no_result") && (
-                    <span className="text-muted-foreground text-sm">
-                      Closed — no result
-                    </span>
+                  {winner_result?.kind === "no_result" && (
+                    <p className="text-muted-foreground font-headline font-bold text-sm mb-0.5">
+                      No result
+                    </p>
+                  )}
+                  {closed_at && (
+                    <p className="text-xs text-muted-foreground">{format_closed_at(closed_at)}</p>
                   )}
                 </div>
-                {closed_at && (
-                  <p className="text-xs text-muted-foreground">
-                    {format_closed_at(closed_at)}
-                  </p>
-                )}
+                <div className="flex items-baseline gap-1.5 shrink-0">
+                  <span className={`text-4xl font-headline font-black tabular-nums ${
+                    winner_result?.kind === "win" && winner_result.winner_name === (player_names?.[0] || "You")
+                      ? "text-foreground"
+                      : winner_result?.kind === "win"
+                      ? "text-muted-foreground/30"
+                      : "text-foreground/80"
+                  }`}>{my_wins}</span>
+                  <span className="text-muted-foreground font-headline font-bold text-lg">—</span>
+                  <span className={`text-4xl font-headline font-black tabular-nums ${
+                    winner_result?.kind === "win" && winner_result.winner_name === (player_names?.[1] || "Opponent")
+                      ? "text-foreground"
+                      : winner_result?.kind === "win"
+                      ? "text-muted-foreground/30"
+                      : "text-foreground/80"
+                  }`}>{opponent_wins}</span>
+                </div>
               </div>
             ) : (
               <div className="flex items-center justify-between">

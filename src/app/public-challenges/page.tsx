@@ -177,12 +177,12 @@ export default function PublicChallengesPage() {
                           {c.total_games} game{c.total_games !== 1 ? "s" : ""}
                         </span>
                         {c.status === "completed" ? (() => {
-                          const wr = compute_winner(
-                            c.participants.map((p) => ({
-                              name: user_names[p.user_id] || "Player",
-                              score: c.scores[p.user_id] || 0,
-                            }))
-                          );
+                          const players = c.participants.map((p) => ({
+                            name: user_names[p.user_id] || "Player",
+                            score: c.scores[p.user_id] || 0,
+                          }));
+                          if (players.length === 1) players.push({ name: "Opponent", score: 0 });
+                          const wr = compute_winner(players);
                           if (wr.kind === "win") return (
                             <span key="winner" className="flex items-center gap-1 text-accent font-medium">
                               <Trophy className="w-3.5 h-3.5" />

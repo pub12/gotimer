@@ -23,8 +23,20 @@ import {
   Settings,
   Copy,
   Check,
+  Trophy,
+  Scale,
 } from "lucide-react";
 import { ChallengeSidebar } from "@/components/challenges/challenge-sidebar";
+import { compute_winner } from "@/lib/challenge-winner";
+
+function format_closed_at_relative(closed_at: string): string {
+  const normalized = closed_at.includes("T") ? closed_at : closed_at.replace(" ", "T") + "Z";
+  const diff = Date.now() - new Date(normalized).getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  if (days === 0) return "today";
+  if (days === 1) return "yesterday";
+  return `${days} days ago`;
+}
 
 type ChallengeData = {
   id: string;
@@ -32,6 +44,7 @@ type ChallengeData = {
   description: string;
   created_by: string;
   status: string;
+  closed_at?: string | null;
   gif_url: string | null;
   format: string;
   timer_type: string | null;
@@ -242,6 +255,15 @@ export default function ChallengeDetailPage() {
     : placeholder_opponent_wins;
   const am_winning = my_score > opponent_score;
   const has_games = challenge.games.length > 0;
+  const is_closed = challenge.status === "completed";
+  const my_name = user_names[current_user_id] || "You";
+  const opponent_name = opponent_id ? user_names[opponent_id] || "Opponent" : "Opponent";
+  const winner_result = is_closed
+    ? compute_winner([
+        { name: my_name, score: my_score },
+        { name: opponent_name, score: opponent_score },
+      ])
+    : null;
 
   return (
     <>
@@ -273,6 +295,54 @@ export default function ChallengeDetailPage() {
           </div>
         </div>
 
+        {/* Closed banner */}
+        {is_closed && (
+          <div className="mx-4 md:mx-6 mb-4 rounded-[1rem] bg-accent/10 border border-accent/20 px-5 py-4">
+            <div className="flex items-center gap-3">
+              {winner_result?.kind === "win" && (
+                <>
+                  <Trophy className="w-5 h-5 text-accent flex-shrink-0" />
+                  <div>
+                    <p className="text-accent font-semibold text-sm">
+                      {winner_result.winner_name} won {winner_result.winner_score}–{winner_result.loser_score}
+                    </p>
+                    {challenge.closed_at && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        This challenge was closed {format_closed_at_relative(challenge.closed_at)}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+              {winner_result?.kind === "tie" && (
+                <>
+                  <Scale className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                  <div>
+                    <p className="text-muted-foreground font-semibold text-sm">
+                      Tied {winner_result.score}–{winner_result.score}
+                    </p>
+                    {challenge.closed_at && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        This challenge was closed {format_closed_at_relative(challenge.closed_at)}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+              {winner_result?.kind === "no_result" && (
+                <div>
+                  <p className="text-muted-foreground text-sm font-semibold">Closed — no result</p>
+                  {challenge.closed_at && (
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      This challenge was closed {format_closed_at_relative(challenge.closed_at)}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Dark Hero Section — head-to-head */}
         {challenge.format !== "group" && (
           <div className="mx-4 md:mx-6 rounded-[1rem] bg-gradient-to-br from-primary to-primary-container overflow-hidden relative shadow-[var(--shadow-soft-lg)]">
@@ -288,6 +358,13 @@ export default function ChallengeDetailPage() {
             )}
 
             <div className="relative z-10 px-6 md:px-12 py-10 md:py-14">
+              {is_closed && (
+                <div className="flex justify-center mb-4">
+                  <span className="text-xs font-headline font-black uppercase tracking-[0.3em] text-primary-foreground/40 border border-primary-foreground/20 px-3 py-1 rounded-full">
+                    Final
+                  </span>
+                </div>
+              )}
               {/* Competitors + Scores */}
               <div className="flex items-center justify-center gap-4 md:gap-8">
                 {/* Player 1 */}
@@ -311,11 +388,27 @@ export default function ChallengeDetailPage() {
 
                 {/* Scores */}
                 <div className="flex items-baseline gap-3 md:gap-6">
-                  <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${am_winning ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                  <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${
+                    is_closed && winner_result?.kind === "win"
+                      ? winner_result.winner_name === my_name
+                        ? "text-primary-foreground"
+                        : "text-primary-foreground/30"
+                      : am_winning
+                      ? "text-primary-foreground"
+                      : "text-primary-foreground/50"
+                  }`}>
                     {my_score}
                   </span>
                   <span className="text-secondary text-lg md:text-xl font-headline font-bold">vs</span>
-                  <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${!am_winning && opponent_score > my_score ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                  <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${
+                    is_closed && winner_result?.kind === "win"
+                      ? winner_result.winner_name === opponent_name
+                        ? "text-primary-foreground"
+                        : "text-primary-foreground/30"
+                      : !am_winning && opponent_score > my_score
+                      ? "text-primary-foreground"
+                      : "text-primary-foreground/50"
+                  }`}>
                     {opponent_score}
                   </span>
                 </div>
