@@ -17,6 +17,8 @@ type Challenge = {
   name: string;
   description: string;
   status: string;
+  created_by: string;
+  closed_at: string | null;
   my_wins: number;
   opponent_wins: number;
   draws: number;
@@ -32,6 +34,22 @@ export default function ChallengesPage() {
   const [challenges, set_challenges] = useState<Challenge[]>([]);
   const [user_names, set_user_names] = useState<Record<string, string>>({});
   const [loading, set_loading] = useState(true);
+  const [current_user_id, set_current_user_id] = useState<string>("");
+
+  const handle_close_toggle = async (challenge_id: string, current_status: string) => {
+    const new_status = current_status === "completed" ? "active" : "completed";
+    await fetch(`/api/challenges/${challenge_id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: new_status }),
+    });
+    fetch("/api/challenges")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) set_challenges(data);
+      })
+      .catch(() => {});
+  };
 
   useEffect(() => {
     if (auth_loading) return;
@@ -39,6 +57,14 @@ export default function ChallengesPage() {
       set_loading(false);
       return;
     }
+
+    // Fetch current user ID for creator checks on cards
+    fetch("/api/hazo_auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user?.id) set_current_user_id(data.user.id);
+      })
+      .catch(() => {});
 
     // Link any pending invitations for this user (handles new signups)
     fetch("/api/challenges/pending-invitations", { method: "POST" }).catch(() => {});
@@ -217,25 +243,70 @@ export default function ChallengesPage() {
               </div>
             ) : (
               <>
-                {/* Challenge cards */}
-                <div className="space-y-3 mb-8">
-                  {challenges.map((c) => (
-                    <ChallengeCard
-                      key={c.id}
-                      id={c.id}
-                      name={c.name}
-                      my_wins={c.my_wins}
-                      opponent_wins={c.opponent_wins}
-                      draws={c.draws}
-                      total_games={c.total_games}
-                      status={c.status}
-                      game_name={c.game_name}
-                      player_names={c.participants.map(
-                        (p) => user_names[p.user_id] || "Player"
+                {/* Challenge cards — active and closed groups */}
+                {(() => {
+                  const active = challenges.filter((c) => c.status !== "completed");
+                  const closed = challenges.filter((c) => c.status === "completed");
+                  return (
+                    <>
+                      <div className="space-y-3 mb-8">
+                        {active.map((c) => (
+                          <ChallengeCard
+                            key={c.id}
+                            id={c.id}
+                            name={c.name}
+                            my_wins={c.my_wins}
+                            opponent_wins={c.opponent_wins}
+                            draws={c.draws}
+                            total_games={c.total_games}
+                            status={c.status}
+                            game_name={c.game_name}
+                            player_names={c.participants.map(
+                              (p) => user_names[p.user_id] || "Player"
+                            )}
+                            is_creator={c.created_by === current_user_id}
+                            closed_at={c.closed_at}
+                            on_close_toggle={() => handle_close_toggle(c.id, c.status)}
+                          />
+                        ))}
+                        {active.length === 0 && challenges.length > 0 && (
+                          <p className="text-sm text-muted-foreground text-center py-4">
+                            All challenges are closed.
+                          </p>
+                        )}
+                      </div>
+
+                      {closed.length > 0 && (
+                        <>
+                          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                            Closed
+                          </h3>
+                          <div className="space-y-3 mb-8">
+                            {closed.map((c) => (
+                              <ChallengeCard
+                                key={c.id}
+                                id={c.id}
+                                name={c.name}
+                                my_wins={c.my_wins}
+                                opponent_wins={c.opponent_wins}
+                                draws={c.draws}
+                                total_games={c.total_games}
+                                status={c.status}
+                                game_name={c.game_name}
+                                player_names={c.participants.map(
+                                  (p) => user_names[p.user_id] || "Player"
+                                )}
+                                is_creator={c.created_by === current_user_id}
+                                closed_at={c.closed_at}
+                                on_close_toggle={() => handle_close_toggle(c.id, c.status)}
+                              />
+                            ))}
+                          </div>
+                        </>
                       )}
-                    />
-                  ))}
-                </div>
+                    </>
+                  );
+                })()}
 
                 {/* Overall histogram */}
                 {challenges.some(
