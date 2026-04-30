@@ -363,16 +363,18 @@ export default function ChallengeDetailPage() {
           </div>
         )}
 
-        {/* Floating ADD GAME RESULT button */}
-        <div className="bg-primary/[0.03] py-4 -mx-4 md:-mx-6 px-4 md:px-6 rounded-[1rem] flex justify-center -mt-6 relative z-20 mb-6">
-          <button
-            onClick={() => set_show_add_game(true)}
-            className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-8 py-3.5 rounded-full font-headline font-black text-base shadow-[var(--shadow-soft-lg)] hover:scale-105 transition-all duration-200 border-none cursor-pointer"
-          >
-            <Plus className="w-5 h-5" />
-            Add Game Result
-          </button>
-        </div>
+        {/* Floating ADD GAME RESULT button — hidden when closed */}
+        {challenge.status !== "completed" && (
+          <div className="bg-primary/[0.03] py-4 -mx-4 md:-mx-6 px-4 md:px-6 rounded-[1rem] flex justify-center -mt-6 relative z-20 mb-6">
+            <button
+              onClick={() => set_show_add_game(true)}
+              className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-8 py-3.5 rounded-full font-headline font-black text-base shadow-[var(--shadow-soft-lg)] hover:scale-105 transition-all duration-200 border-none cursor-pointer"
+            >
+              <Plus className="w-5 h-5" />
+              Add Game Result
+            </button>
+          </div>
+        )}
 
         {/* Group format header (non-hero) */}
         {challenge.format === "group" && (
@@ -479,8 +481,8 @@ export default function ChallengeDetailPage() {
               current_user_id={current_user_id}
               user_names={user_names}
               user_pictures={user_pictures}
-              on_delete={handle_delete_game}
-              on_edit={(game) => set_editing_game(game)}
+              on_delete={challenge.status !== "completed" ? handle_delete_game : undefined}
+              on_edit={challenge.status !== "completed" ? (game) => set_editing_game(game) : undefined}
               challenge_id={id}
               challenge_name={challenge.name}
               scores={challenge.scores}
