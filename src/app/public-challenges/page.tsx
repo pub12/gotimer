@@ -3,7 +3,8 @@ import Image from "next/image";
 import { get_db, get_challenge_scores } from "@/lib/db";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { Trophy, Users, Gamepad2 } from "lucide-react";
+import { Trophy, Users, Gamepad2, Scale } from "lucide-react";
+import { compute_winner } from "@/lib/challenge-winner";
 
 type Challenge = {
   id: string;
@@ -175,10 +176,32 @@ export default function PublicChallengesPage() {
                           <Gamepad2 className="w-3.5 h-3.5" />
                           {c.total_games} game{c.total_games !== 1 ? "s" : ""}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Trophy className="w-3.5 h-3.5" />
-                          {score_display || "No games yet"}
-                        </span>
+                        {c.status === "completed" ? (() => {
+                          const wr = compute_winner(
+                            c.participants.map((p) => ({
+                              name: user_names[p.user_id] || "Player",
+                              score: c.scores[p.user_id] || 0,
+                            }))
+                          );
+                          if (wr.kind === "win") return (
+                            <span key="winner" className="flex items-center gap-1 text-accent font-medium">
+                              <Trophy className="w-3.5 h-3.5" />
+                              {wr.winner_name} won {wr.winner_score}–{wr.loser_score}
+                            </span>
+                          );
+                          if (wr.kind === "tie") return (
+                            <span key="tie" className="flex items-center gap-1">
+                              <Scale className="w-3.5 h-3.5" />
+                              Tied {wr.score}–{wr.score}
+                            </span>
+                          );
+                          return <span key="no-result">Closed — no result</span>;
+                        })() : (
+                          <span className="flex items-center gap-1">
+                            <Trophy className="w-3.5 h-3.5" />
+                            {score_display || "No games yet"}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
