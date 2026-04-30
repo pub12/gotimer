@@ -144,6 +144,11 @@ export async function PATCH(
     }
     updates.push("status = ?");
     values.push(status);
+    if (status === "completed") {
+      updates.push("closed_at = datetime('now')");
+    } else if (status === "active") {
+      updates.push("closed_at = NULL");
+    }
   }
   if (gif_url !== undefined) {
     if (gif_url) {
