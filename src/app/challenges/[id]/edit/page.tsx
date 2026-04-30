@@ -218,7 +218,6 @@ export default function EditChallengePage() {
               >
                 <option value="active">Active</option>
                 <option value="completed">Completed</option>
-                <option value="paused">Paused</option>
               </select>
             </div>
 
