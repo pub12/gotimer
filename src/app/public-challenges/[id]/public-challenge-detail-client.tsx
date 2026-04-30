@@ -9,7 +9,8 @@ import { ScoreDisplay } from "@/components/challenges/score-display";
 import { GameHistory } from "@/components/challenges/game-history";
 import { ChallengeHistogram } from "@/components/challenges/challenge-histogram";
 import { PlayOnceGif } from "@/components/challenges/play-once-gif";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trophy, Scale } from "lucide-react";
+import { compute_winner } from "@/lib/challenge-winner";
 import { ChallengeSidebar } from "@/components/challenges/challenge-sidebar";
 import { use_auth_status } from "hazo_auth/client";
 
@@ -20,6 +21,7 @@ type ChallengeData = {
   description: string;
   created_by: string;
   status: string;
+  closed_at?: string | null;
   gif_url: string | null;
   participants: { user_id: string; role: string }[];
   games: {
@@ -122,6 +124,15 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
   const p2_name = player2 ? user_names[player2.user_id] || "Player 2" : "Player 2";
   const p1_winning = player1_score > player2_score;
 
+  const is_closed = challenge.status === "completed";
+
+  const winner_result = is_closed
+    ? compute_winner([
+        { name: p1_name, score: player1_score },
+        { name: p2_name, score: player2_score },
+      ])
+    : null;
+
   return (
     <>
       <Navbar />
@@ -141,6 +152,57 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
           </Link>
         </div>
 
+        {/* Closed banner */}
+        {is_closed && (
+          <div className="mx-4 md:mx-6 mb-4 rounded-[1rem] bg-accent/10 border border-accent/20 px-5 py-4">
+            <div className="flex items-center gap-3">
+              {winner_result?.kind === "win" && (
+                <>
+                  <Trophy className="w-5 h-5 text-accent flex-shrink-0" />
+                  <div>
+                    <p className="text-accent font-semibold text-sm">
+                      {winner_result.winner_name} won {winner_result.winner_score}–{winner_result.loser_score}
+                    </p>
+                    {challenge.closed_at && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        This challenge was closed{" "}
+                        {(() => {
+                          const normalized = challenge.closed_at!.includes("T")
+                            ? challenge.closed_at!
+                            : challenge.closed_at!.replace(" ", "T") + "Z";
+                          const diff = Date.now() - new Date(normalized).getTime();
+                          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                          if (days === 0) return "today";
+                          if (days === 1) return "yesterday";
+                          return `${days} days ago`;
+                        })()}
+                      </p>
+                    )}
+                  </div>
+                </>
+              )}
+              {winner_result?.kind === "tie" && (
+                <>
+                  <Scale className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                  <div>
+                    <p className="text-muted-foreground font-semibold text-sm">
+                      Tied {winner_result.score}–{winner_result.score}
+                    </p>
+                    {challenge.closed_at && (
+                      <p className="text-xs text-muted-foreground mt-0.5">This challenge is closed</p>
+                    )}
+                  </div>
+                </>
+              )}
+              {(!winner_result || winner_result.kind === "no_result") && (
+                <p className="text-muted-foreground text-sm font-semibold">
+                  This challenge is closed — no games were played
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Dark Hero Section */}
         <div className="mx-4 md:mx-6 rounded-[1rem] bg-gradient-to-br from-primary to-primary-container overflow-hidden relative shadow-[var(--shadow-soft-lg)]">
           {challenge.gif_url && (
@@ -149,6 +211,14 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
             </div>
           )}
           <div className="relative z-10 px-6 md:px-12 py-10 md:py-14">
+            {/* FINAL stamp */}
+            {is_closed && (
+              <div className="flex justify-center mb-4">
+                <span className="text-xs font-headline font-black uppercase tracking-[0.3em] text-primary-foreground/40 border border-primary-foreground/20 px-3 py-1 rounded-full">
+                  Final
+                </span>
+              </div>
+            )}
             <h1 className="text-center text-secondary font-headline font-bold text-sm uppercase tracking-widest mb-6">
               {challenge.name}
             </h1>
@@ -172,11 +242,27 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
 
               {/* Scores */}
               <div className="flex items-baseline gap-3 md:gap-6">
-                <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${p1_winning ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${
+                  is_closed && winner_result?.kind === "win"
+                    ? winner_result.winner_name === p1_name
+                      ? "text-primary-foreground"
+                      : "text-primary-foreground/30"
+                    : p1_winning
+                    ? "text-primary-foreground"
+                    : "text-primary-foreground/50"
+                }`}>
                   {player1_score}
                 </span>
                 <span className="text-secondary text-lg font-headline font-bold">vs</span>
-                <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${!p1_winning && player2_score > player1_score ? "text-primary-foreground" : "text-primary-foreground/50"}`}>
+                <span className={`text-6xl md:text-8xl lg:text-9xl font-headline font-black ${
+                  is_closed && winner_result?.kind === "win"
+                    ? winner_result.winner_name === p2_name
+                      ? "text-primary-foreground"
+                      : "text-primary-foreground/30"
+                    : !p1_winning && player2_score > player1_score
+                    ? "text-primary-foreground"
+                    : "text-primary-foreground/50"
+                }`}>
                   {player2_score}
                 </span>
               </div>
