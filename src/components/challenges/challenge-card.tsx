@@ -22,7 +22,8 @@ type ChallengeCardProps = {
 };
 
 function format_closed_at(closed_at: string): string {
-  const diff = Date.now() - new Date(closed_at).getTime();
+  const normalized = closed_at.includes("T") ? closed_at : closed_at.replace(" ", "T") + "Z";
+  const diff = Date.now() - new Date(normalized).getTime();
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   if (days === 0) return "Closed today";
   if (days === 1) return "Closed yesterday";
@@ -49,10 +50,12 @@ export function ChallengeCard({
   const is_winning = my_wins > opponent_wins;
   const is_tied = my_wins === opponent_wins;
 
-  const winner_result = compute_winner([
-    { name: player_names?.[0] || "You", score: my_wins },
-    { name: player_names?.[1] || "Opponent", score: opponent_wins },
-  ]);
+  const winner_result = is_closed
+    ? compute_winner([
+        { name: player_names?.[0] || "You", score: my_wins },
+        { name: player_names?.[1] || "Opponent", score: opponent_wins },
+      ])
+    : null;
 
   return (
     <div className="relative">
@@ -96,7 +99,7 @@ export function ChallengeCard({
             {is_closed ? (
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  {winner_result.kind === "win" && (
+                  {winner_result?.kind === "win" && (
                     <>
                       <Trophy className="w-4 h-4 text-accent flex-shrink-0" />
                       <span className="text-accent font-semibold text-sm">
@@ -105,7 +108,7 @@ export function ChallengeCard({
                       </span>
                     </>
                   )}
-                  {winner_result.kind === "tie" && (
+                  {winner_result?.kind === "tie" && (
                     <>
                       <Scale className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                       <span className="text-muted-foreground font-semibold text-sm">
@@ -113,7 +116,7 @@ export function ChallengeCard({
                       </span>
                     </>
                   )}
-                  {winner_result.kind === "no_result" && (
+                  {(!winner_result || winner_result.kind === "no_result") && (
                     <span className="text-muted-foreground text-sm">
                       Closed — no result
                     </span>
