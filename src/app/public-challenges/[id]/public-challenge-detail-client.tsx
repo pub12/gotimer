@@ -37,6 +37,15 @@ type ChallengeData = {
   draws: number;
 };
 
+function format_closed_at_relative(closed_at: string): string {
+  const normalized = closed_at.includes("T") ? closed_at : closed_at.replace(" ", "T") + "Z";
+  const diff = Date.now() - new Date(normalized).getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  if (days === 0) return "today";
+  if (days === 1) return "yesterday";
+  return `${days} days ago`;
+}
+
 export default function PublicChallengeDetailClient({ id }: { id: string }) {
   const router = useRouter();
   const { authenticated } = use_auth_status();
@@ -166,16 +175,7 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
                     {challenge.closed_at && (
                       <p className="text-xs text-muted-foreground mt-0.5">
                         This challenge was closed{" "}
-                        {(() => {
-                          const normalized = challenge.closed_at!.includes("T")
-                            ? challenge.closed_at!
-                            : challenge.closed_at!.replace(" ", "T") + "Z";
-                          const diff = Date.now() - new Date(normalized).getTime();
-                          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                          if (days === 0) return "today";
-                          if (days === 1) return "yesterday";
-                          return `${days} days ago`;
-                        })()}
+                        {format_closed_at_relative(challenge.closed_at!)}
                       </p>
                     )}
                   </div>
@@ -191,16 +191,7 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
                     {challenge.closed_at && (
                       <p className="text-xs text-muted-foreground mt-0.5">
                         This challenge was closed{" "}
-                        {(() => {
-                          const normalized = challenge.closed_at!.includes("T")
-                            ? challenge.closed_at!
-                            : challenge.closed_at!.replace(" ", "T") + "Z";
-                          const diff = Date.now() - new Date(normalized).getTime();
-                          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                          if (days === 0) return "today";
-                          if (days === 1) return "yesterday";
-                          return `${days} days ago`;
-                        })()}
+                        {format_closed_at_relative(challenge.closed_at!)}
                       </p>
                     )}
                   </div>
@@ -214,16 +205,7 @@ export default function PublicChallengeDetailClient({ id }: { id: string }) {
                   {challenge.closed_at && (
                     <p className="text-xs text-muted-foreground mt-0.5">
                       This challenge was closed{" "}
-                      {(() => {
-                        const normalized = challenge.closed_at!.includes("T")
-                          ? challenge.closed_at!
-                          : challenge.closed_at!.replace(" ", "T") + "Z";
-                        const diff = Date.now() - new Date(normalized).getTime();
-                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                        if (days === 0) return "today";
-                        if (days === 1) return "yesterday";
-                        return `${days} days ago`;
-                      })()}
+                      {format_closed_at_relative(challenge.closed_at!)}
                     </p>
                   )}
                 </div>

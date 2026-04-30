@@ -159,7 +159,7 @@ export default function PublicChallengesPage() {
                               : "bg-surface-container text-muted-foreground"
                           }`}
                         >
-                          {c.status}
+                          {c.status === "completed" ? "Closed" : c.status}
                         </span>
                       </div>
                       {c.description && (
