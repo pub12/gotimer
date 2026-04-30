@@ -38,15 +38,43 @@ export default function ChallengesPage() {
 
   const handle_close_toggle = async (challenge_id: string, current_status: string) => {
     const new_status = current_status === "completed" ? "active" : "completed";
-    await fetch(`/api/challenges/${challenge_id}`, {
+    const res = await fetch(`/api/challenges/${challenge_id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: new_status }),
     });
+    if (!res.ok) {
+      console.error("Failed to update challenge status", await res.text());
+      return;
+    }
     fetch("/api/challenges")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) set_challenges(data);
+      .then((r) => r.json())
+      .then(async (data) => {
+        if (!Array.isArray(data)) return;
+        set_challenges(data);
+        const all_ids = new Set<string>();
+        for (const c of data) {
+          for (const p of c.participants) all_ids.add(p.user_id);
+        }
+        if (all_ids.size > 0) {
+          try {
+            const profiles_res = await fetch("/api/user-profiles", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ user_ids: Array.from(all_ids) }),
+            });
+            const profiles_data = await profiles_res.json();
+            if (profiles_data.profiles) {
+              const names: Record<string, string> = {};
+              for (const p of profiles_data.profiles) {
+                names[p.user_id] = p.name || "Player";
+              }
+              set_user_names(names);
+            }
+          } catch {
+            // profiles are optional
+          }
+        }
       })
       .catch(() => {});
   };
