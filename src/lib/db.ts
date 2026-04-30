@@ -296,6 +296,7 @@ const migrations: Migration[] = [
     CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
     CREATE INDEX IF NOT EXISTS idx_api_keys_key ON api_keys(key);
   ` },
+  { version: 35, sql: `ALTER TABLE game_challenges ADD COLUMN closed_at TEXT` },
 ];
 
 function run_migrations(db: Database.Database) {
