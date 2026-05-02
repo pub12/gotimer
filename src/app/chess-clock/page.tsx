@@ -220,6 +220,45 @@ function ChessClockInner({ user_duration, set_user_duration }: { user_duration: 
             supports up to 8 players with per-turn countdowns.
           </p>
 
+          <h2 id="go-clock">Using GoTimer as a Go Clock (Byoyomi)</h2>
+          <p>
+            Go (Baduk/Weiqi) uses a timing system called <strong>byoyomi</strong> — Japanese for
+            &ldquo;second reading time.&rdquo; After a player exhausts their main time bank, they
+            enter byoyomi: a series of short overtime periods (typically 30 or 60 seconds each)
+            where they must complete every move within the period or lose on time. Miss the period
+            and one of your byoyomi periods is consumed. Run out of all periods and the game ends.
+          </p>
+          <p>
+            GoTimer&apos;s chess clock approximates byoyomi for casual and club-level play. Here is
+            how to set it up:
+          </p>
+          <ul>
+            <li>
+              <strong>Main time</strong> — Set the duration to your main time budget per player.
+              Beginners typically use 10–20 minutes; stronger club players use 30–60 minutes.
+              Professional games at the highest level use 3–9 hours, but casual games work well at
+              20 minutes.
+            </li>
+            <li>
+              <strong>Byoyomi period length</strong> — The most common period lengths are
+              <strong> 30 seconds</strong> (fast, online-style play) and <strong>60 seconds</strong>
+              (relaxed club play). When main time expires, agree with your opponent to switch to
+              per-move 30s or 60s countdowns by resetting the clock for each move.
+            </li>
+            <li>
+              <strong>Periods remaining</strong> — Typically 3–5 byoyomi periods are allocated.
+              Track consumed periods with a simple tally. A common setup for club games is
+              20 minutes main time + 5 × 30-second byoyomi.
+            </li>
+          </ul>
+          <p>
+            For the full main time phase, start the chess clock at your agreed duration and play
+            normally. When a player&apos;s time runs out, switch to manual byoyomi tracking with
+            the 30s or 60s countdown. This gives you a free, accurate Go clock for any casual or
+            study game. For more board game timer options, see our{" "}
+            <a href="/game-timer">game timer guide</a>.
+          </p>
+
           <h2>Digital vs. Physical Chess Clocks</h2>
           <p>
             Physical chess clocks — like the DGT 3000 or Chronos GX — are required at official FIDE

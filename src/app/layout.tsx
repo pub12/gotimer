@@ -19,7 +19,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || "https://gotimer.org"),
   title: {
-    default: "GoTimer — Free Online Timers with Leaderboard & Competition",
+    default: "Free Online Timer — Countdown, HIIT, Chess Clock & Leaderboards | GoTimer",
     template: "%s | GoTimer",
   },
   description:
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "GoTimer — Free Online Timers with Leaderboard & Competition",
+    title: "Free Online Timer — Countdown, HIIT, Chess Clock & Leaderboards | GoTimer",
     description:
       "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed. Start in seconds.",
     type: "website",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoTimer — Free Online Timers with Leaderboard & Competition",
+    title: "Free Online Timer — Countdown, HIIT, Chess Clock & Leaderboards | GoTimer",
     description:
       "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed.",
     images: ["/fight.jpg"],

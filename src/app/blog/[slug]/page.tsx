@@ -9,6 +9,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Image from "next/image";
 import { ArrowLeft, Clock, Calendar, Tag } from "lucide-react";
+import AuthorBio from "@/components/blog/author-bio";
 
 interface BlogPost {
   id: string;
@@ -122,8 +123,8 @@ export default async function BlogPostPage({ params }: PageProps) {
     datePublished: post.publish_date || undefined,
     dateModified: post.updated_at || post.publish_date || undefined,
     author: {
-      "@type": "Organization",
-      name: "GoTimer",
+      "@type": "Person",
+      name: "Pubs Abayasiri",
       url: "https://gotimer.org",
     },
     publisher: {
@@ -220,6 +221,8 @@ export default async function BlogPostPage({ params }: PageProps) {
             />
           </article>
         </div>
+
+        <AuthorBio />
 
         {/* FAQ section */}
         {faq_items.length > 0 && (

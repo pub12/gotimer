@@ -28,6 +28,16 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
       },
+      {
+        userAgent: "Google-Extended",
+        allow: "/",
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
+      },
+      {
+        userAgent: "Applebot-Extended",
+        allow: "/",
+        disallow: ["/admin", "/api", "/hazo_auth", "/developers"],
+      },
     ],
     sitemap: "https://gotimer.org/sitemap.xml",
   };
