@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { TimerSeoContent } from "@/components/timer/timer-seo-content";
 import { Zap, Timer, RefreshCw } from "lucide-react";
 
 const TIMER_CARDS = [
@@ -21,10 +22,40 @@ const TIMER_CARDS = [
   {
     icon: Timer,
     title: "EMOM Timer",
-    description: "Every Minute on the Minute. Complete your reps, rest the remainder of the minute, repeat. A staple of CrossFit and strength training.",
+    description: "Every Minute on the Minute. Complete your reps, rest the remainder of the minute, repeat.",
     href: "/fitness/emom",
     cta: "Start EMOM Timer",
   },
+];
+
+const INTERVAL_TIMER_FAQ = [
+  {
+    question: "What is an interval timer?",
+    answer: "An interval timer automatically alternates between work and rest periods, signalling each transition with an audio cue. It lets you focus entirely on your effort instead of watching a clock, which improves workout quality and consistency.",
+  },
+  {
+    question: "What is the difference between HIIT and Tabata?",
+    answer: "Tabata is a specific HIIT protocol: exactly 20 seconds on, 10 seconds off, 8 rounds (4 minutes total). <strong>HIIT</strong> is the broader category — any alternating work/rest structure. Tabata is HIIT, but HIIT is not always Tabata. Use Tabata when you want a fixed, research-backed protocol; use HIIT when you want to customise your work and rest durations.",
+  },
+  {
+    question: "How many rounds should I do for HIIT?",
+    answer: "Most HIIT sessions run 4–8 rounds per exercise with 3–5 exercises total. A good starting point is 8 rounds of 30s on / 30s off per exercise. Increase rounds or reduce rest as your fitness improves. The <a href='/fitness/hiit'>HIIT timer</a> lets you configure rounds, work time, and rest time freely.",
+  },
+  {
+    question: "Can I use an interval timer for strength training?",
+    answer: "Yes — <a href='/fitness/emom'>EMOM</a> (Every Minute on the Minute) is the most popular strength training interval format. Complete your reps within the minute, rest the remainder, and start again when the next minute begins. This builds work capacity and enforces consistent rest between sets.",
+  },
+  {
+    question: "Is a 20-minute HIIT workout effective?",
+    answer: "Yes. Research shows that 20 minutes of high-intensity interval work produces cardiovascular and metabolic benefits comparable to 40+ minutes of steady-state cardio. The key is genuinely high effort during the work periods — the timer keeps you honest.",
+  },
+];
+
+const RELATED_TIMERS = [
+  { name: "HIIT Timer", href: "/fitness/hiit", description: "Configurable work/rest intervals for high-intensity training" },
+  { name: "Tabata Timer", href: "/fitness/tabata", description: "20s on / 10s off, 8 rounds — the classic Tabata protocol" },
+  { name: "EMOM Timer", href: "/fitness/emom", description: "Every Minute on the Minute for strength and conditioning" },
+  { name: "Rest Timer", href: "/fitness/rest-timer", description: "Simple rest timer between strength training sets" },
 ];
 
 export default function IntervalTimerPage() {
@@ -100,77 +131,61 @@ export default function IntervalTimerPage() {
           </div>
         </section>
 
-        {/* Content */}
-        <section className="max-w-4xl mx-auto px-6 md:px-8 pb-12 md:pb-16 prose prose-slate max-w-none">
+        {/* SEO content */}
+        <TimerSeoContent
+          timer_name="Interval Timer"
+          category_name="Fitness"
+          category_slug="fitness"
+          faq={INTERVAL_TIMER_FAQ}
+          related_timers={RELATED_TIMERS}
+        >
           <h2>What Is Interval Training?</h2>
           <p>
-            Interval training alternates between periods of higher-intensity effort and lower-intensity
-            recovery (or rest). Instead of working at a steady pace for the entire workout, you push
-            hard for a set period, then recover, and repeat. This structure lets you accumulate more
-            high-intensity work than you could sustain continuously, which improves cardiovascular
-            fitness, burns more calories, and builds endurance faster than steady-state cardio.
+            Interval training alternates between periods of higher-intensity effort and
+            lower-intensity recovery. Instead of working at a steady pace for the entire workout,
+            you push hard for a set period, then recover, and repeat. This structure lets you
+            accumulate more high-intensity work than you could sustain continuously — improving
+            cardiovascular fitness and burning more calories than steady-state cardio in less time.
           </p>
           <p>
-            An interval timer manages the work and rest periods automatically — you focus entirely on
-            the effort, not on watching the clock.
+            An interval timer manages the work and rest periods automatically so you can focus
+            entirely on the effort, not on watching the clock.
           </p>
 
-          <h2>HIIT vs. Tabata vs. EMOM: What&apos;s the Difference?</h2>
+          <h2>HIIT vs. Tabata vs. EMOM</h2>
           <p>
-            The three most common interval formats each have distinct structures and training goals:
+            The three most common interval formats each have distinct structures and goals:
           </p>
-
-          <h3>HIIT (High-Intensity Interval Training)</h3>
-          <p>
-            <strong>HIIT</strong> is the umbrella term for any workout that alternates high-intensity
-            effort with rest or lower-intensity recovery. The work-to-rest ratio is flexible — common
-            formats include 40s on / 20s off, 30s on / 30s off, or 45s on / 15s off. HIIT sessions
-            typically last 15–30 minutes. Use the{" "}
-            <Link href="/fitness/hiit">HIIT timer</Link> when you want full control over work
-            duration, rest duration, and round count.
-          </p>
-
-          <h3>Tabata</h3>
-          <p>
-            <strong>Tabata</strong> is a specific HIIT protocol developed by Japanese researcher
-            Izumi Tabata: <strong>20 seconds of all-out effort, 10 seconds of rest, repeated
-            8 times</strong> for a total of 4 minutes per exercise. The 2:1 work-to-rest ratio and
-            the near-maximal intensity are what make Tabata so effective — and so demanding. Use the{" "}
-            <Link href="/fitness/tabata">Tabata timer</Link> when you want a fixed, proven protocol
-            with no configuration required.
-          </p>
-
-          <h3>EMOM (Every Minute on the Minute)</h3>
-          <p>
-            <strong>EMOM</strong> sets a task to complete within each 60-second minute. Start the
-            timer, perform your prescribed reps (e.g., 10 kettlebell swings), and rest for whatever
-            time remains in the minute. When the next minute begins, go again. EMOMs are popular in
-            CrossFit, Olympic weightlifting, and functional fitness because they build work capacity
-            and teach pacing — if your reps take 50 seconds, your rest is only 10 seconds. Use the{" "}
-            <Link href="/fitness/emom">EMOM timer</Link> when you want a structured strength or
-            conditioning circuit with built-in rest management.
-          </p>
+          <ul>
+            <li>
+              <strong>HIIT (High-Intensity Interval Training)</strong> — the umbrella term for any
+              workout alternating high-intensity effort with rest. Work-to-rest ratio is flexible:
+              40s/20s, 30s/30s, 45s/15s. Use the <a href="/fitness/hiit">HIIT timer</a> when you
+              want full control over work duration, rest duration, and round count.
+            </li>
+            <li>
+              <strong>Tabata</strong> — a specific protocol: 20 seconds of all-out effort, 10
+              seconds of rest, 8 rounds (4 minutes per exercise). The fixed structure makes it
+              simple to execute and easy to compare progress. Use the{" "}
+              <a href="/fitness/tabata">Tabata timer</a> when you want a proven protocol with no
+              configuration.
+            </li>
+            <li>
+              <strong>EMOM (Every Minute on the Minute)</strong> — complete a prescribed set of
+              reps within each 60-second minute; rest the remainder. Popular in CrossFit and
+              weightlifting for building work capacity and pacing. Use the{" "}
+              <a href="/fitness/emom">EMOM timer</a> for strength circuits and conditioning blocks.
+            </li>
+          </ul>
 
           <h2>How to Choose the Right Interval Timer</h2>
           <ul>
-            <li>
-              <strong>New to intervals?</strong> Start with <Link href="/fitness/hiit">HIIT</Link>{" "}
-              at 30s on / 30s off. The equal work-rest ratio is manageable and easy to adjust.
-            </li>
-            <li>
-              <strong>Short on time?</strong> <Link href="/fitness/tabata">Tabata</Link> gives you
-              maximum intensity in exactly 4 minutes per exercise.
-            </li>
-            <li>
-              <strong>Strength training?</strong> <Link href="/fitness/emom">EMOM</Link> keeps
-              your rest honest and builds consistent pacing for barbell or kettlebell work.
-            </li>
-            <li>
-              <strong>Custom protocol?</strong> <Link href="/fitness/hiit">HIIT</Link> lets you
-              dial in any work/rest/rounds combination.
-            </li>
+            <li><strong>New to intervals?</strong> Start with <a href="/fitness/hiit">HIIT</a> at 30s on / 30s off — the equal work-rest ratio is manageable.</li>
+            <li><strong>Short on time?</strong> <a href="/fitness/tabata">Tabata</a> delivers maximum intensity in exactly 4 minutes per exercise.</li>
+            <li><strong>Strength training?</strong> <a href="/fitness/emom">EMOM</a> keeps rest honest and builds consistent pacing for barbell or kettlebell work.</li>
+            <li><strong>Custom protocol?</strong> <a href="/fitness/hiit">HIIT</a> lets you dial in any work/rest/rounds combination.</li>
           </ul>
-        </section>
+        </TimerSeoContent>
       </main>
       <Footer />
     </>

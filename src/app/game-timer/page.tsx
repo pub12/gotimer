@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { TimerSeoContent } from "@/components/timer/timer-seo-content";
 import { Gamepad2, Clock, Users, RotateCcw } from "lucide-react";
 
 const TIMER_CARDS = [
@@ -25,6 +26,36 @@ const TIMER_CARDS = [
     href: "/board-games/round-timer",
     cta: "Use Round Timer",
   },
+];
+
+const GAME_TIMER_FAQ = [
+  {
+    question: "What is a game timer?",
+    answer: "A game timer is a countdown tool designed to manage time during turn-based and competitive games. Unlike a simple stopwatch, game timers track time per player or per round, keeping games moving at a fair pace and preventing analysis paralysis.",
+  },
+  {
+    question: "Chess clock vs turn timer — which should I use for board games?",
+    answer: "Use a <strong>chess clock</strong> when each player should manage a total time budget across all their turns — the pressure builds as time runs low. Use a <strong>turn timer</strong> when every player should get exactly the same time per move, and unused time doesn't carry over. Chess clocks suit competitive play; turn timers suit casual game nights.",
+  },
+  {
+    question: "What is the best timer for Catan?",
+    answer: "A <a href='/board-games/turn-timer'>turn timer</a> set to 60–90 seconds per turn works well for Catan. It prevents long trade negotiations from stalling the game while still giving players enough time to think. For faster play, try 45 seconds.",
+  },
+  {
+    question: "How do I use GoTimer for Go (byoyomi)?",
+    answer: "Set the <a href='/chess-clock#go-clock'>chess clock</a> to your agreed main time (20–60 minutes for casual play). When a player's main time runs out, switch to manual byoyomi tracking using 30s or 60s countdown periods. Full setup instructions are on the chess clock page.",
+  },
+  {
+    question: "Do I need a timer for casual board games?",
+    answer: "Not always — but a timer transforms a 3-hour game night into a focused 90-minute session. Even a loose turn timer (90 seconds, no strict enforcement) keeps energy up and prevents one player from dominating decision time.",
+  },
+];
+
+const RELATED_TIMERS = [
+  { name: "Turn Timer", href: "/board-games/turn-timer", description: "Multi-player per-turn countdown for 2–8 board game players" },
+  { name: "Chess Clock", href: "/board-games/chess-clock", description: "Two-player time bank for chess, Scrabble, Go, and Backgammon" },
+  { name: "Round Timer", href: "/board-games/round-timer", description: "Fixed rounds for tournaments and elimination-style game nights" },
+  { name: "Countdown Timer", href: "/countdown", description: "Simple configurable countdown with audio alert" },
 ];
 
 export default function GameTimerPage() {
@@ -100,8 +131,14 @@ export default function GameTimerPage() {
           </div>
         </section>
 
-        {/* Content */}
-        <section className="max-w-4xl mx-auto px-6 md:px-8 pb-12 md:pb-16 prose prose-slate max-w-none">
+        {/* SEO content */}
+        <TimerSeoContent
+          timer_name="Game Timer"
+          category_name="Board Games"
+          category_slug="board-games"
+          faq={GAME_TIMER_FAQ}
+          related_timers={RELATED_TIMERS}
+        >
           <h2>What Is a Game Timer?</h2>
           <p>
             A game timer is a countdown tool designed for turn-based and competitive games. Unlike
@@ -129,9 +166,8 @@ export default function GameTimerPage() {
             <li><strong>Party games</strong> — Codenames, Concept, and Dixit all benefit from per-turn time pressure.</li>
           </ul>
           <p>
-            GoTimer&apos;s <Link href="/board-games/turn-timer">turn timer</Link> supports 2–8
-            players with named player slots, per-player time tracking, and a simple tap-to-advance
-            interface.
+            GoTimer&apos;s <a href="/board-games/turn-timer">turn timer</a> supports 2–8 players
+            with named player slots, per-player time tracking, and a simple tap-to-advance interface.
           </p>
 
           <h2>Chess Clocks: Time Bank Across All Turns</h2>
@@ -143,38 +179,27 @@ export default function GameTimerPage() {
           </p>
           <p>
             The key difference from a turn timer: a chess clock never resets between turns. Every
-            second you spend is gone. This creates a different kind of pressure — you must judge
-            when a position is &ldquo;good enough&rdquo; rather than perfect.
-          </p>
-          <p>
-            For Go (Baduk/Weiqi) players, our chess clock includes a{" "}
-            <Link href="/chess-clock#go-clock">dedicated byoyomi setup guide</Link> covering main
-            time configuration and period lengths for casual and club play.
+            second you spend is gone. For Go (Baduk/Weiqi) players, the chess clock includes a
+            dedicated <a href="/chess-clock#go-clock">byoyomi setup guide</a> covering main time
+            configuration and period lengths for casual and club play.
           </p>
 
           <h2>Round Timers: Fixed Duration Rounds</h2>
           <p>
             A <strong>round timer</strong> counts down a fixed duration for an entire round, then
             advances automatically. All players act simultaneously within the round, or the round
-            represents a phase of play. This format suits:
+            represents a phase of play. This format suits tournament play, simultaneous-action
+            games like Sushi Go! and 7 Wonders, and game nights with a schedule to keep.
           </p>
-          <ul>
-            <li><strong>Tournament play</strong> — each round of a board game tournament has a fixed duration.</li>
-            <li><strong>Speed games</strong> — simultaneous-action games like Sushi Go! and 7 Wonders.</li>
-            <li><strong>Elimination rounds</strong> — progressive rounds in trivia or pub quiz formats.</li>
-          </ul>
 
           <h2>Which Game Timer Should I Use?</h2>
-          <p>
-            Use this guide to pick the right timer:
-          </p>
           <ul>
-            <li><strong>2 players, alternating turns</strong> → <Link href="/board-games/chess-clock">Chess Clock</Link></li>
-            <li><strong>3–8 players, one player acts at a time</strong> → <Link href="/board-games/turn-timer">Turn Timer</Link></li>
-            <li><strong>All players act simultaneously in rounds</strong> → <Link href="/board-games/round-timer">Round Timer</Link></li>
-            <li><strong>Go / Baduk with byoyomi</strong> → <Link href="/chess-clock#go-clock">Chess Clock (byoyomi guide)</Link></li>
+            <li><strong>2 players, alternating turns</strong> → <a href="/board-games/chess-clock">Chess Clock</a></li>
+            <li><strong>3–8 players, one player acts at a time</strong> → <a href="/board-games/turn-timer">Turn Timer</a></li>
+            <li><strong>All players act simultaneously in rounds</strong> → <a href="/board-games/round-timer">Round Timer</a></li>
+            <li><strong>Go / Baduk with byoyomi</strong> → <a href="/chess-clock#go-clock">Chess Clock (byoyomi guide)</a></li>
           </ul>
-        </section>
+        </TimerSeoContent>
       </main>
       <Footer />
     </>
