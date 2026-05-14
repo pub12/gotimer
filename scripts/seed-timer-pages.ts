@@ -45,12 +45,18 @@ const create_tables_sql = `
     status TEXT NOT NULL DEFAULT 'draft',
     published_at TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
-    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    category_slug TEXT NOT NULL DEFAULT ''
   );
 
   CREATE INDEX IF NOT EXISTS idx_timer_pages_slug ON timer_pages (slug);
 `;
 db.exec(create_tables_sql);
+try {
+  db.prepare(`ALTER TABLE timer_pages ADD COLUMN category_slug TEXT NOT NULL DEFAULT ''`).run();
+} catch {
+  // column already exists
+}
 
 interface TimerPage {
   slug: string;
@@ -63,6 +69,7 @@ interface TimerPage {
   timer_config_json: string;
   status: string;
   published_at: string | null;
+  category_slug?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -707,6 +714,7 @@ const pages: TimerPage[] = [
     }),
     status: "published",
     published_at: new Date().toISOString(),
+    category_slug: "fitness",
     faq_json: JSON.stringify([
       {
         question: "What is HIIT and how does it work?",
@@ -1500,6 +1508,285 @@ const pages: TimerPage[] = [
 </ul>
 `,
   },
+
+  // =========================================================================
+  // BATCH 6 — Fitness (3 pages)
+  // =========================================================================
+  {
+    slug: "workout-timer",
+    title: "Free Workout Timer Online — Interval Training Timer",
+    meta_title: "Free Workout Timer Online | GoTimer",
+    meta_description:
+      "Start a free workout timer with 40-second work and 20-second rest intervals across 8 rounds. Perfect for circuit training, bodyweight workouts, and strength conditioning. No app needed.",
+    timer_type: "interval",
+    timer_config_json: JSON.stringify({ work: 40, rest: 20, rounds: 8 }),
+    status: "published",
+    published_at: new Date().toISOString(),
+    category_slug: "fitness",
+    faq_json: JSON.stringify([
+      {
+        question: "What is a workout timer and how do I use it?",
+        answer:
+          "A workout timer structures your training into timed work and rest intervals so you can focus entirely on effort rather than watching a clock. Set the work duration, rest duration, and number of rounds before you start. When the work interval sounds, exercise at your target intensity. When the rest interval sounds, recover. The timer cycles automatically through all rounds — you just move.",
+      },
+      {
+        question: "What is the 40/20 interval format?",
+        answer:
+          "The 40/20 format means 40 seconds of work followed by 20 seconds of rest, repeated for a set number of rounds. This 2:1 work-to-rest ratio is a popular intermediate protocol — harder than the equal 30/30 split used in beginner HIIT, but with enough rest to maintain quality form across all rounds. Eight rounds at 40/20 totals 8 minutes of active training time.",
+      },
+      {
+        question: "How do I choose the right work-to-rest ratio?",
+        answer:
+          "Your work-to-rest ratio should match your fitness goal and current level. A 1:2 ratio (e.g., 20s work / 40s rest) builds aerobic capacity for beginners. A 1:1 ratio (30s / 30s) is balanced and accessible. A 2:1 ratio (40s / 20s, this timer) increases intensity for intermediate athletes. A 4:1 ratio (e.g., Tabata's 20s / 10s) is advanced and primarily anaerobic.",
+      },
+      {
+        question: "Can I use this timer for strength training?",
+        answer:
+          "Yes. Timed sets work well for exercises like kettlebell swings, dumbbell presses, or bodyweight moves where counting reps can distract from effort. Use the 40-second work period to complete as many quality reps as possible, then rest for 20 seconds. This approach, sometimes called AMRAP-style (As Many Reps As Possible), ensures consistent training density across sets.",
+      },
+      {
+        question: "How many rounds should a workout have?",
+        answer:
+          "For a 40/20 format, 6 rounds equals 6 minutes of total interval time, 8 rounds equals 8 minutes, and 12 rounds equals 12 minutes. Most effective bodyweight and circuit sessions run 8–15 rounds (8–15 minutes of intervals). Add a 3–5 minute warm-up before and 3–5 minutes of cool-down stretching after for a complete workout.",
+      },
+      {
+        question: "What exercises work best in an interval format?",
+        answer:
+          "Compound movements that engage large muscle groups give the best return per interval: burpees, jump squats, push-ups, mountain climbers, dumbbell thrusters, kettlebell swings, and rowing or cycling sprints. Single-joint isolation exercises (bicep curls, lateral raises) are less effective for timed intervals because they fatigue too quickly and do not elevate the heart rate sufficiently.",
+      },
+    ]),
+    intro_html: `
+<p>A workout timer turns any space into a structured training environment. Instead of counting reps or watching a clock, you focus entirely on effort while the timer manages the work and rest intervals. This timer is pre-configured for a 40-second work, 20-second rest, 8-round format — a proven intermediate protocol that delivers 8 minutes of high-quality interval training.</p>
+
+<h2>Why Interval-Based Workouts Work</h2>
+<p>Interval training outperforms continuous-effort workouts for most fitness goals because it alternates between high-effort periods (which challenge your cardiovascular and muscular systems) and brief recovery periods (which allow partial recovery so you can sustain intensity across rounds). This structure keeps your average heart rate higher than a steady-state session of the same duration, burning more calories and building more cardiovascular capacity.</p>
+<p>The 2:1 work-to-rest ratio used by this timer (40 seconds on, 20 seconds off) keeps rest periods short enough that your heart rate stays elevated throughout the session. Research in the Journal of Strength and Conditioning Research shows that 2:1 intervals produce greater improvements in aerobic capacity and fat oxidation compared to equal work-rest ratios at the same total session time.</p>
+
+<h2>Interval Settings Cheat Sheet</h2>
+<p>Adjust this timer to match your training phase and goal:</p>
+<table>
+  <thead>
+    <tr><th>Training Level</th><th>Work</th><th>Rest</th><th>Rounds</th><th>Total Interval Time</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Beginner</td><td>20 s</td><td>40 s</td><td>6</td><td>6 min</td></tr>
+    <tr><td>Beginner–Intermediate</td><td>30 s</td><td>30 s</td><td>8</td><td>8 min</td></tr>
+    <tr><td>Intermediate (this timer)</td><td>40 s</td><td>20 s</td><td>8</td><td>8 min</td></tr>
+    <tr><td>Intermediate–Advanced</td><td>40 s</td><td>20 s</td><td>12</td><td>12 min</td></tr>
+    <tr><td>Advanced (Tabata-style)</td><td>20 s</td><td>10 s</td><td>8</td><td>4 min</td></tr>
+    <tr><td>Strength circuit</td><td>45 s</td><td>60 s</td><td>5</td><td>8.75 min</td></tr>
+  </tbody>
+</table>
+
+<h2>Sample 8-Minute Circuit Workout</h2>
+<p>Using this timer's 40/20 × 8 configuration, rotate through two exercises:</p>
+<ul>
+  <li><strong>Rounds 1, 3, 5, 7:</strong> Burpees (full push-up version) or modified step-out burpees</li>
+  <li><strong>Rounds 2, 4, 6, 8:</strong> Jump squats or bodyweight squats</li>
+</ul>
+<p>Rest for 2 minutes, then complete a second circuit with upper-body focus: push-ups (odd rounds) and mountain climbers (even rounds).</p>
+
+<h2>How to Structure a Complete Session</h2>
+<h3>Warm up (3–5 minutes)</h3>
+<p>Dynamic stretching and light cardio: leg swings, arm circles, jumping jacks, high knees. Cold muscles are injury-prone — a warm-up is not optional.</p>
+
+<h3>Intervals (this timer)</h3>
+<p>Run 1–3 circuits of 8 rounds each, resting 2 minutes between circuits. For a 20-minute session: warm-up (5 min) + two circuits (8 min each) + cool-down (4 min).</p>
+
+<h3>Cool down (3–5 minutes)</h3>
+<p>Static holds for 30 seconds each: hip flexor stretch, hamstring stretch, chest opener, spinal twist. Cooling down while the heart rate is still slightly elevated accelerates lactic acid clearance.</p>
+
+<h2>Progression Over Time</h2>
+<p>Once you complete all 8 rounds with good form and feel you could do more, progress by: adding rounds (8 → 10 → 12), shortening rest (20s → 15s → 10s), or adding a second circuit. Avoid increasing multiple variables at once — change one parameter per week.</p>
+
+<p>For more intense conditioning, see the <a href="/hiit-timer">HIIT timer</a> (30/30 × 10) and the Tabata-style protocol (20/10 × 8). For longer steady-state training sessions, the <a href="/60-minute-timer">60-minute timer</a> gives you a simple countdown without interval prompts.</p>
+`,
+  },
+
+  {
+    slug: "boxing-timer",
+    title: "Free Boxing Timer Online — Round Timer for Training",
+    meta_title: "Free Boxing Timer — Round Timer for Boxing, MMA & Muay Thai",
+    meta_description:
+      "Start a free boxing round timer with 3-minute rounds and 1-minute rest. Configurable for MMA, Muay Thai, kickboxing, and shadowboxing. No app needed.",
+    timer_type: "round-timer",
+    timer_config_json: JSON.stringify({
+      round_duration: 180,
+      rest_duration: 60,
+      rounds: 12,
+    }),
+    status: "published",
+    published_at: new Date().toISOString(),
+    category_slug: "fitness",
+    faq_json: JSON.stringify([
+      {
+        question: "How long is a boxing round?",
+        answer:
+          "Professional boxing rounds are 3 minutes with 1 minute of rest between rounds. Amateur boxing uses 2-minute rounds with 1 minute of rest. Title fights are typically 12 rounds; non-title bouts are 8–10 rounds. Training rounds generally mirror competition formats, though many coaches use 3-minute rounds regardless of level to build conditioning.",
+      },
+      {
+        question: "How many rounds should I train per session?",
+        answer:
+          "Beginners typically start with 3–6 rounds of bag work or shadow boxing. Intermediate fighters train 8–10 rounds. Advanced fighters and those preparing for competition may complete 12–15 rounds split across different activities: shadow boxing, heavy bag, mitts, sparring, and conditioning. Start conservatively and add one round per week as your conditioning improves.",
+      },
+      {
+        question: "What is the rest period in boxing for?",
+        answer:
+          "The 1-minute rest period between rounds serves several purposes: it allows partial cardiovascular recovery, provides a window for coaching feedback, lets fighters rehydrate, and mirrors the physical rhythm of actual competition. In training, use the rest period actively — breathe deliberately, shake out your arms, review what you worked on in the previous round.",
+      },
+      {
+        question: "How is MMA timing different from boxing?",
+        answer:
+          "UFC and most MMA promotions use 5-minute rounds with 1 minute of rest. Non-championship bouts are 3 rounds (15 minutes total); championship fights are 5 rounds (25 minutes). This longer round duration demands more sustained aerobic conditioning compared to boxing. Muay Thai uses 3-minute rounds but with 2 minutes of rest — a more generous recovery period than boxing's 1 minute.",
+      },
+      {
+        question: "Can I use this timer for shadow boxing?",
+        answer:
+          "Yes. Shadow boxing is one of the most valuable training tools in combat sports — it builds movement patterns, footwork, combinations, and defensive reflexes without a partner. Use the same round/rest structure as bag work: 3 minutes on, 1 minute off. Many coaches dedicate the first 3–6 rounds of any session to shadow boxing as a warm-up and technique rehearsal.",
+      },
+      {
+        question: "What is a 10-count in boxing?",
+        answer:
+          "A 10-count is the referee's knockdown count: if a boxer goes to the canvas, the referee counts to 10. If the boxer does not rise before the count reaches 10, they are knocked out. The 10-count is separate from the round timer — the timer pauses while the count proceeds. In training, this timer does not replicate the 10-count, as it is designed for continuous round training.",
+      },
+    ]),
+    intro_html: `
+<p>A boxing timer structures your training around rounds — the fundamental unit of combat sports conditioning. This timer is configured for 12 rounds of 3 minutes with 1-minute rest, matching professional boxing's round structure. Whether you are working the heavy bag, hitting mitts, shadow boxing, or doing round-based conditioning drills, having an accurate round timer keeps your training true to competition demands.</p>
+
+<h2>Round Lengths by Combat Sport Discipline</h2>
+<p>Different combat sports use different timing formats. Use this table to reconfigure the timer to match your discipline:</p>
+<table>
+  <thead>
+    <tr><th>Discipline</th><th>Round Duration</th><th>Rest Duration</th><th>Typical Rounds</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Amateur Boxing</td><td>2 min</td><td>1 min</td><td>3–4</td></tr>
+    <tr><td>Professional Boxing (this timer)</td><td>3 min</td><td>1 min</td><td>8–12</td></tr>
+    <tr><td>MMA / UFC</td><td>5 min</td><td>1 min</td><td>3 or 5</td></tr>
+    <tr><td>Muay Thai</td><td>3 min</td><td>2 min</td><td>5</td></tr>
+    <tr><td>Kickboxing</td><td>2–3 min</td><td>1 min</td><td>3–5</td></tr>
+    <tr><td>Shadow Boxing (training warm-up)</td><td>3 min</td><td>1 min</td><td>3–6</td></tr>
+  </tbody>
+</table>
+
+<h2>How to Structure a Boxing Training Session</h2>
+<h3>Warm-up (2–3 rounds)</h3>
+<p>Start every session with light shadow boxing at 50–60% intensity. Focus on movement patterns: footwork, head movement, basic combinations. This warms the rotator cuffs, hips, and neck — joints that take significant stress in boxing — before you add resistance or intensity.</p>
+
+<h3>Technique rounds (3–4 rounds)</h3>
+<p>Work specific combinations on the heavy bag or mitts at 70–80% intensity. Use the rest periods to review the combination mentally and plan adjustments. Quality of movement matters more than punch volume during technique rounds.</p>
+
+<h3>Conditioning rounds (3–5 rounds)</h3>
+<p>Push to 85–95% intensity. These rounds build the cardiovascular base and mental toughness needed for later rounds in a fight. Focus on maintaining output as fatigue builds — the ability to throw clean punches in round 10 is trained in round 10 of practice, not round 3.</p>
+
+<h3>Cool-down (1–2 rounds)</h3>
+<p>Drop to 40–50% intensity for light shadow boxing, focusing on breathing, movement, and loosening up. Follow with static stretching of the shoulders, hip flexors, and thoracic spine.</p>
+
+<h2>Conditioning the Aerobic and Anaerobic Systems</h2>
+<p>Boxing demands both aerobic capacity (sustaining output across 12 rounds) and anaerobic power (explosive combinations). Round-based training naturally conditions both systems. Aerobic work builds the base that allows faster recovery between explosive bursts. Anaerobic conditioning builds the capacity to throw hard combinations late in rounds when lactic acid accumulates.</p>
+<p>For supplemental conditioning, see the <a href="/round-timer">round timer</a> for general-purpose round training and the <a href="/hiit-timer">HIIT timer</a> for non-boxing interval conditioning sessions.</p>
+
+<h2>Tips for Heavy Bag Work</h2>
+<ul>
+  <li><strong>Move your feet constantly:</strong> A stationary fighter is an easy target. Circle, step in to punch, step out after combinations.</li>
+  <li><strong>Work the full bag:</strong> Mix body shots (aim for the lower third of the bag) with head shots (middle third). Body work is often neglected in training.</li>
+  <li><strong>Use the rest period deliberately:</strong> Breathe in through the nose, out through the mouth. Shake out your shoulders. Visualize the next round's game plan.</li>
+  <li><strong>Maintain guard:</strong> Your hands should return to guard position after every combination. Fatigue causes guard drops — training consciously against this builds the habit.</li>
+</ul>
+`,
+  },
+
+  {
+    slug: "calisthenics-timer",
+    title: "Free Calisthenics Timer Online — Bodyweight Workout Timer",
+    meta_title: "Free Calisthenics Timer Online | GoTimer",
+    meta_description:
+      "Start a free calisthenics interval timer with 45-second work intervals and 15-second rest. Perfect for push-ups, pull-ups, dips, and squats. No app needed.",
+    timer_type: "interval",
+    timer_config_json: JSON.stringify({ work: 45, rest: 15, rounds: 10 }),
+    status: "published",
+    published_at: new Date().toISOString(),
+    category_slug: "fitness",
+    faq_json: JSON.stringify([
+      {
+        question: "What is calisthenics?",
+        answer:
+          "Calisthenics is a form of strength training that uses your own body weight as resistance. The word comes from the Greek 'kalos' (beautiful) and 'sthenos' (strength). Foundational movements include push-ups, pull-ups, dips, squats, lunges, and planks. Advanced calisthenics includes movements like muscle-ups, handstand push-ups, front levers, and human flags — feats that require significant relative strength.",
+      },
+      {
+        question: "Why use a timer for calisthenics instead of counting reps?",
+        answer:
+          "Time-based training normalizes the training stimulus regardless of how many reps you can do. A beginner doing 10 push-ups in 45 seconds and an intermediate athlete doing 25 push-ups in 45 seconds both train for the same duration. As strength improves, the rep count naturally increases without changing the timer settings. This makes progression automatic and removes the cognitive load of counting.",
+      },
+      {
+        question: "What is a good calisthenics routine for beginners?",
+        answer:
+          "Start with foundational movements: push-ups (modify on knees if needed), bodyweight squats, reverse lunges, glute bridges, and plank holds. Use a 30-second work, 30-second rest protocol for 6–8 rounds. As you progress, reduce rest time and increase rounds. Aim to train 3 days per week with at least one rest day between sessions.",
+      },
+      {
+        question: "How does the 45/15 interval format work for calisthenics?",
+        answer:
+          "The 45-second work interval is long enough to accumulate meaningful training volume (15–30 reps for most movements at moderate pace) while the 15-second rest period provides minimal recovery — just enough to transition to the next exercise or catch your breath. This 3:1 work-to-rest ratio is demanding and appropriate for intermediate calisthenics athletes. Beginners should start with 30/30 or 35/25.",
+      },
+      {
+        question: "Can calisthenics build muscle mass?",
+        answer:
+          "Yes. Studies published in the Journal of Human Kinetics show that progressive calisthenics produces comparable muscle hypertrophy to resistance training when volume and progressive overload are applied. The key is progression: move from standard push-ups to archer push-ups to one-arm push-ups as strength increases, maintaining the stimulus needed for muscle growth.",
+      },
+      {
+        question: "How do I progress in calisthenics over time?",
+        answer:
+          "Progression in calisthenics comes from increasing difficulty rather than adding weight. Move through exercise progressions: push-up → close-grip push-up → pike push-up → elevated pike push-up → wall handstand push-up. For lower body: squat → Bulgarian split squat → pistol squat. Increase rounds, shorten rest periods, and move to harder exercise variants as each level becomes comfortable.",
+      },
+    ]),
+    intro_html: `
+<p>Calisthenics builds genuine, functional strength using nothing but your body weight. This timer is configured for a 45-second work interval with 15 seconds of rest across 10 rounds — an intermediate protocol that produces 7.5 minutes of total work time in a single circuit. No equipment, no gym membership, no excuses.</p>
+
+<h2>Why Body Weight Training Works</h2>
+<p>The core principle of all strength training is progressive overload: the body adapts to a stimulus by getting stronger, requiring a greater stimulus to continue adapting. In weight training, you add plates. In calisthenics, you progress through movement variations that change leverage, range of motion, and stability demands. A standard push-up becomes a close-grip push-up, then an archer push-up, then a one-arm push-up. Each variation demands more from the same muscles.</p>
+<p>Research comparing calisthenics to weight training has consistently found that calisthenics produces equivalent gains in upper-body strength and muscle mass when volume is matched. The added benefits: no gym required, joint-friendly loading patterns, and built-in core engagement in nearly every movement.</p>
+
+<h2>4-Week Beginner-to-Intermediate Progression</h2>
+<p>Use this schedule to progress from a 30/30 beginner protocol to the 45/15 intermediate setting of this timer:</p>
+<table>
+  <thead>
+    <tr><th>Week</th><th>Work</th><th>Rest</th><th>Rounds</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Week 1 (Beginner)</td><td>30 s</td><td>30 s</td><td>6</td><td>Prioritize form; use modified versions if needed</td></tr>
+    <tr><td>Week 2</td><td>35 s</td><td>25 s</td><td>7</td><td>Introduce one harder exercise variant per movement</td></tr>
+    <tr><td>Week 3</td><td>40 s</td><td>20 s</td><td>8</td><td>Increase intensity; full-range reps throughout</td></tr>
+    <tr><td>Week 4 (Intermediate)</td><td>45 s</td><td>15 s</td><td>10</td><td>This timer's setting; sustain quality across all 10 rounds</td></tr>
+  </tbody>
+</table>
+
+<h2>Sample 10-Round Calisthenics Circuit</h2>
+<p>Rotate through five exercises, completing each twice across 10 rounds:</p>
+<ul>
+  <li><strong>Rounds 1 &amp; 6:</strong> Push-ups (or archer push-ups for advanced)</li>
+  <li><strong>Rounds 2 &amp; 7:</strong> Bodyweight squats (or Bulgarian split squats)</li>
+  <li><strong>Rounds 3 &amp; 8:</strong> Reverse lunges (alternating legs)</li>
+  <li><strong>Rounds 4 &amp; 9:</strong> Pike push-ups (targets shoulders) or dips</li>
+  <li><strong>Rounds 5 &amp; 10:</strong> Mountain climbers or plank holds</li>
+</ul>
+<p>Rest 90 seconds after completing all 10 rounds, then optionally repeat for a second circuit focusing on pull-based movements (inverted rows, pull-ups, or band pull-aparts).</p>
+
+<h2>Key Movement Progressions</h2>
+<h3>Push (chest, shoulders, triceps)</h3>
+<p>Incline push-up → standard push-up → close-grip push-up → archer push-up → pike push-up → elevated pike push-up → handstand push-up (wall-assisted).</p>
+
+<h3>Pull (back, biceps)</h3>
+<p>Dead hang → scapular pulls → inverted row → assisted pull-up → pull-up → close-grip pull-up → L-sit pull-up → muscle-up.</p>
+
+<h3>Legs (quadriceps, glutes, hamstrings)</h3>
+<p>Bodyweight squat → pause squat → Bulgarian split squat → single-leg box squat → pistol squat.</p>
+
+<h2>Rest, Recovery, and Frequency</h2>
+<p>Calisthenics creates significant muscle damage that requires recovery. For beginners, 3 sessions per week with rest days between is optimal. Intermediate athletes can train 4–5 days by splitting upper and lower body focus. Sleep quality, protein intake (1.6–2.2 g per kg of body weight), and hydration all directly affect the rate of adaptation.</p>
+
+<p>For related training formats, the <a href="/hiit-timer">HIIT timer</a> (30/30 × 10) provides a shorter, cardio-focused alternative. The <a href="/workout-timer">workout timer</a> (40/20 × 8) bridges calisthenics and general conditioning work. For longer Tabata-inspired intervals, adjust this timer to 20/10 × 8 for a 4-minute all-out session.</p>
+`,
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -1508,9 +1795,9 @@ const pages: TimerPage[] = [
 
 const stmt = db.prepare(`
   INSERT OR REPLACE INTO timer_pages
-    (id, slug, title, intro_html, faq_json, meta_title, meta_description, timer_type, timer_config_json, status, published_at, created_at, updated_at)
+    (id, slug, title, intro_html, faq_json, meta_title, meta_description, timer_type, timer_config_json, status, published_at, category_slug, created_at, updated_at)
   VALUES
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
 `);
 
 const insert_all = db.transaction(() => {
@@ -1527,7 +1814,8 @@ const insert_all = db.transaction(() => {
       page.timer_type,
       page.timer_config_json,
       page.status,
-      page.published_at
+      page.published_at,
+      page.category_slug ?? ""
     );
     console.log(`  Seeded: ${page.slug}`);
   }
