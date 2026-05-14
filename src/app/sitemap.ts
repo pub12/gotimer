@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 import { get_db } from "@/lib/db";
 import { STRATEGIES, PRESETS, CATEGORIES } from "@/lib/timer-registry";
 
+// Force dynamic rendering so new blog posts and timer pages appear in the
+// sitemap immediately after publishing — without requiring a full redeploy.
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://gotimer.org";
 
