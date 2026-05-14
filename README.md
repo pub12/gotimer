@@ -65,7 +65,7 @@ Required variables:
 | `NEXTAUTH_URL` | App base URL (e.g., `http://localhost:3000` for dev) |
 | `HAZO_AUTH_GOOGLE_CLIENT_ID` | Google OAuth client ID from [Google Cloud Console](https://console.cloud.google.com/apis/credentials) |
 | `HAZO_AUTH_GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
-| `HAZO_CONNECT_SQLITE_PATH` | SQLite database path (default: `./data/hazo_auth.sqlite`) |
+| `HAZO_CONNECT_SQLITE_PATH` | SQLite database path (default: `./data/gotimer.sqlite`) |
 | `GIPHY_API_KEY` | GIPHY API key from [developers.giphy.com](https://developers.giphy.com/) |
 
 Optional:

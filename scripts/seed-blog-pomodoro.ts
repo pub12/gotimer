@@ -10,7 +10,7 @@ import crypto from "crypto";
 
 const project_root = path.resolve(__dirname, "..");
 const db_dir = path.resolve(project_root, "data");
-const db_path = path.resolve(db_dir, "hazo_auth.sqlite");
+const db_path = process.env.HAZO_CONNECT_SQLITE_PATH ?? path.resolve(db_dir, "gotimer.sqlite");
 
 if (!fs.existsSync(db_dir)) {
   fs.mkdirSync(db_dir, { recursive: true });

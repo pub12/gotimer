@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import fs from "fs";
 import path from "path";
 import { seed_defaults } from "./seed-defaults";
 
@@ -6,7 +7,20 @@ let db: Database.Database | null = null;
 
 export function get_db(): Database.Database {
   if (!db) {
-    const db_path = path.resolve(process.cwd(), "data", "hazo_auth.sqlite");
+    const db_path =
+      process.env.HAZO_CONNECT_SQLITE_PATH ??
+      path.resolve(process.cwd(), "data", "gotimer.sqlite");
+    // One-time rename: if the new path doesn't exist but the old name does, migrate it.
+    if (!process.env.HAZO_CONNECT_SQLITE_PATH && !fs.existsSync(db_path)) {
+      const legacy = path.resolve(process.cwd(), "data", "hazo_auth.sqlite");
+      if (fs.existsSync(legacy)) {
+        fs.renameSync(legacy, db_path);
+        for (const ext of ["-wal", "-shm"]) {
+          const src = legacy + ext;
+          if (fs.existsSync(src)) fs.renameSync(src, db_path + ext);
+        }
+      }
+    }
     db = new Database(db_path);
     db.pragma("journal_mode = WAL");
     db.pragma("foreign_keys = ON");
