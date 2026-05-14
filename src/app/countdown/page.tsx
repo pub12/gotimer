@@ -32,17 +32,18 @@ const COUNTDOWN_FAQ = [
   {
     question: "What is the difference between a countdown timer and a stopwatch?",
     answer:
-      "A countdown timer starts at a set duration and counts <strong>down to zero</strong>, alerting you when time expires. A stopwatch counts <strong>up from zero</strong> indefinitely. Use a countdown when you need a deadline (cooking, board games, presentations) and a stopwatch when you want to measure elapsed time. Our <a href='/round-timer'>Round Timer</a> functions as a count-up timer with lap tracking.",
+      "A countdown timer starts at a set duration and counts <strong>down to zero</strong>, alerting you when time expires. A stopwatch counts <strong>up from zero</strong> indefinitely. Use a countdown when you need a deadline (cooking, board games, presentations) and a stopwatch when you want to measure elapsed time. Try our <a href='/stopwatch'>Stopwatch</a> for centisecond precision with lap recording.",
   },
 ];
 
 const RELATED_TIMERS = [
   { name: "Chess Clock", href: "/chess-clock", description: "Two-player clock with individual time banks for competitive play" },
-  { name: "Round Timer", href: "/round-timer", description: "Count-up timer with round tracking for tournaments and sessions" },
+  { name: "Round Timer", href: "/round-timer", description: "Work/rest interval timer with configurable round lengths for sports and training" },
   { name: "Turn Timer", href: "/board-games/turn-timer", description: "Multi-player countdown for board game turns (2-8 players)" },
   { name: "Cooking Timer", href: "/kitchen/cooking", description: "Kitchen countdown with audio alerts for recipes and meal prep" },
   { name: "Study Timer", href: "/productivity/study", description: "Pomodoro-style focus timer for deep work and study sessions" },
   { name: "Tabata Timer", href: "/fitness/tabata", description: "Classic 20s work / 10s rest high-intensity interval protocol" },
+  { name: "Stopwatch", href: "/stopwatch", description: "Count-up timer with centisecond precision and lap recording" },
 ];
 
 function CountdownPageContent() {

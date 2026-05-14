@@ -30,6 +30,9 @@ export type { TurnTimerState, TurnTimerConfig, TurnPlayer } from "./turn-timer";
 export { enlargerStrategy } from "./enlarger";
 export type { EnlargerState, EnlargerConfig, EnlargerMode } from "./enlarger";
 
+export { stopwatchStrategy } from "./stopwatch";
+export type { StopwatchState, StopwatchLap } from "./stopwatch";
+
 import type { TimerStrategy } from "./types";
 import { countdownStrategy } from "./countdown";
 import { chessClockStrategy } from "./chess-clock";
@@ -41,6 +44,7 @@ import { calculatorTimerStrategy } from "./calculator-timer";
 import { multiTimerStrategy } from "./multi-timer";
 import { turnTimerStrategy } from "./turn-timer";
 import { enlargerStrategy } from "./enlarger";
+import { stopwatchStrategy } from "./stopwatch";
 
 /** Registry of all timer strategies, keyed by type string */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,6 +59,7 @@ export const STRATEGY_REGISTRY: Record<string, TimerStrategy<any>> = {
   "multi-timer": multiTimerStrategy,
   "turn-timer": turnTimerStrategy,
   enlarger: enlargerStrategy,
+  stopwatch: stopwatchStrategy,
 };
 
 /** Look up a strategy by type string */

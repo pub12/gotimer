@@ -190,6 +190,18 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
     route: "/countdown",
     sitemapPriority: 0.5,
   },
+
+  stopwatch: {
+    id: "stopwatch",
+    name: "Stopwatch",
+    description:
+      "Count-up timer with centisecond precision and lap recording.",
+    defaultConfig: {},
+    supportedParams: [],
+    route: "/stopwatch",
+    embedRoute: "/stopwatch/embed",
+    sitemapPriority: 0.9,
+  },
 };
 
 // ---------------------------------------------------------------------------

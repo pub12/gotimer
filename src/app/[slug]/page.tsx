@@ -33,6 +33,7 @@ const RESERVED_SLUGS = new Set([
   "kitchen",
   // Studio
   "studio",
+  "stopwatch",
 ]);
 
 type TimerPage = {

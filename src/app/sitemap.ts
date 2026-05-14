@@ -23,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/privacy-policy`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/terms-of-service`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/docs/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/stopwatch/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.6 },
   ];
 
   // Strategy routes (timer pages + setup pages), deduplicated
