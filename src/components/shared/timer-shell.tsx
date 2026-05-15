@@ -206,10 +206,15 @@ export default function TimerShell({
     return params;
   }, [user_title, duration, interval, fs_scale, theme_id, flash_at, extra_params, defaults]);
 
-  // Update URL silently
+  // Update URL silently. Skip when the URL would be unchanged to avoid Safari's
+  // 100-replaceState-per-10s rate limit (which manifests as buttons not hydrating).
   useEffect(() => {
     const qs = build_params().toString();
-    window.history.replaceState(null, "", `${pathname}${qs ? `?${qs}` : ""}`);
+    const next_url = `${pathname}${qs ? `?${qs}` : ""}`;
+    const current_url = window.location.pathname + window.location.search;
+    if (current_url !== next_url) {
+      window.history.replaceState(null, "", next_url);
+    }
   }, [build_params, pathname]);
 
   // Fullscreen

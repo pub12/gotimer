@@ -1519,7 +1519,7 @@ const pages: TimerPage[] = [
     meta_description:
       "Start a free workout timer with 40-second work and 20-second rest intervals across 8 rounds. Perfect for circuit training, bodyweight workouts, and strength conditioning. No app needed.",
     timer_type: "interval",
-    timer_config_json: JSON.stringify({ work: 40, rest: 20, rounds: 8 }),
+    timer_config_json: JSON.stringify({ work_seconds: 40, rest_seconds: 20, rounds: 8 }),
     status: "published",
     published_at: new Date().toISOString(),
     category_slug: "fitness",
@@ -1609,10 +1609,10 @@ const pages: TimerPage[] = [
     meta_title: "Free Boxing Timer — Round Timer for Boxing, MMA & Muay Thai",
     meta_description:
       "Start a free boxing round timer with 3-minute rounds and 1-minute rest. Configurable for MMA, Muay Thai, kickboxing, and shadowboxing. No app needed.",
-    timer_type: "round-timer",
+    timer_type: "interval",
     timer_config_json: JSON.stringify({
-      round_duration: 180,
-      rest_duration: 60,
+      work_seconds: 180,
+      rest_seconds: 60,
       rounds: 12,
     }),
     status: "published",
@@ -1703,7 +1703,7 @@ const pages: TimerPage[] = [
     meta_description:
       "Start a free calisthenics interval timer with 45-second work intervals and 15-second rest. Perfect for push-ups, pull-ups, dips, and squats. No app needed.",
     timer_type: "interval",
-    timer_config_json: JSON.stringify({ work: 45, rest: 15, rounds: 10 }),
+    timer_config_json: JSON.stringify({ work_seconds: 45, rest_seconds: 15, rounds: 10 }),
     status: "published",
     published_at: new Date().toISOString(),
     category_slug: "fitness",

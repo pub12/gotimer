@@ -22,6 +22,10 @@ const TIMER_ROUTE_MAP: Record<string, string> = {
   "meditation": "/meditation-timer",
   "adhd-focus": "/adhd-focus-timer",
   "presentation": "/presentation-timer",
+  // DB-backed fitness pages at root routes
+  "workout-timer": "/workout-timer",
+  "boxing-timer": "/boxing-timer",
+  "calisthenics-timer": "/calisthenics-timer",
 };
 
 export function TimerCard({ timer, category_slug }: TimerCardProps) {
