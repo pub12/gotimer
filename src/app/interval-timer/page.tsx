@@ -139,51 +139,152 @@ export default function IntervalTimerPage() {
           faq={INTERVAL_TIMER_FAQ}
           related_timers={RELATED_TIMERS}
         >
-          <h2>What Is Interval Training?</h2>
+          <h2>What is an interval timer?</h2>
           <p>
-            Interval training alternates between periods of higher-intensity effort and
-            lower-intensity recovery. Instead of working at a steady pace for the entire workout,
-            you push hard for a set period, then recover, and repeat. This structure lets you
-            accumulate more high-intensity work than you could sustain continuously — improving
-            cardiovascular fitness and burning more calories than steady-state cardio in less time.
+            An interval timer is a workout timer that automatically alternates between
+            higher-intensity work periods and lower-intensity rest periods. Instead of running
+            at a steady pace, you push hard for a set duration, recover for a set duration, and
+            repeat for a number of rounds. This structure — known as interval training — lets
+            you accumulate more high-intensity work than you could sustain continuously,
+            improving cardiovascular fitness and burning more calories than steady-state cardio
+            in less total time.
           </p>
           <p>
-            An interval timer manages the work and rest periods automatically so you can focus
-            entirely on the effort, not on watching the clock.
+            A good interval timer manages the work and rest periods automatically with audio
+            cues, so you can focus entirely on the effort and never have to watch the clock.
+            GoTimer&apos;s free online interval timer handles all the popular formats — HIIT, Tabata,
+            EMOM, and fully custom intervals — with full-screen display and no app install.
           </p>
 
-          <h2>HIIT vs. Tabata vs. EMOM</h2>
+          <h2>Why use an interval timer instead of a stopwatch?</h2>
           <p>
-            The three most common interval formats each have distinct structures and goals:
+            Running intervals from a stopwatch means constantly switching attention between
+            your form and the screen. You miss the start of rest periods, your work intervals
+            drift, and your heart rate never settles into the rhythm the protocol is designed
+            for. An interval timer fixes this with three things a stopwatch can&apos;t:
           </p>
           <ul>
             <li>
-              <strong>HIIT (High-Intensity Interval Training)</strong> — the umbrella term for any
-              workout alternating high-intensity effort with rest. Work-to-rest ratio is flexible:
-              40s/20s, 30s/30s, 45s/15s. Use the <a href="/fitness/hiit">HIIT timer</a> when you
-              want full control over work duration, rest duration, and round count.
+              <strong>Audio cues at every transition.</strong> A clear beep marks the switch
+              from work to rest and back, so you don&apos;t need to look at the screen.
+            </li>
+            <li>
+              <strong>Automatic round counting.</strong> You don&apos;t have to remember which
+              round you&apos;re on — the timer tracks it and stops when you&apos;re done.
+            </li>
+            <li>
+              <strong>Total time visibility.</strong> Full-screen mode shows you what&apos;s
+              coming next and how long is left in the current interval, so pacing decisions
+              are easy.
+            </li>
+          </ul>
+
+          <h2>HIIT vs Tabata vs EMOM — which interval timer protocol should you use?</h2>
+          <p>The three most common interval training formats each have distinct structures and goals:</p>
+          <ul>
+            <li>
+              <strong>HIIT (High-Intensity Interval Training)</strong> — the umbrella term for
+              any workout alternating high-intensity effort with rest. Work-to-rest ratio is
+              flexible: 40s/20s, 30s/30s, 45s/15s. Use the <Link href="/fitness/hiit">HIIT timer</Link>{" "}
+              when you want full control over work duration, rest duration, and round count.
+              Best for: general conditioning, fat loss, varied protocols.
             </li>
             <li>
               <strong>Tabata</strong> — a specific protocol: 20 seconds of all-out effort, 10
               seconds of rest, 8 rounds (4 minutes per exercise). The fixed structure makes it
-              simple to execute and easy to compare progress. Use the{" "}
-              <a href="/fitness/tabata">Tabata timer</a> when you want a proven protocol with no
-              configuration.
+              simple to execute and easy to compare progress over time. Use the{" "}
+              <Link href="/fitness/tabata">Tabata timer</Link> when you want a proven protocol
+              with no configuration. Best for: maximum intensity in minimum time.
             </li>
             <li>
-              <strong>EMOM (Every Minute on the Minute)</strong> — complete a prescribed set of
-              reps within each 60-second minute; rest the remainder. Popular in CrossFit and
-              weightlifting for building work capacity and pacing. Use the{" "}
-              <a href="/fitness/emom">EMOM timer</a> for strength circuits and conditioning blocks.
+              <strong>EMOM (Every Minute on the Minute)</strong> — complete a prescribed set
+              of reps within each 60-second minute; rest the remainder. Popular in CrossFit
+              and weightlifting for building work capacity and pacing. Use the{" "}
+              <Link href="/fitness/emom">EMOM timer</Link> for strength circuits and
+              conditioning blocks. Best for: strength endurance, controlled pacing.
             </li>
           </ul>
 
-          <h2>How to Choose the Right Interval Timer</h2>
+          <h2>How to choose the right interval timer settings</h2>
+          <p>
+            Your interval timer settings should match your goal and current fitness level. A
+            few starting points:
+          </p>
           <ul>
-            <li><strong>New to intervals?</strong> Start with <a href="/fitness/hiit">HIIT</a> at 30s on / 30s off — the equal work-rest ratio is manageable.</li>
-            <li><strong>Short on time?</strong> <a href="/fitness/tabata">Tabata</a> delivers maximum intensity in exactly 4 minutes per exercise.</li>
-            <li><strong>Strength training?</strong> <a href="/fitness/emom">EMOM</a> keeps rest honest and builds consistent pacing for barbell or kettlebell work.</li>
-            <li><strong>Custom protocol?</strong> <a href="/fitness/hiit">HIIT</a> lets you dial in any work/rest/rounds combination.</li>
+            <li>
+              <strong>New to intervals?</strong> Start with{" "}
+              <Link href="/fitness/hiit">HIIT</Link> at 30s on / 30s off for 8 rounds
+              (8 minutes total). The 1:1 work-rest ratio is the most manageable entry point.
+            </li>
+            <li>
+              <strong>Intermediate, short on time?</strong>{" "}
+              <Link href="/fitness/tabata">Tabata</Link> delivers maximum intensity in exactly
+              4 minutes per exercise. Two Tabatas with 1 minute between is a complete 9-minute
+              workout.
+            </li>
+            <li>
+              <strong>Strength training?</strong>{" "}
+              <Link href="/fitness/emom">EMOM</Link> keeps rest honest and builds consistent
+              pacing for barbell or kettlebell work. Start with 10 minutes of EMOM at a
+              manageable rep count.
+            </li>
+            <li>
+              <strong>Running intervals?</strong> Try 60s work / 60s easy jog for 10 rounds —
+              effective for both 5K training and general aerobic capacity.
+            </li>
+            <li>
+              <strong>Custom protocol?</strong>{" "}
+              <Link href="/fitness/hiit">HIIT</Link> lets you dial in any work/rest/rounds
+              combination, from 10s/50s recovery work all the way to 90s/30s long-effort
+              intervals.
+            </li>
+          </ul>
+
+          <h2>Interval timer exercise ideas</h2>
+          <p>
+            An interval timer pairs with almost any bodyweight or weighted exercise. Some
+            popular rotations:
+          </p>
+          <ul>
+            <li>
+              <strong>Full-body HIIT (no equipment):</strong> burpees → mountain climbers →
+              squat jumps → high knees → push-ups → plank shoulder taps. 40s work / 20s rest
+              for 2 rounds of each (12 minutes total).
+            </li>
+            <li>
+              <strong>Tabata cardio finisher:</strong> jumping jacks for one Tabata, then
+              squat jumps for another. 8 minutes of work, done.
+            </li>
+            <li>
+              <strong>Kettlebell EMOM:</strong> 10 kettlebell swings every minute on the
+              minute for 10 minutes. 100 swings, brutal but achievable.
+            </li>
+            <li>
+              <strong>Running 30/30s:</strong> sprint 30 seconds, jog 30 seconds, repeat 10
+              times. Treadmill or outdoor.
+            </li>
+          </ul>
+
+          <h2>Tips for getting the most out of an online interval timer</h2>
+          <ul>
+            <li>
+              <strong>Use full-screen mode.</strong> Tap the full-screen icon so the
+              countdown and round number are visible from across the room. Especially
+              useful for floor exercises.
+            </li>
+            <li>
+              <strong>Set volume high enough.</strong> Audio cues only work if you can hear
+              them over your breathing. Test before starting.
+            </li>
+            <li>
+              <strong>Prop your device at eye level.</strong> Looking down at a flat phone
+              breaks form on burpees and squats. Stand the device on a chair or counter.
+            </li>
+            <li>
+              <strong>Warm up before high-intensity intervals.</strong> 3–5 minutes of light
+              movement reduces injury risk and lets your first hard interval feel like a
+              hard interval, not a panicked sprint.
+            </li>
           </ul>
         </TimerSeoContent>
       </main>

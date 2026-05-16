@@ -112,7 +112,18 @@ export default async function BlogPostPage({ params }: PageProps) {
       })
     : null;
 
-  const read_time = Math.max(3, Math.ceil((post.content?.length ?? 0) / 1000));
+  // Strip MDX/HTML for word count (rough — counts text words only)
+  const content_text = (post.content ?? "").replace(/<[^>]+>/g, " ").replace(/[*_`#>\[\](){}]/g, " ");
+  const word_count = content_text.split(/\s+/).filter(Boolean).length;
+  const read_time = Math.max(3, Math.ceil(word_count / 220));
+
+  // Absolute URL helper for image fields (schema.org prefers absolute)
+  const abs_url = (path: string | null | undefined): string | undefined => {
+    if (!path) return undefined;
+    if (path.startsWith("http")) return path;
+    return `https://gotimer.org${path.startsWith("/") ? "" : "/"}${path}`;
+  };
+  const post_image = abs_url(post.character_image) || "https://gotimer.org/gotimer_logo.png";
 
   // nosec: JSON-LD built from structured DB fields (title, dates, slug), not user HTML
   const article_json_ld = JSON.stringify({
@@ -120,8 +131,12 @@ export default async function BlogPostPage({ params }: PageProps) {
     "@type": "BlogPosting",
     headline: post.title,
     description: post.meta_description || undefined,
+    image: [post_image],
     datePublished: post.publish_date || undefined,
     dateModified: post.updated_at || post.publish_date || undefined,
+    inLanguage: "en",
+    articleSection: post.category_name || undefined,
+    wordCount: word_count || undefined,
     author: {
       "@type": "Person",
       name: "Pubs Abayasiri",
@@ -142,6 +157,23 @@ export default async function BlogPostPage({ params }: PageProps) {
     },
   });
 
+  // FAQPage schema — only emit when we have at least one FAQ item
+  const faq_json_ld =
+    faq_items.length > 0
+      ? JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq_items.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer,
+            },
+          })),
+        })
+      : null;
+
   return (
     <>
       {/* nosec: article_json_ld built from DB fields (title, dates), safe to inject */}
@@ -149,6 +181,13 @@ export default async function BlogPostPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: article_json_ld }}
       />
+      {faq_json_ld && (
+        // nosec: faq_json_ld built from DB fields (question/answer text), safe to inject
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: faq_json_ld }}
+        />
+      )}
       <Navbar />
       <main className="min-h-screen bg-surface pt-20">
         {/* Hero header */}

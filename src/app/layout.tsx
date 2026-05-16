@@ -19,11 +19,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXTAUTH_URL || "https://gotimer.org"),
   title: {
-    default: "Free Online Timer — Countdown, HIIT, Chess Clock & Leaderboards | GoTimer",
+    default: "GoTimer — Free Online Timers for Focus, Fitness & Games",
     template: "%s | GoTimer",
   },
   description:
-    "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed. Start in seconds.",
+    "Free online timers — Pomodoro, HIIT, chess clock, cooking, study and more. Built-in leaderboards, no login, start in seconds. 50+ ready-made timers.",
   keywords:
     "game timer, chess clock, countdown timer, round timer, board game timer, game challenges, board games, mobile timer, online timer, boardgame tracker, score tracking, adhd timer, pomodoro timer, focus timer",
   alternates: {
@@ -36,18 +36,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Free Online Timer — Countdown, HIIT, Chess Clock & Leaderboards | GoTimer",
+    title: "GoTimer — Free Online Timers for Focus, Fitness & Games",
     description:
-      "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed. Start in seconds.",
+      "Free online timers — Pomodoro, HIIT, chess clock, cooking, study and more. Built-in leaderboards, no login, start in seconds. 50+ ready-made timers.",
     type: "website",
     locale: "en_US",
     images: [{ url: "/fight.jpg", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Online Timer — Countdown, HIIT, Chess Clock & Leaderboards | GoTimer",
+    title: "GoTimer — Free Online Timers for Focus, Fitness & Games",
     description:
-      "Free countdown timers, Pomodoro, HIIT, chess clock, and more — with built-in leaderboards and rivalry tracking. No login needed.",
+      "Free online timers — Pomodoro, HIIT, chess clock, cooking, study and more. Built-in leaderboards, no login, start in seconds.",
     images: ["/fight.jpg"],
   },
 };

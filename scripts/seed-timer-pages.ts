@@ -221,68 +221,90 @@ const pages: TimerPage[] = [
 
   {
     slug: "15-minute-timer",
-    title: "Free 15 Minute Timer Online",
-    meta_title: "Free 15 Minute Timer Online | GoTimer",
+    title: "Free 15 Minute Timer Online — Countdown with Alarm",
+    meta_title: "Free 15 Minute Timer Online — Countdown with Alarm | GoTimer",
     meta_description:
-      "Start a free 15 minute countdown timer. Great for power naps, study breaks, HIIT sessions, and rice cooking. No app download required.",
+      "Free 15 minute timer with audio alarm. One-click start, full-screen mode, no app or signup. Perfect for power naps, HIIT, rice, study breaks, and meditation.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 900 }),
     status: "published",
     published_at: new Date().toISOString(),
     faq_json: JSON.stringify([
       {
+        question: "How do I start a 15 minute timer?",
+        answer:
+          "Click the start button on this page. The 15 minute countdown begins immediately — no signup, no app install, no permissions needed. When the timer reaches zero, an audio alarm plays. You can pause, resume, or reset at any time. The page works on iPhone, Android, tablets, and desktops.",
+      },
+      {
         question: "Is a 15 minute power nap effective?",
         answer:
-          "Yes. Sleep researchers at NASA found that a nap of 10–20 minutes improves alertness by 54% and performance by 34%. Fifteen minutes keeps you in light sleep (stages 1–2) so you wake up refreshed without the grogginess of deeper sleep. Set this timer so you do not accidentally sleep longer.",
+          "Yes. NASA's Fatigue Countermeasures Program found that a nap of 10–20 minutes improves alertness by 54% and performance by 34%. Fifteen minutes keeps you in light sleep (stages 1–2) so you wake refreshed without the grogginess of deeper sleep. A 15 minute nap timer is essential — without one, a planned power nap easily becomes a 90-minute sleep that leaves you feeling worse.",
       },
       {
         question: "How long does rice take to cook?",
         answer:
-          "White rice typically simmers for 15–18 minutes after the water boils. Start this timer when you reduce heat to low and cover the pot. Brown rice takes about 40–45 minutes. Jasmine and basmati rice usually finish right at the 15-minute mark.",
+          "White rice simmers for 15–18 minutes after the water boils. Start this 15 minute timer when you reduce heat to low and cover the pot. Jasmine and basmati rice usually finish right at the 15-minute mark; brown rice takes about 40–45 minutes (use a 45 minute timer instead).",
       },
       {
         question: "What is a good 15 minute HIIT workout?",
         answer:
-          "A 15-minute HIIT workout might include 30 seconds of burpees, 30 seconds rest, 30 seconds mountain climbers, 30 seconds rest — repeating for the full 15 minutes. This gives you 15 rounds of high-intensity intervals, enough to spike your heart rate and trigger the afterburn effect.",
+          "A 15 minute HIIT workout alternates 30 seconds of all-out effort with 30 seconds of rest, repeating for the full 15 minutes — 15 rounds total. Good exercise rotations: burpees → mountain climbers → squat jumps → high knees → push-ups. This is enough volume to spike your heart rate and trigger the post-workout afterburn effect.",
       },
       {
         question: "How can students use a 15 minute timer?",
         answer:
-          "Students can use 15-minute blocks for review sessions between classes, for timed practice tests, or for the study-break portion of a 50/15 study cycle. The time pressure helps maintain focus and prevents study sessions from becoming passive re-reading.",
+          "Students use 15-minute blocks for review between classes, timed practice tests, vocab drills, and as the break portion of a 50/15 study cycle. The visible countdown creates time pressure that helps maintain focus — particularly effective for ADHD students who struggle with open-ended study sessions.",
       },
       {
         question: "Is 15 minutes enough for meditation?",
         answer:
-          "For intermediate meditators, 15 minutes is a solid session length. It is enough time to settle the mind (which typically takes 3–5 minutes), enter a focused state, and practice sustained attention or loving-kindness. Beginners may prefer starting with 5 or 10 minutes and building up.",
+          "For intermediate meditators, 15 minutes is a solid session length. It allows 3–5 minutes for the mind to settle, then 10+ minutes of focused practice — long enough for real benefit. Beginners may prefer starting with 5 or 10 minutes and building up. Use the audio alarm at the end as a gentle bell to mark the close of practice.",
+      },
+      {
+        question: "Will the 15 minute timer keep running if I switch tabs?",
+        answer:
+          "Yes. GoTimer uses timestamp-based timing rather than tick-counting, so the countdown stays accurate even if you switch tabs, minimise the window, or lock your phone. The audio alarm fires at zero regardless of whether the tab is in focus. (Some browsers throttle background tab audio — keep the tab active if precise audio alerting is critical.)",
       },
     ]),
     intro_html: `
-<p>Fifteen minutes is the Goldilocks duration for many daily activities — not so short that it feels trivial, not so long that it demands a major commitment. From NASA-backed power naps to perfectly cooked rice, a 15-minute timer helps you hit precise targets throughout the day.</p>
+<p>The free <strong>15 minute timer</strong> on this page is a one-click countdown — set to 900 seconds, audio alarm at zero, no signup required. Press start, get on with your task, and let the alarm bring you back. It works on every device with a modern browser: iPhone, Android, tablet, laptop, smart TV. No app to install, no notifications to manage.</p>
 
-<h2>The Science of 15 Minutes</h2>
-<p>NASA's Fatigue Countermeasures Program found that a nap of 10–20 minutes significantly improves pilot alertness without causing sleep inertia (that groggy feeling from waking mid-cycle). Fifteen minutes is the practical sweet spot — long enough to reach the restorative stages of light sleep, short enough to avoid dipping into deep sleep. A timer is essential: without one, a planned power nap can accidentally become a 90-minute sleep cycle that leaves you feeling worse.</p>
-<p>In the kitchen, 15 minutes is the default cooking time for white rice, quick-steamed vegetables, and pan-seared proteins. In fitness, a 15-minute HIIT session delivers cardiovascular benefits comparable to much longer moderate-intensity workouts. In education, the "15-minute rule" encourages students to struggle with a problem independently for 15 minutes before asking for help — long enough to develop problem-solving skills, short enough to prevent frustration.</p>
+<p>Fifteen minutes is the Goldilocks duration for an unusually wide range of daily tasks — not so short it feels trivial, not so long it demands real commitment. Below is what 15 minutes can actually accomplish, plus practical tips for using a 15 minute timer well.</p>
 
-<h2>What You Can Accomplish in 15 Minutes</h2>
+<h2>Why 15 minutes is such a useful unit</h2>
+<p>Many bodies of research converge on 15 minutes as a sweet spot. NASA's Fatigue Countermeasures Program found 10–20 minute naps significantly improve alertness without sleep inertia — 15 minutes is the practical midpoint. Sports science shows 15 minutes of HIIT delivers cardiovascular benefits comparable to much longer moderate-intensity sessions. Cognitive research has repeatedly shown that focused attention windows of 15–25 minutes are sustainable without fatigue, which is why so many study and work protocols use that range.</p>
+
+<p>In the kitchen, 15 minutes is the default cooking time for white rice, quick-steamed vegetables, pan-seared chicken, soft-boiled potatoes, and most short-cycle baking tasks. In meditation, it's enough to fully settle the mind and do real practice without the time commitment of a longer session. In education, the "15 minute rule" encourages students to struggle with a problem independently for 15 minutes before asking for help — long enough to develop the problem and short enough to prevent frustration.</p>
+
+<h2>What you can do in 15 minutes</h2>
 <ul>
-  <li><strong>Power nap:</strong> Set the timer and close your eyes. Even if you do not fully fall asleep, the restful state improves afternoon performance.</li>
-  <li><strong>Study break:</strong> After 45–50 minutes of focused studying, a 15-minute break (walk, snack, stretch) restores concentration for the next block.</li>
-  <li><strong>HIIT session:</strong> Alternate 30 seconds of all-out effort with 30 seconds of rest for 15 rounds. You will burn calories and build endurance.</li>
-  <li><strong>Cook rice:</strong> Bring water to a boil, add rice, reduce heat, cover, and start this timer. Perfectly fluffy rice awaits.</li>
-  <li><strong>Tidy a space:</strong> Fifteen minutes is enough to declutter a desk, organize a closet shelf, or clean a bathroom.</li>
-  <li><strong>Write a draft:</strong> A 15-minute freewrite can produce 300–500 words — enough for a blog post draft, a journal entry, or a brainstorm document.</li>
-  <li><strong>Stretch routine:</strong> A full-body stretching sequence covering major muscle groups fits comfortably into 15 minutes.</li>
+  <li><strong>Power nap.</strong> Lie down, set the 15 minute timer, close your eyes. Even if you don't fully fall asleep, the restful state improves afternoon performance.</li>
+  <li><strong>Study break.</strong> After 45–50 minutes of focused work, take a 15 minute break — walk, snack, stretch — to reset concentration for the next block.</li>
+  <li><strong>HIIT session.</strong> 30 seconds work, 30 seconds rest, 15 rounds. Get cardio without leaving home.</li>
+  <li><strong>Cook rice.</strong> Bring water to a boil, add rice, cover, reduce heat, start this timer. Perfectly fluffy rice when the alarm sounds.</li>
+  <li><strong>Tidy a space.</strong> Declutter a desk, organise a closet shelf, clean a bathroom — 15 minutes is the visible-progress threshold.</li>
+  <li><strong>Write a draft.</strong> A 15 minute freewrite produces 300–500 words — enough for a blog post draft, journal entry, or brainstorm document.</li>
+  <li><strong>Full-body stretch.</strong> A complete stretching sequence covering all major muscle groups fits comfortably in 15 minutes.</li>
+  <li><strong>Meditate.</strong> Long enough for the mind to settle (3–5 min) plus 10 minutes of real practice. Gentle alarm at the end marks the close.</li>
+  <li><strong>Inbox triage.</strong> Process emails for 15 minutes, then stop. Time pressure prevents inbox creep eating your morning.</li>
 </ul>
 
-<h2>Making 15 Minutes Count</h2>
-<h3>Set a single goal</h3>
-<p>Fifteen minutes feels longer when you have a clear target. "Organize my desk" is better than "be productive." Single-task focus eliminates decision fatigue and ensures visible progress.</p>
+<h2>How to use this 15 minute timer well</h2>
+
+<h3>Set one clear goal</h3>
+<p>Fifteen minutes feels longer when you have a single specific target. "Organise my desk" is better than "be productive." "Read three pages and take notes" is better than "study chemistry." Single-task focus eliminates decision fatigue and ensures the 15 minutes produces something visible.</p>
 
 <h3>Use full-screen mode</h3>
-<p>Whether you are napping, exercising, or cooking, switch GoTimer to full-screen so the remaining time is always visible at a glance. The large digits work well on phones propped on a nightstand or kitchen counter.</p>
+<p>Whether you're napping, exercising, or cooking, switch the timer to full-screen so the remaining minutes are always visible at a glance. The large digits work especially well on phones propped on a nightstand or kitchen counter.</p>
 
-<h3>Pair with longer sessions</h3>
-<p>A popular study pattern is 45 minutes of work followed by 15 minutes of rest. The 15-minute break is long enough to truly disengage (take a walk, have a conversation) before the next work block. Use two timers: a 45-minute timer for work, then this 15-minute timer for the break.</p>
+<h3>Pair with longer work blocks</h3>
+<p>A popular study and work pattern is 45 minutes of focused work followed by a 15 minute break. The 15 minute break is long enough to truly disengage (take a walk, have a conversation, stretch) before the next work block. For a one-page Pomodoro-style variant, see the <a href="/pomodoro-timer">Pomodoro timer</a> (25/5) or the <a href="/blog/52-17-study-method">52-17 study method</a> for a longer cycle.</p>
+
+<h3>Don't multitask the timer</h3>
+<p>Setting a 15 minute timer and then opening five browser tabs defeats the point. The whole value of the countdown is that it forces a finish line — pick one task, work on it until the alarm rings, then decide whether to continue or move on.</p>
+
+<h2>Related timers</h2>
+<p>For shorter focused blocks, try the <a href="/10-minute-timer">10 minute timer</a> or <a href="/5-minute-timer">5 minute timer</a>. For longer sessions, the <a href="/25-minute-timer">25 minute Pomodoro timer</a>, <a href="/30-minute-timer">30 minute timer</a>, or <a href="/45-minute-timer">45 minute timer</a> work for deep work. Need intervals instead of a single countdown? Use the <a href="/interval-timer">interval timer</a> for HIIT, Tabata, and EMOM workouts.</p>
 `,
   },
 
@@ -1437,75 +1459,108 @@ const pages: TimerPage[] = [
 
   {
     slug: "sleep-timer",
-    title: "Free Sleep Timer — Gentle Countdown for Bedtime",
-    meta_title: "Free Sleep Timer — Gentle Bedtime Countdown",
+    title: "Free Sleep Timer Online — Fall Asleep with Audio",
+    meta_title: "Free Sleep Timer Online — Fall Asleep Faster | GoTimer",
     meta_description:
-      "Start a free sleep timer for bedtime routines. Gentle countdown for winding down, audiobooks, and sleep meditation. Calm interface for nighttime use.",
+      "Free online sleep timer with no app needed. Stop music, podcasts, or white noise automatically after 15, 30, 45, or 60 minutes. Wind down and fall asleep faster.",
     timer_type: "countdown",
     timer_config_json: JSON.stringify({ duration: 1800 }),
     status: "published",
     published_at: new Date().toISOString(),
+    category_slug: "wellness",
     faq_json: JSON.stringify([
       {
-        question: "What is a sleep timer used for?",
+        question: "How long should I set the sleep timer for?",
         answer:
-          "A sleep timer counts down to signal the end of your wind-down period or to stop audio content (like audiobooks, podcasts, or white noise) after you have fallen asleep. It helps you establish a consistent pre-sleep routine and prevents screens or audio from keeping you awake past your intended bedtime.",
+          "30 minutes is the most common choice and covers the typical 10–20 minute sleep onset window with a small buffer. If you fall asleep quickly, try 15 minutes; if your mind is busy at bedtime, try 45 or 60. Adjust based on whether the audio is still playing when you wake in the night (too long) or cuts off while you're still semi-awake (too short).",
       },
       {
-        question: "How long should my bedtime routine be?",
+        question: "Can a sleep timer help with insomnia?",
         answer:
-          "Sleep researchers recommend a 30–60 minute wind-down period before your target bedtime. During this time, dim the lights, stop using screens (or use blue-light filters), and engage in relaxing activities like reading, stretching, or meditation. A 30-minute sleep timer provides structure for this routine.",
+          "A sleep timer supports good sleep hygiene by giving you a clear cut-off for stimulation, but it's not a treatment for insomnia. Pair it with consistent bedtime, dim lights, and screen-free wind-down for best results. Stimulus control therapy (a proven behavioural treatment) also recommends getting out of bed if you're still awake 20 minutes after lights-off — a 20-minute timer supports this technique.",
       },
       {
-        question: "Does a timer help with insomnia?",
+        question: "What audio should I play with a sleep timer?",
         answer:
-          "A timer can be part of a behavioral approach to insomnia. Stimulus control therapy (a proven treatment) recommends spending a specific amount of time in bed attempting to sleep; if you are still awake after 20 minutes, get up and do something relaxing until you feel sleepy. A 20-minute timer supports this technique.",
+          "White, pink, or brown noise (steady, no engagement required), instrumental music with no lyrics (lofi, ambient, classical piano), or guided meditations and breathing exercises all work well. Avoid anything emotionally charged — true crime, news, action content, or energetic music — which triggers alertness rather than wind-down.",
       },
       {
-        question: "Should I use a sleep timer for audiobooks?",
+        question: "Is it safe to fall asleep with music or audio playing?",
         answer:
-          "Yes. Many people use audiobooks or podcasts to fall asleep, but they continue playing after you are asleep, which can disrupt sleep quality. Set a 30-minute sleep timer alongside your audio content so everything stops after you have likely drifted off.",
+          "Audio playing for the full night can fragment your sleep during lighter REM phases — your brain registers the sound and shifts towards lighter sleep, leaving you less rested. A sleep timer fixes this by letting you use audio to fall asleep, then stopping it before it can interfere with deeper sleep cycles. Aim to have audio off within the first 30–60 minutes of bedtime.",
       },
       {
-        question: "What is sleep hygiene?",
+        question: "Can I use the sleep timer for naps?",
         answer:
-          "Sleep hygiene refers to habits that promote quality sleep: consistent bed and wake times, a cool and dark bedroom, avoiding caffeine after noon, limiting alcohol, reducing screen time before bed, and establishing a relaxing bedtime routine. A sleep timer supports several of these practices by structuring the wind-down period.",
+          "Yes — sleep timers are arguably more useful for naps than overnight sleep. Set 20 minutes for a power nap or 90 minutes for a full sleep cycle. Avoid 30–80 minutes — you'll wake in deep sleep and feel groggy.",
+      },
+      {
+        question: "Do I need an app to use a sleep timer?",
+        answer:
+          "No. GoTimer's sleep timer runs entirely in your browser — no app, no signup, no notifications. Open the page, set your duration, and start the countdown.",
+      },
+      {
+        question: "What's the difference between a sleep timer and an alarm?",
+        answer:
+          "An alarm wakes you at a set time. A sleep timer counts down at night to stop audio or activity once you've fallen asleep. Many people use both — the timer to wind down, the alarm to wake up.",
       },
     ]),
     intro_html: `
-<p>Getting quality sleep starts well before your head hits the pillow. Sleep researchers consistently emphasize the importance of a wind-down routine — a structured transition period between the alertness of daytime and the restfulness of sleep. This sleep timer provides a 30-minute countdown for your bedtime routine, helping you shift from wakefulness to sleepiness at a consistent, predictable pace.</p>
+<p>A sleep timer is a simple countdown that stops audio, music, or video after a set period — usually so you can fall asleep without leaving your phone or laptop playing all night. GoTimer's free online sleep timer runs entirely in your browser. No app, no signup, no notifications. Set the duration, start the countdown, and the timer does the rest.</p>
 
-<h2>The Science of Falling Asleep</h2>
-<p>Your brain does not have an off switch. The transition from waking to sleeping is a gradual process governed by two systems: the circadian clock (which regulates your natural sleep-wake cycle) and sleep pressure (which builds during hours of wakefulness). Both systems need proper conditions to initiate sleep: dim light, reduced stimulation, lower body temperature, and mental calm.</p>
-<p>A wind-down routine creates these conditions systematically. Research from Harvard Medical School and the National Sleep Foundation shows that people who follow a consistent pre-sleep routine fall asleep faster, sleep more deeply, and wake up feeling more refreshed. The routine signals to your brain that sleep is approaching, triggering the physiological changes (melatonin release, heart rate reduction, muscle relaxation) that precede sleep onset.</p>
+<h2>How a sleep timer helps you fall asleep faster</h2>
+<p>Falling asleep is partly mechanical and partly psychological. The mechanical part is your nervous system slowing down — heart rate dropping, breathing deepening, the body cooling. The psychological part is your brain letting go of the day. Both happen best when you're not actively listening to something engaging.</p>
+<p>A sleep timer lets you use audio — music, a podcast, white noise, a guided meditation — as a wind-down aid without letting it interfere with sleep itself. You fall asleep while it plays. The timer cuts it off before it can fragment your deeper sleep cycles. Without a timer, audio playing all night gradually pulls your sleep towards lighter stages, leaving you less rested in the morning.</p>
 
-<h2>How to Use the Sleep Timer</h2>
-<h3>As a wind-down timer</h3>
-<p>Start the 30-minute countdown when you begin your bedtime routine. During these 30 minutes: dim the lights in your home, stop using bright screens (or activate blue-light filters), change into comfortable clothes, brush your teeth, and engage in a relaxing activity. When the timer reaches zero, get into bed. Over time, this routine becomes a powerful sleep cue — your body learns that the timer's start means sleep is 30 minutes away.</p>
-
-<h3>As an audiobook or podcast timer</h3>
-<p>If you listen to content while falling asleep, start the timer alongside your audio. Set it for the amount of time you typically take to fall asleep (15–30 minutes for most people). The timer's alarm is your signal to stop the audio, preventing it from playing all night and disrupting sleep quality.</p>
-
-<h3>As an insomnia management tool</h3>
-<p>Stimulus control therapy, one of the most effective behavioral treatments for insomnia, recommends that if you are not asleep within 20 minutes of lying down, you should get up and do something relaxing in another room until you feel sleepy again. Set a 20-minute timer when you get into bed. If you are still awake when it sounds, get up. This prevents the bed from becoming associated with frustration and wakefulness.</p>
-
-<h2>Building a Bedtime Routine</h2>
+<h2>What sleep timer duration should you use?</h2>
+<p>The right length depends on how fast you fall asleep:</p>
 <ul>
-  <li><strong>30 minutes before bed:</strong> Start the timer. Dim lights, put away work, stop checking email and social media.</li>
-  <li><strong>25 minutes before bed:</strong> Begin personal hygiene — brush teeth, wash face, change into sleepwear.</li>
-  <li><strong>20 minutes before bed:</strong> Engage in a calming activity: read a physical book, do gentle stretches, practice breathing exercises, or write in a gratitude journal.</li>
-  <li><strong>10 minutes before bed:</strong> Get into bed with a non-stimulating activity (light reading, gentle music, or a body scan meditation).</li>
-  <li><strong>Timer sounds (0 minutes):</strong> Lights off, eyes closed. Begin the sleep-onset process.</li>
+  <li><strong>15 minutes</strong> — for fast sleepers. A short, focused wind-down.</li>
+  <li><strong>30 minutes</strong> — the most common choice. Covers the typical 10–20 minute sleep onset window with a small buffer.</li>
+  <li><strong>45 minutes</strong> — for nights when your mind is busy or you fall asleep slowly.</li>
+  <li><strong>60 minutes</strong> — for difficulty falling asleep, or long-form audio like an audiobook chapter.</li>
+  <li><strong>90 minutes</strong> — used for full audiobook chapters or yoga nidra. Not strictly a "sleep timer" anymore.</li>
+</ul>
+<p>If you don't know how fast you fall asleep, start at 30 minutes for a week. If the audio is still playing when you wake at 3am, the timer is too long — halve it. If the audio cuts off while you're still semi-awake, increase by 15 minutes.</p>
+
+<h2>What to play during the sleep timer</h2>
+<p>The audio choice matters more than the timer length. Three categories work well:</p>
+<p><strong>White, pink, or brown noise.</strong> Steady, unchanging sound that masks disruptive noises. Brown noise is deeper and softer than white noise — most people find it easier to fall asleep to. No mental engagement required, which is the point.</p>
+<p><strong>Instrumental or ambient music.</strong> Slow tempo, no lyrics. Lofi, ambient electronic, classical piano, or ambient guitar all work. Lyrics activate the language-processing parts of your brain, which is the opposite of switching off.</p>
+<p><strong>Guided meditations or breathing exercises.</strong> Pair a sleep timer with a breathing exercise like 4-7-8 (inhale 4, hold 7, exhale 8) to actively slow your nervous system. Particularly effective for people whose minds race at bedtime.</p>
+<p>Avoid anything emotionally charged or fast-paced: true crime, news podcasts, action movies, energetic music. These trigger alertness rather than wind-down.</p>
+
+<h2>Building a bedtime routine around the timer</h2>
+<p>A sleep timer is one piece of a wind-down puzzle. Paired with a consistent routine, it becomes a cue your brain learns to recognise — "audio on, lights low, this is sleep time." A simple 30-minute wind-down looks like this:</p>
+<ul>
+  <li><strong>30 minutes before bed:</strong> Dim the lights. Stop using bright screens (or activate blue-light filters). Brush teeth, change into sleepwear.</li>
+  <li><strong>20 minutes before bed:</strong> Get into bed. Start the sleep timer. Choose your audio.</li>
+  <li><strong>10–15 minutes before sleep:</strong> Controlled breathing or a body scan meditation. If you don't fall asleep in this window, staying awake calmly is far better than trying to force sleep.</li>
+  <li><strong>Sleep onset:</strong> The audio is still playing softly. The timer is counting down. The audio cuts at some point you won't notice.</li>
+</ul>
+<p>After about two weeks of the same routine, your brain starts dropping into wind-down mode as soon as the timer starts. The Pavlovian effect is one of the most effective sleep improvements you can make without medication.</p>
+
+<h2>Sleep timer for naps</h2>
+<p>A sleep timer is also ideal for daytime naps where over-sleeping is the risk. The two evidence-backed nap lengths are:</p>
+<ul>
+  <li><strong>20-minute power nap</strong> — long enough to feel refreshed, short enough to avoid grogginess.</li>
+  <li><strong>90-minute full cycle nap</strong> — completes one full sleep cycle and wakes you in lighter sleep.</li>
+</ul>
+<p>Avoid napping for 30–80 minutes — you'll wake in deep sleep and feel worse than before.</p>
+
+<h2>Sleep hygiene fundamentals</h2>
+<p>A sleep timer is the last 5% on top of good sleep hygiene. The fundamentals matter more:</p>
+<ul>
+  <li><strong>Consistency.</strong> Same bedtime within a 30-minute window, seven nights a week. Your circadian rhythm responds to consistency, not technique.</li>
+  <li><strong>Cool bedroom.</strong> 18–20°C (65–68°F) is optimal. Your body needs to drop core temperature to initiate sleep.</li>
+  <li><strong>Block light.</strong> Blackout curtains or a sleep mask. Even small amounts of light suppress melatonin.</li>
+  <li><strong>Limit caffeine.</strong> Stop by early afternoon. Caffeine's half-life is 5–6 hours — a 2pm coffee still has half its caffeine in your system at 8pm.</li>
+  <li><strong>Avoid alcohol before bed.</strong> It makes you feel sleepy initially but fragments sleep in the second half of the night and disrupts REM.</li>
 </ul>
 
-<h2>Sleep Hygiene Tips</h2>
-<ul>
-  <li><strong>Consistency is king:</strong> Go to bed and wake up at the same time every day, including weekends. Your circadian rhythm thrives on regularity.</li>
-  <li><strong>Cool your bedroom:</strong> The optimal sleep temperature is 65–68°F (18–20°C). Your body needs to drop its core temperature to initiate sleep.</li>
-  <li><strong>Block light:</strong> Use blackout curtains or a sleep mask. Even small amounts of light suppress melatonin production.</li>
-  <li><strong>Limit caffeine:</strong> Stop consuming caffeine by early afternoon. Its half-life is 5–6 hours, meaning a 2 PM coffee still has half its caffeine in your system at 8 PM.</li>
-  <li><strong>Avoid alcohol before bed:</strong> While alcohol makes you feel sleepy initially, it disrupts REM sleep and causes fragmented sleep in the second half of the night.</li>
-</ul>
+<h2>How to use this timer</h2>
+<p>Click a preset (15, 30, 45, or 60 minutes) or set your own duration. Start your music, podcast, or white noise in another tab or on another device. Press start. The countdown runs while you fall asleep. When it reaches zero, the timer rings softly — most people use this as their cue to mute external audio, or it simply marks that the wind-down period is complete.</p>
+<p>For a deeper dive into wind-down routines and audio choices, see our <a href="/blog/sleep-timer-fall-asleep-better">sleep timer guide</a>, the <a href="/blog/478-breathing-timer-sleep">4-7-8 breathing for sleep</a> article, or pair this with our <a href="/breathing-timer">breathing timer</a> for a complete pre-sleep routine.</p>
 `,
   },
 

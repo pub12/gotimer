@@ -68,8 +68,33 @@ export default function TimerPageTemplate({
         ? "Tracking Timers"
         : "Focus Timers";
 
+  // FAQPage JSON-LD — only emit when at least one FAQ item present.
+  // nosec: built from DB-controlled question/answer text, not user HTML.
+  const faq_json_ld =
+    faq_items.length > 0
+      ? JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq_items.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer,
+            },
+          })),
+        })
+      : null;
+
   return (
     <>
+      {faq_json_ld && (
+        // nosec: faq_json_ld built from DB fields (question/answer), safe to inject
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: faq_json_ld }}
+        />
+      )}
       {is_draft && <DraftBanner />}
       <main
         className="min-h-screen flex flex-col bg-surface pt-12 pb-4 px-3 w-full md:pt-20 md:px-4"
