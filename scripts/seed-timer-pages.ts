@@ -2,6 +2,11 @@
  * Seed script for all 20 timer pages.
  * Run with: npx tsx scripts/seed-timer-pages.ts
  * Idempotent — uses INSERT OR REPLACE so it can be re-run safely.
+ *
+ * Loads .env.local so HAZO_CONNECT_SQLITE_PATH is honoured. Without this, the
+ * script writes to ./data/gotimer.sqlite while Next.js reads from whatever
+ * the env file points at (e.g. ./data/hazo_auth.sqlite) — leaving the seed
+ * silently writing to an unused DB file.
  */
 import Database from "better-sqlite3";
 import path from "path";
@@ -10,7 +15,32 @@ import crypto from "crypto";
 
 const project_root = path.resolve(__dirname, "..");
 const db_dir = path.resolve(project_root, "data");
-const db_path = process.env.HAZO_CONNECT_SQLITE_PATH ?? path.resolve(db_dir, "gotimer.sqlite");
+
+// Manually load .env.local (Node/tsx doesn't auto-load it the way Next.js does)
+function load_dotenv(file_path: string) {
+  if (!fs.existsSync(file_path)) return;
+  for (const line of fs.readFileSync(file_path, "utf8").split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq === -1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    const value = trimmed.slice(eq + 1).trim();
+    if (process.env[key] === undefined) process.env[key] = value;
+  }
+}
+load_dotenv(path.resolve(project_root, ".env.local"));
+
+// Resolve the DB path — env var wins; otherwise default to ./data/gotimer.sqlite.
+// Relative paths in the env are resolved against project_root, not cwd.
+const env_path = process.env.HAZO_CONNECT_SQLITE_PATH;
+const db_path = env_path
+  ? path.isAbsolute(env_path)
+    ? env_path
+    : path.resolve(project_root, env_path)
+  : path.resolve(db_dir, "gotimer.sqlite");
+
+console.log(`[seed] Target DB: ${db_path}`);
 
 // Ensure data directory exists
 if (!fs.existsSync(db_dir)) {
