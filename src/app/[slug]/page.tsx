@@ -83,7 +83,14 @@ async function is_admin(user_id: string): Promise<boolean> {
   }
 }
 
-// Pre-render all published timer pages at build time for performance + SEO
+// Pre-render all published timer pages at build time for performance + SEO.
+// `revalidate` enables Incremental Static Regeneration: pages are cached for 60s
+// then re-rendered on the next request. This lets seed-script edits propagate
+// to production without a full rebuild, while keeping fast static serving 99% of
+// the time. Combined with `pm2 reload` after `npx tsx scripts/seed-timer-pages.ts`,
+// changes are live within ~60 seconds.
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   try {
     const db = get_db();
