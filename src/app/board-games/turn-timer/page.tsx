@@ -1,6 +1,7 @@
 "use client";
 
 import React, { Suspense, useState, ChangeEvent } from "react";
+import Link from "next/link";
 import { SkipForward } from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
@@ -43,11 +44,11 @@ const TURN_TIMER_FAQ = [
 ];
 
 const RELATED_TIMERS = [
+  { name: "Multi-Player Turn Timer", href: "/board-games/multi-player-turn-timer", description: "Per-turn, time-bank, or hybrid mode for 3-8 players with shareable URL" },
+  { name: "Analysis Paralysis Timer", href: "/board-games/analysis-paralysis-timer", description: "Same engine, calibrated for AP-prone groups — hybrid mode included" },
   { name: "Chess Clock", href: "/chess-clock", description: "Two-player clock with individual time banks — tap to switch turns" },
-  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown with audio alerts for any timed activity" },
   { name: "Round Timer", href: "/round-timer", description: "Track rounds and total elapsed time for tournaments and sessions" },
-  { name: "Study Timer", href: "/productivity/study", description: "Pomodoro-style focus timer for deep work and study sessions" },
-  { name: "Cooking Timer", href: "/kitchen/cooking", description: "Kitchen countdown with audio alerts for recipes and meal prep" },
+  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown with audio alerts for any timed activity" },
 ];
 
 function SetupScreen({
@@ -260,9 +261,10 @@ function TurnTimerPageContent() {
         regardless of how many turns have passed.
       </p>
       <p>
-        This free multi-player turn timer supports 2-8 players with customisable names and
+        This free turn timer supports 2-8 players with customisable names and
         adjustable time limits. It runs entirely in your browser — no app download, no sign-up,
-        no ads interrupting your game night.
+        no ads interrupting your game night. For modes beyond the single shared cap — including
+        a chess-clock-style time-bank per player and a hybrid mode — see the dedicated <Link href="/board-games/multi-player-turn-timer">multi-player turn timer hub</Link>.
       </p>
 
       <h2>Board Games That Need a Turn Timer</h2>

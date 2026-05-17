@@ -33,6 +33,14 @@ export type { MultiTimerState, MultiTimerConfig, SubTimer } from "./multi-timer"
 export { turnTimerStrategy } from "./turn-timer";
 export type { TurnTimerState, TurnTimerConfig, TurnPlayer } from "./turn-timer";
 
+export { multiPlayerTurnTimerStrategy } from "./multi-player-turn-timer";
+export type {
+  MPState,
+  MPConfig,
+  MPMode,
+  MPPlayer,
+} from "./multi-player-turn-timer";
+
 export { enlargerStrategy } from "./enlarger";
 export type { EnlargerState, EnlargerConfig, EnlargerMode } from "./enlarger";
 
@@ -50,6 +58,7 @@ import { ambientStrategy } from "./ambient";
 import { calculatorTimerStrategy } from "./calculator-timer";
 import { multiTimerStrategy } from "./multi-timer";
 import { turnTimerStrategy } from "./turn-timer";
+import { multiPlayerTurnTimerStrategy } from "./multi-player-turn-timer";
 import { enlargerStrategy } from "./enlarger";
 import { stopwatchStrategy } from "./stopwatch";
 
@@ -66,6 +75,7 @@ export const STRATEGY_REGISTRY: Record<string, TimerStrategy<any>> = {
   "calculator-timer": calculatorTimerStrategy,
   "multi-timer": multiTimerStrategy,
   "turn-timer": turnTimerStrategy,
+  "multi-player-turn-timer": multiPlayerTurnTimerStrategy,
   enlarger: enlargerStrategy,
   stopwatch: stopwatchStrategy,
 };

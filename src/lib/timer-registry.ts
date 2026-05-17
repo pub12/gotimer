@@ -181,6 +181,23 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
     sitemapPriority: 0.7,
   },
 
+  "multi-player-turn-timer": {
+    id: "multi-player-turn-timer",
+    name: "Multi-Player Turn Timer",
+    description:
+      "Per-turn, time-bank, or hybrid clock for 3-8 named players. Powers the multi-player board game turn timer.",
+    defaultConfig: {
+      player_names: ["Player 1", "Player 2", "Player 3", "Player 4"],
+      mode: "per-turn",
+      per_turn: 60,
+      bank: 600,
+      warning_at: 10,
+    },
+    supportedParams: ["players", "mode", "per_turn", "bank", "warning_at"],
+    route: "/board-games/multi-player-turn-timer",
+    sitemapPriority: 0.8,
+  },
+
   enlarger: {
     id: "enlarger",
     name: "Enlarger Timer",
@@ -260,6 +277,166 @@ export const PRESETS: Record<string, PresetDefinition> = {
     defaultConfig: { players: 4, time_per_turn: 60 },
     category: "board-games",
     route: "/board-games/turn-timer",
+    sitemapPriority: 0.7,
+  },
+  "board-multi-player-turn-timer": {
+    id: "board-multi-player-turn-timer",
+    name: "Multi-Player Turn Timer",
+    description:
+      "Free turn timer for 3-8 players. Per-turn, time-bank, or hybrid mode. Shareable URL keeps names baked in.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      player_names: ["Player 1", "Player 2", "Player 3", "Player 4"],
+      mode: "per-turn",
+      per_turn: 90,
+      bank: 20 * 60,
+      warning_at: 10,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer",
+    sitemapPriority: 0.8,
+  },
+  "board-mpt-twilight-imperium": {
+    id: "board-mpt-twilight-imperium",
+    name: "Twilight Imperium Turn Timer",
+    description:
+      "Pre-tuned 90-second tactical cap for the 10-hour space epic. Up to 6-8 players.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 90,
+      bank: 60 * 60,
+      warning_at: 15,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/twilight-imperium",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-gloomhaven": {
+    id: "board-mpt-gloomhaven",
+    name: "Gloomhaven Turn Timer",
+    description:
+      "60-second cap for card-and-action planning. Works for Frosthaven and Jaws of the Lion.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 60,
+      bank: 30 * 60,
+      warning_at: 10,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/gloomhaven",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-brass-birmingham": {
+    id: "board-mpt-brass-birmingham",
+    name: "Brass: Birmingham Turn Timer",
+    description: "90-second cap for build-and-flip planning. Suits Lancashire too.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 90,
+      bank: 25 * 60,
+      warning_at: 15,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/brass-birmingham",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-spirit-island": {
+    id: "board-mpt-spirit-island",
+    name: "Spirit Island Turn Timer",
+    description:
+      "Cooperative — 90-second cap stops quarterbacking and lets every spirit play their own turn.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 90,
+      bank: 25 * 60,
+      warning_at: 15,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/spirit-island",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-terra-mystica": {
+    id: "board-mpt-terra-mystica",
+    name: "Terra Mystica Turn Timer",
+    description:
+      "2-minute cap for multi-step euro turns. Equally suitable for Gaia Project.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 120,
+      bank: 30 * 60,
+      warning_at: 15,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/terra-mystica",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-food-chain-magnate": {
+    id: "board-mpt-food-chain-magnate",
+    name: "Food Chain Magnate Turn Timer",
+    description:
+      "Time-bank mode with 25-minute personal budget — multiplayer chess clock for FCM.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "time-bank",
+      per_turn: 90,
+      bank: 25 * 60,
+      warning_at: 30,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/food-chain-magnate",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-through-the-ages": {
+    id: "board-mpt-through-the-ages",
+    name: "Through the Ages Turn Timer",
+    description:
+      "Time-bank mode with 30-minute personal budget for civilization-arc decisions.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "time-bank",
+      per_turn: 90,
+      bank: 30 * 60,
+      warning_at: 30,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/through-the-ages",
+    sitemapPriority: 0.7,
+  },
+  "board-mpt-mage-knight": {
+    id: "board-mpt-mage-knight",
+    name: "Mage Knight Turn Timer",
+    description:
+      "3-minute cap for the combat puzzle. Solo or 2-4 player; hybrid mode option.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 180,
+      bank: 35 * 60,
+      warning_at: 30,
+    },
+    category: "board-games",
+    route: "/board-games/multi-player-turn-timer/mage-knight",
+    sitemapPriority: 0.7,
+  },
+  "board-analysis-paralysis-timer": {
+    id: "board-analysis-paralysis-timer",
+    name: "Analysis Paralysis Timer",
+    description:
+      "Free analysis-paralysis timer for board games. Per-turn cap, hybrid mode for mixed-pace groups.",
+    strategy: "multi-player-turn-timer",
+    defaultConfig: {
+      mode: "per-turn",
+      per_turn: 90,
+      bank: 15 * 60,
+      warning_at: 10,
+    },
+    category: "board-games",
+    route: "/board-games/analysis-paralysis-timer",
     sitemapPriority: 0.7,
   },
 
@@ -751,7 +928,11 @@ export const CATEGORIES: Record<string, CategoryDefinition> = {
     heroCta: "Start Playing \u2192",
     heroCtaHref: "/board-games/countdown",
     gridHeading: "Choose Your Timer",
-    featuredTimers: ["board-countdown", "board-chess-clock", "board-round-timer"],
+    featuredTimers: [
+      "board-multi-player-turn-timer",
+      "board-chess-clock",
+      "board-turn-timer",
+    ],
     faq: [
       {
         question: "What is a chess clock for board games?",
