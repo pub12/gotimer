@@ -202,6 +202,17 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
     embedRoute: "/stopwatch/embed",
     sitemapPriority: 0.9,
   },
+
+  "interval-reminder": {
+    id: "interval-reminder",
+    name: "Interval Reminder",
+    description:
+      "Indefinitely-repeating break reminder. Powers the 20-20-20 eye-strain timer.",
+    defaultConfig: { focus: 1200, break_seconds: 20 },
+    supportedParams: ["focus", "break_seconds"],
+    route: "/wellness/20-20-20-timer",
+    sitemapPriority: 0.8,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -414,6 +425,39 @@ export const PRESETS: Record<string, PresetDefinition> = {
     category: "wellness",
     route: "/wellness/fasting",
     sitemapPriority: 0.7,
+  },
+  "20-20-20-timer": {
+    id: "20-20-20-timer",
+    name: "20-20-20 Rule Timer",
+    description:
+      "Eye-strain break reminder: every 20 minutes, look 20 feet away for 20 seconds",
+    strategy: "interval-reminder",
+    defaultConfig: { focus: 1200, break_seconds: 20 },
+    category: "wellness",
+    route: "/wellness/20-20-20-timer",
+    sitemapPriority: 0.8,
+  },
+  "eye-strain-timer": {
+    id: "eye-strain-timer",
+    name: "Eye Strain Timer",
+    description:
+      "Scheduled screen-break reminders to reduce digital eye strain",
+    strategy: "interval-reminder",
+    defaultConfig: { focus: 1200, break_seconds: 20 },
+    category: "wellness",
+    route: "/wellness/eye-strain-timer",
+    sitemapPriority: 0.6,
+  },
+  "screen-break-reminder": {
+    id: "screen-break-reminder",
+    name: "Screen Break Reminder",
+    description:
+      "Free browser-based screen-break reminder, no extension required",
+    strategy: "interval-reminder",
+    defaultConfig: { focus: 1200, break_seconds: 20 },
+    category: "wellness",
+    route: "/wellness/screen-break-reminder",
+    sitemapPriority: 0.6,
   },
 
   // -- Productivity (5) -----------------------------------------------------

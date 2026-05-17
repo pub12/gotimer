@@ -36,11 +36,11 @@ const STUDY_FAQ = [
 ];
 
 const RELATED_TIMERS = [
+  { name: "20-20-20 Rule Timer", href: "/wellness/20-20-20-timer", description: "Eye-strain break reminder for long study sessions — stack with your focus blocks" },
   { name: "Classroom Timer", href: "/productivity/classroom", description: "Large-display timer for teachers and group activities" },
   { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any timed activity" },
   { name: "Breathing Timer", href: "/wellness/breathing", description: "Stress-relief breathing exercises between study sessions" },
   { name: "Rest Timer", href: "/fitness/rest-timer", description: "Quick break countdown between focus blocks" },
-  { name: "EMOM Timer", href: "/fitness/emom", description: "Interval timer for timed practice drills and flashcard sessions" },
 ];
 
 function Content() {

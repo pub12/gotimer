@@ -12,6 +12,12 @@ export type { RoundTimerState } from "./round-timer";
 export { intervalStrategy } from "./interval";
 export type { IntervalState, IntervalConfig } from "./interval";
 
+export { intervalReminderStrategy } from "./interval-reminder";
+export type {
+  IntervalReminderState,
+  IntervalReminderConfig,
+} from "./interval-reminder";
+
 export { multiStepStrategy } from "./multi-step";
 export type { MultiStepState, MultiStepConfig, StepDefinition } from "./multi-step";
 
@@ -38,6 +44,7 @@ import { countdownStrategy } from "./countdown";
 import { chessClockStrategy } from "./chess-clock";
 import { roundTimerStrategy } from "./round-timer";
 import { intervalStrategy } from "./interval";
+import { intervalReminderStrategy } from "./interval-reminder";
 import { multiStepStrategy } from "./multi-step";
 import { ambientStrategy } from "./ambient";
 import { calculatorTimerStrategy } from "./calculator-timer";
@@ -53,6 +60,7 @@ export const STRATEGY_REGISTRY: Record<string, TimerStrategy<any>> = {
   "chess-clock": chessClockStrategy,
   "round-timer": roundTimerStrategy,
   interval: intervalStrategy,
+  "interval-reminder": intervalReminderStrategy,
   "multi-step": multiStepStrategy,
   ambient: ambientStrategy,
   "calculator-timer": calculatorTimerStrategy,

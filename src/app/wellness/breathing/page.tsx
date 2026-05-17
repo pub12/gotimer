@@ -36,10 +36,10 @@ const BREATHING_FAQ = [
 ];
 
 const RELATED_TIMERS = [
+  { name: "20-20-20 Rule Timer", href: "/wellness/20-20-20-timer", description: "Eye-strain break reminder — pair with breathwork for a full screen-recovery routine" },
   { name: "Sleep Timer", href: "/wellness/sleep", description: "Wind-down countdown for building a consistent bedtime routine" },
   { name: "Fasting Timer", href: "/wellness/fasting", description: "Intermittent fasting tracker with 16:8, 18:6, and OMAD presets" },
   { name: "Stretching Timer", href: "/fitness/stretching", description: "Hold timer with customizable durations for flexibility work" },
-  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any timed activity" },
   { name: "Study Timer", href: "/productivity/study", description: "Focus session timer for Pomodoro-style deep work" },
 ];
 
