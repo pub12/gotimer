@@ -16,6 +16,7 @@ import {
   Heart,
   Target,
   CookingPot,
+  Video,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -559,6 +560,69 @@ export const PRESETS: Record<string, PresetDefinition> = {
     route: "/kitchen/bread-proofing",
     sitemapPriority: 0.6,
   },
+
+  // -- Streamer Tools (6) ---------------------------------------------------
+  "brb-overlay-hub": {
+    id: "brb-overlay-hub",
+    name: "BRB Countdown Overlay",
+    description:
+      "URL-configurable OBS Browser-Source countdown — transparent, no signup",
+    strategy: "countdown",
+    defaultConfig: { duration: 300 },
+    category: "streamer-tools",
+    route: "/brb",
+    sitemapPriority: 0.8,
+  },
+  "brb-starting-soon": {
+    id: "brb-starting-soon",
+    name: "Stream Starting Soon",
+    description: "5-minute pre-stream countdown for the cover scene",
+    strategy: "countdown",
+    defaultConfig: { duration: 300 },
+    category: "streamer-tools",
+    route: "/brb/starting-soon",
+    sitemapPriority: 0.7,
+  },
+  "brb-be-right-back": {
+    id: "brb-be-right-back",
+    name: "Be Right Back Timer",
+    description: "Clean 5-minute intermission countdown for mid-stream breaks",
+    strategy: "countdown",
+    defaultConfig: { duration: 300 },
+    category: "streamer-tools",
+    route: "/brb/be-right-back",
+    sitemapPriority: 0.7,
+  },
+  "brb-stream-over": {
+    id: "brb-stream-over",
+    name: "Stream Ending Countdown",
+    description: "Calm 2-minute wind-down for end-of-stream goodbyes",
+    strategy: "countdown",
+    defaultConfig: { duration: 120 },
+    category: "streamer-tools",
+    route: "/brb/stream-over",
+    sitemapPriority: 0.7,
+  },
+  "brb-raid-countdown": {
+    id: "brb-raid-countdown",
+    name: "Twitch Raid Countdown",
+    description: "1-minute high-energy raid timer aligned with Twitch /raid",
+    strategy: "countdown",
+    defaultConfig: { duration: 60 },
+    category: "streamer-tools",
+    route: "/brb/raid-countdown",
+    sitemapPriority: 0.7,
+  },
+  "streamer-obs-countdown": {
+    id: "streamer-obs-countdown",
+    name: "OBS Countdown Timer",
+    description: "SEO alias for the BRB overlay — canonical at /brb",
+    strategy: "countdown",
+    defaultConfig: { duration: 300 },
+    category: "streamer-tools",
+    route: "/streamer-tools/obs-countdown",
+    sitemapPriority: 0.5,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -670,6 +734,37 @@ export const CATEGORIES: Record<string, CategoryDefinition> = {
     heroCtaHref: "/kitchen/cooking",
     gridHeading: "Kitchen Essentials",
     featuredTimers: ["cooking", "eggs", "kitchen-multi-timer"],
+  },
+
+  "streamer-tools": {
+    slug: "streamer-tools",
+    name: "Streamer Tools",
+    emoji: "\u{1F39A}\ufe0f",
+    icon: Video,
+    heading: "Streamer Tools \u2014 OBS Browser-Source Overlays",
+    description:
+      "Free, transparent countdown overlays for OBS Studio, Streamlabs, vMix, and XSplit. URL-configurable, no signup, no watermark.",
+    heroCta: "Open the BRB overlay \u2192",
+    heroCtaHref: "/brb",
+    gridHeading: "Pre-built Scenarios",
+    featuredTimers: ["brb-starting-soon", "brb-be-right-back", "brb-raid-countdown"],
+    faq: [
+      {
+        question: "Are these overlays free?",
+        answer:
+          "Yes, completely. No signup, no watermark, no Twitch OAuth, no analytics on the embed URL itself. Paste the URL into OBS Browser Source and stream.",
+      },
+      {
+        question: "Will the transparent background work with OBS?",
+        answer:
+          "Yes \u2014 each overlay sets a transparent CSS background natively, so OBS composites it cleanly over your scene without needing Custom CSS.",
+      },
+      {
+        question: "Does audio play in OBS Browser Source?",
+        answer:
+          "OBS mutes Browser Source audio by default. Open /brb/sound-cue in a separate browser tab and add it to OBS as an Audio Output Capture source for chime cues.",
+      },
+    ],
   },
 };
 

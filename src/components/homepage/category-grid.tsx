@@ -29,7 +29,12 @@ const TIMER_ROUTE_MAP: Record<string, string> = {
 };
 
 function TimerCard({ timer, category_slug }: { timer: TimerEntry; category_slug: string }) {
-  const href = TIMER_ROUTE_MAP[timer.slug] || `/${category_slug}/${timer.slug}`;
+  // Prefer the explicit `route` field on the entry when present (set by
+  // presets whose route lives outside their category prefix).
+  const href =
+    timer.route ||
+    TIMER_ROUTE_MAP[timer.slug] ||
+    `/${category_slug}/${timer.slug}`;
   return (
     <Link
       href={href}

@@ -29,7 +29,13 @@ const TIMER_ROUTE_MAP: Record<string, string> = {
 };
 
 export function TimerCard({ timer, category_slug }: TimerCardProps) {
-  const href = TIMER_ROUTE_MAP[timer.slug] || `/${category_slug}/${timer.slug}`;
+  // Prefer the explicit `route` field on the entry when present (set by
+  // presets that live outside their category prefix, e.g. streamer-tools
+  // presets under /brb/*). Fall back to the legacy slug-based resolution.
+  const href =
+    timer.route ||
+    TIMER_ROUTE_MAP[timer.slug] ||
+    `/${category_slug}/${timer.slug}`;
 
   return (
     <Link

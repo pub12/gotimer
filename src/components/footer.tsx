@@ -66,6 +66,11 @@ export default function Footer() {
                     Kitchen
                   </Link>
                 </li>
+                <li>
+                  <Link href="/streamer-tools" className="text-primary-foreground hover:text-primary-foreground/70 transition-colors no-underline text-sm">
+                    Streamer Tools
+                  </Link>
+                </li>
               </ul>
             </div>
 

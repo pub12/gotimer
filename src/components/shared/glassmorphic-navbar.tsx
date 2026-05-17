@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, MessageSquare, Globe, Shield, BookOpen, Timer, Menu, X, Search, FileText, Layers } from "lucide-react";
+import { Trophy, MessageSquare, Globe, Shield, BookOpen, Timer, Menu, X, Search, FileText, Layers, Video } from "lucide-react";
 import { ProfilePicMenu } from "hazo_auth/client";
 import { use_auth_status } from "hazo_auth/client";
 import { FeedbackDialog } from "@/components/feedback-dialog";
@@ -227,6 +227,10 @@ export default function GlassmorphicNavbar() {
             <Globe className="size-4" />
             <span>Public Challenges</span>
           </Link>
+          <Link href="/streamer-tools" className={nav_link_class}>
+            <Video className="size-4" />
+            <span>Streamer Tools</span>
+          </Link>
           <Link href="/blog" className={nav_link_class}>
             <BookOpen className="size-4" />
             <span>Blog</span>
@@ -343,6 +347,9 @@ export default function GlassmorphicNavbar() {
             )}
             <Link href="/public-challenges" className={mobile_link_class}>
               <Globe className="size-5" /> Public Challenges
+            </Link>
+            <Link href="/streamer-tools" className={mobile_link_class}>
+              <Video className="size-5" /> Streamer Tools
             </Link>
             <Link href="/blog" className={mobile_link_class}>
               <BookOpen className="size-5" /> Blog

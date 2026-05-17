@@ -19,6 +19,13 @@ export interface TimerEntry {
   slug: string;
   name: string;
   description: string;
+  /**
+   * Full canonical route to the preset page. When present, TimerCard
+   * links here directly instead of reconstructing `/<category>/<slug>`.
+   * Required for presets whose route lives outside their category prefix
+   * (e.g. streamer-tools presets that live under /brb/*).
+   */
+  route?: string;
 }
 
 export interface SiteCategory {
@@ -44,6 +51,7 @@ function preset_to_timer_entry(preset: PresetDefinition): TimerEntry {
     slug,
     name: preset.name,
     description: preset.description,
+    route: preset.route,
   };
 }
 
