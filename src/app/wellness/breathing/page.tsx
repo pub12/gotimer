@@ -36,11 +36,12 @@ const BREATHING_FAQ = [
 ];
 
 const RELATED_TIMERS = [
+  { name: "Wim Hof-style Contrast Timer", href: "/wellness/contrast-therapy/wim-hof-style", description: "Breath work + cold plunge in 3 rounds — pairs naturally with breathwork practice" },
   { name: "20-20-20 Rule Timer", href: "/wellness/20-20-20-timer", description: "Eye-strain break reminder — pair with breathwork for a full screen-recovery routine" },
   { name: "Sleep Timer", href: "/wellness/sleep", description: "Wind-down countdown for building a consistent bedtime routine" },
+  { name: "Cold Plunge Timer", href: "/wellness/cold-plunge-timer", description: "2-minute cold plunge timer — follow breath work with cold exposure" },
   { name: "Fasting Timer", href: "/wellness/fasting", description: "Intermittent fasting tracker with 16:8, 18:6, and OMAD presets" },
   { name: "Stretching Timer", href: "/fitness/stretching", description: "Hold timer with customizable durations for flexibility work" },
-  { name: "Study Timer", href: "/productivity/study", description: "Focus session timer for Pomodoro-style deep work" },
 ];
 
 function Content() {

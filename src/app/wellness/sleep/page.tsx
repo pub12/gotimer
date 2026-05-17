@@ -37,9 +37,10 @@ const SLEEP_FAQ = [
 
 const RELATED_TIMERS = [
   { name: "Breathing Timer", href: "/wellness/breathing", description: "Box breathing and 4-7-8 exercises for pre-sleep relaxation" },
+  { name: "Søberg Protocol Timer", href: "/wellness/contrast-therapy/soberg-protocol", description: "Evening contrast-therapy session ending on cold — calms the autonomic system pre-sleep" },
+  { name: "Sauna Timer", href: "/wellness/sauna-timer", description: "Pre-sleep sauna round helps lower core temperature on exit, easing sleep onset" },
   { name: "Fasting Timer", href: "/wellness/fasting", description: "Intermittent fasting tracker — avoid late-night eating for better sleep" },
   { name: "Stretching Timer", href: "/fitness/stretching", description: "Gentle stretching routine timer for bedtime flexibility" },
-  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any timed activity" },
   { name: "Study Timer", href: "/productivity/study", description: "Focus session timer — plan study sessions around your sleep schedule" },
 ];
 

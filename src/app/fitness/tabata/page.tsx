@@ -37,9 +37,10 @@ const TABATA_FAQ = [
 const RELATED_TIMERS = [
   { name: "EMOM Timer", href: "/fitness/emom", description: "Every Minute On the Minute — perform reps at the top of each minute and rest the remainder" },
   { name: "Rest Timer", href: "/fitness/rest-timer", description: "Quick countdown between sets for strength and hypertrophy training" },
+  { name: "Søberg Protocol Timer", href: "/wellness/contrast-therapy/soberg-protocol", description: "Post-workout contrast therapy — 3 rounds of sauna and cold plunge, ends on cold" },
   { name: "Stretching Timer", href: "/fitness/stretching", description: "Hold timer with adjustable durations for post-workout flexibility" },
-  { name: "Countdown Timer", href: "/countdown", description: "General-purpose countdown for any timed activity" },
   { name: "Breathing Timer", href: "/wellness/breathing", description: "Guided breathing exercises for recovery and cool-down" },
+  { name: "Cold Plunge Timer", href: "/wellness/cold-plunge-timer", description: "2-minute cold plunge — useful for non-strength conditioning recovery" },
 ];
 
 function Content() {

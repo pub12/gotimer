@@ -460,6 +460,116 @@ export const PRESETS: Record<string, PresetDefinition> = {
     route: "/wellness/screen-break-reminder",
     sitemapPriority: 0.6,
   },
+  "sauna-timer": {
+    id: "sauna-timer",
+    name: "Sauna Timer",
+    description:
+      "Free 15-minute sauna timer for Finnish, infrared, and steam saunas",
+    strategy: "countdown",
+    defaultConfig: { duration: 15 * 60 },
+    category: "wellness",
+    route: "/wellness/sauna-timer",
+    sitemapPriority: 0.8,
+  },
+  "cold-plunge-timer": {
+    id: "cold-plunge-timer",
+    name: "Cold Plunge Timer",
+    description:
+      "Free 2-minute cold plunge timer for ice baths and cold-water immersion",
+    strategy: "countdown",
+    defaultConfig: { duration: 120 },
+    category: "wellness",
+    route: "/wellness/cold-plunge-timer",
+    sitemapPriority: 0.8,
+  },
+  "contrast-therapy": {
+    id: "contrast-therapy",
+    name: "Contrast Therapy Timer",
+    description:
+      "Multi-phase sauna and cold-plunge sequencer with Søberg, 15-3-1, and Wim Hof-style presets",
+    strategy: "multi-step",
+    defaultConfig: {
+      steps: [
+        { name: "Sauna — Round 1/3", duration: 15 * 60 },
+        { name: "Plunge — Round 1/3", duration: 120 },
+        { name: "Rest — Round 1/3", duration: 60 },
+        { name: "Sauna — Round 2/3", duration: 15 * 60 },
+        { name: "Plunge — Round 2/3", duration: 120 },
+        { name: "Rest — Round 2/3", duration: 60 },
+        { name: "Sauna — Round 3/3", duration: 15 * 60 },
+        { name: "Plunge — Round 3/3", duration: 120 },
+      ],
+    },
+    category: "wellness",
+    route: "/wellness/contrast-therapy",
+    sitemapPriority: 0.8,
+  },
+  "soberg-protocol": {
+    id: "soberg-protocol",
+    name: "Søberg Protocol Timer",
+    description:
+      "Published Søberg sequence — 3 rounds of 15-2-1, ends on cold",
+    strategy: "multi-step",
+    defaultConfig: {
+      steps: [
+        { name: "Sauna — Round 1/3", duration: 15 * 60 },
+        { name: "Plunge — Round 1/3", duration: 120 },
+        { name: "Rest — Round 1/3", duration: 60 },
+        { name: "Sauna — Round 2/3", duration: 15 * 60 },
+        { name: "Plunge — Round 2/3", duration: 120 },
+        { name: "Rest — Round 2/3", duration: 60 },
+        { name: "Sauna — Round 3/3", duration: 15 * 60 },
+        { name: "Plunge — Round 3/3", duration: 120 },
+      ],
+    },
+    category: "wellness",
+    route: "/wellness/contrast-therapy/soberg-protocol",
+    sitemapPriority: 0.8,
+  },
+  "fifteen-three-rest": {
+    id: "fifteen-three-rest",
+    name: "15-3-1 Sauna + Cold Plunge Timer",
+    description:
+      "Sauna-heavy contrast therapy: 15 min sauna, 3 min cold, 1 min rest — 3 rounds, ends on cold",
+    strategy: "multi-step",
+    defaultConfig: {
+      steps: [
+        { name: "Sauna — Round 1/3", duration: 15 * 60 },
+        { name: "Cold plunge — Round 1/3", duration: 3 * 60 },
+        { name: "Rest — Round 1/3", duration: 60 },
+        { name: "Sauna — Round 2/3", duration: 15 * 60 },
+        { name: "Cold plunge — Round 2/3", duration: 3 * 60 },
+        { name: "Rest — Round 2/3", duration: 60 },
+        { name: "Sauna — Round 3/3", duration: 15 * 60 },
+        { name: "Cold plunge — Round 3/3", duration: 3 * 60 },
+      ],
+    },
+    category: "wellness",
+    route: "/wellness/contrast-therapy/15-3-rest",
+    sitemapPriority: 0.7,
+  },
+  "wim-hof-style-contrast": {
+    id: "wim-hof-style-contrast",
+    name: "Wim Hof-style Contrast Timer",
+    description:
+      "Breath work, cold plunge, recovery — 3 rounds ending on cold, no sauna required",
+    strategy: "multi-step",
+    defaultConfig: {
+      steps: [
+        { name: "Breath work — Round 1/3", duration: 3 * 60 },
+        { name: "Cold plunge — Round 1/3", duration: 120 },
+        { name: "Recovery — Round 1/3", duration: 90 },
+        { name: "Breath work — Round 2/3", duration: 3 * 60 },
+        { name: "Cold plunge — Round 2/3", duration: 120 },
+        { name: "Recovery — Round 2/3", duration: 90 },
+        { name: "Breath work — Round 3/3", duration: 3 * 60 },
+        { name: "Cold plunge — Round 3/3", duration: 120 },
+      ],
+    },
+    category: "wellness",
+    route: "/wellness/contrast-therapy/wim-hof-style",
+    sitemapPriority: 0.7,
+  },
 
   // -- Productivity (5) -----------------------------------------------------
   pomodoro: {
@@ -701,11 +811,11 @@ export const CATEGORIES: Record<string, CategoryDefinition> = {
     icon: Heart,
     heading: "Timers for Mind & Body",
     description:
-      "Meditation, breathing exercises, sleep timers, and fasting trackers for your daily wellbeing routine.",
+      "Meditation, breathing exercises, sleep timers, sauna and cold-plunge protocols, and fasting trackers for your daily wellbeing routine.",
     heroCta: "Start Breathing \u2192",
     heroCtaHref: "/wellness/meditation",
     gridHeading: "Your Wellness Toolkit",
-    featuredTimers: ["meditation", "breathing", "sleep"],
+    featuredTimers: ["contrast-therapy", "meditation", "breathing"],
   },
 
   productivity: {
