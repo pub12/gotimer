@@ -231,6 +231,17 @@ export const STRATEGIES: Record<string, StrategyDefinition> = {
     route: "/wellness/20-20-20-timer",
     sitemapPriority: 0.8,
   },
+
+  "espresso-shot": {
+    id: "espresso-shot",
+    name: "Espresso Shot Timer",
+    description:
+      "Count-up shot timer with first-drip capture and a 25-30s target band. Powers the espresso timer.",
+    defaultConfig: { target_min: 25, target_max: 30 },
+    supportedParams: ["target_min", "target_max"],
+    route: "/kitchen/espresso-timer",
+    sitemapPriority: 0.8,
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -848,6 +859,159 @@ export const PRESETS: Record<string, PresetDefinition> = {
     sitemapPriority: 0.6,
   },
 
+  // -- Coffee — Pour-Over (1 hub + 9 leaves) -------------------------------
+  "pour-over-timer": {
+    id: "pour-over-timer",
+    name: "Pour Over Timer",
+    description:
+      "Multi-recipe pour-over timer with Hoffmann V60, Kasuya 4:6, Chemex, AeroPress, French Press and more pre-configured.",
+    strategy: "multi-step",
+    defaultConfig: {
+      steps: [
+        { name: "Bloom — 50g total", duration: 45 },
+        { name: "Pour 1 — 100g total", duration: 15 },
+        { name: "Wait — 100g total", duration: 30 },
+        { name: "Pour 2 — 150g total", duration: 15 },
+        { name: "Wait — 150g total", duration: 30 },
+        { name: "Pour 3 — 200g total", duration: 15 },
+        { name: "Pour 4 — 250g total", duration: 10 },
+        { name: "Drawdown — 250g total", duration: 60 },
+      ],
+    },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer",
+    sitemapPriority: 0.8,
+  },
+  "pour-over-v60": {
+    id: "pour-over-v60",
+    name: "V60 Timer",
+    description: "Generic four-pour Hario V60 recipe — 15g/240g, ~3 minutes",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/v60",
+    sitemapPriority: 0.8,
+  },
+  "pour-over-chemex": {
+    id: "pour-over-chemex",
+    name: "Chemex Timer",
+    description: "Standard Chemex 3-cup recipe — 30g/500g, ~5:30 drawdown",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/chemex",
+    sitemapPriority: 0.7,
+  },
+  "pour-over-aeropress": {
+    id: "pour-over-aeropress",
+    name: "AeroPress Timer",
+    description: "Standard upright AeroPress recipe — 17g/250g, 1:00 steep + press",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/aeropress",
+    sitemapPriority: 0.7,
+  },
+  "pour-over-aeropress-inverted": {
+    id: "pour-over-aeropress-inverted",
+    name: "Inverted AeroPress Timer",
+    description: "World AeroPress Championship-style inverted method — 18g/220g",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/aeropress-inverted",
+    sitemapPriority: 0.7,
+  },
+  "pour-over-french-press": {
+    id: "pour-over-french-press",
+    name: "French Press Timer",
+    description: "Classic 4-minute French press — 30g/500g, coarse grind, plunge and pour",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/french-press",
+    sitemapPriority: 0.7,
+  },
+  "pour-over-hoffmann-v60": {
+    id: "pour-over-hoffmann-v60",
+    name: "Hoffmann V60 Timer",
+    description:
+      "James Hoffmann&apos;s Ultimate V60 Technique — 15g/250g, four 50g pours, finish at 3:30",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/hoffmann-v60",
+    sitemapPriority: 0.9,
+  },
+  "pour-over-hoffmann-french-press": {
+    id: "pour-over-hoffmann-french-press",
+    name: "Hoffmann French Press Timer",
+    description:
+      "James Hoffmann&apos;s Best French Press Technique — 30g/500g, 4-min steep + skim + 5-min rest",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/hoffmann-french-press",
+    sitemapPriority: 0.8,
+  },
+  "pour-over-tetsu-kasuya-4-6": {
+    id: "pour-over-tetsu-kasuya-4-6",
+    name: "Tetsu Kasuya 4:6 Timer",
+    description:
+      "2016 World Brewers Cup-winning recipe — 20g/300g, five pours split 40%/60% by intent",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/tetsu-kasuya-4-6",
+    sitemapPriority: 0.9,
+  },
+  "pour-over-kalita-wave": {
+    id: "pour-over-kalita-wave",
+    name: "Kalita Wave Timer",
+    description:
+      "Kalita Wave 185 recipe — 22g/350g, three even pours into flat-bottom dripper",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/pour-over-timer/kalita-wave",
+    sitemapPriority: 0.7,
+  },
+
+  // -- Coffee — Espresso (1 hub + 2 leaves) --------------------------------
+  "espresso-timer": {
+    id: "espresso-timer",
+    name: "Espresso Timer",
+    description:
+      "Count-up espresso shot timer with first-drip capture and a 25-30 second target band.",
+    strategy: "espresso-shot",
+    defaultConfig: { target_min: 25, target_max: 30 },
+    category: "kitchen",
+    route: "/kitchen/espresso-timer",
+    sitemapPriority: 0.8,
+  },
+  "espresso-pre-infusion": {
+    id: "espresso-pre-infusion",
+    name: "Espresso Pre-Infusion Timer",
+    description:
+      "Espresso timer optimized for tracking pre-infusion duration — first-drip + extraction time split.",
+    strategy: "espresso-shot",
+    defaultConfig: { target_min: 25, target_max: 30 },
+    category: "kitchen",
+    route: "/kitchen/espresso-timer/pre-infusion",
+    sitemapPriority: 0.7,
+  },
+  "espresso-25-second-shot": {
+    id: "espresso-25-second-shot",
+    name: "25 Second Espresso Timer",
+    description:
+      "Classic double-shot recipe with 25-30s target band locked in. 18g dose, 36g yield.",
+    strategy: "espresso-shot",
+    defaultConfig: { target_min: 25, target_max: 30 },
+    category: "kitchen",
+    route: "/kitchen/espresso-timer/25-second-shot",
+    sitemapPriority: 0.7,
+  },
+
   // -- Streamer Tools (6) ---------------------------------------------------
   "brb-overlay-hub": {
     id: "brb-overlay-hub",
@@ -1024,7 +1188,7 @@ export const CATEGORIES: Record<string, CategoryDefinition> = {
     heroCta: "Start Cooking \u2192",
     heroCtaHref: "/kitchen/cooking",
     gridHeading: "Kitchen Essentials",
-    featuredTimers: ["cooking", "eggs", "kitchen-multi-timer"],
+    featuredTimers: ["pour-over-timer", "espresso-timer", "eggs"],
   },
 
   "streamer-tools": {

@@ -36,10 +36,11 @@ const BREAD_FAQ = [
 ];
 
 const RELATED_TIMERS = [
+  { name: "Pour-Over Coffee Timer", href: "/kitchen/pour-over-timer", description: "Multi-stage timer for V60, Chemex, AeroPress and more recipes" },
+  { name: "Espresso Timer", href: "/kitchen/espresso-timer", description: "Espresso shot timer with first-drip capture and 25-30s target band" },
   { name: "Cooking Timer", href: "/kitchen/cooking", description: "General kitchen timer with presets for baking and cooking" },
   { name: "Egg Timer", href: "/kitchen/eggs", description: "Presets for soft, medium, and hard boiled eggs" },
   { name: "Multi-Timer", href: "/kitchen/multi-timer", description: "Track multiple baking steps simultaneously" },
-  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any duration including overnight proofs" },
   { name: "Fasting Timer", href: "/wellness/fasting", description: "Long-duration countdown for extended fermentation tracking" },
 ];
 
