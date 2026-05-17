@@ -1012,6 +1012,124 @@ export const PRESETS: Record<string, PresetDefinition> = {
     sitemapPriority: 0.7,
   },
 
+  // -- Tea (1 hub + 9 leaves) ----------------------------------------------
+  "tea-timer": {
+    id: "tea-timer",
+    name: "Tea Timer",
+    description:
+      "Free tea steeping timer with seven per-type presets (green, oolong, white, black, pu-erh, herbal, matcha) plus gongfu and multi-cup modes.",
+    strategy: "countdown",
+    defaultConfig: { duration: 120 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer",
+    sitemapPriority: 0.9,
+  },
+  "tea-green": {
+    id: "tea-green",
+    name: "Green Tea Timer",
+    description:
+      "Free green tea timer — 75-80°C, 1-3 min default. Sencha, Dragon Well, Gyokuro sub-variety timings.",
+    strategy: "countdown",
+    defaultConfig: { duration: 120 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/green",
+    sitemapPriority: 0.8,
+  },
+  "tea-black": {
+    id: "tea-black",
+    name: "Black Tea Timer",
+    description:
+      "Free black tea timer — 90-100°C, 3-5 min default. Assam, Darjeeling, Earl Grey timings.",
+    strategy: "countdown",
+    defaultConfig: { duration: 240 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/black",
+    sitemapPriority: 0.8,
+  },
+  "tea-oolong": {
+    id: "tea-oolong",
+    name: "Oolong Tea Timer",
+    description:
+      "Free oolong tea timer — 85-95°C, 2-4 min default. Tieguanyin, Da Hong Pao, Dancong timings.",
+    strategy: "countdown",
+    defaultConfig: { duration: 180 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/oolong",
+    sitemapPriority: 0.8,
+  },
+  "tea-white": {
+    id: "tea-white",
+    name: "White Tea Timer",
+    description:
+      "Free white tea timer — 75-85°C, 2-5 min default. Silver Needle, White Peony, Shou Mei timings.",
+    strategy: "countdown",
+    defaultConfig: { duration: 180 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/white",
+    sitemapPriority: 0.7,
+  },
+  "tea-pu-erh": {
+    id: "tea-pu-erh",
+    name: "Pu-Erh Tea Timer",
+    description:
+      "Free pu-erh tea timer for sheng (raw) and shou (ripe) Chinese fermented tea. Gongfu or Western brewing.",
+    strategy: "countdown",
+    defaultConfig: { duration: 180 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/pu-erh",
+    sitemapPriority: 0.7,
+  },
+  "tea-herbal": {
+    id: "tea-herbal",
+    name: "Herbal Tea Timer",
+    description:
+      "Free herbal tea (tisane) timer — 100°C, 5-10 min. Chamomile, peppermint, rooibos, hibiscus timings.",
+    strategy: "countdown",
+    defaultConfig: { duration: 360 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/herbal",
+    sitemapPriority: 0.7,
+  },
+  "tea-matcha": {
+    id: "tea-matcha",
+    name: "Matcha Timer",
+    description:
+      "Free matcha whisking timer — 30-second usucha cycle. Usucha and koicha technique notes.",
+    strategy: "countdown",
+    defaultConfig: { duration: 30 },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/matcha",
+    sitemapPriority: 0.7,
+  },
+  "tea-gongfu": {
+    id: "tea-gongfu",
+    name: "Gongfu Cha Timer",
+    description:
+      "Free gongfu cha multi-infusion timer — 8 infusions auto-progressing (10-15-20-30-45-60-90-120s).",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/gongfu",
+    sitemapPriority: 0.8,
+  },
+  "tea-multi-cup": {
+    id: "tea-multi-cup",
+    name: "Multi-Cup Tea Timer",
+    description:
+      "Free multi-cup tea timer — brew up to 6 teas at once with per-cup type and steep time.",
+    strategy: "multi-timer",
+    defaultConfig: {
+      timers: [
+        { id: "cup-green", name: "Green tea", duration: 120 },
+        { id: "cup-oolong", name: "Oolong", duration: 180 },
+        { id: "cup-black", name: "Black tea", duration: 240 },
+      ],
+    },
+    category: "kitchen",
+    route: "/kitchen/tea-timer/multi-cup",
+    sitemapPriority: 0.8,
+  },
+
   // -- Streamer Tools (6) ---------------------------------------------------
   "brb-overlay-hub": {
     id: "brb-overlay-hub",
@@ -1188,7 +1306,7 @@ export const CATEGORIES: Record<string, CategoryDefinition> = {
     heroCta: "Start Cooking \u2192",
     heroCtaHref: "/kitchen/cooking",
     gridHeading: "Kitchen Essentials",
-    featuredTimers: ["pour-over-timer", "espresso-timer", "eggs"],
+    featuredTimers: ["pour-over-timer", "tea-timer", "espresso-timer"],
   },
 
   "streamer-tools": {

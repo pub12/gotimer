@@ -35,6 +35,11 @@ const RELATED_TIMERS = [
     description: "Concentrated brew alternative — not espresso, but in the ballpark",
   },
   {
+    name: "Tea Timer",
+    href: "/kitchen/tea-timer",
+    description: "Switch beverages — per-type tea presets, gongfu and multi-cup modes",
+  },
+  {
     name: "Egg Timer",
     href: "/kitchen/eggs",
     description: "Pair an espresso with a soft-boiled egg",

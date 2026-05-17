@@ -42,6 +42,11 @@ const RELATED_TIMERS = [
     description: "Sibling tool — pre-infusion + first-drip capture, 25-30s target band",
   },
   {
+    name: "Tea Timer",
+    href: "/kitchen/tea-timer",
+    description: "Sibling beverage tool — per-type tea presets, gongfu and multi-cup modes",
+  },
+  {
     name: "Egg Timer",
     href: "/kitchen/eggs",
     description: "While you wait for the drawdown — perfect soft, medium, hard boiled",

@@ -42,11 +42,11 @@ const EGGS_FAQ = [
 
 const RELATED_TIMERS = [
   { name: "Pour-Over Coffee Timer", href: "/kitchen/pour-over-timer", description: "Multi-stage timer with Hoffmann V60, Chemex, AeroPress and more recipes" },
+  { name: "Tea Timer", href: "/kitchen/tea-timer", description: "Per-type tea presets, gongfu cha, and multi-cup brewing" },
   { name: "Espresso Timer", href: "/kitchen/espresso-timer", description: "Espresso shot timer with first-drip capture and 25-30s target band" },
   { name: "Cooking Timer", href: "/kitchen/cooking", description: "General kitchen timer with presets for common cooking times" },
   { name: "Bread Proofing Timer", href: "/kitchen/bread-proofing", description: "Track dough rise and fermentation times" },
   { name: "Multi-Timer", href: "/kitchen/multi-timer", description: "Run multiple kitchen timers at once for full meal prep" },
-  { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any timed activity" },
 ];
 
 function Content() {
