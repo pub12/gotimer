@@ -5,6 +5,6 @@ sauna-cold-plunge,shipped,2026-05-18,,,,,,6 pages live (sauna-timer, cold-plunge
 bgg-multiplayer-turn-timer,shipped,2026-05-18,,,,,,10 pages live (hub + 8 game presets + analysis-paralysis alias); post BGG geeklist tagged to heavy-clock games (TI4 / Gloomhaven / Brass); cross-linked from /board-games/turn-timer
 coffee-pour-over-espresso,shipped,2026-05-18,,,,,,13 pages live (pour-over hub + 9 recipe leaves: Hoffmann V60/Kasuya 4:6/Chemex/AeroPress×2/Kalita/French press×2/V60 + espresso hub + pre-infusion + 25-second-shot); pitch Lance Hedrick / FLTR Magazine / James Hoffmann reply guys; share URLs in r/coffee r/espresso
 tea-multi-cup,shipped,2026-05-18,,,,,,10 pages live (tea hub + 7 per-type leaves green/oolong/white/black/pu-erh/herbal/matcha + gongfu cha auto-progressing 8-infusion + multi-cup grid up to 6 cups); pitch MeiLeaf / TeaDB / Tea Drunk; share URLs in r/tea r/puer r/gongfu r/oolong
-debate-toastmasters,planned,,,,,,,
+debate-toastmasters,shipped,2026-05-18,,,,,,12 routes live (debate hub + 5 formats: PF/LD/Policy/WSDC/BP + custom URL-encoded builder + Toastmasters hub + 4 speech types: ice-breaker/prepared/table-topics/evaluation); new multi-step previous_step action + stoplight projection component + judge controls plugin; pitch debate coaches Substacks (Premier Debate / TabRoom) + Toastmasters District Substacks; share URLs in r/Debate r/toastmasters; coaches paste custom-format URL onto school club pages
 classroom-toolkit,planned,,,,,,,
 embed-widget,planned,,,,,,,

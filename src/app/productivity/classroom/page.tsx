@@ -37,6 +37,8 @@ const CLASSROOM_FAQ = [
 
 const RELATED_TIMERS = [
   { name: "Study Timer", href: "/productivity/study", description: "Pomodoro-style focus sessions for students" },
+  { name: "Debate Timer", href: "/productivity/debate-timer", description: "Multi-phase debate round timer — PF, LD, Policy, WSDC, BP for classroom debate units" },
+  { name: "Toastmasters Timer", href: "/productivity/toastmasters-timer", description: "Green/yellow/red signal cycles for student speech assignments" },
   { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any timed activity" },
   { name: "Round Timer", href: "/round-timer", description: "Multi-round timer for structured class activities" },
   { name: "Turn Timer", href: "/board-games/turn-timer", description: "Turn-based timer for classroom games and debates" },

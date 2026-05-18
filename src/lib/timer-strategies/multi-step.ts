@@ -165,6 +165,28 @@ export const multiStepStrategy: TimerStrategy<MultiStepState> = {
           skipped_times: skipped,
         };
       }
+      case "previous_step": {
+        // Judges rewind a phase. From finished, restore the final step itself.
+        const from_idx = state.finished
+          ? state.steps.length
+          : state.current_step;
+        const prev_idx = Math.max(0, from_idx - 1);
+        const prev_step = state.steps[prev_idx];
+        if (!prev_step) return state;
+        const skipped = [...state.skipped_times];
+        skipped[prev_idx] = undefined;
+        return {
+          ...state,
+          prev_step: state.current_step,
+          current_step: prev_idx,
+          step_remaining: prev_step.duration,
+          step_elapsed: 0,
+          agitation_countdown: prev_step.agitation?.initial_seconds || 0,
+          agitation_pending: false,
+          finished: false,
+          skipped_times: skipped,
+        };
+      }
       default:
         return state;
     }

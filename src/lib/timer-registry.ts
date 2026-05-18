@@ -811,6 +811,142 @@ export const PRESETS: Record<string, PresetDefinition> = {
     sitemapPriority: 0.7,
   },
 
+  // -- Productivity — Debate (1 hub + 5 formats + 1 builder) ---------------
+  "debate-timer": {
+    id: "debate-timer",
+    name: "Debate Timer",
+    description:
+      "Free debate timer covering Public Forum, Lincoln-Douglas, Policy, World Schools, and British Parliamentary. Multi-phase auto-advance + judge controls.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer",
+    sitemapPriority: 0.9,
+  },
+  "debate-public-forum": {
+    id: "debate-public-forum",
+    name: "Public Forum Debate Timer",
+    description:
+      "Free Public Forum debate timer — NSDA 4-4-3-4-4-3-3-3-3-2-2 speech times pre-loaded, 11-phase auto-advance.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer/public-forum",
+    sitemapPriority: 0.8,
+  },
+  "debate-lincoln-douglas": {
+    id: "debate-lincoln-douglas",
+    name: "Lincoln-Douglas Debate Timer",
+    description:
+      "Free Lincoln-Douglas debate timer — NSDA 6-3-7-3-4-6-3 speech times with two cross-examination periods.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer/lincoln-douglas",
+    sitemapPriority: 0.8,
+  },
+  "debate-policy": {
+    id: "debate-policy",
+    name: "Policy Debate Timer",
+    description:
+      "Free Policy / Cross-Examination debate timer — NSDA 12-phase round with 8-3-8-3-8-3-8-3-5-5-5-5 speech times.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer/policy",
+    sitemapPriority: 0.8,
+  },
+  "debate-wsdc": {
+    id: "debate-wsdc",
+    name: "World Schools Debate Timer",
+    description:
+      "Free WSDC timer — six 8-min constructive speeches, two 4-min replies, POIs allowed minute 1-7.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer/wsdc",
+    sitemapPriority: 0.7,
+  },
+  "debate-british-parliamentary": {
+    id: "debate-british-parliamentary",
+    name: "British Parliamentary Debate Timer",
+    description:
+      "Free BP / WUDC timer — four teams, eight 7-minute speeches, POIs minute 1-6.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer/british-parliamentary",
+    sitemapPriority: 0.7,
+  },
+  "debate-custom-builder": {
+    id: "debate-custom-builder",
+    name: "Custom Debate Timer Builder",
+    description:
+      "Build a custom debate format with any phase sequence. Shareable URL keeps the phases encoded in the link.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/debate-timer/custom",
+    sitemapPriority: 0.6,
+  },
+
+  // -- Productivity — Toastmasters (1 hub + 4 speech types) ----------------
+  "toastmasters-timer": {
+    id: "toastmasters-timer",
+    name: "Toastmasters Timer",
+    description:
+      "Free Toastmasters speech timer with green/yellow/red signal cycles for Ice Breaker, prepared, Table Topics, and evaluation speeches.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/toastmasters-timer",
+    sitemapPriority: 0.9,
+  },
+  "toastmasters-ice-breaker": {
+    id: "toastmasters-ice-breaker",
+    name: "Toastmasters Ice Breaker Timer",
+    description:
+      "Free Ice Breaker (Pathways Project 1) timer — 4-5-6 minute green/yellow/red signal cycle.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/toastmasters-timer/ice-breaker",
+    sitemapPriority: 0.7,
+  },
+  "toastmasters-prepared-speech": {
+    id: "toastmasters-prepared-speech",
+    name: "Toastmasters Prepared Speech Timer",
+    description:
+      "Free 5-6-7 minute prepared-speech timer — the standard Toastmasters cycle for most Pathways projects.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/toastmasters-timer/prepared-speech",
+    sitemapPriority: 0.8,
+  },
+  "toastmasters-table-topics": {
+    id: "toastmasters-table-topics",
+    name: "Table Topics Timer",
+    description:
+      "Free Table Topics impromptu speaking timer — 1:00 / 1:30 / 2:00 green-yellow-red cycle.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/toastmasters-timer/table-topics",
+    sitemapPriority: 0.7,
+  },
+  "toastmasters-evaluation": {
+    id: "toastmasters-evaluation",
+    name: "Toastmasters Evaluation Timer",
+    description:
+      "Free Toastmasters speech-evaluation timer — 2:00 / 2:30 / 3:00 cycle for the Evaluation Contest.",
+    strategy: "multi-step",
+    defaultConfig: { steps: [] },
+    category: "productivity",
+    route: "/productivity/toastmasters-timer/evaluation",
+    sitemapPriority: 0.7,
+  },
+
   // -- Kitchen (4) ----------------------------------------------------------
   cooking: {
     id: "cooking",
