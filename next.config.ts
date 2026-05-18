@@ -84,6 +84,15 @@ const nextConfig: NextConfig = {
           { key: "Content-Security-Policy", value: "frame-ancestors *" },
         ],
       },
+      // Canonical short-form embed iframe URL — allow embedding on any origin
+      {
+        source: "/e/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "ALLOWALL" },
+          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
     ];
   },
 };

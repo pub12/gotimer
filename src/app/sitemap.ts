@@ -25,6 +25,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/docs/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/stopwatch/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.6 },
 
+    // Embed Widget niche (niche-9) — SEO landing pages. /e/* iframe routes
+    // are intentionally noindex and NOT listed here.
+    { url: `${base}/embed`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/embed/wedding-countdown`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/embed/event-countdown`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/embed/wordpress`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/embed/shopify`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/embed/notion`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+
     // Classroom Toolkit (niche-8) — non-timer tools, manually listed.
     { url: `${base}/classroom`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/classroom/name-picker`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },

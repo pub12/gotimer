@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Embed a GoTimer on your site — URL params, iframe sizing, themes",
@@ -15,17 +16,20 @@ export default function EmbedDocsPage() {
         Every GoTimer works as an iframe. Grab a URL, paste it into your site,
         the OBS browser source, a Notion embed block, Google Slides, a
         classroom projector — anywhere. All customisation happens via URL
-        parameters. No account needed.
+        parameters. No account needed. For a guided builder with live preview,
+        visit <Link href="/embed">/embed</Link>.
       </p>
 
       <h2>Quickstart</h2>
-      <pre><code>{`<iframe src="https://gotimer.org/embed/countdown?duration=300"
+      <pre><code>{`<iframe src="https://gotimer.org/e/countdown?duration=300"
   width="400" height="400" frameborder="0"></iframe>`}</code></pre>
 
       <p>
-        For auto-resizing, add the resizer script once per page:
+        The canonical embed URL is <code>https://gotimer.org/e/&lt;timer-type&gt;?…params…</code>.
+        Long-form per-strategy URLs (<code>/countdown/embed</code>,{" "}
+        <code>/chess-clock/embed</code>, <code>/round-timer/embed</code>,{" "}
+        <code>/stopwatch/embed</code>) still work and are equivalent.
       </p>
-      <pre><code>{`<script src="https://gotimer.org/embed.js"></script>`}</code></pre>
 
       <h2>Parameters</h2>
 
@@ -60,13 +64,33 @@ export default function EmbedDocsPage() {
       <h2>Platform recipes</h2>
 
       <h3>OBS / Twitch browser source</h3>
-      <pre><code>{`https://gotimer.org/embed/countdown?duration=300&theme=streaming&bg=transparent&message=Back+in+5+minutes&branding=corner`}</code></pre>
+      <pre><code>{`https://gotimer.org/e/countdown?duration=300&theme=streaming&bg=transparent&message=Back+in+5+minutes&branding=corner`}</code></pre>
 
       <h3>Notion embed block</h3>
-      <pre><code>{`https://gotimer.org/embed/countdown?duration=1500&label=Pomodoro&theme=light`}</code></pre>
+      <pre><code>{`https://gotimer.org/e/countdown?duration=1500&label=Pomodoro&theme=light`}</code></pre>
 
       <h3>Classroom projector</h3>
-      <pre><code>{`https://gotimer.org/embed/countdown?duration=300&theme=classroom&autostart=1`}</code></pre>
+      <pre><code>{`https://gotimer.org/e/countdown?duration=300&theme=classroom&autostart=1`}</code></pre>
+
+      <h2>Auto-resize for parent pages</h2>
+      <p>
+        Every GoTimer embed posts <code>{`{ source: 'gotimer', type: 'resize', height }`}</code> to{" "}
+        <code>window.parent</code>. Listen for it from the embedding page to
+        auto-fit the iframe height to its content:
+      </p>
+      <pre><code>{`window.addEventListener("message", (e) => {
+  if (e.data?.source !== "gotimer" || e.data.type !== "resize") return;
+  document.querySelector("iframe.gotimer").style.height = e.data.height + "px";
+});`}</code></pre>
+
+      <h2>Platform-specific install guides</h2>
+      <ul>
+        <li><Link href="/embed/wordpress">WordPress embed guide</Link></li>
+        <li><Link href="/embed/shopify">Shopify embed guide</Link></li>
+        <li><Link href="/embed/notion">Notion embed guide</Link></li>
+        <li><Link href="/embed/wedding-countdown">Wedding countdown widget</Link></li>
+        <li><Link href="/embed/event-countdown">Event countdown embed</Link></li>
+      </ul>
     </main>
   );
 }

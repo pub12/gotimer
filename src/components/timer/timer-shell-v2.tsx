@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   Volume2, VolumeX, Maximize, Minimize, Pencil,
-  Link2, Check, Palette, Zap, Settings, Share2,
+  Link2, Check, Palette, Zap, Settings, Share2, Code2,
 } from "lucide-react";
 import { useTimer } from "./timer-provider";
 import { SaveTimerButton } from "@/components/studio/save-timer-button";
 import { ShareDialog } from "./share-dialog";
+import { EmbedCodeGenerator } from "@/components/embed/embed-code-generator";
 
 // ---- Theme presets (same as original TimerShell) ----
 const THEME_PRESETS = [
@@ -85,6 +86,7 @@ export function TimerShellV2({
   const [flash_at, set_flash_at] = useState(5);
   const [show_flash_config, set_show_flash_config] = useState(false);
   const [show_share, set_show_share] = useState(false);
+  const [show_embed, set_show_embed] = useState(false);
 
   const active_theme = get_theme(theme_id);
 
@@ -349,6 +351,17 @@ export function TimerShellV2({
           <Share2 className="w-3.5 h-3.5" />
           Share
         </button>
+        {/* Embed iframe */}
+        {timer_type && (
+          <button
+            onClick={() => set_show_embed(true)}
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${btn_bg} ${btn_text} hover:text-foreground`}
+            aria-label="Embed this timer"
+          >
+            <Code2 className="w-3.5 h-3.5" />
+            Embed
+          </button>
+        )}
         {/* Save to Studio */}
         {timer_type && (
           <SaveTimerButton
@@ -381,6 +394,17 @@ export function TimerShellV2({
         started_at={started_at}
         running={running}
       />
+
+      {/* Embed code modal */}
+      {timer_type && (
+        <EmbedCodeGenerator
+          open={show_embed}
+          on_close={() => set_show_embed(false)}
+          timer_type={timer_type}
+          timer_name={user_title || label}
+          timer_config={timer_config || {}}
+        />
+      )}
     </div>
   );
 }
