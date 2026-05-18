@@ -36,6 +36,10 @@ const CLASSROOM_FAQ = [
 ];
 
 const RELATED_TIMERS = [
+  { name: "Classroom Toolkit", href: "/classroom", description: "Name picker, group generator, noise meter, tally counter — free teacher tools" },
+  { name: "Random Name Picker", href: "/classroom/name-picker", description: "Free spinning name wheel for cold-calling students" },
+  { name: "Group Generator", href: "/classroom/group-generator", description: "Random groups from your class list — seedable, fair, no-signup" },
+  { name: "Classroom Noise Meter", href: "/classroom/noise-meter", description: "Mic-based noise meter — project during quiet work to self-regulate volume" },
   { name: "Study Timer", href: "/productivity/study", description: "Pomodoro-style focus sessions for students" },
   { name: "Debate Timer", href: "/productivity/debate-timer", description: "Multi-phase debate round timer — PF, LD, Policy, WSDC, BP for classroom debate units" },
   { name: "Toastmasters Timer", href: "/productivity/toastmasters-timer", description: "Green/yellow/red signal cycles for student speech assignments" },

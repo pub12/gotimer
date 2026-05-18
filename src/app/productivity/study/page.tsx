@@ -38,6 +38,7 @@ const STUDY_FAQ = [
 const RELATED_TIMERS = [
   { name: "20-20-20 Rule Timer", href: "/wellness/20-20-20-timer", description: "Eye-strain break reminder for long study sessions — stack with your focus blocks" },
   { name: "Classroom Timer", href: "/productivity/classroom", description: "Large-display timer for teachers and group activities" },
+  { name: "Classroom Toolkit", href: "/classroom", description: "Name picker, group generator, noise meter, tally counter for teachers" },
   { name: "Debate Timer", href: "/productivity/debate-timer", description: "Multi-phase round timer for PF, LD, Policy, WSDC, BP — great for debate-team practice" },
   { name: "Toastmasters Timer", href: "/productivity/toastmasters-timer", description: "Green/yellow/red signal cycles for prepared speeches and Table Topics" },
   { name: "Countdown Timer", href: "/countdown", description: "Simple countdown for any timed activity" },

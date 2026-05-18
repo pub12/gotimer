@@ -24,6 +24,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/terms-of-service`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/docs/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/stopwatch/embed`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.6 },
+
+    // Classroom Toolkit (niche-8) — non-timer tools, manually listed.
+    { url: `${base}/classroom`, lastModified: staticDate, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/classroom/name-picker`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/classroom/name-picker/wheel`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/classroom/name-picker/no-signup`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/classroom/group-generator`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/classroom/group-generator/teams-of-3`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/classroom/group-generator/teams-of-4`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/classroom/noise-meter`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/classroom/tally-counter`, lastModified: staticDate, changeFrequency: "monthly", priority: 0.7 },
   ];
 
   // Strategy routes (timer pages + setup pages), deduplicated
