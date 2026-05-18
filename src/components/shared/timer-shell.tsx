@@ -4,10 +4,11 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 import {
-  Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Palette, Zap, Share2,
+  Volume2, VolumeX, Maximize, Minimize, Pencil, Minus, Plus, Palette, Zap, Share2, Code2,
 } from "lucide-react";
 import { SaveTimerButton } from "@/components/studio/save-timer-button";
 import { ShareDialog } from "@/components/timer/share-dialog";
+import { EmbedCodeGenerator } from "@/components/embed/embed-code-generator";
 
 const MAX_DURATION = 86400; // 24 hours
 
@@ -147,6 +148,11 @@ export interface TimerShellProps {
   running?: boolean;
   /** UTC start time of the running timer — passed to ShareDialog for live sharing */
   started_at?: Date | null;
+  /** Preset or strategy id (e.g. "countdown", "interval"). When provided, an Embed
+   *  button is shown in the toolbar that opens the EmbedCodeGenerator modal. */
+  timer_type?: string;
+  /** Config object passed to the embed generator alongside timer_type. */
+  timer_config?: Record<string, unknown>;
 }
 
 export default function TimerShell({
@@ -164,6 +170,8 @@ export default function TimerShell({
   remaining,
   running,
   started_at,
+  timer_type,
+  timer_config,
 }: TimerShellProps) {
   const search_params = useSearchParams();
   const pathname = usePathname();
@@ -181,6 +189,7 @@ export default function TimerShell({
   const [flash_at, set_flash_at] = useState(initial_flash);
   const [show_flash_config, set_show_flash_config] = useState(false);
   const [show_share, set_show_share] = useState(false);
+  const [show_embed, set_show_embed] = useState(false);
   const fullscreen_ref = useRef<HTMLDivElement>(null);
 
   const active_theme = get_theme(theme_id);
@@ -339,6 +348,16 @@ export default function TimerShell({
             <Share2 className="w-3.5 h-3.5" />
             Share
           </button>
+          {timer_type && (
+            <button
+              onClick={() => set_show_embed(true)}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${btn_bg} ${btn_text} hover:text-foreground`}
+              aria-label="Embed this timer"
+            >
+              <Code2 className="w-3.5 h-3.5" />
+              Embed
+            </button>
+          )}
           {/* Save to Studio */}
           <SaveTimerButton
             timer_type={timer_label.toLowerCase().replace(/\s+/g, "-")}
@@ -364,6 +383,20 @@ export default function TimerShell({
           started_at={started_at}
           running={running}
         />
+
+        {/* Embed code modal */}
+        {timer_type && (
+          <EmbedCodeGenerator
+            open={show_embed}
+            on_close={() => set_show_embed(false)}
+            timer_type={timer_type}
+            timer_name={user_title || timer_label}
+            timer_config={timer_config || {
+              ...(duration ? { duration: duration.value } : {}),
+              ...(interval ? { work: interval.work, rest: interval.rest, rounds: interval.rounds } : {}),
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -487,6 +520,17 @@ export default function TimerShell({
             Share
           </button>
 
+          {timer_type && (
+            <button
+              onClick={() => set_show_embed(true)}
+              className="inline-flex items-center gap-2 text-xs font-medium rounded-full px-4 py-1.5 transition-all duration-200 bg-surface-container-high text-muted-foreground hover:text-foreground hover:bg-surface-container-highest"
+              aria-label="Embed this timer"
+            >
+              <Code2 className="w-3.5 h-3.5" />
+              Embed
+            </button>
+          )}
+
           {/* Flash config */}
           <div className="relative">
             <button
@@ -581,6 +625,20 @@ export default function TimerShell({
         }}
         label={user_title || timer_label}
       />
+
+      {/* Embed code modal (also available in fullscreen) */}
+      {timer_type && (
+        <EmbedCodeGenerator
+          open={show_embed}
+          on_close={() => set_show_embed(false)}
+          timer_type={timer_type}
+          timer_name={user_title || timer_label}
+          timer_config={timer_config || {
+            ...(duration ? { duration: duration.value } : {}),
+            ...(interval ? { work: interval.work, rest: interval.rest, rounds: interval.rounds } : {}),
+          }}
+        />
+      )}
     </div>
   );
 }

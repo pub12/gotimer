@@ -312,6 +312,14 @@ export default function TimerWidget({ timer_type, config }: TimerWidgetProps) {
       }}
       remaining={timer_type === "countdown" ? countdown.remaining : timer_type === "interval" ? interval.remaining : undefined}
       running={timer_type === "countdown" ? countdown.running : timer_type === "interval" ? interval.running : stopwatch.running}
+      timer_type={timer_type}
+      timer_config={
+        timer_type === "interval"
+          ? { work_seconds: user_work, rest_seconds: user_rest, rounds: user_rounds }
+          : timer_type === "stopwatch"
+            ? {}
+            : { duration: user_duration }
+      }
       controls={({ is_fullscreen: fs }) => {
         if (timer_type === "stopwatch") {
           return (

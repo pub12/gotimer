@@ -233,12 +233,12 @@ export function EmbedCodeGenerator({
           {/* Right: Live preview */}
           <div className="flex-1">
             <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2 block">Live Preview</label>
-            <div className="bg-surface-container-low rounded-xl p-4 flex items-center justify-center" style={{ minHeight: 300 }}>
+            <div className="bg-surface-container-low rounded-xl p-4 flex items-center justify-center" style={{ minHeight: 440 }}>
               <iframe
                 key={preview_src}
                 src={preview_src}
                 width={Math.min(dims.width, 400)}
-                height={Math.min(dims.height, 280)}
+                height={Math.max(Math.min(dims.height, 420), 380)}
                 style={{ borderRadius: 8, border: "1px solid var(--surface-container-high)" }}
                 title="Timer preview"
               />

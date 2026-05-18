@@ -95,11 +95,11 @@ function EmbedInner({
 
   return (
     <div
-      className={`gotimer-embed-root flex flex-col items-center justify-center min-h-screen p-4 ${theme_spec.wrapper_class} ${theme_spec.oversized ? "text-2xl" : ""}`}
+      className={`gotimer-embed-root relative flex flex-col items-center justify-center min-h-screen p-3 pb-8 ${theme_spec.wrapper_class} ${theme_spec.oversized ? "text-2xl" : ""}`}
       style={{ ...theme_spec.inline_style, ...accent_style }}
     >
       <InjectFont font={params.font} />
-      <div className={`flex flex-col items-center gap-4 w-full ${size_class}`}>
+      <div className={`flex flex-col items-center gap-3 w-full ${size_class}`}>
         <EmbedMessage
           message={params.message}
           expired_message={params.expired_message}

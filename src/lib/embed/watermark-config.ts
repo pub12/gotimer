@@ -40,7 +40,7 @@ export function resolve_watermark(input: {
       show: true,
       variant: "corner",
       position: "bottom-right",
-      link_text: "gotimer.org",
+      link_text: "GoTimer.org",
       href: BASE_URL,
     };
   }
@@ -50,7 +50,7 @@ export function resolve_watermark(input: {
       show: true,
       variant: "minimal",
       position: "top-right",
-      link_text: "gotimer.org",
+      link_text: "GoTimer.org",
       href: BASE_URL,
     };
   }
@@ -70,7 +70,7 @@ export function resolve_watermark(input: {
       show: true,
       variant: "corner",
       position: "bottom-right",
-      link_text: "gotimer.org",
+      link_text: "GoTimer.org",
       href: BASE_URL,
     };
   }
@@ -79,7 +79,7 @@ export function resolve_watermark(input: {
     show: true,
     variant: "full",
     position: "bottom-center",
-    link_text: "⏱ Powered by GoTimer — Free online timers",
+    link_text: "GoTimer.org",
     href: BASE_URL,
   };
 }

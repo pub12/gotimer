@@ -307,19 +307,19 @@ export default function EmbedHubContent() {
               <h2 className="font-headline font-bold text-xl text-foreground mb-4">
                 Live preview
               </h2>
-              <div className="bg-surface-container-low rounded-xl p-3 flex items-center justify-center min-h-[280px]">
+              <div className="bg-surface-container-low rounded-xl p-3 flex items-center justify-center min-h-[420px]">
                 <iframe
                   key={embed_path}
                   src={embed_path}
                   width="100%"
-                  height="280"
+                  height="420"
                   style={{ border: 0, borderRadius: 8, maxWidth: 420 }}
                   title="Embed preview"
                 />
               </div>
               <p className="mt-3 text-xs text-muted-foreground">
-                What your visitors will see. The &quot;Powered by GoTimer&quot;
-                attribution sits in the corner — backlinks are how we keep this
+                What your visitors will see. A small &quot;GoTimer.org&quot;
+                link sits in the corner — backlinks are how we keep this
                 free.
               </p>
             </div>
@@ -377,11 +377,11 @@ export default function EmbedHubContent() {
                 <p className="text-xs text-muted-foreground mt-1 mb-3">
                   {t.description}
                 </p>
-                <div className="bg-surface-container-low rounded-lg p-2 mb-3 min-h-[140px] flex items-center justify-center">
+                <div className="bg-surface-container-low rounded-lg p-2 mb-3 min-h-[320px] flex items-center justify-center overflow-hidden">
                   <iframe
                     src={t.iframe}
                     width="100%"
-                    height="140"
+                    height="320"
                     style={{ border: 0, borderRadius: 6 }}
                     title={`${t.name} preview`}
                     loading="lazy"

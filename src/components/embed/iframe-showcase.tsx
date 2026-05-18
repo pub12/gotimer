@@ -28,9 +28,9 @@ interface IframeShowcaseProps {
  */
 export function IframeShowcase({
   embed_path,
-  preview_height = 280,
+  preview_height = 420,
   iframe_width = "100%",
-  iframe_height = 320,
+  iframe_height = 420,
   heading = "Copy this iframe",
   footnote,
 }: IframeShowcaseProps) {
