@@ -93,11 +93,51 @@ export function NameWheel({
   }, [spinning, pool, rotation, remove_after_pick, spin_duration_ms, on_winner]);
 
   if (pool.length === 0) {
+    // Decorative placeholder wheel — same SVG structure, 4 greyed-out segments.
+    const dummy = ["?", "?", "?", "?"];
+    const sz = 360;
+    const _cx = sz / 2;
+    const _cy = sz / 2;
+    const _r = (sz / 2) * 0.95;
+    const _slice = (Math.PI * 2) / dummy.length;
+    const GREY = ["#cbd5e1", "#94a3b8", "#cbd5e1", "#94a3b8"];
     return (
-      <div className="w-full max-w-md mx-auto p-8 bg-surface-container-low rounded-2xl text-center">
-        <p className="text-sm text-muted-foreground">
-          Add at least one name to spin the wheel.
-        </p>
+      <div className="w-full max-w-md mx-auto flex flex-col items-center opacity-40 select-none">
+        <div className="relative w-full aspect-square max-w-[360px]">
+          <svg viewBox={`0 0 ${sz} ${sz}`} className="w-full h-full" aria-hidden>
+            <g>
+              {dummy.map((_, i) => {
+                const start = -Math.PI / 2 + i * _slice;
+                const end = start + _slice;
+                const x1 = _cx + _r * Math.cos(start);
+                const y1 = _cy + _r * Math.sin(start);
+                const x2 = _cx + _r * Math.cos(end);
+                const y2 = _cy + _r * Math.sin(end);
+                const large = end - start > Math.PI ? 1 : 0;
+                const path = `M ${_cx} ${_cy} L ${x1} ${y1} A ${_r} ${_r} 0 ${large} 1 ${x2} ${y2} Z`;
+                return <path key={i} d={path} fill={GREY[i % GREY.length]} />;
+              })}
+              <circle cx={_cx} cy={_cy} r={_r * 0.12} fill="#fff" stroke="#1f2937" strokeWidth={2} />
+            </g>
+          </svg>
+          <div
+            aria-hidden
+            className="absolute left-1/2 -translate-x-1/2 -top-1 w-0 h-0"
+            style={{
+              borderLeft: "12px solid transparent",
+              borderRight: "12px solid transparent",
+              borderTop: "22px solid #1f2937",
+            }}
+          />
+        </div>
+        <button
+          type="button"
+          disabled
+          className="mt-6 px-8 py-3 rounded-full bg-secondary/30 text-secondary-foreground font-headline font-black uppercase tracking-widest text-sm cursor-not-allowed border-none"
+        >
+          Spin
+        </button>
+        <p className="mt-3 text-xs text-muted-foreground">Add names above to spin</p>
       </div>
     );
   }

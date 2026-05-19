@@ -65,6 +65,36 @@ export function NoiseMeter() {
   const [level, set_level] = useState(0);
   const [error_msg, set_error_msg] = useState<string>("");
 
+  // Check permission state on mount so a previously-denied page immediately
+  // shows the blocked state without requiring the user to click first.
+  useEffect(() => {
+    if (!navigator.permissions) return;
+    navigator.permissions
+      .query({ name: "microphone" as PermissionName })
+      .then((status) => {
+        if (status.state === "denied") {
+          set_state("denied");
+          set_error_msg(
+            "Microphone access denied. To fix: click the lock/camera icon in the address bar → set Microphone to Allow → reload the page, then tap Enable microphone.",
+          );
+        }
+        status.onchange = () => {
+          if (status.state === "denied") {
+            set_state("denied");
+            set_error_msg(
+              "Microphone access denied. To fix: click the lock/camera icon in the address bar → set Microphone to Allow → reload the page, then tap Enable microphone.",
+            );
+          } else if (status.state === "granted" || status.state === "prompt") {
+            set_state("idle");
+            set_error_msg("");
+          }
+        };
+      })
+      .catch(() => {
+        /* Permissions API not supported in this browser — silent fallback */
+      });
+  }, []);
+
   const audio_ctx_ref = useRef<AudioContext | null>(null);
   const analyser_ref = useRef<AnalyserNode | null>(null);
   const buffer_ref = useRef<Uint8Array<ArrayBuffer> | null>(null);
@@ -96,6 +126,13 @@ export function NoiseMeter() {
     set_error_msg("");
     set_state("starting");
     try {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        set_state("error");
+        set_error_msg(
+          "Your browser doesn't support microphone access. Please use Chrome, Edge, Firefox, or Safari 11+.",
+        );
+        return;
+      }
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: false,
@@ -104,7 +141,8 @@ export function NoiseMeter() {
         },
       });
       stream_ref.current = stream;
-      const Ctx = window.AudioContext;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const Ctx = window.AudioContext || (window as any).webkitAudioContext;
       if (!Ctx) {
         set_state("error");
         set_error_msg("This browser doesn't support the Web Audio API.");
@@ -122,11 +160,18 @@ export function NoiseMeter() {
       set_state("running");
     } catch (err) {
       const e = err as DOMException;
-      if (e.name === "NotAllowedError" || e.name === "SecurityError") {
+      if (
+        e.name === "NotAllowedError" ||
+        e.name === "PermissionDeniedError" ||
+        e.name === "SecurityError"
+      ) {
         set_state("denied");
         set_error_msg(
-          "Microphone access denied. Click the lock icon in your address bar to re-enable, then tap Try Again.",
+          "Microphone access denied. To fix: click the lock/camera icon in the address bar → set Microphone to Allow → reload the page, then tap Enable microphone.",
         );
+      } else if (e.name === "NotFoundError" || e.name === "DevicesNotFoundError") {
+        set_state("error");
+        set_error_msg("No microphone found. Plug one in and try again.");
       } else {
         set_state("error");
         set_error_msg(`Couldn't access the microphone: ${e.message || e.name}`);

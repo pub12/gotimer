@@ -117,7 +117,7 @@ export function BrbConfigurator() {
     <section className="w-full bg-card rounded-2xl shadow-[var(--shadow-soft)] overflow-hidden">
       <div className="grid md:grid-cols-2 gap-0">
         {/* Live preview */}
-        <div className="relative bg-[repeating-conic-gradient(#1e293b_0%_25%,#0f172a_0%_50%)] bg-[length:32px_32px] aspect-video md:aspect-auto md:min-h-[420px] flex items-center justify-center">
+        <div className="relative overflow-hidden bg-[repeating-conic-gradient(#1e293b_0%_25%,#0f172a_0%_50%)] bg-[length:32px_32px] aspect-video md:aspect-auto md:min-h-[420px] flex items-center justify-center">
           <style>{KEYFRAMES_CSS}</style>
           <div className="absolute inset-0">
             <BrbDisplay cfg={cfg} seconds={preview_seconds} position="relative" />
