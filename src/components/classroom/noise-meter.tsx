@@ -61,7 +61,7 @@ export function NoiseMeter() {
     "idle",
   );
   const [mode, set_mode] = useState<Mode>("balls");
-  const [threshold, set_threshold] = useState(0.18); // RMS 0..1
+  const [threshold, set_threshold] = useState(0.1); // RMS 0..1
   const [level, set_level] = useState(0);
   const [error_msg, set_error_msg] = useState<string>("");
 
@@ -137,7 +137,10 @@ export function NoiseMeter() {
         audio: {
           echoCancellation: false,
           noiseSuppression: false,
-          autoGainControl: false,
+          // AGC on so voice lands in a usable RMS range (~0.08–0.25). With
+          // it off, raw signal is typically <0.03 and the threshold slider
+          // never trips for normal speech.
+          autoGainControl: true,
         },
       });
       stream_ref.current = stream;
@@ -193,19 +196,28 @@ export function NoiseMeter() {
     const ctx2d = canvas.getContext("2d");
     if (!ctx2d) return;
 
-    // Resize canvas to its CSS size with devicePixelRatio.
+    // Resize canvas to its layout box × DPR. Use clientWidth/Height (layout
+    // box) — NOT getBoundingClientRect(), which reflects ancestor CSS
+    // transforms (the fullscreen scale slider applies transform: scale(...)
+    // to a parent, which would double the backing-store size and break
+    // drawing math).
     function resize() {
       if (!canvas || !ctx2d) return;
-      const rect = canvas.getBoundingClientRect();
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      if (w === 0 || h === 0) return;
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
       ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
-      balls_ref.current = make_balls(8, rect.width, rect.height);
+      balls_ref.current = make_balls(8, w, h);
     }
     resize();
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
+    // ResizeObserver doesn't fire on browser zoom (the layout box stays the
+    // same, only devicePixelRatio changes). Window resize covers that case.
+    window.addEventListener("resize", resize);
 
     let last_t = performance.now();
     function tick(t: number) {
@@ -219,9 +231,8 @@ export function NoiseMeter() {
       last_t = t;
 
       if (!canvas || !ctx2d) return;
-      const rect = canvas.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
       ctx2d.clearRect(0, 0, w, h);
 
       if (mode === "balls") {
@@ -300,6 +311,7 @@ export function NoiseMeter() {
 
     return () => {
       ro.disconnect();
+      window.removeEventListener("resize", resize);
       if (raf_ref.current !== null) cancelAnimationFrame(raf_ref.current);
       raf_ref.current = null;
     };
@@ -309,17 +321,6 @@ export function NoiseMeter() {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
-      {/* Privacy disclosure — required above the tool. */}
-      <div
-        role="note"
-        className="rounded-2xl bg-secondary/5 border border-secondary/30 px-4 py-3 mb-4 text-center"
-      >
-        <p className="text-xs md:text-sm text-foreground font-medium">
-          <strong>Privacy:</strong> No audio is recorded or sent anywhere. The
-          microphone signal stays on this device and is discarded continuously.
-        </p>
-      </div>
-
       <div className="rounded-2xl overflow-hidden bg-surface-container-low shadow-[var(--shadow-soft)] aspect-[16/9] relative">
         {(state === "idle" || state === "denied" || state === "error") && (
           <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
@@ -352,19 +353,40 @@ export function NoiseMeter() {
             <canvas ref={canvas_ref} className="w-full h-full block" />
             {mode === "color" && (
               <div
-                className="absolute inset-0 flex items-center justify-center text-center"
+                className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
                 style={{ backgroundColor: is_loud ? "#fee2e2" : "#dcfce7" }}
               >
-                <div>
-                  <p
-                    className="font-headline font-black uppercase tracking-widest text-3xl md:text-5xl"
-                    style={{ color: is_loud ? "#b91c1c" : "#15803d" }}
-                  >
-                    {is_loud ? "Too loud" : "Quiet"}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Adjust threshold to suit your classroom.
-                  </p>
+                <p
+                  className="font-headline font-black uppercase tracking-widest text-3xl md:text-5xl"
+                  style={{ color: is_loud ? "#b91c1c" : "#15803d" }}
+                >
+                  {is_loud ? "Too loud" : "Quiet"}
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Adjust threshold to suit your classroom.
+                </p>
+                {/* Live level bar with a threshold marker so teachers see
+                    how close the room is to the limit, not just the binary
+                    quiet/loud state. */}
+                <div className="w-full max-w-md mt-5">
+                  <div className="relative h-3 md:h-4 rounded-full bg-white/60 overflow-hidden shadow-inner">
+                    <div
+                      className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-75 ease-out"
+                      style={{
+                        width: `${Math.min(100, (level / 0.5) * 100)}%`,
+                        backgroundColor: is_loud ? "#dc2626" : "#16a34a",
+                      }}
+                    />
+                    <div
+                      className="absolute inset-y-[-4px] w-0.5 bg-foreground/70"
+                      style={{ left: `${(threshold / 0.5) * 100}%` }}
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="mt-1.5 flex justify-between text-[10px] uppercase tracking-widest text-muted-foreground/70">
+                    <span>Level</span>
+                    <span>Threshold {Math.round(threshold * 100)}%</span>
+                  </div>
                 </div>
               </div>
             )}
@@ -397,7 +419,7 @@ export function NoiseMeter() {
             </label>
             <input
               type="range"
-              min={0.05}
+              min={0.02}
               max={0.5}
               step={0.01}
               value={threshold}
@@ -417,6 +439,17 @@ export function NoiseMeter() {
           </div>
         </div>
       )}
+
+      {/* Privacy disclosure — small footer link to the in-page details. */}
+      <div className="mt-4 text-center">
+        <a
+          href="#privacy"
+          className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground underline underline-offset-2 decoration-dotted"
+        >
+          <span aria-hidden="true">🔒</span>
+          <span>Privacy: no audio is recorded or sent</span>
+        </a>
+      </div>
     </div>
   );
 }

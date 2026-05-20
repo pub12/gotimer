@@ -47,7 +47,7 @@ export default function Page() {
       faq={NOISE_METER_FAQ}
       related={RELATED}
     >
-      <h2>Privacy: what this tool does and doesn&apos;t do</h2>
+      <h2 id="privacy">Privacy: what this tool does and doesn&apos;t do</h2>
       <p>
         The noise meter uses the Web Audio API to read amplitude — a single
         number per audio frame — from your microphone. The audio itself is
