@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { NameListInput } from "./name-list-input";
+import { ExclusionBuilder } from "./exclusion-builder";
 import {
   GroupMode,
   ShuffleResult,
@@ -16,6 +17,35 @@ import {
  */
 
 const HISTORY_KEY_PREFIX = "classroom:group-history:";
+
+const EXCLUSIONS_KEY_PREFIX = "classroom:exclusions:";
+
+function load_exclusions(slug: string): string[][] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(`${EXCLUSIONS_KEY_PREFIX}${slug}`);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    return arr.filter(
+      (e: unknown): e is string[] =>
+        Array.isArray(e) && e.length >= 2 && e.every((n) => typeof n === "string"),
+    );
+  } catch {
+    return [];
+  }
+}
+
+function save_exclusions(slug: string, exclusions: string[][]) {
+  try {
+    window.localStorage.setItem(
+      `${EXCLUSIONS_KEY_PREFIX}${slug}`,
+      JSON.stringify(exclusions),
+    );
+  } catch {
+    /* ignore */
+  }
+}
 
 interface GroupGeneratorProps {
   slug?: string;
@@ -66,6 +96,20 @@ export function GroupGenerator({
   // Setup panel collapses after the first shuffle so results take centre stage.
   const [show_setup, set_show_setup] = useState(true);
 
+  const [exclusions, set_exclusions] = useState<string[][]>([]);
+
+  useEffect(() => {
+    set_exclusions(load_exclusions(slug));
+  }, [slug]);
+
+  const update_exclusions = useCallback(
+    (next: string[][]) => {
+      set_exclusions(next);
+      save_exclusions(slug, next);
+    },
+    [slug],
+  );
+
   const history = useMemo(() => load_history(slug), [slug]);
 
   const handle_shuffle = useCallback(() => {
@@ -76,14 +120,19 @@ export function GroupGenerator({
       target,
       seed: seed.length > 0 ? seed : undefined,
       avoid_pairs: avoid_prev ? history : undefined,
+      exclusions: exclusions.length > 0 ? exclusions : undefined,
     });
     set_result(res);
     set_copied(false);
-    set_show_setup(false); // collapse setup after first shuffle
-    if (avoid_prev) {
-      save_history(slug, collect_pairs(res.groups));
+    if (!res.infeasible) {
+      set_show_setup(false);
+      if (avoid_prev) {
+        save_history(slug, collect_pairs(res.groups));
+      }
+    } else {
+      set_show_setup(true);
     }
-  }, [names, mode, target, seed, avoid_prev, history, slug]);
+  }, [names, mode, target, seed, avoid_prev, history, slug, exclusions]);
 
   const handle_copy = useCallback(async () => {
     if (!result) return;
@@ -107,7 +156,17 @@ export function GroupGenerator({
     <div className="w-full max-w-3xl mx-auto space-y-4">
 
       {/* ── Groups display (hero when results exist) ── */}
-      {result && result.groups.length > 0 && (
+      {result && result.infeasible && (
+        <div
+          role="alert"
+          className="rounded-2xl border border-rose-200 bg-rose-50 text-rose-900 px-4 py-3 mb-4 text-sm"
+        >
+          <strong>Couldn&apos;t make groups with these constraints.</strong>{" "}
+          {result.reason}
+        </div>
+      )}
+
+      {result && !result.infeasible && result.groups.length > 0 && (
         <div>
           {result.repeat_count > 0 && (
             <p className="text-xs text-muted-foreground mb-3 text-center">
@@ -172,6 +231,12 @@ export function GroupGenerator({
             placeholder="Paste your class list — one name per line"
             label="Names"
             rows={5}
+          />
+
+          <ExclusionBuilder
+            names={names}
+            exclusions={exclusions}
+            on_change={update_exclusions}
           />
 
           {!lock_target && (
