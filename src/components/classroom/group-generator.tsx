@@ -265,6 +265,19 @@ export function GroupGenerator({
       {/* ── Setup panel (collapsible after first shuffle) ── */}
       {show_setup && (
         <div className="space-y-5 rounded-2xl bg-surface-container-low p-5 shadow-[var(--shadow-soft)]">
+          <div className="flex items-center justify-end flex-wrap gap-3">
+            <SavedGroupSetsMenu
+              slug={slug}
+              current_groups={
+                result && !result.infeasible && result.groups.length > 0
+                  ? result.groups
+                  : null
+              }
+              current_setup={current_setup}
+              on_open={handle_open_saved}
+            />
+          </div>
+
           <NameListInput
             slug={slug}
             on_change={(n) => set_names(n)}
