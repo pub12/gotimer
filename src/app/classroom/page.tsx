@@ -93,6 +93,46 @@ const TOOLS = [
       "Single counter or multi-counter grid. Tap to count behaviour, votes, attempts. Persists across reloads.",
     emoji: "\u{1F522}",
   },
+  {
+    position: 5,
+    name: "Classroom Timer",
+    url_path: "/productivity/classroom",
+    description:
+      "Large-display projectable countdown. Smartboard-ready — great for transitions, tests, and timed activities.",
+    emoji: "⏱️",
+  },
+  {
+    position: 6,
+    name: "Study Timer",
+    url_path: "/productivity/study",
+    description:
+      "Pomodoro-style focus sessions. Structured work/break cycles for independent study periods.",
+    emoji: "\u{1F4DA}",
+  },
+  {
+    position: 7,
+    name: "Debate Timer",
+    url_path: "/productivity/debate-timer",
+    description:
+      "Multi-phase debate round timer. Supports PF, LD, Policy, WSDC, and British Parliamentary formats.",
+    emoji: "\u{1F5E3}️",
+  },
+  {
+    position: 8,
+    name: "Presentation Timer",
+    url_path: "/productivity/presentation",
+    description:
+      "Count down student presentations. Full-screen display with configurable time limit.",
+    emoji: "\u{1F4CA}",
+  },
+  {
+    position: 9,
+    name: "Breathing Timer",
+    url_path: "/wellness/breathing",
+    description:
+      "Guided breathing for classroom brain breaks. Calm the room between activities.",
+    emoji: "\u{1FAB7}",
+  },
 ];
 
 const webAppLd = build_classroom_web_app_ld({
