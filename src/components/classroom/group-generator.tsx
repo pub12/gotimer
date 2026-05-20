@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { NameListInput } from "./name-list-input";
 import { ExclusionBuilder } from "./exclusion-builder";
 import {
@@ -9,6 +10,10 @@ import {
   collect_pairs,
   shuffle_into_groups,
 } from "./group-shuffler";
+import {
+  SavedGroupSetsMenu,
+  type SavedGroupSetView,
+} from "./saved-group-sets-menu";
 
 /**
  * Group generator UI — name list input + mode selector + seed + result cards.
@@ -109,6 +114,53 @@ export function GroupGenerator({
     },
     [slug],
   );
+
+  const current_setup = useMemo(
+    () => ({
+      names,
+      mode,
+      target,
+      exclusions,
+      seed: seed.length > 0 ? seed : undefined,
+    }),
+    [names, mode, target, exclusions, seed],
+  );
+
+  const handle_open_saved = useCallback(
+    (view: SavedGroupSetView) => {
+      set_names(view.setup.names);
+      set_mode(view.setup.mode);
+      set_target(view.setup.target);
+      set_exclusions(view.setup.exclusions);
+      save_exclusions(slug, view.setup.exclusions);
+      set_seed(view.setup.seed ?? "");
+      set_result({ groups: view.groups, repeat_count: 0 });
+      set_show_setup(false);
+    },
+    [slug],
+  );
+
+  const search_params = useSearchParams();
+  useEffect(() => {
+    const load_id = search_params?.get("load");
+    if (!load_id) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/studio/group-sets/${load_id}`);
+        if (!res.ok) return;
+        const row = await res.json();
+        if (cancelled) return;
+        let groups: string[][] = [];
+        let setup;
+        try { groups = JSON.parse(row.groups_json); } catch {}
+        try { setup = JSON.parse(row.setup_json); } catch {}
+        if (!setup) return;
+        handle_open_saved({ id: row.id, name: row.name, groups, setup, created_at: row.created_at });
+      } catch { /* ignore */ }
+    })();
+    return () => { cancelled = true; };
+  }, [search_params, handle_open_saved]);
 
   const history = useMemo(() => load_history(slug), [slug]);
 
@@ -218,6 +270,12 @@ export function GroupGenerator({
             >
               {show_setup ? "Hide setup" : `Edit (${names.length} names)`}
             </button>
+            <SavedGroupSetsMenu
+              slug={slug}
+              current_groups={result.groups}
+              current_setup={current_setup}
+              on_open={handle_open_saved}
+            />
           </div>
         </div>
       )}
