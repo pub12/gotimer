@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { NameListInput } from "./name-list-input";
 import { ExclusionBuilder } from "./exclusion-builder";
@@ -129,38 +129,16 @@ export function GroupGenerator({
   const handle_open_saved = useCallback(
     (view: SavedGroupSetView) => {
       set_names(view.setup.names);
-      set_mode(view.setup.mode);
-      set_target(view.setup.target);
+      set_mode(lock_target ? default_mode : view.setup.mode);
+      set_target(lock_target ? default_target : view.setup.target);
       set_exclusions(view.setup.exclusions);
       save_exclusions(slug, view.setup.exclusions);
       set_seed(view.setup.seed ?? "");
       set_result({ groups: view.groups, repeat_count: 0 });
       set_show_setup(false);
     },
-    [slug],
+    [slug, lock_target, default_mode, default_target],
   );
-
-  const search_params = useSearchParams();
-  useEffect(() => {
-    const load_id = search_params?.get("load");
-    if (!load_id) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch(`/api/studio/group-sets/${load_id}`);
-        if (!res.ok) return;
-        const row = await res.json();
-        if (cancelled) return;
-        let groups: string[][] = [];
-        let setup;
-        try { groups = JSON.parse(row.groups_json); } catch {}
-        try { setup = JSON.parse(row.setup_json); } catch {}
-        if (!setup) return;
-        handle_open_saved({ id: row.id, name: row.name, groups, setup, created_at: row.created_at });
-      } catch { /* ignore */ }
-    })();
-    return () => { cancelled = true; };
-  }, [search_params, handle_open_saved]);
 
   const history = useMemo(() => load_history(slug), [slug]);
 
@@ -206,6 +184,10 @@ export function GroupGenerator({
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-4">
+
+      <Suspense fallback={null}>
+        <LoadFromQuery on_load={handle_open_saved} />
+      </Suspense>
 
       {/* ── Groups display (hero when results exist) ── */}
       {result && result.infeasible && (
@@ -375,4 +357,29 @@ export function GroupGenerator({
       )}
     </div>
   );
+}
+
+function LoadFromQuery({ on_load }: { on_load: (view: SavedGroupSetView) => void }) {
+  const search_params = useSearchParams();
+  useEffect(() => {
+    const load_id = search_params?.get("load");
+    if (!load_id) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/studio/group-sets/${load_id}`);
+        if (!res.ok) return;
+        const row = await res.json();
+        if (cancelled) return;
+        let groups: string[][] = [];
+        let setup;
+        try { groups = JSON.parse(row.groups_json); } catch {}
+        try { setup = JSON.parse(row.setup_json); } catch {}
+        if (!setup) return;
+        on_load({ id: row.id, name: row.name, groups, setup, created_at: row.created_at });
+      } catch { /* ignore */ }
+    })();
+    return () => { cancelled = true; };
+  }, [search_params, on_load]);
+  return null;
 }
