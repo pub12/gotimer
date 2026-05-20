@@ -13,11 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { TimerTile } from "./timer-tile";
 import { use_hazo_auth } from "hazo_auth/client";
-import { Plus, Timer, FolderOpen, LayoutGrid, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { Plus, Timer, FolderOpen, LayoutGrid, MoreVertical, Pencil, Trash2, Users } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { AddTimerFlow } from "./add-timer-flow";
 import { EditTimerDialog } from "./edit-timer-dialog";
+import { GroupSetTile } from "./group-set-tile";
 
 type SavedTimer = {
   id: string;
@@ -35,6 +36,37 @@ type Category = {
   timer_count: number;
 };
 
+type SavedGroupSetRow = {
+  id: string;
+  user_id: string;
+  slug: string;
+  name: string;
+  groups_json: string;
+  setup_json: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type ParsedGroupSet = {
+  id: string;
+  name: string;
+  groups: string[][];
+  student_count: number;
+  created_at: string;
+};
+
+function parse_group_set(row: SavedGroupSetRow): ParsedGroupSet {
+  let groups: string[][] = [];
+  let student_count = 0;
+  try {
+    groups = JSON.parse(row.groups_json);
+    student_count = groups.flat().length;
+  } catch {
+    /* default 0 */
+  }
+  return { id: row.id, name: row.name, groups, student_count, created_at: row.created_at };
+}
+
 export default function StudioPage() {
   const { user, authenticated } = use_hazo_auth({});
 
@@ -42,6 +74,8 @@ export default function StudioPage() {
   const [categories, set_categories] = useState<Category[]>([]);
   const [selected_category, set_selected_category] = useState<string | null>(null);
   const [loading, set_loading] = useState(true);
+  const [group_sets, set_group_sets] = useState<ParsedGroupSet[]>([]);
+  const [view, set_view] = useState<"timers" | "group_sets">("timers");
 
   // Add Timer dialog state
   const [add_timer_open, set_add_timer_open] = useState(false);
@@ -63,18 +97,26 @@ export default function StudioPage() {
   const fetch_data = useCallback(async () => {
     set_loading(true);
     try {
-      const [timers_res, cats_res] = await Promise.all([
+      const [timers_res, cats_res, sets_res] = await Promise.all([
         fetch("/api/studio/timers"),
         fetch("/api/studio/categories"),
+        fetch("/api/studio/group-sets"),
       ]);
       const timers_data = await timers_res.json();
       const cats_data = await cats_res.json();
+      const sets_data = await sets_res.json();
 
       set_timers(Array.isArray(timers_data) ? timers_data : timers_data.timers || []);
       set_categories(Array.isArray(cats_data) ? cats_data : cats_data.categories || []);
+      set_group_sets(
+        Array.isArray(sets_data?.group_sets)
+          ? (sets_data.group_sets as SavedGroupSetRow[]).map(parse_group_set)
+          : [],
+      );
     } catch {
       set_timers([]);
       set_categories([]);
+      set_group_sets([]);
     } finally {
       set_loading(false);
     }
@@ -151,7 +193,7 @@ export default function StudioPage() {
                   ? "bg-primary text-primary-foreground shadow-[var(--shadow-soft)]"
                   : "text-foreground hover:bg-surface-container-high"
               }`}
-              onClick={() => set_selected_category(null)}
+              onClick={() => { set_view("timers"); set_selected_category(null); }}
             >
               <span className="flex items-center gap-2">
                 <LayoutGrid className="w-4 h-4" />
@@ -167,7 +209,7 @@ export default function StudioPage() {
                     ? "bg-primary text-primary-foreground shadow-[var(--shadow-soft)]"
                     : "text-foreground hover:bg-surface-container-high"
                 }`}
-                onClick={() => set_selected_category("__uncategorized__")}
+                onClick={() => { set_view("timers"); set_selected_category("__uncategorized__"); }}
               >
                 <span className="flex items-center gap-2">
                   <FolderOpen className="w-4 h-4" />
@@ -185,7 +227,7 @@ export default function StudioPage() {
                       ? "bg-primary text-primary-foreground shadow-[var(--shadow-soft)]"
                       : "text-foreground hover:bg-surface-container-high"
                   }`}
-                  onClick={() => set_selected_category(cat.id)}
+                  onClick={() => { set_view("timers"); set_selected_category(cat.id); }}
                 >
                   <span className="truncate">{cat.name}</span>
                   <span className="flex items-center gap-1">
@@ -219,6 +261,22 @@ export default function StudioPage() {
             >
               <Plus className="w-4 h-4" />
               New Category
+            </button>
+
+            <div className="my-2 border-t border-surface-container-high" />
+            <button
+              className={`flex items-center justify-between px-3 py-2.5 rounded-[0.75rem] text-sm font-medium transition-all duration-150 cursor-pointer ${
+                view === "group_sets"
+                  ? "bg-primary text-primary-foreground shadow-[var(--shadow-soft)]"
+                  : "text-foreground hover:bg-surface-container-high"
+              }`}
+              onClick={() => set_view("group_sets")}
+            >
+              <span className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                Group sets
+              </span>
+              <span className="text-xs opacity-70">{group_sets.length}</span>
             </button>
           </nav>
         </div>
@@ -274,43 +332,75 @@ export default function StudioPage() {
           ))}
         </div>
 
-        {/* Timer grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] h-44 animate-pulse"
-              />
-            ))}
-          </div>
-        ) : filtered_timers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <Timer className="w-10 h-10 text-muted-foreground mb-3" />
-            <p className="text-muted-foreground text-sm">
-              {timers.length === 0
-                ? "No saved timers yet. Use any timer and tap the bookmark icon to save it here."
-                : "No timers in this category."}
-            </p>
-          </div>
+        {/* Content: timers or group sets */}
+        {view === "group_sets" ? (
+          group_sets.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <Users className="w-10 h-10 text-muted-foreground mb-3" />
+              <p className="text-muted-foreground text-sm">
+                No saved group sets yet. Make groups in the{" "}
+                <Link href="/classroom/group-generator" className="text-secondary underline">
+                  group generator
+                </Link>{" "}
+                and tap Save.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {group_sets.map((s) => (
+                <GroupSetTile
+                  key={s.id}
+                  id={s.id}
+                  name={s.name}
+                  groups={s.groups}
+                  student_count={s.student_count}
+                  created_at={s.created_at}
+                  on_deleted={fetch_data}
+                />
+              ))}
+            </div>
+          )
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filtered_timers.map((timer) => (
-              <TimerTile
-                key={timer.id}
-                id={timer.id}
-                title={timer.title}
-                timer_type={timer.type}
-                icon={timer.icon}
-                color={timer.accent_color}
-                config={typeof timer.config_json === "string" ? JSON.parse(timer.config_json || "{}") : {}}
-                category_name={timer.category_id ? categories.find(c => c.id === timer.category_id)?.name || null : null}
-                on_deleted={fetch_data}
-                on_duplicated={fetch_data}
-                on_edit={() => set_editing_timer(timer)}
-              />
-            ))}
-          </div>
+          <>
+            {/* Timer grid */}
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="bg-card rounded-[1rem] shadow-[var(--shadow-soft)] h-44 animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : filtered_timers.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <Timer className="w-10 h-10 text-muted-foreground mb-3" />
+                <p className="text-muted-foreground text-sm">
+                  {timers.length === 0
+                    ? "No saved timers yet. Use any timer and tap the bookmark icon to save it here."
+                    : "No timers in this category."}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {filtered_timers.map((timer) => (
+                  <TimerTile
+                    key={timer.id}
+                    id={timer.id}
+                    title={timer.title}
+                    timer_type={timer.type}
+                    icon={timer.icon}
+                    color={timer.accent_color}
+                    config={typeof timer.config_json === "string" ? JSON.parse(timer.config_json || "{}") : {}}
+                    category_name={timer.category_id ? categories.find(c => c.id === timer.category_id)?.name || null : null}
+                    on_deleted={fetch_data}
+                    on_duplicated={fetch_data}
+                    on_edit={() => set_editing_timer(timer)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </main>
 
