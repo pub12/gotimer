@@ -674,7 +674,7 @@ export const PRESETS: Record<string, PresetDefinition> = {
     id: "contrast-therapy",
     name: "Contrast Therapy Timer",
     description:
-      "Multi-phase sauna and cold-plunge sequencer with Søberg, 15-3-1, and Wim Hof-style presets",
+      "Multi-phase sauna and cold-plunge sequencer with 11-Minute Cold, 15-3-1, and Wim Hof-style presets",
     strategy: "multi-step",
     defaultConfig: {
       steps: [
@@ -692,11 +692,11 @@ export const PRESETS: Record<string, PresetDefinition> = {
     route: "/wellness/contrast-therapy",
     sitemapPriority: 0.8,
   },
-  "soberg-protocol": {
-    id: "soberg-protocol",
-    name: "Søberg Protocol Timer",
+  "11-minute-cold-protocol": {
+    id: "11-minute-cold-protocol",
+    name: "11-Minute Cold Protocol Timer",
     description:
-      "Published Søberg sequence — 3 rounds of 15-2-1, ends on cold",
+      "Contrast-therapy sequence built around the 11-minute weekly cold-exposure target — 3 rounds of 15-2-1, ends on cold",
     strategy: "multi-step",
     defaultConfig: {
       steps: [
@@ -711,7 +711,7 @@ export const PRESETS: Record<string, PresetDefinition> = {
       ],
     },
     category: "wellness",
-    route: "/wellness/contrast-therapy/soberg-protocol",
+    route: "/wellness/contrast-therapy/11-minute-cold-protocol",
     sitemapPriority: 0.8,
   },
   "fifteen-three-rest": {

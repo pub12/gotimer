@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Cold Plunge Timer",
     description:
-      "Free online cold plunge timer for ice baths. 2-minute default per Søberg protocol. No signup.",
+      "Free online cold plunge timer for ice baths. 2-minute default from the 11-Minute Cold Protocol. No signup.",
   },
 };
 
@@ -32,10 +32,10 @@ const webAppLd = {
   browserRequirements: "Requires a modern web browser",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   description:
-    "Free online cold plunge timer for ice baths and cold-water immersion. Defaults to 2 minutes per the Søberg protocol, adjustable from 30 seconds to 5 minutes with audio cues at the start and end.",
+    "Free online cold plunge timer for ice baths and cold-water immersion. Defaults to 2 minutes per the 11-Minute Cold Protocol, adjustable from 30 seconds to 5 minutes with audio cues at the start and end.",
   featureList: [
     "Adjustable duration (30 sec / 1 / 2 / 3 / 5 min)",
-    "2-minute default per Søberg protocol",
+    "2-minute default per the 11-Minute Cold Protocol",
     "Loud audio alert at the end of the plunge",
     "Wake lock keeps the screen on for the whole round",
     "Cross-linked to the full contrast-therapy hub",

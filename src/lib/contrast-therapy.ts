@@ -4,7 +4,8 @@
  * Pre-expands a cycle-based protocol (N rounds of M named phases) into the
  * flat StepDefinition[] that the multi-step strategy consumes. Optional
  * `end_on` truncates the trailing phases of the last round so the protocol
- * finishes on a specified phase (e.g. Søberg's "end on cold" requirement).
+ * finishes on a specified phase (e.g. the end-on-cold requirement of the
+ * 11-minute cold protocol).
  *
  * The shim keeps multi-step.ts agnostic of the cycle concept while letting
  * each preset URL declare its protocol once.
@@ -48,7 +49,7 @@ export function expand_contrast(config: ContrastConfig): StepDefinition[] {
   return steps;
 }
 
-export const SOBERG_PRESET: ContrastConfig = {
+export const ELEVEN_MIN_PRESET: ContrastConfig = {
   phases: [
     { name: "Sauna", duration: 15 * 60 },
     { name: "Plunge", duration: 120 },
@@ -78,4 +79,4 @@ export const WIM_HOF_PRESET: ContrastConfig = {
   end_on: "Cold plunge",
 };
 
-export const DEFAULT_CONTRAST_PRESET: ContrastConfig = SOBERG_PRESET;
+export const DEFAULT_CONTRAST_PRESET: ContrastConfig = ELEVEN_MIN_PRESET;

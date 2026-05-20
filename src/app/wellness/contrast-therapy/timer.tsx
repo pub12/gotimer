@@ -7,7 +7,7 @@ import { TimerPage } from "@/components/timer/timer-page";
 import { TimerSeoContent } from "@/components/timer/timer-seo-content";
 import { multiStepStrategy } from "@/lib/timer-strategies/multi-step";
 import {
-  SOBERG_PRESET,
+  ELEVEN_MIN_PRESET,
   expand_contrast,
   type ContrastConfig,
 } from "@/lib/contrast-therapy";
@@ -15,9 +15,9 @@ import { CONTRAST_THERAPY_FAQ } from "./faq";
 
 const RELATED_TIMERS = [
   {
-    name: "Søberg Protocol Timer",
-    href: "/wellness/contrast-therapy/soberg-protocol",
-    description: "3 rounds of 15-2-1 ending on cold — the published Søberg sequence",
+    name: "11-Minute Cold Protocol Timer",
+    href: "/wellness/contrast-therapy/11-minute-cold-protocol",
+    description: "3 rounds of 15-2-1 ending on cold — built around the 11-min weekly cold target",
   },
   {
     name: "15-3-1 Sauna Timer",
@@ -47,9 +47,9 @@ const RELATED_TIMERS = [
 ];
 
 const PRESET_OPTIONS: Record<string, { label: string; config: ContrastConfig }> = {
-  soberg: {
-    label: "Søberg (15-2-1, ends on cold)",
-    config: SOBERG_PRESET,
+  "11-min": {
+    label: "11-Minute Cold (15-2-1, ends on cold)",
+    config: ELEVEN_MIN_PRESET,
   },
   "15-3-1": {
     label: "Sauna-heavy 15-3-1",
@@ -80,7 +80,9 @@ const PRESET_OPTIONS: Record<string, { label: string; config: ContrastConfig }> 
 function Content() {
   const params = useSearchParams();
   const requested = params.get("preset") ?? "";
-  const initial_preset = PRESET_OPTIONS[requested] ? requested : "soberg";
+  // Backwards compat: old "soberg" preset key still resolves to the canonical 11-min preset
+  const normalized_requested = requested === "soberg" ? "11-min" : requested;
+  const initial_preset = PRESET_OPTIONS[normalized_requested] ? normalized_requested : "11-min";
 
   const [preset_key, set_preset_key] = useState(initial_preset);
   const preset = PRESET_OPTIONS[preset_key];
@@ -93,7 +95,7 @@ function Content() {
 
   useEffect(() => {
     const url_params = new URLSearchParams(window.location.search);
-    if (preset_key === "soberg") {
+    if (preset_key === "11-min") {
       url_params.delete("preset");
     } else {
       url_params.set("preset", preset_key);
@@ -152,24 +154,25 @@ function Content() {
           </h1>
           <p>
             A free multi-phase contrast-therapy timer for sauna and cold-plunge sequencing.
-            Pick a published protocol (Søberg, 15-3-1, or Wim Hof-style) or customize your
-            own phase lengths and cycle count. The timer sequences each round automatically,
-            announces phase transitions with audio cues, and ends on cold by default — the
-            structure recommended by Dr. Susanna Søberg&apos;s 2021 brown-adipose research.
+            Pick a pre-built protocol (11-Minute Cold, 15-3-1, or Wim Hof-style) or
+            customize your own phase lengths and cycle count. The timer sequences each
+            round automatically, announces phase transitions with audio cues, and ends
+            on cold by default — the structure most widely recommended in peer-reviewed
+            cold-water immersion research.
           </p>
 
           <h2>The three pre-built protocols</h2>
           <ul>
             <li>
-              <strong>Søberg (15-2-1, ends on cold)</strong> — 15 minutes sauna, 2 minutes
-              cold plunge at 0-15&deg;C, 1 minute rest, repeated 3 times. The last
-              cycle drops the trailing rest phase so the session ends on cold. About 55
-              minutes total. Dedicated page: <Link href="/wellness/contrast-therapy/soberg-protocol">/contrast-therapy/soberg-protocol</Link>.
+              <strong>11-Minute Cold (15-2-1, ends on cold)</strong> — 15 minutes sauna,
+              2 minutes cold plunge at 0-15&deg;C, 1 minute rest, repeated 3 times. The
+              last cycle drops the trailing rest phase so the session ends on cold. About
+              55 minutes total. Dedicated page: <Link href="/wellness/contrast-therapy/11-minute-cold-protocol">/contrast-therapy/11-minute-cold-protocol</Link>.
             </li>
             <li>
               <strong>15-3-1 sauna-heavy</strong> — 15 sauna, 3 cold, 1 rest, three
-              rounds, ends on cold. Slightly more cold exposure than the Søberg version.
-              Dedicated page: <Link href="/wellness/contrast-therapy/15-3-rest">/contrast-therapy/15-3-rest</Link>.
+              rounds, ends on cold. Slightly more cold exposure than the 11-Minute Cold
+              version. Dedicated page: <Link href="/wellness/contrast-therapy/15-3-rest">/contrast-therapy/15-3-rest</Link>.
             </li>
             <li>
               <strong>Wim Hof-style</strong> — 3 minutes breath work, 2 minutes cold, 90
@@ -191,7 +194,7 @@ function Content() {
             less often in daily life.
           </p>
 
-          <h2>Why end on cold (the Søberg principle)</h2>
+          <h2>Why end on cold</h2>
           <p>
             Ending the session in the cold phase keeps brown adipose tissue elevated and
             sustains noradrenaline release after exit. Your body warms itself from the
@@ -206,9 +209,10 @@ function Content() {
           <h2>How to use this timer</h2>
           <ol>
             <li>
-              <strong>Pick a protocol</strong> — Søberg is the default and the most
-              commonly cited modern sequence. The dropdown also offers a 15-3-1
-              sauna-heavy variant and a Wim Hof-style breath-and-cold variant.
+              <strong>Pick a protocol</strong> — the 11-Minute Cold sequence is the
+              default and the most commonly cited modern structure. The dropdown also
+              offers a 15-3-1 sauna-heavy variant and a Wim Hof-style breath-and-cold
+              variant.
             </li>
             <li>
               <strong>Tap the speaker icon</strong> to unlock audio cues. Each phase

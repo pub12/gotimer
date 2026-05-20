@@ -10,9 +10,9 @@ import { FIFTEEN_THREE_FAQ } from "./faq";
 
 const RELATED_TIMERS = [
   {
-    name: "Søberg Protocol Timer",
-    href: "/wellness/contrast-therapy/soberg-protocol",
-    description: "The published 15-2-1 sequence — slightly less cold dose per round",
+    name: "11-Minute Cold Protocol Timer",
+    href: "/wellness/contrast-therapy/11-minute-cold-protocol",
+    description: "The canonical 15-2-1 sequence — slightly less cold dose per round",
   },
   {
     name: "Contrast Therapy Hub",
@@ -69,21 +69,21 @@ function Content() {
             A free, sauna-heavy contrast-therapy timer: <strong>15 minutes sauna at
             80-90&deg;C, 3 minutes cold plunge at 10-15&deg;C, 1 minute rest</strong>,
             repeated 3 times, ending on cold. About 57 minutes total with 9 minutes of
-            cold exposure per session — close to Søberg&apos;s entire weekly target of
-            11 minutes in a single workout.
+            cold exposure per session — close to the entire 11-minute weekly cold-exposure
+            target in a single workout.
           </p>
 
-          <h2>How 15-3-1 compares with the published Søberg protocol</h2>
+          <h2>How 15-3-1 compares with the 11-Minute Cold Protocol</h2>
           <p>
-            The structure is identical to the <Link href="/wellness/contrast-therapy/soberg-protocol">Søberg
-            protocol</Link> (3 rounds, ends on cold) except the cold phase is one minute
-            longer per round. Both protocols put you firmly in the dose range Søberg&apos;s
+            The structure is identical to the <Link href="/wellness/contrast-therapy/11-minute-cold-protocol">11-Minute
+            Cold Protocol</Link> (3 rounds, ends on cold) except the cold phase is one
+            minute longer per round. Both protocols put you firmly in the dose range the
             research identifies as effective, with the 15-3-1 variant accumulating cold
             exposure faster:
           </p>
           <ul>
             <li>
-              <strong>Søberg protocol:</strong> 15 sauna + 2 cold + 1 rest, 3 rounds &rarr;
+              <strong>11-Minute Cold Protocol:</strong> 15 sauna + 2 cold + 1 rest, 3 rounds &rarr;
               ~55 min total, <strong>6 min cold</strong> per session.
             </li>
             <li>
@@ -92,14 +92,14 @@ function Content() {
             </li>
           </ul>
 
-          <h2>When to use 15-3-1 instead of the Søberg version</h2>
+          <h2>When to use 15-3-1 instead of the 11-Minute Cold version</h2>
           <p>
             Use this protocol when you already tolerate 1-2 minute cold plunges comfortably
-            and want to push toward Søberg&apos;s weekly target of 11 minutes in fewer
+            and want to push toward the 11-minute weekly cold-exposure target in fewer
             sessions. One 15-3-1 session per week covers most of the target; two sessions
             put you well above it. If 3-minute cold immersion at 10-15&deg;C still feels
-            difficult, stick with the 2-minute Søberg version — extra cold is not the
-            point if it forces you to skip sessions.
+            difficult, stick with the 2-minute version — extra cold is not the point if it
+            forces you to skip sessions.
           </p>
 
           <h2>How to use this timer</h2>
@@ -131,14 +131,14 @@ function Content() {
             </li>
           </ol>
 
-          <h2>The Søberg principle in this protocol</h2>
+          <h2>End-on-cold in this protocol</h2>
           <p>
-            The 15-3-1 sequence ends on cold like the original Søberg protocol — your
-            last 3 minutes are in the plunge tank. This keeps brown adipose tissue
-            elevated and sustains noradrenaline release for 30-60 minutes after exit,
-            during which your body warms itself internally through brown-fat thermogenesis.
-            That sustained internal warming is the adaptive signal the protocol is
-            structured to elicit, and it is the practical reason every preset in our
+            The 15-3-1 sequence ends on cold like the 11-Minute Cold Protocol — your last
+            3 minutes are in the plunge tank. This keeps brown adipose tissue elevated and
+            sustains noradrenaline release for 30-60 minutes after exit, during which your
+            body warms itself internally through brown-fat thermogenesis. That sustained
+            internal warming is the adaptive signal the protocol is structured to elicit,
+            and it is the practical reason every preset in our
             <Link href="/wellness/contrast-therapy"> contrast-therapy hub</Link> finishes in
             the cold rather than the sauna.
           </p>

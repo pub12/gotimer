@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
         destination: "/:path+",
         permanent: true,
       },
+      {
+        source: "/wellness/contrast-therapy/soberg-protocol",
+        destination: "/wellness/contrast-therapy/11-minute-cold-protocol",
+        permanent: true,
+      },
     ];
   },
   async headers() {

@@ -15,9 +15,9 @@ const RELATED_TIMERS = [
     description: "Pick a preset or customize your own phase lengths",
   },
   {
-    name: "Søberg Protocol Timer",
-    href: "/wellness/contrast-therapy/soberg-protocol",
-    description: "Sauna-based 15-2-1 sequence — the published Søberg version",
+    name: "11-Minute Cold Protocol Timer",
+    href: "/wellness/contrast-therapy/11-minute-cold-protocol",
+    description: "Sauna-based 15-2-1 sequence — the canonical end-on-cold contrast version",
   },
   {
     name: "15-3-1 Sauna Timer",
@@ -70,8 +70,7 @@ function Content() {
             work</strong> for the sauna phase — useful when you have no sauna available,
             want to combine breath training with cold exposure, or want a substantially
             shorter session. <strong>3 rounds of 3-min breath work, 2-min cold plunge,
-            and 90-second recovery</strong>, ending on cold per the Søberg principle.
-            About 22 minutes total.
+            and 90-second recovery</strong>, ending on cold. About 22 minutes total.
           </p>
 
           <h2>What is the Wim Hof method?</h2>
@@ -105,8 +104,8 @@ function Content() {
           </ul>
           <p>
             Total time: about 22 minutes. Total cold exposure: 6 minutes per session.
-            Two sessions per week put you at Søberg&apos;s 11-minute weekly target for
-            adaptive brown-fat activation, in less than a quarter of the time a
+            Two sessions per week put you at the 11-minute weekly cold-exposure target
+            for adaptive brown-fat activation, in less than a quarter of the time a
             sauna-based protocol takes.
           </p>
 
@@ -138,14 +137,14 @@ function Content() {
 
           <h2>Why end on cold rather than recovery?</h2>
           <p>
-            The <Link href="/wellness/contrast-therapy/soberg-protocol">Søberg principle</Link>
-            — ending on cold — applies regardless of whether the heat-or-arousal phase
-            comes from sauna or breath work. Finishing in the cold sustains noradrenaline
-            release and keeps brown adipose tissue active for 30-60 minutes after exit;
-            your body warms itself internally through brown-fat thermogenesis. Ending on
-            recovery instead leaves you passively warming and dampens the adaptive
-            signal. This is why every preset in our <Link href="/wellness/contrast-therapy">contrast-therapy
-            hub</Link> finishes in the cold.
+            The end-on-cold principle applies regardless of whether the
+            heat-or-arousal phase comes from sauna or breath work. Finishing in the cold
+            sustains noradrenaline release and keeps brown adipose tissue active for
+            30-60 minutes after exit; your body warms itself internally through brown-fat
+            thermogenesis. Ending on recovery instead leaves you passively warming and
+            dampens the adaptive signal. This is why every preset in our{" "}
+            <Link href="/wellness/contrast-therapy">contrast-therapy hub</Link> finishes
+            in the cold.
           </p>
 
           <h2>Safety</h2>

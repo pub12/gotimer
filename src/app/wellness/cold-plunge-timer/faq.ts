@@ -2,7 +2,7 @@ export const COLD_PLUNGE_FAQ = [
   {
     question: "How long should a cold plunge last?",
     answer:
-      "For untrained individuals starting cold-water immersion at 10-15&deg;C (50-59&deg;F), <strong>30 to 90 seconds</strong> is a safe and effective starting range. As tolerance builds, most protocols settle in the <strong>2 to 3 minute window per round</strong>. Dr. Susanna Søberg&apos;s research used a 2-minute round in 0-15&deg;C water; her widely-cited target across a whole week is 11 minutes total of deliberate cold exposure for adaptive benefit.",
+      "For untrained individuals starting cold-water immersion at 10-15&deg;C (50-59&deg;F), <strong>30 to 90 seconds</strong> is a safe and effective starting range. As tolerance builds, most protocols settle in the <strong>2 to 3 minute window per round</strong>. Peer-reviewed cold-water immersion research uses a 2-minute round in 0-15&deg;C water; the widely-cited weekly target is 11 minutes total of deliberate cold exposure for adaptive benefit.",
   },
   {
     question: "What is the right water temperature for a cold plunge?",
@@ -20,14 +20,14 @@ export const COLD_PLUNGE_FAQ = [
       "<strong>After workout for recovery</strong> reduces perceived soreness and inflammation but also blunts the long-term hypertrophy and strength adaptations from resistance training. If your goal is muscle growth, save the cold plunge for non-lifting days or wait at least 4-6 hours after a strength session. <strong>Before workout</strong> is fine for the cardiovascular and alertness response, but avoid plunging immediately before heavy lifting — cold muscles are more prone to strain. Pair with our <a href=\"/wellness/breathing\">Breathing Timer</a> for a warm-up after the plunge.",
   },
   {
-    question: "What is the Søberg principle?",
+    question: "Why end on cold instead of heat?",
     answer:
-      "Dr. Susanna Søberg, a Danish researcher who published on the metabolic effects of contrast therapy in 2021, recommends <strong>ending contrast-therapy sessions on cold rather than heat</strong> to maintain elevated brown-adipose-tissue activity. The reasoning: cold drives sustained noradrenaline release that warms the body internally, whereas finishing in the sauna leaves you passively cooling and dampens the adaptive signal. The <a href=\"/wellness/contrast-therapy/soberg-protocol\">Søberg Protocol Timer</a> ends on cold by design.",
+      "Peer-reviewed cold-water immersion research consistently recommends <strong>ending contrast-therapy sessions on cold rather than heat</strong> to maintain elevated brown-adipose-tissue activity. The reasoning: cold drives sustained noradrenaline release that warms the body internally, whereas finishing in the sauna leaves you passively cooling and dampens the adaptive signal. The <a href=\"/wellness/contrast-therapy/11-minute-cold-protocol\">11-Minute Cold Protocol Timer</a> ends on cold by design.",
   },
   {
     question: "How often should I cold plunge?",
     answer:
-      "Søberg&apos;s practical recommendation is <strong>about 11 minutes of total cold exposure per week</strong>, split across 2-4 sessions. That is enough to drive brown-adipose adaptation in healthy adults without overshooting the recovery cost. Daily 1-3 minute plunges are also fine for most people; what to avoid is repeated long (8+ minute) immersions, which produce diminishing returns and increase risk of afterdrop hypothermia.",
+      "The current research consensus is <strong>about 11 minutes of total cold exposure per week</strong>, split across 2-4 sessions. That is enough to drive brown-adipose adaptation in healthy adults without overshooting the recovery cost. Daily 1-3 minute plunges are also fine for most people; what to avoid is repeated long (8+ minute) immersions, which produce diminishing returns and increase risk of afterdrop hypothermia.",
   },
   {
     question: "Is a cold plunge dangerous?",

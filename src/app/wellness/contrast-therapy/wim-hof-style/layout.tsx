@@ -35,7 +35,7 @@ const webAppLd = {
     "Free Wim Hof-style contrast-therapy timer. Three rounds of 3 minutes breath work, 2 minutes cold immersion, and 90 seconds recovery, ending on cold. About 22 minutes total — no sauna required.",
   featureList: [
     "Pre-loaded with 3 breath/cold/recovery rounds",
-    "Ends on cold (Søberg principle)",
+    "Ends on cold to sustain the brown-fat signal",
     "Works with a cold shower at home if no plunge tank available",
     "Audio cue at every phase transition",
     "Wake lock keeps screen on through the session",

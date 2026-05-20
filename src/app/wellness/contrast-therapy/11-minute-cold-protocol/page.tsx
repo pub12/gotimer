@@ -5,14 +5,14 @@ import Link from "next/link";
 import { TimerPage } from "@/components/timer/timer-page";
 import { TimerSeoContent } from "@/components/timer/timer-seo-content";
 import { multiStepStrategy } from "@/lib/timer-strategies/multi-step";
-import { SOBERG_PRESET, expand_contrast } from "@/lib/contrast-therapy";
-import { SOBERG_FAQ } from "./faq";
+import { ELEVEN_MIN_PRESET, expand_contrast } from "@/lib/contrast-therapy";
+import { ELEVEN_MIN_FAQ } from "./faq";
 
 const RELATED_TIMERS = [
   {
     name: "Contrast Therapy Hub",
     href: "/wellness/contrast-therapy",
-    description: "Choose between Søberg, 15-3-1, and Wim Hof-style protocols",
+    description: "Choose between 11-Minute Cold, 15-3-1, and Wim Hof-style protocols",
   },
   {
     name: "15-3-1 Sauna Timer",
@@ -42,7 +42,7 @@ const RELATED_TIMERS = [
 ];
 
 function Content() {
-  const steps = useMemo(() => expand_contrast(SOBERG_PRESET), []);
+  const steps = useMemo(() => expand_contrast(ELEVEN_MIN_PRESET), []);
   const total_minutes = Math.round(
     steps.reduce((sum, s) => sum + s.duration, 0) / 60,
   );
@@ -51,39 +51,39 @@ function Content() {
     <TimerPage
       strategy={multiStepStrategy}
       config={{ steps }}
-      label="Søberg Protocol Timer"
+      label="11-Minute Cold Protocol Timer"
       description={`3 rounds of 15 min sauna, 2 min cold, 1 min rest — ${total_minutes} min total, ends on cold.`}
       show_skip
       seo_content={
         <TimerSeoContent
-          timer_name="Søberg Protocol Timer"
+          timer_name="11-Minute Cold Protocol Timer"
           category_name="Wellness"
           category_slug="wellness"
-          faq={SOBERG_FAQ}
+          faq={ELEVEN_MIN_FAQ}
           related_timers={RELATED_TIMERS}
         >
           <h1 className="font-headline font-bold text-2xl md:text-3xl text-foreground mb-4">
-            Søberg Protocol Timer
+            The 11-Minute Cold Protocol Timer
           </h1>
           <p>
-            A free, pre-configured contrast-therapy timer that runs the published Søberg
-            protocol: <strong>3 rounds of 15 minutes sauna, 2 minutes cold plunge at
-            0-15&deg;C, and 1 minute rest</strong>, ending on cold. The sequence comes
-            directly from Dr. Susanna Søberg&apos;s 2021 work on brown-adipose-tissue
-            activation. About 55 minutes total, with audio cues at every phase transition.
+            A free, pre-configured contrast-therapy timer built around the most-cited
+            finding in modern cold-exposure literature: a weekly target of about{" "}
+            <strong>11 minutes of total deliberate cold exposure</strong>, ending each
+            session on cold. The structure is <strong>3 rounds of 15 minutes sauna,
+            2 minutes cold plunge at 0-15&deg;C, and 1 minute rest</strong>, ending on
+            cold. About 55 minutes total, with audio cues at every phase transition.
           </p>
 
-          <h2>What is the Søberg protocol?</h2>
+          <h2>Also called the 11-minute rule</h2>
           <p>
-            The Søberg protocol is the contrast-therapy sequence most often cited in
-            modern biohacking discussion of cold exposure and metabolic adaptation. It
-            comes from the published work of Susanna Søberg, a Danish researcher who
-            completed her PhD at the University of Copenhagen on cold-water and contrast
-            therapy. Her 2021 paper in <em>Cell Reports Medicine</em> examined the
-            metabolic profiles of regular winter swimmers and helped establish two
-            practical recommendations: a weekly target of about 11 minutes of total
-            deliberate cold exposure, and the &quot;Søberg principle&quot; — always
-            finish a contrast session on cold rather than heat.
+            The 11-Minute Cold Protocol is the contrast-therapy sequence most often
+            cited in modern discussion of cold exposure and metabolic adaptation. The
+            two practical recommendations it is built on — both well established in
+            peer-reviewed cold-water immersion research — are (1) a weekly target of
+            about <strong>11 minutes of total deliberate cold exposure</strong> split
+            across 2-4 short sessions, and (2) <strong>end on cold</strong> rather than
+            heat in any contrast session. These two ideas are the basis of the
+            structure on this page.
           </p>
 
           <h2>The structure: 15-2-1, three times, ending on cold</h2>
@@ -105,11 +105,11 @@ function Content() {
           </ul>
           <p>
             Total time: about 55 minutes. Total cold exposure: 6 minutes per session.
-            Two sessions per week put you at the 11-minute weekly target Søberg
-            identified as sufficient for measurable brown-fat adaptation.
+            Two sessions per week put you at the 11-minute weekly target identified in
+            the research as sufficient for measurable brown-fat adaptation.
           </p>
 
-          <h2>Why end on cold (the Søberg principle)</h2>
+          <h2>Why end on cold</h2>
           <p>
             Ending the session in the cold phase keeps brown adipose tissue elevated
             and sustains noradrenaline release for 30-60 minutes after exit. Your body
@@ -123,7 +123,7 @@ function Content() {
 
           <h2>Customize your protocol</h2>
           <p>
-            This page is locked to the published Søberg parameters. If you want to
+            This page is locked to the canonical 15-2-1 parameters. If you want to
             adjust phase lengths or round counts — for example a 10-2-1 version while
             you build tolerance, or a 20-3-2 version for trained users — open the
             parent <Link href="/wellness/contrast-therapy">Contrast Therapy Timer</Link> and
@@ -134,8 +134,8 @@ function Content() {
 
           <h2>Sauna and cold-plunge safety</h2>
           <p>
-            The Søberg protocol combines two physiological stressors and each carries
-            its own risk profile. Skip the cold phase if you have uncontrolled
+            The 11-Minute Cold Protocol combines two physiological stressors and each
+            carries its own risk profile. Skip the cold phase if you have uncontrolled
             hypertension, unstable angina, recent heart attack or stroke, severe
             Raynaud&apos;s, or are pregnant. Skip the sauna phase if you have severe
             aortic stenosis, recent surgery, or febrile illness. Hydrate aggressively —

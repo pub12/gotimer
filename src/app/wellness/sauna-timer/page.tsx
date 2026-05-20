@@ -17,9 +17,9 @@ const RELATED_TIMERS = [
     description: "Free cold-plunge timer with research-backed default of 2-3 minutes",
   },
   {
-    name: "Søberg Protocol Timer",
-    href: "/wellness/contrast-therapy/soberg-protocol",
-    description: "3 rounds of sauna and cold plunge, ending on cold — the published Søberg sequence",
+    name: "11-Minute Cold Protocol Timer",
+    href: "/wellness/contrast-therapy/11-minute-cold-protocol",
+    description: "3 rounds of sauna and cold plunge, ending on cold — the canonical 15-2-1 sequence",
   },
   {
     name: "Contrast Therapy Timer",
@@ -117,8 +117,8 @@ function Content() {
             — is built on rounds of 10 to 20 minutes at 80-90&deg;C, repeated 2 or 3
             times with cool-down breaks between. Fifteen minutes (this timer&apos;s
             default) sits squarely inside that window and is the per-round duration used
-            in the published <Link href="/wellness/contrast-therapy/soberg-protocol">Søberg
-            contrast-therapy protocol</Link>. Newcomers should start shorter — five to ten
+            in the canonical <Link href="/wellness/contrast-therapy/11-minute-cold-protocol">11-Minute
+            Cold contrast-therapy protocol</Link>. Newcomers should start shorter — five to ten
             minutes — and build tolerance over a few weeks before extending rounds.
           </p>
 
@@ -184,10 +184,11 @@ function Content() {
           </p>
           <ul>
             <li>
-              <strong>Søberg protocol</strong> — three rounds of sauna and cold plunge,
-              ending on cold, derived from Dr. Susanna Søberg&apos;s 2021 brown-adipose
-              research. The <Link href="/wellness/contrast-therapy/soberg-protocol">Søberg
-              Protocol Timer</Link> automates the full sequence.
+              <strong>11-Minute Cold Protocol</strong> — three rounds of sauna and cold
+              plunge, ending on cold, built around the 11-minute weekly cold-exposure
+              target from peer-reviewed cold-water immersion research. The{" "}
+              <Link href="/wellness/contrast-therapy/11-minute-cold-protocol">11-Minute
+              Cold Protocol Timer</Link> automates the full sequence.
             </li>
             <li>
               <strong>Wim Hof-style contrast</strong> — breath work, cold immersion,

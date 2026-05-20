@@ -5,21 +5,21 @@ import { ContrastTherapyTimer } from "./timer";
 export const metadata: Metadata = {
   title: "Contrast Therapy Timer — Free Sauna + Cold Plunge Sequencer",
   description:
-    "Free multi-phase contrast therapy timer with Søberg, 15-3-1, and Wim Hof-style presets. Sauna and cold-plunge sequencing, ends on cold. No signup.",
+    "Free multi-phase contrast therapy timer with 11-Minute Cold, 15-3-1, and Wim Hof-style presets. Sauna and cold-plunge sequencing, ends on cold. No signup.",
   alternates: {
     canonical: "/wellness/contrast-therapy",
   },
   openGraph: {
     title: "Contrast Therapy Timer — Free Sauna + Cold Plunge Sequencer",
     description:
-      "Free multi-phase contrast therapy timer. Søberg, 15-3-1, and Wim Hof-style presets.",
+      "Free multi-phase contrast therapy timer. 11-Minute Cold, 15-3-1, and Wim Hof-style presets.",
     url: "https://gotimer.org/wellness/contrast-therapy",
   },
   twitter: {
     card: "summary",
     title: "Contrast Therapy Timer",
     description:
-      "Free sauna + cold-plunge sequencer with Søberg, 15-3-1, and Wim Hof-style presets.",
+      "Free sauna + cold-plunge sequencer with 11-Minute Cold, 15-3-1, and Wim Hof-style presets.",
   },
 };
 
@@ -33,10 +33,10 @@ const webAppLd = {
   browserRequirements: "Requires a modern web browser",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   description:
-    "Free multi-phase contrast therapy timer for sauna and cold-plunge sequencing. Three pre-built protocols (Søberg, 15-3-1, Wim Hof-style) plus customizable phase lengths and cycle counts. Always ends on cold per the Søberg principle.",
+    "Free multi-phase contrast therapy timer for sauna and cold-plunge sequencing. Three pre-built protocols (11-Minute Cold, 15-3-1, Wim Hof-style) plus customizable phase lengths and cycle counts. Always ends on cold.",
   featureList: [
-    "Three pre-built protocols (Søberg, 15-3-1, Wim Hof-style)",
-    "Always ends on cold (Søberg principle)",
+    "Three pre-built protocols (11-Minute Cold, 15-3-1, Wim Hof-style)",
+    "Always ends on cold",
     "Audio cues at each phase transition",
     "Wake lock keeps the screen on through the session",
     "URL encodes the chosen preset for easy sharing",

@@ -12,7 +12,7 @@ export const WIM_HOF_CONTRAST_FAQ = [
   {
     question: "What is the structure of this protocol?",
     answer:
-      "Three rounds of: <strong>3 minutes breath work, 2 minutes cold plunge or cold shower, 90 seconds recovery</strong>, ending on cold. The final round drops the trailing recovery phase so the session ends in the cold per the Søberg principle. Total session length is about 22 minutes — substantially shorter than the full sauna-based <a href=\"/wellness/contrast-therapy/soberg-protocol\">Søberg protocol</a>.",
+      "Three rounds of: <strong>3 minutes breath work, 2 minutes cold plunge or cold shower, 90 seconds recovery</strong>, ending on cold. The final round drops the trailing recovery phase so the session ends in the cold. Total session length is about 22 minutes — substantially shorter than the full sauna-based <a href=\"/wellness/contrast-therapy/11-minute-cold-protocol\">11-Minute Cold Protocol</a>.",
   },
   {
     question: "How do I do the breath-work phase?",
@@ -22,7 +22,7 @@ export const WIM_HOF_CONTRAST_FAQ = [
   {
     question: "Why end on cold rather than recovery?",
     answer:
-      "The Søberg principle applies regardless of whether the preceding heat phase is sauna or breath work — ending the session in the cold sustains noradrenaline release and brown-adipose-tissue activity for 30-60 minutes after exit. This is why the final round of this protocol drops the trailing recovery phase: your last 2 minutes are in the cold, and your body warms itself internally afterwards.",
+      "The end-on-cold principle applies regardless of whether the preceding heat phase is sauna or breath work — ending the session in the cold sustains noradrenaline release and brown-adipose-tissue activity for 30-60 minutes after exit. This is why the final round of this protocol drops the trailing recovery phase: your last 2 minutes are in the cold, and your body warms itself internally afterwards.",
   },
   {
     question: "Is Wim Hof-style breath work safe?",

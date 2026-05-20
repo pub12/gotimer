@@ -7,7 +7,7 @@ export const SAUNA_TIMER_FAQ = [
   {
     question: "Is 15 minutes a good sauna timer default?",
     answer:
-      "Yes. Fifteen minutes is a comfortable middle ground that works for both Finnish saunas at 80-90&deg;C and infrared cabins at 50-60&deg;C. It is long enough to raise core body temperature meaningfully (about 1&deg;C in a hot sauna), short enough to remain safe for most healthy adults, and matches the per-round duration in the Søberg contrast-therapy protocol.",
+      "Yes. Fifteen minutes is a comfortable middle ground that works for both Finnish saunas at 80-90&deg;C and infrared cabins at 50-60&deg;C. It is long enough to raise core body temperature meaningfully (about 1&deg;C in a hot sauna), short enough to remain safe for most healthy adults, and matches the per-round duration in the 11-Minute Cold contrast-therapy protocol.",
   },
   {
     question: "What is the difference between Finnish, infrared, and steam saunas?",
@@ -22,7 +22,7 @@ export const SAUNA_TIMER_FAQ = [
   {
     question: "Can I use this timer for an at-home sauna or sauna blanket?",
     answer:
-      "Yes. Home barrel saunas, indoor cabin units, sauna blankets, and infrared sauna pods all use the same time-based protocols. Set the timer to your preferred session length, hit start, and the alert sounds when it is time to step out and cool down. Pair with our <a href=\"/wellness/cold-plunge-timer\">Cold Plunge Timer</a> for contrast therapy or the <a href=\"/wellness/contrast-therapy/soberg-protocol\">Søberg Protocol Timer</a> for a multi-round sequence.",
+      "Yes. Home barrel saunas, indoor cabin units, sauna blankets, and infrared sauna pods all use the same time-based protocols. Set the timer to your preferred session length, hit start, and the alert sounds when it is time to step out and cool down. Pair with our <a href=\"/wellness/cold-plunge-timer\">Cold Plunge Timer</a> for contrast therapy or the <a href=\"/wellness/contrast-therapy/11-minute-cold-protocol\">11-Minute Cold Protocol Timer</a> for a multi-round sequence.",
   },
   {
     question: "Is sauna safe with high blood pressure or heart conditions?",

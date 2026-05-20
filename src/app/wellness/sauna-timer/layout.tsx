@@ -38,7 +38,7 @@ const webAppLd = {
     "Audio alert when the session ends",
     "Wake-lock keeps the screen on through the round",
     "Works for Finnish, infrared, and steam saunas",
-    "Direct cross-link to the Søberg contrast-therapy protocol",
+    "Direct cross-link to the 11-Minute Cold contrast-therapy protocol",
     "No download, account, or extension required",
   ],
 };

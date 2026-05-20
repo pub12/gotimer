@@ -4,7 +4,7 @@ import { FIFTEEN_THREE_FAQ } from "./faq";
 export const metadata: Metadata = {
   title: "15-3-1 Sauna Timer — Sauna-Heavy Contrast Therapy",
   description:
-    "Free 15-3-1 contrast therapy timer: 15 minutes sauna, 3 minutes cold, 1 minute rest. 3 rounds, ends on cold. Sauna-heavy variant of the Søberg protocol.",
+    "Free 15-3-1 contrast therapy timer: 15 minutes sauna, 3 minutes cold, 1 minute rest. 3 rounds, ends on cold. Sauna-heavy variant of the 11-Minute Cold Protocol.",
   alternates: {
     canonical: "/wellness/contrast-therapy/15-3-rest",
   },
@@ -35,7 +35,7 @@ const webAppLd = {
     "Free 15-3-1 contrast-therapy timer. Three rounds of 15 minutes sauna, 3 minutes cold plunge, and 1 minute rest, ending on cold. About 57 minutes total with 9 minutes of cold exposure per session.",
   featureList: [
     "Pre-loaded with the 15-3-1 sauna-heavy contrast sequence",
-    "3 rounds, ends on cold (Søberg principle)",
+    "3 rounds, ends on cold to sustain the brown-fat signal",
     "9 minutes total cold exposure per session",
     "Audio cue at every phase transition",
     "Wake lock keeps screen on through the 57-minute session",

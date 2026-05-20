@@ -22,9 +22,9 @@ const RELATED_TIMERS = [
     description: "Free sauna timer with adjustable session length — pairs with cold plunge for contrast therapy",
   },
   {
-    name: "Søberg Protocol Timer",
-    href: "/wellness/contrast-therapy/soberg-protocol",
-    description: "3 rounds of sauna and cold plunge, ending on cold — the Søberg sequence",
+    name: "11-Minute Cold Protocol Timer",
+    href: "/wellness/contrast-therapy/11-minute-cold-protocol",
+    description: "3 rounds of sauna and cold plunge, ending on cold — the canonical 15-2-1 sequence",
   },
   {
     name: "Wim Hof-style Timer",
@@ -101,20 +101,20 @@ function Content() {
           <p>
             A free browser-based cold plunge timer for ice baths, cold-water swims, and
             home cold-plunge tanks. The 2-minute default is taken straight from the{" "}
-            <Link href="/wellness/contrast-therapy/soberg-protocol">Søberg protocol</Link> —
-            the most-cited contrast-therapy sequence in current biohacking literature.
-            Adjustable from 30 seconds (a starter dose) to 5 minutes (the practical
-            upper bound for most home setups at 4-12&deg;C).
+            <Link href="/wellness/contrast-therapy/11-minute-cold-protocol">11-Minute
+            Cold Protocol</Link> — the most-cited contrast-therapy sequence in current
+            cold-exposure literature. Adjustable from 30 seconds (a starter dose) to 5
+            minutes (the practical upper bound for most home setups at 4-12&deg;C).
           </p>
 
           <h2>How long is the right cold plunge?</h2>
           <p>
-            The largest body of practical guidance comes from Dr. Susanna Søberg, whose
-            2021 work on contrast therapy and brown adipose tissue activation set a
-            useful weekly target: about <strong>11 minutes of total cold exposure per
-            week</strong>, split into 2-4 sessions. At a typical plunge length of 2-3
-            minutes that works out to four short rounds per week — sustainable, safe
-            for healthy adults, and enough to drive measurable adaptation.
+            The largest body of practical guidance comes from peer-reviewed cold-water
+            immersion research, which sets a useful weekly target: about{" "}
+            <strong>11 minutes of total cold exposure per week</strong>, split into 2-4
+            sessions. At a typical plunge length of 2-3 minutes that works out to four
+            short rounds per week — sustainable, safe for healthy adults, and enough to
+            drive measurable adaptation.
           </p>
           <p>
             For an individual session, most protocols settle in a <strong>30-second to
@@ -179,14 +179,15 @@ function Content() {
           <p>
             Cold plunge alone is effective. Combining it with a sauna round
             (&quot;contrast therapy&quot;) amplifies the autonomic response and is the
-            structure used in the published Søberg protocol. Two common sequences:
+            structure used in the 11-Minute Cold Protocol. Two common sequences:
           </p>
           <ul>
             <li>
-              <strong>Søberg sequence</strong> — 15 minutes sauna &rarr; 2 minutes cold
-              &rarr; 1 minute rest, repeated 3 times, ending on cold. Automated by the{" "}
-              <Link href="/wellness/contrast-therapy/soberg-protocol">Søberg Protocol
-              Timer</Link>.
+              <strong>11-Minute Cold sequence</strong> — 15 minutes sauna &rarr; 2 minutes
+              cold &rarr; 1 minute rest, repeated 3 times, ending on cold. Automated by
+              the{" "}
+              <Link href="/wellness/contrast-therapy/11-minute-cold-protocol">11-Minute
+              Cold Protocol Timer</Link>.
             </li>
             <li>
               <strong>Wim Hof-style</strong> — 3 minutes breath work &rarr; 2 minutes

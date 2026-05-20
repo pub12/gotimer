@@ -1,41 +1,41 @@
 import { Metadata } from "next";
-import { SOBERG_FAQ } from "./faq";
+import { ELEVEN_MIN_FAQ } from "./faq";
 
 export const metadata: Metadata = {
-  title: "Søberg Protocol Timer — Free Contrast Therapy Tool",
+  title: "11-Minute Cold Protocol Timer — Free Contrast Therapy Tool",
   description:
-    "Free Søberg protocol timer for sauna and cold-plunge contrast therapy. 3 rounds of 15-2-1, ends on cold per Dr. Susanna Søberg's research. No signup.",
+    "Free 11-Minute Cold Protocol timer for sauna and cold-plunge contrast therapy. 3 rounds of 15-2-1, ends on cold, built around the 11-min weekly cold-exposure target. No signup.",
   alternates: {
-    canonical: "/wellness/contrast-therapy/soberg-protocol",
+    canonical: "/wellness/contrast-therapy/11-minute-cold-protocol",
   },
   openGraph: {
-    title: "Søberg Protocol Timer — Free Contrast Therapy Tool",
+    title: "11-Minute Cold Protocol Timer — Free Contrast Therapy Tool",
     description:
-      "Free Søberg protocol timer. 3 rounds of sauna and cold plunge, ends on cold.",
-    url: "https://gotimer.org/wellness/contrast-therapy/soberg-protocol",
+      "Free 11-Minute Cold Protocol timer. 3 rounds of sauna and cold plunge, ends on cold.",
+    url: "https://gotimer.org/wellness/contrast-therapy/11-minute-cold-protocol",
   },
   twitter: {
     card: "summary",
-    title: "Søberg Protocol Timer",
+    title: "11-Minute Cold Protocol Timer",
     description:
-      "Free Søberg contrast-therapy timer. 3 rounds, ends on cold. No signup.",
+      "Free 11-Minute Cold Protocol contrast-therapy timer. 3 rounds, ends on cold. No signup.",
   },
 };
 
 const webAppLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "GoTimer Søberg Protocol Timer",
-  url: "https://gotimer.org/wellness/contrast-therapy/soberg-protocol",
+  name: "GoTimer 11-Minute Cold Protocol Timer",
+  url: "https://gotimer.org/wellness/contrast-therapy/11-minute-cold-protocol",
   applicationCategory: "HealthApplication",
   operatingSystem: "Any",
   browserRequirements: "Requires a modern web browser",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   description:
-    "Free Søberg-protocol contrast-therapy timer. Three rounds of 15 minutes sauna, 2 minutes cold plunge at 0-15°C, and 1 minute rest — automatically ending on cold per the Søberg principle.",
+    "Free contrast-therapy timer built around the 11-minute weekly cold-exposure target from peer-reviewed cold-water immersion research. Three rounds of 15 minutes sauna, 2 minutes cold plunge at 0-15°C, and 1 minute rest — automatically ending on cold.",
   featureList: [
-    "Pre-loaded with the published Søberg sequence (15-2-1, 3 rounds)",
-    "Ends on cold per the Søberg principle",
+    "Pre-loaded with the 15-2-1, 3-round sequence",
+    "Always ends on cold to sustain the brown-fat signal",
     "Audio cue at every phase transition",
     "Wake lock keeps screen on through the 55-minute session",
     "Round indicator and remaining-phase time always visible",
@@ -50,7 +50,7 @@ const breadcrumbLd = {
     { "@type": "ListItem", position: 1, name: "Home", item: "https://gotimer.org" },
     { "@type": "ListItem", position: 2, name: "Wellness", item: "https://gotimer.org/wellness" },
     { "@type": "ListItem", position: 3, name: "Contrast Therapy", item: "https://gotimer.org/wellness/contrast-therapy" },
-    { "@type": "ListItem", position: 4, name: "Søberg Protocol Timer", item: "https://gotimer.org/wellness/contrast-therapy/soberg-protocol" },
+    { "@type": "ListItem", position: 4, name: "11-Minute Cold Protocol Timer", item: "https://gotimer.org/wellness/contrast-therapy/11-minute-cold-protocol" },
   ],
 };
 
@@ -70,7 +70,7 @@ function strip_html(value: string): string {
 const faqLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: SOBERG_FAQ.map((q) => ({
+  mainEntity: ELEVEN_MIN_FAQ.map((q) => ({
     "@type": "Question",
     name: q.question,
     acceptedAnswer: {
