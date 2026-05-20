@@ -311,6 +311,19 @@ const migrations: Migration[] = [
     CREATE INDEX IF NOT EXISTS idx_api_keys_key ON api_keys(key);
   ` },
   { version: 35, sql: `ALTER TABLE game_challenges ADD COLUMN closed_at TEXT` },
+  { version: 36, sql: `
+    CREATE TABLE IF NOT EXISTS saved_group_sets (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      slug TEXT NOT NULL DEFAULT 'default',
+      name TEXT NOT NULL,
+      groups_json TEXT NOT NULL,
+      setup_json TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_saved_group_sets_user ON saved_group_sets (user_id);
+  ` },
 ];
 
 function run_migrations(db: Database.Database) {
