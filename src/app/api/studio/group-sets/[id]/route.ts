@@ -71,7 +71,7 @@ export async function PUT(
       `UPDATE saved_group_sets SET ${updates.join(", ")} WHERE id = ? AND user_id = ?`,
     ).run(...(values as never[]));
 
-    const row = db.prepare(`SELECT * FROM saved_group_sets WHERE id = ?`).get(id);
+    const row = db.prepare(`SELECT * FROM saved_group_sets WHERE id = ? AND user_id = ?`).get(id, auth.user.id);
     return NextResponse.json(row);
   } catch (error) {
     console.error("Error updating group set:", error);

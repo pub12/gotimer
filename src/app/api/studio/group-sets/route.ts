@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       now,
     );
 
-    const row = db.prepare(`SELECT * FROM saved_group_sets WHERE id = ?`).get(id);
+    const row = db.prepare(`SELECT * FROM saved_group_sets WHERE id = ? AND user_id = ?`).get(id, auth.user.id);
     return NextResponse.json(row, { status: 201 });
   } catch (error) {
     console.error("Error creating group set:", error);
